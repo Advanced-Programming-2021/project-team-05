@@ -1,4 +1,15 @@
-package model.card;
+﻿package model.card;
 
-public class Spell {
+import model.template.SpellTemplate;
+
+public class Spell extends Card {
+
+    public Spell(SpellTemplate template) {
+        super("", "", "");
+    }
+
+    @Override
+    protected String detailedToString() {
+        return null;
+    }
 }

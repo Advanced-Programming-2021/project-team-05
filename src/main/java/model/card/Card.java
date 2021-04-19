@@ -1,11 +1,9 @@
-package model.card;
+﻿package model.card;
 
 public class Card {
 
     private String id;
-
     private String name;
-
 
     public String getId() {
         return this.id;

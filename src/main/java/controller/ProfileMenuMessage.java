@@ -1,4 +1,11 @@
-package controller;
+﻿package controller;
 
-public class ProfileMenuMessage {
+public enum ProfileMenuMessage {
+    INVALID_COMMAND,
+    NAVIGATION_NOT_POSSIBLE,
+    NICKNAME_CHANGED,
+    NICKNAME_EXISTS,
+    PASSWORD_CHANGED,
+    INVALID_CURRENT_PASSWORD,
+    ENTER_NEW_PASSWORD
 }

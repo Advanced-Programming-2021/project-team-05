@@ -1,4 +1,8 @@
-package model.template;
+﻿package model.template;
 
-public class TrapTemplate {
+public class TrapTemplate extends CardTemplate {
+
+    public TrapTemplate(String name, String type, String description) {
+        super("", "", "");
+    }
 }
