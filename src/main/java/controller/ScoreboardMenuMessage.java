@@ -1,4 +1,6 @@
-package controller;
+﻿package controller;
 
-public class ScoreboardMenuMessage {
+public enum ScoreboardMenuMessage {
+    INVALID_COMMAND,
+    NAVIGATION_NOT_POSSIBLE
 }
