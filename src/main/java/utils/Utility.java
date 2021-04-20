@@ -1,8 +1,6 @@
 package utils;
 
-import model.card.Card;
-
-import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Utility {
@@ -19,22 +17,16 @@ public class Utility {
     }
 
 
-    public static void shuffleCards(ArrayList<Card> cards) {
-
-    }
-
-
     public static int rollDice() {
-        return 0;
+        Random rand = new Random();
+        return rand.nextInt(6) + 1;
     }
 
 
-    public static boolean spinCoin() {
-        return false;
-    }
-
-
-    public static int rockPaperScissors() {
-        return 0;
+    public static CoinSide spinCoin() {
+        Random rand = new Random();
+        return CoinSide.values()[rand.nextInt(2)];
     }
 }
+
+
