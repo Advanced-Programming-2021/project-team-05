@@ -10,28 +10,25 @@ public abstract class CardTemplate {
     protected String description;
     protected ArrayList<Action> actions;
 
-
     protected CardTemplate(String name, String type, String description) {
-
+        this.name = name;
+        this.type = type;
+        this.description = description;
     }
-
 
     protected final String getName() {
-        return null;
+        return this.name;
     }
-
 
     protected final String getType() {
-        return null;
+        return this.type;
     }
-
 
     protected final String getDescription() {
-        return null;
+        return this.description;
     }
 
-
     protected final ArrayList<Action> getActions() {
-        return null;
+        return this.actions;
     }
 }
