@@ -5,10 +5,16 @@ import model.Action;
 import java.util.ArrayList;
 
 public abstract class CardTemplate {
+
     protected String name;
     protected String type;
     protected String description;
     protected ArrayList<Action> actions;
+
+    {
+        actions = new ArrayList<>();
+    }
+
 
     protected CardTemplate(String name, String type, String description) {
         this.name = name;
@@ -16,19 +22,23 @@ public abstract class CardTemplate {
         this.description = description;
     }
 
-    protected final String getName() {
+
+    public final String getName() {
         return this.name;
     }
 
-    protected final String getType() {
+
+    public final String getType() {
         return this.type;
     }
 
-    protected final String getDescription() {
+
+    public final String getDescription() {
         return this.description;
     }
 
-    protected final ArrayList<Action> getActions() {
+
+    public final ArrayList<Action> getActions() {
         return this.actions;
     }
 }

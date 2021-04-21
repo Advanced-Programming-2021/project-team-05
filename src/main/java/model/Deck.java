@@ -5,23 +5,30 @@ import model.card.Card;
 import model.card.Monster;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.UUID;
 
 public class Deck {
+    private final ArrayList<String> mainDeckCards;
+    private final ArrayList<String> sideDeckCards;
     private String id;
     private String name;
-    private ArrayList<String> mainDeckCards = new ArrayList<>();
-    private ArrayList<String> sideDeckCards = new ArrayList<>();
+
+    {
+        mainDeckCards = new ArrayList<>();
+        sideDeckCards = new ArrayList<>();
+    }
 
 
     public Deck(String name) {
-        this.name = name;
+        this.setId(UUID.randomUUID().toString());
+        this.setName(name);
     }
 
 
     public final String getId() {
         return this.id;
     }
-
 
     public final void setId(String id) {
         this.id = id;
@@ -32,7 +39,6 @@ public class Deck {
         return this.name;
     }
 
-
     public final void setName(String name) {
         this.name = name;
     }
@@ -42,43 +48,36 @@ public class Deck {
         this.mainDeckCards.add(card.getId());
     }
 
-
     public final void removeCardFromMainDeck(Card card) {
         this.mainDeckCards.remove(card.getId());
     }
-
 
     public final boolean hasCardInMainDeck(Card card) {
         return this.mainDeckCards.contains(card.getId());
     }
 
-
     public final ArrayList<Card> getCardsByNameInMainDeck(String name) {
-
         ArrayList<Card> cards = new ArrayList<>();
+        DataManager dataManager = DataManager.getInstance();
 
-        for (String id:
-            this.mainDeckCards) {
-            if (DataManager.getInstance().getCardByUUID(id).getName().equals(name))
-                cards.add(DataManager.getInstance().getCardByUUID(id));
+        for (String id : this.mainDeckCards) {
+            Card card = dataManager.getCardByUUID(id);
+            if (name.equals(card.getName())) {
+                cards.add(card);
+            }
         }
+
         return cards;
     }
 
-
     public final boolean isMainDeckFull() {
-
-        if (this.mainDeckCards.size() == 60){
-            return true;
-        }
-        return false;
+        return this.mainDeckCards.size() == 60;
     }
 
 
     public final void addCardToSideDeck(Card card) {
         this.sideDeckCards.add(card.getId());
     }
-
 
     public final void removeCardFromSideDeck(Card card) {
         this.sideDeckCards.remove(card.getId());
@@ -90,12 +89,14 @@ public class Deck {
 
     public final ArrayList<Card> getCardsByNameInSideDeck(String name) {
         ArrayList<Card> cards = new ArrayList<>();
+        DataManager dataManager = DataManager.getInstance();
 
-        for (String id:
-                this.sideDeckCards) {
-            if (DataManager.getInstance().getCardByUUID(id).getName().equals(name))
-                cards.add(DataManager.getInstance().getCardByUUID(id));
+        for (String id : this.sideDeckCards) {
+            Card card = dataManager.getCardByUUID(id);
+            if (name.equals(card.getName()))
+                cards.add(card);
         }
+
         return cards;
     }
 
@@ -103,72 +104,56 @@ public class Deck {
         return this.sideDeckCards.size() == 20;
     }
 
+
     public final boolean isCardFull(Card card) {
+        ArrayList<Card> mainCards = this.getCardsByNameInMainDeck(card.getName());
+        ArrayList<Card> sideCards = this.getCardsByNameInSideDeck(card.getName());
 
-        int counter = 0;
-
-        for (String id:
-             mainDeckCards) {
-            if (DataManager.getInstance().getCardByUUID(id).getName().equals(card.getName())){
-                counter++;
-            }
-        }   for (String id:
-             sideDeckCards) {
-            if (DataManager.getInstance().getCardByUUID(id).getName().equals(card.getName())){
-                counter++;
-            }
-        }
-        return counter == 3;
+        return mainCards.size() + sideCards.size() == 3;
     }
+
 
     public final boolean isValid() {
-        return mainDeckCards.size() >= 40;
+        return this.mainDeckCards.size() >= 40;
     }
+
 
     public final String detailedToString(boolean isSide) {
+        ArrayList<String> cards = isSide ? sideDeckCards : mainDeckCards;
+        ArrayList<Card> monsters = new ArrayList<>();
+        ArrayList<Card> spellsAndTraps = new ArrayList<>();
+        DataManager dataManager = DataManager.getInstance();
 
-        StringBuilder monsters = new StringBuilder();
-        StringBuilder spellsAndTraps = new StringBuilder();
-
-        if (isSide){
-            for (String id:
-                 sideDeckCards) {
-                if (DataManager.getInstance().getCardByUUID(id) instanceof Monster){
-                    monsters.append(DataManager.getInstance().getCardByUUID(id).getName()).append(":").append(DataManager.getInstance().getCardByUUID(id).getDescription()).append("\n");
-                }
-                else{
-                    spellsAndTraps.append(DataManager.getInstance().getCardByUUID(id).getName()).append(":").append(DataManager.getInstance().getCardByUUID(id).getDescription()).append("\n");
-                }
+        for (String id : cards) {
+            Card card = dataManager.getCardByUUID(id);
+            if (card instanceof Monster) {
+                monsters.add(card);
+            } else {
+                spellsAndTraps.add(card);
             }
-            return "Deck: " + this.name + "\n" +
-                    "Side Deck:\n" +
-                    "Monsters:\n" + monsters.toString() +
-                    "Spell and Traps:\n" +
-                    "Spell and Traps:\n" + spellsAndTraps.toString() ;
+        }
+        monsters.sort(Comparator.comparing(Card::getName));
+        spellsAndTraps.sort(Comparator.comparing(Card::getName));
 
+        StringBuilder stringedDeck = new StringBuilder();
+        stringedDeck.append("Deck: ").append(this.getName()).append("\n")
+                .append(isSide ? "Side" : "Main").append(" deck:\n");
 
-        } else{
-            for (String id:
-                 mainDeckCards) {
-                if (DataManager.getInstance().getCardByUUID(id) instanceof Monster){
-                    monsters.append(DataManager.getInstance().getCardByUUID(id).getName()).append(":").append(DataManager.getInstance().getCardByUUID(id).getDescription()).append("\n");
-
-                }
-                else{
-                    spellsAndTraps.append(DataManager.getInstance().getCardByUUID(id).getName()).append(":").append(DataManager.getInstance().getCardByUUID(id).getDescription()).append("\n");
-                }
-            }
-            return "Deck: " + this.name + "\n" +
-                    "Main Deck:\n" +
-                    "Monsters:\n" + monsters.toString() +
-                    "Spell and Traps:\n" +
-                    "Spell and Traps:\n" + spellsAndTraps.toString() ;
+        stringedDeck.append("Monsters:\n");
+        for (Card monster : monsters) {
+            stringedDeck.append(monster).append("\n");
         }
 
+        stringedDeck.append("Spell and Traps:\n");
+        for (Card spellOrTrap : spellsAndTraps) {
+            stringedDeck.append(spellOrTrap).append("\n");
+        }
+
+        return stringedDeck.toString();
     }
 
-
+    @Override
     public final String toString() {
-        return this.name ;
+        return this.getName();
     }
 }
