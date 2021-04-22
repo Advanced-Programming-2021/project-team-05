@@ -1,4 +1,4 @@
-﻿package controller;
+package controller;
 
 public enum ShopMenuMessage {
     INVALID_COMMAND,

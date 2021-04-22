@@ -1,4 +1,4 @@
-﻿package model.card;
+package model.card;
 
 import controller.DataManager;
 import model.Action;

@@ -1,4 +1,4 @@
-﻿package controller;
+package controller;
 
 public enum DuelMenuMessage {
     INVALID_COMMAND,

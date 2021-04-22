@@ -1,4 +1,4 @@
-﻿package controller;
+package controller;
 
 enum MainMenuMessage {
     INVALID_COMMAND,

@@ -1,4 +1,4 @@
-﻿package model.template;
+package model.template;
 
 public class MonsterTemplate extends CardTemplate {
     private int level;
