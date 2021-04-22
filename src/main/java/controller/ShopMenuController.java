@@ -3,11 +3,17 @@
 import model.User;
 
 public class ShopMenuController {
-    private User user;
+
+    private final User user;
 
 
-    private ShopMenuController(User user) {
+    public ShopMenuController(User user) {
+        this.user = user;
+    }
 
+
+    public User getUser() {
+        return this.user;
     }
 
 

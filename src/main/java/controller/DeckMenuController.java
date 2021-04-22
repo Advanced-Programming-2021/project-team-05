@@ -2,12 +2,18 @@
 
 import model.User;
 
-class DeckMenuController {
-    private User user;
+public class DeckMenuController {
+
+    private final User user;
 
 
-    private DeckMenuController(User user) {
+    public DeckMenuController(User user) {
+        this.user = user;
+    }
 
+
+    public User getUser() {
+        return this.user;
     }
 
 

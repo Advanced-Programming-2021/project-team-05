@@ -4,6 +4,7 @@ import model.User;
 import model.card.Card;
 
 public class DuelMenuController {
+
     private User player;
     private User Opponent;
     private int rounds;

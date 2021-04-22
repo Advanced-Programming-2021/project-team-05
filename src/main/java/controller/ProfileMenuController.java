@@ -2,12 +2,18 @@
 
 import model.User;
 
-class ProfileMenuController {
-    private User user;
+public class ProfileMenuController {
+
+    private final User user;
 
 
-    private ProfileMenuController(User user) {
+    public ProfileMenuController(User user) {
+        this.user = user;
+    }
 
+
+    public User getUser() {
+        return this.user;
     }
 
 
@@ -16,7 +22,7 @@ class ProfileMenuController {
     }
 
 
-    public final ProfileMenuMessage changePassword(String newPassword) {
+    public final ProfileMenuMessage changePassword(String currentPassword, String newPassword) {
         return null;
     }
 }
