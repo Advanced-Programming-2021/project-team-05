@@ -24,4 +24,9 @@ public class MonsterTemplate extends CardTemplate {
     public final int getDefence() {
         return 0;
     }
+
+    @Override
+    public String detailedToString() {
+        return null;
+    }
 }

@@ -86,6 +86,16 @@ public class User {
     }
 
 
+    public ArrayList<Card> getAllCards() {
+        ArrayList<Card> cards = new ArrayList<>();
+        DataManager dataManager = DataManager.getInstance();
+        for (String cardId : purchasedCards) {
+            cards.add(dataManager.getCardByUUID(cardId));
+        }
+
+        return cards;
+    }
+
     public void purchaseCard(Card card) {
         this.purchasedCards.add(card.getId());
     }

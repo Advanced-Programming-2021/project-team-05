@@ -1,6 +1,8 @@
 ﻿package model.card;
 
+import controller.DataManager;
 import model.Action;
+import model.template.CardTemplate;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -71,10 +73,10 @@ public abstract class Card {
     }
 
 
-    abstract protected String detailedToString();
-
     @Override
     public String toString() {
-        return this.getName() + ": " + this.getDescription();
+        DataManager dataManager = DataManager.getInstance();
+        CardTemplate template = dataManager.getCardTemplateByName(this.getName());
+        return template.toString();
     }
 }

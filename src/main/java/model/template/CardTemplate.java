@@ -41,4 +41,12 @@ public abstract class CardTemplate {
     public final ArrayList<Action> getActions() {
         return this.actions;
     }
+
+
+    abstract public String detailedToString();
+
+    @Override
+    public String toString() {
+        return this.getName() + ": " + this.getDescription();
+    }
 }
