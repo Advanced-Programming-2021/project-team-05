@@ -62,10 +62,10 @@ public class LoginMenuView {
         }
 
         LoginMenuMessage message = loginMenuController.createUser(username, password, nickname);
-        parseCreateUserMessage(username, nickname, message);
+        printCreateUserMessage(username, nickname, message);
     }
 
-    private void parseCreateUserMessage(String username, String nickname, LoginMenuMessage message) {
+    private void printCreateUserMessage(String username, String nickname, LoginMenuMessage message) {
         switch (message) {
             case USERNAME_EXISTS:
                 System.out.println("user with username " + username + " already exists");
