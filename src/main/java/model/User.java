@@ -119,6 +119,16 @@ public class User {
     }
 
 
+    public ArrayList<Deck> getAllDecks() {
+        ArrayList<Deck> allDecks = new ArrayList<>();
+        DataManager dataManager = DataManager.getInstance();
+        for (String deckId : this.decks) {
+            allDecks.add(dataManager.getDeckByUUID(deckId));
+        }
+
+        return allDecks;
+    }
+
     public void addDeck(Deck deck) {
         this.decks.add(deck.getId());
     }
@@ -141,12 +151,12 @@ public class User {
     }
 
 
-    public String getActiveDeck() {
-        return this.activeDeck;
+    public Deck getActiveDeck() {
+        return DataManager.getInstance().getDeckByUUID(this.activeDeck);
     }
 
-    public void setActiveDeck(String activeDeck) {
-        this.activeDeck = activeDeck;
+    public void setActiveDeck(Deck activeDeck) {
+        this.activeDeck = activeDeck.getId();
     }
 
 
