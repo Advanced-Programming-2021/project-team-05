@@ -1,8 +1,6 @@
 package controller;
 
 public enum DeckMenuMessage {
-    INVALID_COMMAND,
-    NAVIGATION_NOT_POSSIBLE,
     DECK_CREATED,
     DECK_NAME_EXISTS,
     DECK_DELETED,

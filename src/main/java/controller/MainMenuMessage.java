@@ -1,7 +1,6 @@
 package controller;
 
 enum MainMenuMessage {
-    INVALID_COMMAND,
     LOGGED_OUT,
     NO_PLAYER_EXISTS,
     NO_ACTIVE_DECK_1,

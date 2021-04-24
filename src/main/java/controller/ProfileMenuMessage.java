@@ -1,8 +1,6 @@
 package controller;
 
 public enum ProfileMenuMessage {
-    INVALID_COMMAND,
-    NAVIGATION_NOT_POSSIBLE,
     NICKNAME_CHANGED,
     NICKNAME_EXISTS,
     PASSWORD_CHANGED,
