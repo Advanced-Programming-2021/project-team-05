@@ -9,6 +9,7 @@ import utils.Utility;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+
 public class ShopMenuView {
 
     private final ShopMenuController shopMenuController;
@@ -22,11 +23,11 @@ public class ShopMenuView {
     public final void run() {
         while (true) {
             String command = Utility.getNextLine();
-            if (command.startsWith("shop buy")) {
+            if (command.matches("^shop buy \\S+$")) {
                 buyCard(command.split("\\s"));
             } else if (command.equals("shop show --all")) {
                 showAllCards();
-            } else if (command.startsWith("card show")) {
+            } else if (command.matches("^card show \\S+$")) {
                 showCard(command.split("\\s"));
             } else if (command.equals("menu show-current")) {
                 showCurrentMenu();
@@ -61,6 +62,9 @@ public class ShopMenuView {
                 break;
             case NOT_ENOUGH_MONEY:
                 System.out.println("not enough money");
+                break;
+            case CARD_SUCCESSFULLY_PURCHASED:
+                System.out.println("card bought successfully!");
                 break;
             default:
                 System.out.println("unexpected error");

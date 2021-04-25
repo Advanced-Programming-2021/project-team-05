@@ -3,6 +3,7 @@ package view;
 import controller.*;
 import utils.Utility;
 
+
 public class MainMenuView {
 
     private final MainMenuController mainMenuController;
@@ -23,10 +24,8 @@ public class MainMenuView {
                 break;
             } else if (command.equals("menu show-current")) {
                 showCurrentMenu();
-            } else if (command.startsWith("menu enter")) {
+            } else if (command.matches("^menu enter \\S+ Menu$")) {
                 enterMenu(command.split("\\s"));
-            } else if (command.equals("menu exit")) {
-                break;
             } else {
                 System.out.println("invalid command");
             }
@@ -49,19 +48,19 @@ public class MainMenuView {
         }
 
         switch (menuName) {
-            case "Deck Menu":
+            case "Deck":
                 enterDeckMenu();
                 break;
-            case "Scoreboard Menu":
+            case "Scoreboard":
                 enterScoreboardMenu();
                 break;
-            case "Profile Menu":
+            case "Profile":
                 enterProfileMenu();
                 break;
-            case "Shop Menu":
+            case "Shop":
                 enterShopMenu();
                 break;
-            case "Import/Export Menu":
+            case "Import/Export":
                 enterImportExportMenu();
                 break;
             default:

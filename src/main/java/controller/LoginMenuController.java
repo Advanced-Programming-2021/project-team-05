@@ -2,6 +2,7 @@ package controller;
 
 import model.User;
 
+
 public class LoginMenuController {
 
     public final LoginMenuMessage createUser(String username, String password, String nickname) {

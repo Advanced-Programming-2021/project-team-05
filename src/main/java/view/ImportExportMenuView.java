@@ -4,6 +4,7 @@ import controller.ImportExportController;
 import controller.ImportExportMessage;
 import utils.Utility;
 
+
 public class ImportExportMenuView {
 
     private final ImportExportController importExportController;
@@ -17,9 +18,9 @@ public class ImportExportMenuView {
     protected void run() {
         while (true) {
             String command = Utility.getNextLine();
-            if (command.startsWith("import card")) {
+            if (command.matches("^import card \\S+$")) {
                 importCard(command.split("\\s"));
-            } else if (command.startsWith("export card")) {
+            } else if (command.matches("^export card \\S+$")) {
                 exportCard(command.split("\\s"));
             } else if (command.equals("menu show-current")) {
                 showCurrentMenu();
@@ -52,7 +53,7 @@ public class ImportExportMenuView {
             case INVALID_CARD_NAME:
                 System.out.println("card name is invalid");
             case IMPORT_SUCCESSFUL:
-                System.out.println("card imported successfully");
+                System.out.println("card imported successfully!");
             default:
                 System.out.println("unexpected error");
         }
@@ -77,7 +78,7 @@ public class ImportExportMenuView {
             case INVALID_CARD_NAME:
                 System.out.println("card name is invalid");
             case EXPORT_SUCCESSFUL:
-                System.out.println("card exported successfully");
+                System.out.println("card exported successfully!");
             default:
                 System.out.println("unexpected error");
         }

@@ -1,6 +1,5 @@
 package view;
 
-
 import com.sanityinc.jargs.CmdLineParser;
 import com.sanityinc.jargs.CmdLineParser.Option;
 import controller.LoginMenuController;
@@ -8,6 +7,7 @@ import controller.LoginMenuMessage;
 import controller.MainMenuController;
 import model.User;
 import utils.Utility;
+
 
 public class LoginMenuView {
 
@@ -103,7 +103,7 @@ public class LoginMenuView {
 
         User user = loginMenuController.loginUser(username, password);
         if (user == null) {
-            System.out.println("Username and password didn't match!");
+            System.out.println("username and password didn't match!");
         } else {
             System.out.println("user logged in successfully!");
             MainMenuView mainMenuView = new MainMenuView(new MainMenuController(user));
