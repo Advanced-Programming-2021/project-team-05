@@ -35,7 +35,6 @@ public class DataManager {
         return dataManager;
     }
 
-
     public ArrayList<User> getAllUsers() {
         return this.allUsers;
     }
@@ -64,7 +63,6 @@ public class DataManager {
         return null;
     }
 
-
     public ArrayList<CardTemplate> getCardTemplates() {
         return this.allTemplates;
     }
@@ -79,7 +77,6 @@ public class DataManager {
         return null;
     }
 
-
     public Card getCardByUUID(String uuid) {
         for (Card card : this.allCards) {
             if (card.getId().equals(uuid)) {
@@ -89,7 +86,6 @@ public class DataManager {
 
         return null;
     }
-
 
     public Deck getDeckByUUID(String uuid) {
         for (Deck deck : this.allDecks) {
@@ -101,8 +97,19 @@ public class DataManager {
         return null;
     }
 
+    public void addDeck(Deck deck){
+        allDecks.add(deck);
+    }
+
+    public ArrayList<Deck> getAllDecks() {
+        return this.allDecks;
+    }
 
     public String getScoreboard() {
         return null;
+    }
+
+    public ArrayList<Card> getAllCards() {
+        return this.allCards;
     }
 }
