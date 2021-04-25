@@ -278,8 +278,13 @@ public class DeckMenuView {
             return;
         }
 
-        String message = deckMenuController.showDeck(deckName, isSide);
-        System.out.println(message);
+        User user = deckMenuController.getUser();
+        Deck deck = user.getDeckByName(deckName);
+        if (deck == null) {
+            System.out.println("no deck found");
+        } else {
+            System.out.println(deck.detailedToString(isSide));
+        }
     }
 
 
