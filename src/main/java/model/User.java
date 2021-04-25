@@ -118,6 +118,9 @@ public class User {
         return purchasedCards;
     }
 
+    public ArrayList<String> getDecks() {
+        return this.decks;
+    }
 
     public ArrayList<Deck> getAllDecks() {
         ArrayList<Deck> allDecks = new ArrayList<>();
