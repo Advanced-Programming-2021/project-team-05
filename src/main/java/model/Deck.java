@@ -152,6 +152,20 @@ public class Deck {
         return stringedDeck.toString();
     }
 
+
+    @Override
+    public final boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
+        if (!(object instanceof Deck)) {
+            return false;
+        }
+
+        return this.getName().equals(((Deck) object).getName());
+    }
+
+
     @Override
     public final String toString() {
         return this.getName();

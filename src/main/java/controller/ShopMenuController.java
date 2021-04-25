@@ -20,9 +20,4 @@ public class ShopMenuController {
     public final ShopMenuMessage buyCard(String cardName) {
         return null;
     }
-
-
-    public final String showAllCards() {
-        return null;
-    }
 }
