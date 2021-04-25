@@ -7,7 +7,7 @@ public class MonsterTemplate extends CardTemplate {
 
 
     public MonsterTemplate(int level, int attack, int defense, String name, String type, String description) {
-        super("", "", "");
+        super("", "", "", 0);
     }
 
 

@@ -112,4 +112,8 @@ public class DataManager {
     public ArrayList<Card> getAllCards() {
         return this.allCards;
     }
+
+    public void addCard(Card card) {
+        allCards.add(card);
+    }
 }

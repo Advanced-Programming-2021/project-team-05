@@ -10,16 +10,18 @@ public abstract class CardTemplate {
     protected String type;
     protected String description;
     protected ArrayList<Action> actions;
+    protected int price;
 
     {
         actions = new ArrayList<>();
     }
 
 
-    protected CardTemplate(String name, String type, String description) {
+    protected CardTemplate(String name, String type, String description, int price) {
         this.name = name;
         this.type = type;
         this.description = description;
+        this.price = price;
     }
 
 
@@ -35,6 +37,11 @@ public abstract class CardTemplate {
 
     public final String getDescription() {
         return this.description;
+    }
+
+
+    public int getPrice() {
+        return this.price;
     }
 
 
