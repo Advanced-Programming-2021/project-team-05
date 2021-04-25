@@ -6,6 +6,7 @@ import controller.ProfileMenuController;
 import controller.ProfileMenuMessage;
 import utils.Utility;
 
+
 public class ProfileMenuView {
 
     private final ProfileMenuController profileMenuController;
@@ -66,7 +67,7 @@ public class ProfileMenuView {
                 System.out.println("nickname changed successfully!");
                 break;
             default:
-                System.out.println("unexpected error!");
+                System.out.println("unexpected error");
         }
     }
 
@@ -106,7 +107,7 @@ public class ProfileMenuView {
                 System.out.println("password changed successfully!");
                 break;
             default:
-                System.out.println("unexpected error!");
+                System.out.println("unexpected error");
         }
     }
 

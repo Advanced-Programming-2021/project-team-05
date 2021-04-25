@@ -3,6 +3,7 @@ package view;
 import controller.DataManager;
 import utils.Utility;
 
+
 public class ScoreboardMenuView {
 
     public void run() {

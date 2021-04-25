@@ -14,6 +14,7 @@ import utils.Utility;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+
 public class DeckMenuView {
 
     private final DeckMenuController deckMenuController;
@@ -27,12 +28,11 @@ public class DeckMenuView {
     public final void run() {
         while (true) {
             String command = Utility.getNextLine();
-
-            if (command.startsWith("deck create")) {
+            if (command.matches("^deck create \\S+$")) {
                 createDeck(command.split("\\s"));
-            } else if (command.startsWith("deck delete")) {
+            } else if (command.matches("^deck delete \\S+$")) {
                 deleteDeck(command.split("\\s"));
-            } else if (command.startsWith("deck set-activate")) {
+            } else if (command.matches("^deck set-activate \\S+$")) {
                 activateDeck(command.split("\\s"));
             } else if (command.startsWith("deck add-card")) {
                 addCard(command.split("\\s"));
@@ -44,7 +44,7 @@ public class DeckMenuView {
                 showAllCards();
             } else if (command.startsWith("deck show")) {
                 showDeck(command.split("\\s"));
-            } else if (command.startsWith("card show")) {
+            } else if (command.matches("^card show \\S+$")) {
                 showCard(command.split("\\s"));
             } else if (command.equals("menu show-current")) {
                 showCurrentMenu();
@@ -105,7 +105,7 @@ public class DeckMenuView {
                 System.out.println("deck with name " + deckName + " does not exist");
                 break;
             case DECK_DELETED:
-                System.out.println("deck deleted successfully");
+                System.out.println("deck deleted successfully!");
                 break;
             default:
                 System.out.println("unexpected error");
@@ -132,7 +132,7 @@ public class DeckMenuView {
                 System.out.println("deck with name " + deckName + " does not exist");
                 break;
             case DECK_ACTIVATED:
-                System.out.println("deck activated successfully");
+                System.out.println("deck activated successfully!");
                 break;
             default:
                 System.out.println("unexpected error");
@@ -183,7 +183,7 @@ public class DeckMenuView {
                 System.out.println("there are already three cards with name " + cardName + " in deck " + deckName);
                 break;
             case CARD_ADDED:
-                System.out.println("card added to deck successfully");
+                System.out.println("card added to deck successfully!");
                 break;
             default:
                 System.out.println("unexpected error");
@@ -212,7 +212,7 @@ public class DeckMenuView {
             return;
         }
 
-        DeckMenuMessage message = deckMenuController.addCard(deckName, cardName, isSide);
+        DeckMenuMessage message = deckMenuController.removeCard(deckName, cardName, isSide);
         printRemoveCardMessage(deckName, cardName, message);
     }
 
@@ -228,7 +228,7 @@ public class DeckMenuView {
                 System.out.println("card with name " + cardName + " does not exist in side deck");
                 break;
             case CARD_REMOVED:
-                System.out.println("card removed form deck successfully");
+                System.out.println("card removed form deck successfully!");
                 break;
             default:
                 System.out.println("unexpected error");
