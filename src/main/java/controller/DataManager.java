@@ -6,6 +6,7 @@ import model.card.Card;
 import model.template.CardTemplate;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class DataManager {
 
@@ -76,6 +77,10 @@ public class DataManager {
     }
 
 
+    public void addDeck(Deck deck) {
+        this.allDecks.add(deck);
+    }
+
     public Deck getDeckByUUID(String uuid) {
         for (Deck deck : this.allDecks) {
             if (deck.getId().equals(uuid)) {
@@ -86,14 +91,14 @@ public class DataManager {
         return null;
     }
 
-    public void addDeck(Deck deck){
-        this.allDecks.add(deck);
-    }
-
     public void removeDeck(Deck deck) {
         this.allDecks.remove(deck);
     }
 
+
+    public void addCard(Card card) {
+        this.allCards.add(card);
+    }
 
     public Card getCardByUUID(String uuid) {
         for (Card card : this.allCards) {
@@ -103,10 +108,6 @@ public class DataManager {
         }
 
         return null;
-    }
-
-    public void addCard(Card card) {
-        this.allCards.add(card);
     }
 
 
