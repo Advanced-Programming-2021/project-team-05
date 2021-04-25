@@ -18,11 +18,23 @@ public class ProfileMenuController {
 
 
     public final ProfileMenuMessage changeNickname(String newNickname) {
-        return null;
+        if (DataManager.getInstance().getUserByNickname(newNickname) != null) {
+            return ProfileMenuMessage.NICKNAME_EXISTS;
+        } else {
+            user.setNickname(newNickname);
+            return ProfileMenuMessage.NICKNAME_CHANGED;
+        }
     }
 
 
     public final ProfileMenuMessage changePassword(String currentPassword, String newPassword) {
-        return null;
+        if (!user.getPassword().equals(currentPassword)) {
+            return ProfileMenuMessage.INVALID_CURRENT_PASSWORD;
+        } else if (user.getPassword().equals(newPassword)) {
+            return ProfileMenuMessage.SAME_NEW_AND_CURRENT_PASSWORD;
+        } else {
+            user.setPassword(newPassword);
+            return ProfileMenuMessage.PASSWORD_CHANGED;
+        }
     }
 }
