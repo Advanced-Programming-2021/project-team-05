@@ -10,6 +10,7 @@ import model.template.MonsterTemplate;
 import model.template.SpellTemplate;
 import model.template.TrapTemplate;
 
+
 public class ShopMenuController {
 
     private final User user;
@@ -26,14 +27,17 @@ public class ShopMenuController {
 
 
     public final ShopMenuMessage buyCard(String cardName) {
-        CardTemplate cardTemplate = DataManager.getInstance().getCardTemplateByName(cardName);
-        Card card;
-
+        DataManager dataManager = DataManager.getInstance();
+        CardTemplate cardTemplate = dataManager.getCardTemplateByName(cardName);
         if (cardTemplate == null) {
             return ShopMenuMessage.NO_CARD_EXISTS;
-        } else if (cardTemplate.getPrice() > user.getMoney()) {
+        }
+        if (cardTemplate.getPrice() > user.getMoney()) {
             return ShopMenuMessage.NOT_ENOUGH_MONEY;
-        } else if (cardTemplate instanceof MonsterTemplate) {
+        }
+
+        Card card;
+        if (cardTemplate instanceof MonsterTemplate) {
             card = new Monster((MonsterTemplate) cardTemplate);
         } else if (cardTemplate instanceof SpellTemplate) {
             card = new Spell((SpellTemplate) cardTemplate);
@@ -41,8 +45,9 @@ public class ShopMenuController {
             card = new Trap((TrapTemplate) cardTemplate);
         }
 
-        DataManager.getInstance().addCard(card);
+        dataManager.addCard(card);
         user.purchaseCard(card);
+        user.decreaseMoney(cardTemplate.getPrice());
         return ShopMenuMessage.CARD_SUCCESSFULLY_PURCHASED;
     }
 }
