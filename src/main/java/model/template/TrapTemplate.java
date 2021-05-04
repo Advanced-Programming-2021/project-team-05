@@ -2,12 +2,25 @@ package model.template;
 
 public class TrapTemplate extends CardTemplate {
 
-    public TrapTemplate(String name, String type, String description) {
-        super("", "", "", 0);
+    private final SpellTrapStatus status;
+
+
+    public TrapTemplate(String name, CardType type, String description, int price, SpellTrapStatus status) {
+        super(name, type, description, price);
+        this.status = status;
     }
+
+
+    public SpellTrapStatus getStatus() {
+        return this.status;
+    }
+
 
     @Override
     public String detailedToString() {
-        return null;
+        return "Name: " + this.getName() + "\n" +
+                "Trap\n" +
+                "Type: " + this.getType().getName() + "\n" +
+                "Description: " + this.getDescription();
     }
 }

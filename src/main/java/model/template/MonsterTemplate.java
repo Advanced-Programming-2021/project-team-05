@@ -1,32 +1,56 @@
 package model.template;
 
 public class MonsterTemplate extends CardTemplate {
-    private int level;
-    private int attack;
-    private int defence;
+
+    private final MonsterType monsterType;
+    private final MonsterAttribute attribute;
+    private final int level;
+    private final int attack;
+    private final int defence;
 
 
-    public MonsterTemplate(int level, int attack, int defense, String name, String type, String description) {
-        super("", "", "", 0);
+    public MonsterTemplate(String name, CardType type, String description, int price, MonsterType monsterType, MonsterAttribute attribute, int level, int attack, int defense) {
+        super(name, type, description, price);
+        this.monsterType = monsterType;
+        this.attribute = attribute;
+        this.level = level;
+        this.attack = attack;
+        this.defence = defense;
+    }
+
+
+    public MonsterType getMonsterType() {
+        return this.monsterType;
+    }
+
+
+    public MonsterAttribute getAttribute() {
+        return this.attribute;
     }
 
 
     public final int getLevel() {
-        return 0;
+        return this.level;
     }
 
 
     public final int getAttack() {
-        return 0;
+        return this.attack;
     }
 
 
     public final int getDefence() {
-        return 0;
+        return this.defence;
     }
+
 
     @Override
     public String detailedToString() {
-        return null;
+        return "Name: " + this.getName() + "\n" +
+                "Level: " + this.getLevel() + "\n" +
+                "Type: " + this.getType().getName() + "\n" +
+                "Attack: " + this.getAttack() + "\n" +
+                "Defense: " + this.getDefence() + "\n" +
+                "Description: " + this.getDescription();
     }
 }

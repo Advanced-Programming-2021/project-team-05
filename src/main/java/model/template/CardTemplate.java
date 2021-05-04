@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public abstract class CardTemplate {
 
     protected String name;
-    protected String type;
+    protected CardType type;
     protected String description;
     protected ArrayList<Action> actions;
     protected int price;
@@ -17,7 +17,7 @@ public abstract class CardTemplate {
     }
 
 
-    protected CardTemplate(String name, String type, String description, int price) {
+    protected CardTemplate(String name, CardType type, String description, int price) {
         this.name = name;
         this.type = type;
         this.description = description;
@@ -25,17 +25,17 @@ public abstract class CardTemplate {
     }
 
 
-    public final String getName() {
+    public String getName() {
         return this.name;
     }
 
 
-    public final String getType() {
+    public CardType getType() {
         return this.type;
     }
 
 
-    public final String getDescription() {
+    public String getDescription() {
         return this.description;
     }
 
@@ -45,7 +45,7 @@ public abstract class CardTemplate {
     }
 
 
-    public final ArrayList<Action> getActions() {
+    public ArrayList<Action> getActions() {
         return this.actions;
     }
 

@@ -3,6 +3,7 @@ package model.card;
 import controller.DataManager;
 import model.Action;
 import model.template.CardTemplate;
+import model.template.CardType;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -11,7 +12,7 @@ public abstract class Card {
 
     protected String id;
     protected String name;
-    protected String type;
+    protected CardType type;
     protected String description;
     protected ArrayList<Action> actions;
 
@@ -20,7 +21,7 @@ public abstract class Card {
     }
 
 
-    protected Card(String name, String type, String description) {
+    protected Card(String name, CardType type, String description) {
         this.setId(UUID.randomUUID().toString());
         this.setName(name);
         this.setDescription(description);
@@ -46,11 +47,11 @@ public abstract class Card {
     }
 
 
-    protected String getType() {
+    protected CardType getType() {
         return this.type;
     }
 
-    protected void setType(String type) {
+    protected void setType(CardType type) {
         this.type = type;
     }
 
@@ -72,6 +73,12 @@ public abstract class Card {
         this.description = description;
     }
 
+
+    public String detailedToString() {
+        DataManager dataManager = DataManager.getInstance();
+        CardTemplate template = dataManager.getCardTemplateByName(this.getName());
+        return template.detailedToString();
+    }
 
     @Override
     public String toString() {
