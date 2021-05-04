@@ -62,9 +62,7 @@ public class Deck {
 
         for (String id : this.mainDeckCards) {
             Card card = dataManager.getCardByUUID(id);
-            if (name.equals(card.getName())) {
-                cards.add(card);
-            }
+            if (name.equals(card.getName())) cards.add(card);
         }
 
         return cards;
@@ -93,8 +91,7 @@ public class Deck {
 
         for (String id : this.sideDeckCards) {
             Card card = dataManager.getCardByUUID(id);
-            if (name.equals(card.getName()))
-                cards.add(card);
+            if (name.equals(card.getName())) cards.add(card);
         }
 
         return cards;
