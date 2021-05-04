@@ -17,11 +17,6 @@ public enum MonsterAttribute {
     }
 
 
-    public String getName() {
-        return this.name;
-    }
-
-
     public static MonsterAttribute getMonsterAttributeByName(String name) {
         for (MonsterAttribute attribute : values()) {
             if (name.equals(attribute.name)) {
@@ -29,5 +24,10 @@ public enum MonsterAttribute {
             }
         }
         return null;
+    }
+
+
+    public String getName() {
+        return this.name;
     }
 }

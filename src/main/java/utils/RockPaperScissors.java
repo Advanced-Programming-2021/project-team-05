@@ -6,12 +6,6 @@ public enum RockPaperScissors {
     SCISSORS;
 
 
-    public static void main(String[] args) {
-        System.out.println(RockPaperScissors.valueOf("rock".toUpperCase()));
-
-    }
-
-
     public static RockPaperScissors getValueOf(String name) {
         for (RockPaperScissors value : RockPaperScissors.values()) {
             if (name.toUpperCase().equals(value.name())) {

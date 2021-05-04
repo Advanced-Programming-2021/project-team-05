@@ -19,11 +19,6 @@ public enum CardType {
     }
 
 
-    public String getName() {
-        return this.name;
-    }
-
-
     public static CardType getTypeByName(String name) {
         for (CardType cardType : values()) {
             if (name.equals(cardType.getName())) {
@@ -31,5 +26,10 @@ public enum CardType {
             }
         }
         return null;
+    }
+
+
+    public String getName() {
+        return this.name;
     }
 }
