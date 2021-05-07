@@ -43,6 +43,14 @@ public class DataManager {
     }
 
 
+    public ArrayList<Card> getAllCards() {
+        return this.allCards;
+    }
+
+    public ArrayList<Deck> getAllDecks() {
+        return this.allDecks;
+    }
+
     public static DataManager getInstance() {
         if (dataManager == null) {
             dataManager = new DataManager();
