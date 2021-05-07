@@ -91,13 +91,13 @@ public class Table {
 
 
     public final void addMonster(Monster monster, CardState state) {
-        int pos = 1;
 
-        pos = this.monsters.length + 1;
-
-        this.monsters[pos]  = monster;
-        this.monstersState[pos] = state;
-
+        for (int i = 0; i < 5; i++) {
+            if (this.monsters[i] == null){
+                monsters[i] = monster;
+                monstersState[i] = state;
+            }
+        }
     }
 
     public final void removeMonster(int position) {
@@ -110,12 +110,12 @@ public class Table {
     }
 
     public final void addSpellOrTrap(Card card, CardState state) {
-        int pos = 1;
-
-        pos = this.spellsAndTraps.length + 1;
-
-        this.spellsAndTraps[pos]  = card;
-        this.spellsAndTrapsState[pos] = state;
+        for (int i = 0; i < 5; i++) {
+            if (this.monsters[i] == null){
+                spellsAndTraps[i] = card;
+                spellsAndTrapsState[i] = state;
+            }
+        }
 
     }
 
