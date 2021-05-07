@@ -16,11 +16,11 @@ import java.util.*;
 
 public class DuelMenuView {
 
-    private final DuelMenuController duelMenuController;
+    private DuelMenuController controller;
 
 
-    protected DuelMenuView(DuelMenuController duelMenuController) {
-        this.duelMenuController = duelMenuController;
+    public void setController(DuelMenuController controller) {
+        this.controller = controller;
     }
 
 
@@ -117,8 +117,7 @@ public class DuelMenuView {
             System.out.println("invalid selection");
         }
 
-        DuelMenuMessage message = duelMenuController.selectCard(cardAddress);
-        printSelectMessage(message);
+        controller.selectCard(cardAddress);
     }
 
     public void printSelectMessage(DuelMenuMessage message) {
@@ -139,8 +138,7 @@ public class DuelMenuView {
 
 
     private void deselect() {
-        DuelMenuMessage message = duelMenuController.deselect();
-        printDeselectMessage(message);
+        controller.deselect();
     }
 
     public void printDeselectMessage(DuelMenuMessage message) {
@@ -158,11 +156,10 @@ public class DuelMenuView {
 
 
     private void summon() {
-        DuelMenuMessage message = duelMenuController.summon();
-        printSummonMessage(message);
+        controller.summon();
     }
 
-    public void printSummonMessage(DuelMenuMessage message) {
+    public void parseSummonMessage(DuelMenuMessage message) {
         switch (message) {
             case NO_CARD_IS_SELECTED:
                 System.out.println("no card is selected yet");
@@ -201,26 +198,28 @@ public class DuelMenuView {
 
 
     private void tributeSummon(int tributesCount) {
-        ArrayList<Integer> tributesAddresses = new ArrayList<>();
+        ArrayList<Integer> tributesPositions = new ArrayList<>();
         for (int i = 1; i <= tributesCount; i++) {
             System.out.println("enter monster address to tribute: (" + i + ")");
             try {
-                int address = Integer.parseInt(Utility.getNextLine());
-                tributesAddresses.add(address);
+                int position = Integer.parseInt(Utility.getNextLine());
+                tributesPositions.add(position);
             } catch (NumberFormatException e) {
-                System.out.println("invalid address");
+                System.out.println("please enter a number");
                 i--;
             }
         }
 
-        DuelMenuMessage message = duelMenuController.tributeSummon(tributesAddresses);
-        printTributeSummonMessage(message);
+        controller.tributeSummon(tributesPositions);
     }
 
     public void printTributeSummonMessage(DuelMenuMessage message) {
         switch (message) {
+            case INVALID_SELECTION:
+                System.out.println("invalid selection");
+                break;
             case NO_MONSTER_ON_ADDRESS:
-                System.out.println("there no monsters one this address");
+                System.out.println("no monsters one address(es)");
                 break;
             case SUMMON_SUCCESSFUL:
                 System.out.println("summoned successfully!");
@@ -232,8 +231,7 @@ public class DuelMenuView {
 
 
     private void set() {
-        DuelMenuMessage message = duelMenuController.set();
-        printSetMessage(message);
+        controller.set();
     }
 
     public void printSetMessage(DuelMenuMessage message) {
@@ -285,8 +283,7 @@ public class DuelMenuView {
             return;
         }
 
-        DuelMenuMessage message = duelMenuController.changePosition(position);
-        printChangePositionMessage(message);
+        controller.changePosition(position);
     }
 
     public void printChangePositionMessage(DuelMenuMessage message) {
@@ -316,8 +313,7 @@ public class DuelMenuView {
 
 
     private void flipSummon() {
-        DuelMenuMessage message = duelMenuController.flipSummon();
-        printFlipSummonMessage(message);
+        controller.flipSummon();
     }
 
     public void printFlipSummonMessage(DuelMenuMessage message) {
@@ -344,8 +340,7 @@ public class DuelMenuView {
 
 
     private void directAttack() {
-        DuelMenuMessage message = duelMenuController.directAttack();
-        printDirectAttackMessage(message);
+        controller.directAttack();
     }
 
     public void printDirectAttackMessage(DuelMenuMessage message) {
@@ -381,8 +376,7 @@ public class DuelMenuView {
             return;
         }
 
-        DuelMenuMessage message = duelMenuController.attack(position);
-        printAttackMessage(message);
+        controller.attack(position);
     }
 
     public void printAttackMessage(DuelMenuMessage message) {
@@ -410,8 +404,7 @@ public class DuelMenuView {
 
 
     private void activateEffect() {
-        DuelMenuMessage message = duelMenuController.activeEffect();
-        printActivateEffectMessage(message);
+        controller.activeEffect();
     }
 
     public void printActivateEffectMessage(DuelMenuMessage message) {
@@ -447,7 +440,7 @@ public class DuelMenuView {
 
 
     private void showSelectedCard() {
-        Card selectedCard = duelMenuController.getSelectedCard();
+        Card selectedCard = controller.getSelectedCard();
         if (selectedCard == null) {
             System.out.println("no card is selected yet");
             return;

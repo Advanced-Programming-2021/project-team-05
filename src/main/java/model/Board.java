@@ -6,24 +6,23 @@ public class Board {
 
 
     public Board(User user1, User user2) {
-        Table table1 = new Table(user1);
-        Table table2 = new Table(user2);
-        this.playerTable = table1;
-        this.opponentTable = table2;
+        this.playerTable = new Table(user1);
+        this.opponentTable = new Table(user2);
     }
 
+
     public Table getPlayerTable() {
-        return playerTable;
+        return this.playerTable;
     }
 
     public Table getOpponentTable() {
-        return opponentTable;
+        return this.opponentTable;
     }
 
-    public final void swapTables() {
 
-        Table temp = playerTable;
-        playerTable = opponentTable;
-        opponentTable = temp;
+    public final void swapTables() {
+        Table temp = this.playerTable;
+        this.playerTable = this.opponentTable;
+        this.opponentTable = temp;
     }
 }
