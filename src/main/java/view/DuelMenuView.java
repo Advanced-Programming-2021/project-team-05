@@ -121,7 +121,7 @@ public class DuelMenuView {
         printSelectMessage(message);
     }
 
-    private void printSelectMessage(DuelMenuMessage message) {
+    public void printSelectMessage(DuelMenuMessage message) {
         switch (message) {
             case INVALID_SELECTION:
                 System.out.println("invalid selection");
@@ -143,7 +143,7 @@ public class DuelMenuView {
         printDeselectMessage(message);
     }
 
-    private void printDeselectMessage(DuelMenuMessage message) {
+    public void printDeselectMessage(DuelMenuMessage message) {
         switch (message) {
             case NO_CARD_IS_SELECTED:
                 System.out.println("no card is selected yet");
@@ -162,7 +162,7 @@ public class DuelMenuView {
         printSummonMessage(message);
     }
 
-    private void printSummonMessage(DuelMenuMessage message) {
+    public void printSummonMessage(DuelMenuMessage message) {
         switch (message) {
             case NO_CARD_IS_SELECTED:
                 System.out.println("no card is selected yet");
@@ -217,7 +217,7 @@ public class DuelMenuView {
         printTributeSummonMessage(message);
     }
 
-    private void printTributeSummonMessage(DuelMenuMessage message) {
+    public void printTributeSummonMessage(DuelMenuMessage message) {
         switch (message) {
             case NO_MONSTER_ON_ADDRESS:
                 System.out.println("there no monsters one this address");
@@ -236,7 +236,7 @@ public class DuelMenuView {
         printSetMessage(message);
     }
 
-    private void printSetMessage(DuelMenuMessage message) {
+    public void printSetMessage(DuelMenuMessage message) {
         switch (message) {
             case NO_CARD_IS_SELECTED:
                 System.out.println("no card is selected yet");
@@ -289,7 +289,7 @@ public class DuelMenuView {
         printChangePositionMessage(message);
     }
 
-    private void printChangePositionMessage(DuelMenuMessage message) {
+    public void printChangePositionMessage(DuelMenuMessage message) {
         switch (message) {
             case NO_CARD_IS_SELECTED:
                 System.out.println("no card is selected yet");
@@ -320,7 +320,7 @@ public class DuelMenuView {
         printFlipSummonMessage(message);
     }
 
-    private void printFlipSummonMessage(DuelMenuMessage message) {
+    public void printFlipSummonMessage(DuelMenuMessage message) {
         switch (message) {
             case NO_CARD_IS_SELECTED:
                 System.out.println("no card is selected yet");
@@ -348,7 +348,7 @@ public class DuelMenuView {
         printDirectAttackMessage(message);
     }
 
-    private void printDirectAttackMessage(DuelMenuMessage message) {
+    public void printDirectAttackMessage(DuelMenuMessage message) {
         switch (message) {
             case NO_CARD_IS_SELECTED:
                 System.out.println("no card is selected yet");
@@ -385,7 +385,7 @@ public class DuelMenuView {
         printAttackMessage(message);
     }
 
-    private void printAttackMessage(DuelMenuMessage message) {
+    public void printAttackMessage(DuelMenuMessage message) {
         switch (message) {
             case NO_CARD_IS_SELECTED:
                 System.out.println("no card is selected yet");
@@ -414,7 +414,7 @@ public class DuelMenuView {
         printActivateEffectMessage(message);
     }
 
-    private void printActivateEffectMessage(DuelMenuMessage message) {
+    public void printActivateEffectMessage(DuelMenuMessage message) {
         switch (message) {
             case NO_CARD_IS_SELECTED:
                 System.out.println("no card is selected yet");

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Table {
     private User Owner;
-    private ArrayList<Card> deck;
+    private Deck deck;
     private ArrayList<Card> hand;
     private ArrayList<Card> graveyard;
     private Monster[] monsters = new Monster[5];
@@ -25,13 +25,16 @@ public class Table {
         Owner = owner;
     }
 
+    public ArrayList<Card> getHand() {
+        return this.hand;
+    }
 
     public final User getOwner() {
         return this.Owner;
     }
 
 
-    public final ArrayList<Card> getDeck() {
+    public final Deck getDeck() {
         return this.deck;
     }
 
@@ -41,10 +44,24 @@ public class Table {
 
     }
 
+    public final Card getCardByAddress(CardAddress cardAddress){
+        switch (cardAddress.getZone()){
+            case FIELD:
+                break;
+            case MONSTER:
+                return getMonster(cardAddress.getPosition());
+            case SPELL:
+                return getSpellOrTrap(cardAddress.getPosition());
+            case HAND:
+                return getHand().get(cardAddress.getPosition());
+        }
+        return null;
+    }
+
 
     public final void removeCardFromDeck(Card card) {
 
-        this.deck.remove(card);
+        this.deck.removeCardFromMainDeck(card);
     }
 
 
@@ -83,17 +100,14 @@ public class Table {
 
     }
 
-
     public final void removeMonster(int position) {
         this.monsters[position] = null;
         this.monstersState[position] = null;
     }
 
-
     public final Card getSpellOrTrap(int position) {
         return this.spellsAndTraps[position];
     }
-
 
     public final void addSpellOrTrap(Card card, CardState state) {
         int pos = 1;
@@ -105,12 +119,10 @@ public class Table {
 
     }
 
-
     public final void removeSpellOrTrap(int position) {
         this.spellsAndTrapsState[position] = null;
         this.spellsAndTraps[position] = null;
     }
-
 
     public final Spell getFieldSpell() {
         return this.fieldZoneSpell;
