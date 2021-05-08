@@ -118,6 +118,7 @@ public class User {
         return purchasedCards;
     }
 
+
     public ArrayList<String> getDecks() {
         return this.decks;
     }

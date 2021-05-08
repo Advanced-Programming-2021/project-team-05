@@ -60,6 +60,10 @@ public class DataManager {
     }
 
 
+    public ArrayList<User> getAllUsers() {
+        return this.allUsers;
+    }
+
     public void addUser(User user) {
         this.allUsers.add(user);
     }

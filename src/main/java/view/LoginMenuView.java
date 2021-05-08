@@ -40,7 +40,11 @@ public class LoginMenuView {
     }
 
 
-    private void createUser(String[] command) {
+    public void createUser(String[] command) {
+        if (command.length != 8) {
+            System.out.println("invalid command");
+            return;
+        }
         CmdLineParser parser = new CmdLineParser();
         Option<String> usernameOption = parser.addStringOption('u', "username");
         Option<String> nicknameOption = parser.addStringOption('n', "nickname");
@@ -82,7 +86,11 @@ public class LoginMenuView {
     }
 
 
-    private void loginUser(String[] command) {
+    public void loginUser(String[] command) {
+        if (command.length != 6) {
+            System.out.println("invalid command");
+            return;
+        }
         CmdLineParser parser = new CmdLineParser();
         Option<String> usernameOption = parser.addStringOption('u', "username");
         Option<String> passwordOption = parser.addStringOption('p', "password");
@@ -112,7 +120,7 @@ public class LoginMenuView {
     }
 
 
-    private void showCurrentMenu() {
+    public void showCurrentMenu() {
         System.out.println("Login Menu");
     }
 }
