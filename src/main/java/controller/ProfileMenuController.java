@@ -13,11 +13,6 @@ public class ProfileMenuController {
     }
 
 
-    public User getUser() {
-        return this.user;
-    }
-
-
     public final ProfileMenuMessage changeNickname(String newNickname) {
         DataManager dataManager = DataManager.getInstance();
         if (dataManager.getUserByNickname(newNickname) != null) {

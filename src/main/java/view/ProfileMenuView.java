@@ -12,7 +12,7 @@ public class ProfileMenuView {
     private final ProfileMenuController profileMenuController;
 
 
-    protected ProfileMenuView(ProfileMenuController profileMenuController) {
+    public ProfileMenuView(ProfileMenuController profileMenuController) {
         this.profileMenuController = profileMenuController;
     }
 
@@ -20,9 +20,9 @@ public class ProfileMenuView {
     public void run() {
         while (true) {
             String command = Utility.getNextLine();
-            if (command.startsWith("profile change --nickname")) {
+            if (command.startsWith("profile change --nickname") || command.startsWith("profile change -n")) {
                 changeNickname(command.split("\\s"));
-            } else if (command.startsWith("profile change --password")) {
+            } else if (command.startsWith("profile change --password") || command.startsWith("profile change -p")) {
                 changePassword(command.split("\\s"));
             } else if (command.equals("menu show-current")) {
                 showCurrentMenu();
@@ -37,7 +37,11 @@ public class ProfileMenuView {
     }
 
 
-    private void changeNickname(String[] command) {
+    public void changeNickname(String[] command) {
+        if (command.length != 4) {
+            System.out.println("invalid command");
+            return;
+        }
         CmdLineParser parser = new CmdLineParser();
         Option<String> nicknameOption = parser.addStringOption('n', "nickname");
 
@@ -58,7 +62,7 @@ public class ProfileMenuView {
         printChangeNicknameMessage(nickname, message);
     }
 
-    private void printChangeNicknameMessage(String nickname, ProfileMenuMessage message) {
+    public void printChangeNicknameMessage(String nickname, ProfileMenuMessage message) {
         switch (message) {
             case NICKNAME_EXISTS:
                 System.out.println("user with nickname " + nickname + " already exists");
@@ -72,11 +76,16 @@ public class ProfileMenuView {
     }
 
 
-    private void changePassword(String[] command) {
+    public void changePassword(String[] command) {
+        if (command.length != 7) {
+            System.out.println("invalid command");
+            return;
+        }
         CmdLineParser parser = new CmdLineParser();
         Option<String> currentPasswordOption = parser.addStringOption('c', "current");
         Option<String> newPasswordOption = parser.addStringOption('n', "new");
 
+        command[2] = "password";
         try {
             parser.parse(command);
         } catch (CmdLineParser.OptionException e) {
@@ -95,7 +104,7 @@ public class ProfileMenuView {
         printChangePasswordMessage(message);
     }
 
-    private void printChangePasswordMessage(ProfileMenuMessage message) {
+    public void printChangePasswordMessage(ProfileMenuMessage message) {
         switch (message) {
             case INVALID_CURRENT_PASSWORD:
                 System.out.println("current password is invalid");
@@ -112,7 +121,7 @@ public class ProfileMenuView {
     }
 
 
-    private void showCurrentMenu() {
+    public void showCurrentMenu() {
         System.out.println("Profile Menu");
     }
 }
