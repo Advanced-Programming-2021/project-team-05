@@ -5,6 +5,7 @@ import com.sanityinc.jargs.CmdLineParser;
 import controller.DataManager;
 import controller.DuelMenuController;
 import controller.DuelMenuMessage;
+import model.Board;
 import model.CardAddress;
 import model.CardAddressZone;
 import model.card.Card;
@@ -29,10 +30,11 @@ public class DuelMenuView {
     public void run() {
         while (true) {
             String command = Utility.getNextLine();
-            if (command.equals("select -d")) {
+            if (command.equals("next phase")) {
+                 nextPhase();
+            } else if (command.equals("select -d")) {
                 deselect();
-            }
-            if (command.startsWith("select")) {
+            } else if (command.startsWith("select")) {
                 select(command.split("\\s"));
             } else if (command.equals("summon")) {
                 summon();
@@ -64,6 +66,10 @@ public class DuelMenuView {
                 System.out.println("invalid command");
             }
         }
+    }
+
+    private void nextPhase() {
+        controller.goToNextPhase();
     }
 
 
@@ -356,7 +362,7 @@ public class DuelMenuView {
                 System.out.println("you can’t attack the opponent directly");
                 break;
             case DIRECT_ATTACK_SUCCESSFUL:
-                System.out.println("you opponent receives " + damage + " battale damage");
+                System.out.println("you opponent receives " + damage + " battle damage");
                 break;
             default:
                 System.out.println("unexpected error");
@@ -484,5 +490,20 @@ public class DuelMenuView {
 
     private void showCurrentMenu() {
         System.out.println("Duel Menu");
+    }
+
+
+    public void showTurn(String playerNickname) {
+        System.out.println("its " + playerNickname + "'s turn");
+    }
+
+
+    public void showBoard(Board board) {
+        System.out.println(board);
+    }
+
+
+    public void showPhase(String phaseName) {
+        System.out.println("phase: " + phaseName);
     }
 }

@@ -50,6 +50,26 @@ public class DuelMenuController {
     }
 
 
+    public void goToNextPhase() {
+        phase = phase.getNextPhase();
+        view.showPhase(phase.getName());
+
+        if (phase == Phase.DRAW) {
+            if (board.getPlayerTable().getDeck().getMainDeckSize() == 0) {
+                // ToDo: here, players losses the game
+                return;
+            }
+            board.getPlayerTable().drawCard();
+        } else if (phase == Phase.MAIN_1) {
+            view.showBoard(board);
+        }
+        else if (phase == Phase.END) {
+            changeTurn();
+            view.showTurn(board.getPlayerTable().getOwner().getNickname());
+        }
+    }
+
+
     public final void deselect(boolean print) {
         if (selectedCard == null) {
             if (print) {
@@ -176,6 +196,7 @@ public class DuelMenuController {
             deselect(false);
             canSummonOrSet = false;
             view.parseSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
+            view.showBoard(board);
         } else if (card.getLevel() <= 6) {
             if (playerTable.getMonsterCardsCount() == 0) {
                 view.parseSummonMessage(DuelMenuMessage.NOT_ENOUGH_TRIBUTE);
@@ -223,6 +244,7 @@ public class DuelMenuController {
         deselect(false);
         canSummonOrSet = false;
         view.printTributeSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
+        view.showBoard(board);
     }
 
 
@@ -248,6 +270,7 @@ public class DuelMenuController {
         targetCell.setState(CardState.VERTICAL_UP);
         targetCell.setDoesPositionChanged(true);
         view.printFlipSummonMessage(DuelMenuMessage.FLIP_SUMMON_SUCCESSFUL);
+        view.showBoard(board);
     }
 
 
@@ -295,6 +318,7 @@ public class DuelMenuController {
         targetCell.setState(targetState);
         targetCell.setDoesPositionChanged(true);
         view.printChangePositionMessage(DuelMenuMessage.POSITION_CHANGED);
+        view.showBoard(board);
     }
 
 
@@ -334,6 +358,7 @@ public class DuelMenuController {
         }
         attackerCell.setDidAttack(true);
         deselect(false);
+        view.showBoard(board);
     }
 
     private void attackAttackPositionCard(int targetPosition, Cell attackerCell, Cell targetCell) {
@@ -409,6 +434,7 @@ public class DuelMenuController {
         attackerCell.setDidAttack(true);
         deselect(false);
         view.printDirectAttackMessage(DuelMenuMessage.DIRECT_ATTACK_SUCCESSFUL, damage);
+        view.showBoard(board);
     }
 
 

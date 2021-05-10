@@ -116,6 +116,12 @@ public class Table {
     }
 
 
+    public final void drawCard() {
+        Card card = deck.drawCard();
+        this.getHand().add(card);
+    }
+
+
     public final ArrayList<Card> getGraveyard() {
         return this.graveyard;
     }

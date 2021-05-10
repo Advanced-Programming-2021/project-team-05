@@ -74,6 +74,12 @@ public class Deck implements Cloneable {
         return cards;
     }
 
+    public final Card drawCard() {
+        Card card = DataManager.getInstance().getCardByUUID(this.mainDeckCards.get(0));
+        this.mainDeckCards.remove(0);
+        return card;
+    }
+
     public final boolean isMainDeckFull() {
         return this.mainDeckCards.size() == 60;
     }
