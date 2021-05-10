@@ -47,7 +47,7 @@ public abstract class Card {
     }
 
 
-    protected CardType getType() {
+    public CardType getType() {
         return this.type;
     }
 
@@ -56,7 +56,7 @@ public abstract class Card {
     }
 
 
-    protected ArrayList<Action> getActions() {
+    public ArrayList<Action> getActions() {
         return this.actions;
     }
 

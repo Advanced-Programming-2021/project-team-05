@@ -5,9 +5,9 @@ public class Board {
     private Table opponentTable;
 
 
-    public Board(User user1, User user2) {
-        this.playerTable = new Table(user1);
-        this.opponentTable = new Table(user2);
+    public Board(User player, User opponent) {
+        this.playerTable = new Table(player);
+        this.opponentTable = new Table(opponent);
     }
 
 
@@ -24,5 +24,13 @@ public class Board {
         Table temp = this.playerTable;
         this.playerTable = this.opponentTable;
         this.opponentTable = temp;
+    }
+
+
+    @Override
+    public String toString() {
+        return opponentTable.toString(true) + "\n" +
+                "-------------------------" + "\n" +
+                playerTable.toString(false);
     }
 }

@@ -3,6 +3,7 @@ package controller;
 import model.*;
 import model.card.Card;
 import model.card.Monster;
+import model.template.CardType;
 import view.DuelMenuView;
 
 import java.util.ArrayList;
@@ -10,13 +11,18 @@ import java.util.ArrayList;
 public class DuelMenuController {
 
     private DuelMenuView view;
-    private User player;
-    private User opponent;
     private Board board;
     private int rounds;
     private Phase phase;
     private Card selectedCard;
     private CardAddress selectedCardAddress;
+
+    private boolean canSummonOrSet;
+
+    {
+        phase = Phase.DRAW;
+        canSummonOrSet = true;
+    }
 
 
     public DuelMenuController(User user1, User user2) {
@@ -39,14 +45,7 @@ public class DuelMenuController {
     }
 
 
-    private void swapPlayers() {
-        User temp = player;
-        player = opponent;
-        opponent = temp;
-    }
-
     private void changeTurn() {
-        swapPlayers();
         board.swapTables();
     }
 
@@ -146,8 +145,10 @@ public class DuelMenuController {
             view.parseSummonMessage(DuelMenuMessage.NO_CARD_IS_SELECTED);
             return;
         }
-        if (selectedCardAddress.getZone() != CardAddressZone.HAND || !(selectedCard instanceof Monster)) {
-            // ToDo: can't normal summon
+        if (!(selectedCard instanceof Monster) ||
+                selectedCardAddress.getZone() != CardAddressZone.HAND ||
+                selectedCard.getType() == CardType.RITUAL ||
+                "Gate Guardian".equals(selectedCard.getName())) {
             view.parseSummonMessage(DuelMenuMessage.CANT_SUMMON);
             return;
         }
@@ -160,10 +161,14 @@ public class DuelMenuController {
             view.parseSummonMessage(DuelMenuMessage.MONSTER_ZONE_IS_FULL);
             return;
         }
-        // ToDo: already summoned/set
+        if (!canSummonOrSet) {
+            view.parseSummonMessage(DuelMenuMessage.ALREADY_SUMMONED_SET);
+            return;
+        }
         Monster card = (Monster) selectedCard;
         if (card.getLevel() <= 4) {
-            playerTable.addMonster(card, CardState.ATTACK_UP);
+            playerTable.addMonster(card, CardState.VERTICAL_UP);
+            canSummonOrSet = false;
             view.parseSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
         } else if (card.getLevel() <= 6) {
             if (playerTable.getMonsterCardsCount() == 0) {
@@ -208,7 +213,9 @@ public class DuelMenuController {
             playerTable.addCardToGraveyard(card);
         }
 
-        playerTable.addMonster((Monster) selectedCard, CardState.ATTACK_UP);
+        playerTable.addMonster((Monster) selectedCard, CardState.VERTICAL_UP);
+        canSummonOrSet = false;
+        view.printTributeSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
     }
 
 
@@ -222,6 +229,45 @@ public class DuelMenuController {
 
 
     public final void changePosition(String position) {
+        CardState targetState;
+        switch (position) {
+            case "attack":
+                targetState = CardState.VERTICAL_UP;
+                break;
+            case "defense":
+                targetState = CardState.HORIZONTAL_UP;
+                break;
+            default:
+                view.printChangePositionMessage(DuelMenuMessage.INVALID_COMMAND);
+                return;
+        }
+
+        if (selectedCard == null) {
+            view.printChangePositionMessage(DuelMenuMessage.NO_CARD_IS_SELECTED);
+            return;
+        }
+        Cell targetCell = board.getPlayerTable().getCellByAddress(selectedCardAddress);
+        if (targetCell == null || selectedCardAddress.getZone() != CardAddressZone.MONSTER) {
+            view.printChangePositionMessage(DuelMenuMessage.CANT_CHANGE_POSITION);
+            return;
+        }
+        if (phase != Phase.MAIN_1 && phase != Phase.MAIN_2) {
+            view.printChangePositionMessage(DuelMenuMessage.ACTION_NOT_ALLOWED);
+            return;
+        }
+        if ((targetState == CardState.VERTICAL_UP && targetCell.getState() != CardState.HORIZONTAL_UP) ||
+                (targetState == CardState.HORIZONTAL_UP && targetCell.getState() != CardState.VERTICAL_UP)) {
+            view.printChangePositionMessage(DuelMenuMessage.ALREADY_IN_WANTED_POSITION);
+            return;
+        }
+        if (targetCell.isPositionChanged()) {
+            view.printChangePositionMessage(DuelMenuMessage.ALREADY_CHANGED_POSITION);
+            return;
+        }
+
+        targetCell.setState(targetState);
+        targetCell.setPositionChanged(true);
+        view.printChangePositionMessage(DuelMenuMessage.POSITION_CHANGED);
     }
 
 

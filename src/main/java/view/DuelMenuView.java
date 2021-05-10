@@ -288,6 +288,9 @@ public class DuelMenuView {
 
     public void printChangePositionMessage(DuelMenuMessage message) {
         switch (message) {
+            case INVALID_COMMAND:
+                System.out.println("invalid command");
+                break;
             case NO_CARD_IS_SELECTED:
                 System.out.println("no card is selected yet");
                 break;

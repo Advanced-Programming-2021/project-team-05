@@ -3,14 +3,20 @@ package model;
 import controller.DataManager;
 import model.card.Card;
 import model.card.Monster;
+import model.card.Spell;
+import model.card.Trap;
+import model.template.CardTemplate;
+import model.template.MonsterTemplate;
+import model.template.SpellTemplate;
+import model.template.TrapTemplate;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.UUID;
 
-public class Deck {
-    private final ArrayList<String> mainDeckCards;
-    private final ArrayList<String> sideDeckCards;
+public class Deck implements Cloneable {
+    private ArrayList<String> mainDeckCards;
+    private ArrayList<String> sideDeckCards;
     private String id;
     private String name;
 
@@ -70,6 +76,10 @@ public class Deck {
 
     public final boolean isMainDeckFull() {
         return this.mainDeckCards.size() == 60;
+    }
+
+    public final int getMainDeckSize() {
+        return this.mainDeckCards.size();
     }
 
 
@@ -166,5 +176,24 @@ public class Deck {
     @Override
     public final String toString() {
         return this.getName();
+    }
+
+
+    @Override
+    protected Deck clone() throws CloneNotSupportedException {
+        Deck cloned = (Deck) super.clone();
+        DataManager dataManager = DataManager.getInstance();
+
+        cloned.mainDeckCards = new ArrayList<>();
+        for (String cardId : this.mainDeckCards) {
+            cloned.addCardToMainDeck(dataManager.getCardByUUID(cardId));
+        }
+
+        cloned.sideDeckCards = new ArrayList<>();
+        for (String cardId : this.sideDeckCards) {
+            cloned.addCardToSideDeck(dataManager.getCardByUUID(cardId));
+        }
+
+        return cloned;
     }
 }

@@ -1,7 +1,8 @@
 package model;
 
 public enum CardState {
-    ATTACK_UP,
-    DEFENSE_UP,
-    DEFENSE_DOWN
+    VERTICAL_UP,
+    VERTICAL_DOWN,
+    HORIZONTAL_UP,
+    HORIZONTAL_DOWN
 }
