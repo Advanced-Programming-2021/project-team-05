@@ -11,7 +11,9 @@ import model.card.Card;
 import model.template.CardTemplate;
 import utils.Utility;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class DuelMenuView {
@@ -32,38 +34,27 @@ public class DuelMenuView {
             }
             if (command.startsWith("select")) {
                 select(command.split("\\s"));
-            }
-            else if (command.equals("summon")) {
+            } else if (command.equals("summon")) {
                 summon();
-            }
-            else if (command.equals("set")) {
+            } else if (command.equals("set")) {
                 set();
-            }
-            else if (command.startsWith("set")) {
+            } else if (command.startsWith("set")) {
                 changePosition(command.split("\\s"));
-            }
-            else if (command.equals("flip-summon")) {
+            } else if (command.equals("flip-summon")) {
                 flipSummon();
-            }
-            else if (command.equals("attack direct")) {
+            } else if (command.equals("attack direct")) {
                 directAttack();
-            }
-            else if (command.startsWith("attack")) {
+            } else if (command.startsWith("attack")) {
                 attack(command.split("\\s"));
-            }
-            else if (command.equals("activate effect")) {
+            } else if (command.equals("activate effect")) {
                 activateEffect();
-            }
-            else if (command.equals("show graveyard")) {
+            } else if (command.equals("show graveyard")) {
                 showGraveyard();
-            }
-            else if (command.equals("card show --selected") || command.equals("card show -s")) {
+            } else if (command.equals("card show --selected") || command.equals("card show -s")) {
                 showSelectedCard();
-            }
-            else if (command.matches("^card show \\S+$")) {
+            } else if (command.matches("^card show \\S+$")) {
                 showCard(command.split("\\s"));
-            }
-            else if (command.equals("menu show-current")) {
+            } else if (command.equals("menu show-current")) {
                 showCurrentMenu();
             } else if (command.startsWith("menu enter")) {
                 System.out.println("menu navigation is not possible");
@@ -115,6 +106,7 @@ public class DuelMenuView {
         CardAddress cardAddress = getAddress(command);
         if (cardAddress == null || CardAddressZone.GRAVEYARD.equals(cardAddress.getZone())) {
             System.out.println("invalid selection");
+            return;
         }
 
         controller.selectCard(cardAddress);
@@ -138,7 +130,7 @@ public class DuelMenuView {
 
 
     private void deselect() {
-        controller.deselect();
+        controller.deselect(true);
     }
 
     public void printDeselectMessage(DuelMenuMessage message) {
@@ -215,8 +207,8 @@ public class DuelMenuView {
 
     public void printTributeSummonMessage(DuelMenuMessage message) {
         switch (message) {
-            case INVALID_SELECTION:
-                System.out.println("invalid selection");
+            case INVALID_POSITION:
+                System.out.println("invalid position");
                 break;
             case NO_MONSTER_ON_ADDRESS:
                 System.out.println("no monsters one address(es)");
@@ -346,7 +338,7 @@ public class DuelMenuView {
         controller.directAttack();
     }
 
-    public void printDirectAttackMessage(DuelMenuMessage message) {
+    public void printDirectAttackMessage(DuelMenuMessage message, int damage) {
         switch (message) {
             case NO_CARD_IS_SELECTED:
                 System.out.println("no card is selected yet");
@@ -363,7 +355,9 @@ public class DuelMenuView {
             case CANT_ATTACK_DIRECTLY:
                 System.out.println("you can’t attack the opponent directly");
                 break;
-            // ToDo: attack successful + dmg
+            case DIRECT_ATTACK_SUCCESSFUL:
+                System.out.println("you opponent receives " + damage + " battale damage");
+                break;
             default:
                 System.out.println("unexpected error");
         }
@@ -382,8 +376,14 @@ public class DuelMenuView {
         controller.attack(position);
     }
 
-    public void printAttackMessage(DuelMenuMessage message) {
+    public void printAttackMessage(DuelMenuMessage message, int damage, String hiddenCardName) {
+        if (hiddenCardName != null) {
+            System.out.print("opponent’s monster card was " + hiddenCardName + " and ");
+        }
         switch (message) {
+            case INVALID_POSITION:
+                System.out.println("invalid position");
+                break;
             case NO_CARD_IS_SELECTED:
                 System.out.println("no card is selected yet");
                 break;
@@ -399,7 +399,18 @@ public class DuelMenuView {
             case NO_CARD_TO_ATTACK:
                 System.out.println("there is no card to attack here");
                 break;
-            // ToDo: print destroyed messages and dmg
+            case OPPONENT_ATTACK_POSITION_MONSTER_DESTROYED:
+                System.out.println("your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
+                break;
+            case BOTH_ATTACK_POSITION_MONSTERS_DESTROYED:
+                System.out.println("both you and your opponent monster cards are destroyed and no one receives damage");
+                break;
+            case YOUR_ATTACK_POSITION_MONSTER_DESTROYED:
+                System.out.println("Your monster card is destroyed and you received " + damage + " battle damage");
+                break;
+            case OPPONENT_DEFENSE_POSITION_MONSTER_DESTROYED:
+                System.out.println("the defense position monster is destroyed");
+                break;
             default:
                 System.out.println("unexpected error");
         }

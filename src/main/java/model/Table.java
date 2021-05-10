@@ -9,15 +9,14 @@ import java.util.ArrayList;
 
 
 public class Table {
-    private User Owner;
-    private int lifePoint;
-    private Deck deck;
     private final Cell[] monsterCells;
     private final Cell[] spellAndTrapCells;
     private final ArrayList<Card> hand;
     private final ArrayList<Card> graveyard;
     private final Cell fieldZoneCell;
-
+    private User Owner;
+    private int lifePoint;
+    private Deck deck;
 
     {
         hand = new ArrayList<>();
@@ -78,6 +77,9 @@ public class Table {
 
 
     public final Cell getCellByAddress(CardAddress cardAddress) {
+        if (cardAddress.isForOpponent()) {
+            return null;
+        }
         switch (cardAddress.getZone()) {
             case FIELD:
                 return this.fieldZoneCell;
@@ -122,6 +124,11 @@ public class Table {
         this.graveyard.add(card);
     }
 
+    public final void moveMonsterToGraveyard(int position) {
+        this.addCardToGraveyard(this.getMonster(position));
+        this.removeMonster(position);
+    }
+
 
     public final Monster getMonster(int position) {
         return (Monster) this.monsterCells[position - 1].getCard();
@@ -137,7 +144,9 @@ public class Table {
             if (cell.getCard() == null) {
                 cell.setCard(monster);
                 cell.setState(state);
-                cell.setPositionChanged(false);
+                cell.setDoesPositionChanged(false);
+                cell.setNewlyAdded(true);
+                cell.setDidAttack(false);
                 return;
             }
         }
@@ -181,7 +190,8 @@ public class Table {
             if (cell.getCard() == null) {
                 cell.setCard(card);
                 cell.setState(state);
-                cell.setPositionChanged(false);
+                cell.setDoesPositionChanged(false);
+                cell.setNewlyAdded(true);
                 return;
             }
         }
@@ -200,7 +210,7 @@ public class Table {
     public final void setFieldSpell(Spell spell, CardState state) {
         this.fieldZoneCell.setCard(spell);
         this.fieldZoneCell.setState(state);
-        this.fieldZoneCell.setPositionChanged(false);
+        this.fieldZoneCell.setDoesPositionChanged(false);
     }
 
     public final void removeFieldSpell() {
