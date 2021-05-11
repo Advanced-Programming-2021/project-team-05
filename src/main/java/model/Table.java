@@ -17,6 +17,7 @@ public class Table {
     private User Owner;
     private int lifePoint;
     private Deck deck;
+    private boolean canSummonOrSet;
 
     {
         hand = new ArrayList<>();
@@ -43,6 +44,7 @@ public class Table {
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
+        this.setCanSummonOrSet(true);
     }
 
 
@@ -208,6 +210,15 @@ public class Table {
         this.spellAndTrapCells[position - 1].resetCell();
     }
 
+    public final boolean isSpellTrapZoneFull() {
+        for (Cell cell : this.spellAndTrapCells) {
+            if (cell.getCard() == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     public final Spell getFieldSpell() {
         return (Spell) this.fieldZoneCell.getCard();
@@ -221,6 +232,15 @@ public class Table {
 
     public final void removeFieldSpell() {
         this.fieldZoneCell.resetCell();
+    }
+
+
+    public boolean canSummonOrSet() {
+        return this.canSummonOrSet;
+    }
+
+    public void setCanSummonOrSet(boolean canSummonOrSet) {
+        this.canSummonOrSet = canSummonOrSet;
     }
 
 

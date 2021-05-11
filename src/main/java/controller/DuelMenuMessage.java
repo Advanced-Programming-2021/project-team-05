@@ -2,6 +2,7 @@ package controller;
 
 public enum DuelMenuMessage {
     INVALID_COMMAND,
+    UNEXPECTED_ERROR,
     NAVIGATION_NOT_POSSIBLE,
     SHOW_CURRENT_MENU,
     INVALID_SELECTION,
