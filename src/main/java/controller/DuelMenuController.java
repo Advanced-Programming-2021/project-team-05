@@ -298,7 +298,6 @@ public class DuelMenuController {
             }
             playerTable.addMonster((Monster) selectedCard, CardState.HORIZONTAL_DOWN);
             playerTable.setCanSummonOrSet(false);
-            deselect(false);
             view.printSetMessage(DuelMenuMessage.SET_SUCCESSFUL);
         } else if (selectedCard instanceof Spell || selectedCard instanceof Trap) {
             if (playerTable.isSpellTrapZoneFull()) {
@@ -306,7 +305,6 @@ public class DuelMenuController {
                 return;
             }
             playerTable.addSpellOrTrap(selectedCard, CardState.VERTICAL_DOWN);
-            deselect(false);
             view.printSetMessage(DuelMenuMessage.SET_SUCCESSFUL);
         } else {
             view.printSetMessage(DuelMenuMessage.UNEXPECTED_ERROR);
