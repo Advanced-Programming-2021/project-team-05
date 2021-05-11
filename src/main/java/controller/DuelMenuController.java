@@ -3,6 +3,8 @@ package controller;
 import model.*;
 import model.card.Card;
 import model.card.Monster;
+import model.card.Spell;
+import model.card.Trap;
 import model.template.CardType;
 import view.DuelMenuView;
 
@@ -17,11 +19,8 @@ public class DuelMenuController {
     private Card selectedCard;
     private CardAddress selectedCardAddress;
 
-    private boolean canSummonOrSet;
-
     {
         phase = Phase.DRAW;
-        canSummonOrSet = true;
     }
 
 
@@ -186,7 +185,7 @@ public class DuelMenuController {
             view.parseSummonMessage(DuelMenuMessage.MONSTER_ZONE_IS_FULL);
             return;
         }
-        if (!canSummonOrSet) {
+        if (!playerTable.canSummonOrSet()) {
             view.parseSummonMessage(DuelMenuMessage.ALREADY_SUMMONED_SET);
             return;
         }
@@ -194,7 +193,7 @@ public class DuelMenuController {
         if (card.getLevel() <= 4) {
             playerTable.addMonster(card, CardState.VERTICAL_UP);
             deselect(false);
-            canSummonOrSet = false;
+            playerTable.setCanSummonOrSet(false);
             view.parseSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
             view.showBoard(board);
         } else if (card.getLevel() <= 6) {
@@ -242,7 +241,7 @@ public class DuelMenuController {
 
         playerTable.addMonster((Monster) selectedCard, CardState.VERTICAL_UP);
         deselect(false);
-        canSummonOrSet = false;
+        playerTable.setCanSummonOrSet(false);
         view.printTributeSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
         view.showBoard(board);
     }
@@ -275,6 +274,41 @@ public class DuelMenuController {
 
 
     public final void set() {
+        if (selectedCard == null) {
+            view.printSetMessage(DuelMenuMessage.NO_CARD_IS_SELECTED);
+            return;
+        }
+        if (selectedCardAddress.getZone() != CardAddressZone.HAND) {
+            view.printSetMessage(DuelMenuMessage.CANT_SET);
+            return;
+        }
+        if (phase != Phase.MAIN_1 && phase != Phase.MAIN_2) {
+            view.printSetMessage(DuelMenuMessage.ACTION_NOT_ALLOWED);
+            return;
+        }
+        Table playerTable = board.getPlayerTable();
+        if (selectedCard instanceof Monster) {
+            if (playerTable.isMonsterZoneFull()) {
+                view.printSetMessage(DuelMenuMessage.MONSTER_ZONE_IS_FULL);
+                return;
+            }
+            if (!playerTable.canSummonOrSet()) {
+                view.printSetMessage(DuelMenuMessage.ALREADY_SUMMONED_SET);
+                return;
+            }
+            playerTable.addMonster((Monster) selectedCard, CardState.HORIZONTAL_DOWN);
+            playerTable.setCanSummonOrSet(false);
+            view.printSetMessage(DuelMenuMessage.SET_SUCCESSFUL);
+        } else if (selectedCard instanceof Spell || selectedCard instanceof Trap) {
+            if (playerTable.isSpellTrapZoneFull()) {
+                view.printSetMessage(DuelMenuMessage.SPELL_ZONE_FULL);
+                return;
+            }
+            playerTable.addSpellOrTrap(selectedCard, CardState.VERTICAL_DOWN);
+            view.printSetMessage(DuelMenuMessage.SET_SUCCESSFUL);
+        } else {
+            view.printSetMessage(DuelMenuMessage.UNEXPECTED_ERROR);
+        }
     }
 
 
