@@ -164,55 +164,55 @@ public class DuelMenuController {
     }
 
 
-    public final void summon() {
+    public final void checkSummon() {
         if (selectedCard == null) {
-            view.parseSummonMessage(DuelMenuMessage.NO_CARD_IS_SELECTED);
+            view.printSummonMessage(DuelMenuMessage.NO_CARD_IS_SELECTED);
             return;
         }
         if (!(selectedCard instanceof Monster) ||
                 selectedCardAddress.getZone() != CardAddressZone.HAND ||
                 selectedCard.getType() == CardType.RITUAL ||
                 "Gate Guardian".equals(selectedCard.getName())) {
-            view.parseSummonMessage(DuelMenuMessage.CANT_SUMMON);
+            view.printSummonMessage(DuelMenuMessage.CANT_SUMMON);
             return;
         }
         if (phase != Phase.MAIN_1 && phase != Phase.MAIN_2) {
-            view.parseSummonMessage(DuelMenuMessage.ACTION_NOT_ALLOWED);
+            view.printSummonMessage(DuelMenuMessage.ACTION_NOT_ALLOWED);
             return;
         }
         Table playerTable = board.getPlayerTable();
         if (playerTable.isMonsterZoneFull()) {
-            view.parseSummonMessage(DuelMenuMessage.MONSTER_ZONE_IS_FULL);
+            view.printSummonMessage(DuelMenuMessage.MONSTER_ZONE_IS_FULL);
             return;
         }
         if (!playerTable.canSummonOrSet()) {
-            view.parseSummonMessage(DuelMenuMessage.ALREADY_SUMMONED_SET);
+            view.printSummonMessage(DuelMenuMessage.ALREADY_SUMMONED_SET);
             return;
         }
         Monster card = (Monster) selectedCard;
         if (card.getLevel() <= 4) {
-            playerTable.addMonster(card, CardState.VERTICAL_UP);
-            deselect(false);
-            playerTable.setCanSummonOrSet(false);
-            view.parseSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
+            summon(card, false);
+            view.printSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
             view.showBoard(board);
+            deselect(false);
         } else if (card.getLevel() <= 6) {
             if (playerTable.getMonsterCardsCount() == 0) {
-                view.parseSummonMessage(DuelMenuMessage.NOT_ENOUGH_TRIBUTE);
+                view.printSummonMessage(DuelMenuMessage.NOT_ENOUGH_TRIBUTE);
             } else {
-                view.parseSummonMessage(DuelMenuMessage.TRIBUTE_1_CARD);
+                tributeSummon(1);
             }
         } else {
             if (playerTable.getMonsterCardsCount() <= 1) {
-                view.parseSummonMessage(DuelMenuMessage.NOT_ENOUGH_TRIBUTE);
+                view.printSummonMessage(DuelMenuMessage.NOT_ENOUGH_TRIBUTE);
             } else {
-                view.parseSummonMessage(DuelMenuMessage.TRIBUTE_2_CARDS);
+                tributeSummon(2);
             }
         }
     }
 
-
-    public final void tributeSummon(ArrayList<Integer> tributesPositions) {
+    public final void tributeSummon(int tributesCount) {
+        String message = "enter " + tributesCount + "number(s) for tribute positions";
+        ArrayList<Integer> tributesPositions = view.getNumbers(tributesCount, message);
         for (Integer position : tributesPositions) {
             if (position < 1 || position > 5) {
                 view.printTributeSummonMessage(DuelMenuMessage.INVALID_POSITION);
@@ -239,11 +239,18 @@ public class DuelMenuController {
             playerTable.addCardToGraveyard(card);
         }
 
-        playerTable.addMonster((Monster) selectedCard, CardState.VERTICAL_UP);
+        summon((Monster) selectedCard, false);
         deselect(false);
-        playerTable.setCanSummonOrSet(false);
         view.printTributeSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
         view.showBoard(board);
+    }
+
+    private void summon(Monster monster, boolean isSpecial) {
+        Table playerTable = board.getPlayerTable();
+        playerTable.addMonster(monster, CardState.VERTICAL_UP);
+        if (!isSpecial) {
+            playerTable.setCanSummonOrSet(false);
+        }
     }
 
 
@@ -304,8 +311,10 @@ public class DuelMenuController {
                 view.printSetMessage(DuelMenuMessage.SPELL_ZONE_FULL);
                 return;
             }
+            deselect(false);
             playerTable.addSpellOrTrap(selectedCard, CardState.VERTICAL_DOWN);
             view.printSetMessage(DuelMenuMessage.SET_SUCCESSFUL);
+            view.showBoard(board);
         } else {
             view.printSetMessage(DuelMenuMessage.UNEXPECTED_ERROR);
         }

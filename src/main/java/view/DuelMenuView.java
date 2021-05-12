@@ -31,7 +31,7 @@ public class DuelMenuView {
         while (true) {
             String command = Utility.getNextLine();
             if (command.equals("next phase")) {
-                 nextPhase();
+                nextPhase();
             } else if (command.equals("select -d")) {
                 deselect();
             } else if (command.startsWith("select")) {
@@ -68,8 +68,26 @@ public class DuelMenuView {
         }
     }
 
+
     private void nextPhase() {
         controller.goToNextPhase();
+    }
+
+
+    public ArrayList<Integer> getNumbers(int numbersCount, String message) {
+        ArrayList<Integer> numbers = new ArrayList<>();
+        System.out.println(message);
+        for (int i = 1; i <= numbersCount; i++) {
+            try {
+                int number = Integer.parseInt(Utility.getNextLine());
+                numbers.add(number);
+            } catch (NumberFormatException e) {
+                System.out.println("please enter a number");
+                i--;
+            }
+        }
+
+        return numbers;
     }
 
 
@@ -154,10 +172,10 @@ public class DuelMenuView {
 
 
     private void summon() {
-        controller.summon();
+        controller.checkSummon();
     }
 
-    public void parseSummonMessage(DuelMenuMessage message) {
+    public void printSummonMessage(DuelMenuMessage message) {
         switch (message) {
             case NO_CARD_IS_SELECTED:
                 System.out.println("no card is selected yet");
@@ -177,12 +195,6 @@ public class DuelMenuView {
             case NOT_ENOUGH_TRIBUTE:
                 System.out.println("there are not enough cards for tribute");
                 break;
-            case TRIBUTE_1_CARD:
-                tributeSummon(1);
-                break;
-            case TRIBUTE_2_CARDS:
-                tributeSummon(2);
-                break;
             case CANT_PLAY_THIS_KIND_OF_MOVES:
                 System.out.println("it’s not your turn to play this kind of moves");
                 break;
@@ -192,23 +204,6 @@ public class DuelMenuView {
             default:
                 System.out.println("unexpected error");
         }
-    }
-
-
-    private void tributeSummon(int tributesCount) {
-        ArrayList<Integer> tributesPositions = new ArrayList<>();
-        for (int i = 1; i <= tributesCount; i++) {
-            System.out.println("enter monster address to tribute: (" + i + ")");
-            try {
-                int position = Integer.parseInt(Utility.getNextLine());
-                tributesPositions.add(position);
-            } catch (NumberFormatException e) {
-                System.out.println("please enter a number");
-                i--;
-            }
-        }
-
-        controller.tributeSummon(tributesPositions);
     }
 
     public void printTributeSummonMessage(DuelMenuMessage message) {
