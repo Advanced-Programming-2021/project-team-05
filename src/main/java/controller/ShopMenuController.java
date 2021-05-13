@@ -28,7 +28,10 @@ public class ShopMenuController {
 
     public final ShopMenuMessage buyCard(String cardName) {
         DataManager dataManager = DataManager.getInstance();
+        dataManager.loadMonsterTemplatesFromCSV();
+        dataManager.loadSpellTrapTemplatesFromCSV();
         CardTemplate cardTemplate = dataManager.getCardTemplateByName(cardName);
+
         if (cardTemplate == null) {
             return ShopMenuMessage.NO_CARD_EXISTS;
         }

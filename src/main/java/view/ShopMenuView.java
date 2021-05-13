@@ -15,7 +15,7 @@ public class ShopMenuView {
     private final ShopMenuController shopMenuController;
 
 
-    protected ShopMenuView(ShopMenuController shopMenuController) {
+    public ShopMenuView(ShopMenuController shopMenuController) {
         this.shopMenuController = shopMenuController;
     }
 
@@ -23,11 +23,11 @@ public class ShopMenuView {
     public final void run() {
         while (true) {
             String command = Utility.getNextLine();
-            if (command.matches("^shop buy \\S+$")) {
+            if (command.matches("^shop buy .+$")) {
                 buyCard(command.split("\\s"));
             } else if (command.equals("shop show --all")) {
                 showAllCards();
-            } else if (command.matches("^card show \\S+$")) {
+            } else if (command.matches("^card show .+$")) {
                 showCard(command.split("\\s"));
             } else if (command.equals("menu show-current")) {
                 showCurrentMenu();
@@ -42,10 +42,12 @@ public class ShopMenuView {
     }
 
 
-    private void buyCard(String[] command) {
+    public void buyCard(String[] command) {
         String cardName;
         try {
-            cardName = command[2];
+            command[0] = "";
+            command[1] = "";
+            cardName = Utility.joinArray(command, ' ').trim();
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("invalid command");
             return;
@@ -55,7 +57,7 @@ public class ShopMenuView {
         printBuyCardMessage(message);
     }
 
-    private void printBuyCardMessage(ShopMenuMessage message) {
+    public void printBuyCardMessage(ShopMenuMessage message) {
         switch (message) {
             case NO_CARD_EXISTS:
                 System.out.println("there is no card with this name");
@@ -72,7 +74,7 @@ public class ShopMenuView {
     }
 
 
-    private void showAllCards() {
+    public void showAllCards() {
         DataManager dataManager = DataManager.getInstance();
         ArrayList<CardTemplate> allTemplates = dataManager.getCardTemplates();
         allTemplates.sort(Comparator.comparing(CardTemplate::getName));
@@ -82,7 +84,7 @@ public class ShopMenuView {
     }
 
 
-    private void showCard(String[] command) {
+    public void showCard(String[] command) {
         String cardName;
         try {
             cardName = command[2];
@@ -101,7 +103,7 @@ public class ShopMenuView {
     }
 
 
-    private void showCurrentMenu() {
+    public void showCurrentMenu() {
         System.out.println("Shop Menu");
     }
 }

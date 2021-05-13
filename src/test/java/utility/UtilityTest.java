@@ -91,7 +91,7 @@ public class UtilityTest {
         boolean thrown = false;
         try {
             Utility.getNextLine();
-        } catch (NullPointerException exception) {
+        } catch (Exception e) {
             thrown = true;
         }
         Assertions.assertTrue(thrown);
