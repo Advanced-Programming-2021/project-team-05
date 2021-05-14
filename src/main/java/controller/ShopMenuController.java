@@ -28,7 +28,6 @@ public class ShopMenuController {
 
     public final ShopMenuMessage buyCard(String cardName) {
         DataManager dataManager = DataManager.getInstance();
-        dataManager.loadData();
         CardTemplate cardTemplate = dataManager.getCardTemplateByName(cardName);
 
         if (cardTemplate == null) {

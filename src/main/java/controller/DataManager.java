@@ -43,20 +43,21 @@ public class DataManager {
     }
 
 
-    public ArrayList<Card> getAllCards() {
-        return this.allCards;
-    }
-
-    public ArrayList<Deck> getAllDecks() {
-        return this.allDecks;
-    }
-
     public static DataManager getInstance() {
         if (dataManager == null) {
             dataManager = new DataManager();
         }
 
         return dataManager;
+    }
+
+
+    public ArrayList<Card> getAllCards() {
+        return this.allCards;
+    }
+
+    public ArrayList<Deck> getAllDecks() {
+        return this.allDecks;
     }
 
 
@@ -279,11 +280,11 @@ public class DataManager {
 
     public void loadData() {
         allTemplates.clear();
-//        loadUsers();
+        loadUsers();
         loadMonsterTemplatesFromCSV();
         loadSpellTrapTemplatesFromCSV();
-//        loadCards();
-//        loadDecks();
+        loadCards();
+        loadDecks();
     }
 
 
