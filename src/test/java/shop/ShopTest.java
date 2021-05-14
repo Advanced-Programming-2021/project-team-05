@@ -86,7 +86,7 @@ public class ShopTest {
         shop.buyCard("Advanced Ritual Art");
 
         ArrayList<Card> cards = testUser.getAllCards();
-        Assertions.assertEquals(cards.size(), 3);
+        Assertions.assertEquals(3, cards.size());
         Assertions.assertEquals(cards.get(0).getName(), "Curtain of the dark ones");
         Assertions.assertEquals(cards.get(1).getName(), "Trap Hole");
         Assertions.assertEquals(cards.get(2).getName(), "Advanced Ritual Art");
