@@ -111,8 +111,6 @@ public class ShopTest {
         commands.add("menu enter kdsmkm");
         outputs.add("menu navigation is not possible");
 
-        
-
         commands.add("menu exit");
 
         StringBuilder commandsStringBuilder = new StringBuilder();

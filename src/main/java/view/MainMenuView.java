@@ -9,12 +9,12 @@ public class MainMenuView {
     private final MainMenuController mainMenuController;
 
 
-    protected MainMenuView(MainMenuController mainMenuController) {
+    public MainMenuView(MainMenuController mainMenuController) {
         this.mainMenuController = mainMenuController;
     }
 
 
-    protected void run() {
+    public void run() {
         while (true) {
             String command = Utility.getNextLine();
             if (command.startsWith("duel")) {
@@ -38,7 +38,7 @@ public class MainMenuView {
     }
 
 
-    private void enterMenu(String[] command) {
+    public void enterMenu(String[] command) {
         String menuName;
         try {
             menuName = command[2];
