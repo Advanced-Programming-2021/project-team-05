@@ -25,6 +25,21 @@ public class ShopTest {
         outContent.reset();
     }
 
+    private String getAllCardsString() {
+        DataManager dataManager = DataManager.getInstance();
+        dataManager.loadData();
+
+        ArrayList<CardTemplate> allTemplates = dataManager.getCardTemplates();
+        allTemplates.sort(Comparator.comparing(CardTemplate::getName));
+
+        StringBuilder exceptedOutput = new StringBuilder();
+        for (CardTemplate template : allTemplates) {
+            exceptedOutput.append(template).append("\r\n");
+        }
+
+        return exceptedOutput.toString();
+    }
+
 
     @BeforeAll
     public static void setUpStreams() {
@@ -52,8 +67,7 @@ public class ShopTest {
     @Test
     public void buyCardControllerTest() {
         DataManager manager = DataManager.getInstance();
-        manager.loadMonsterTemplatesFromCSV();
-        manager.loadSpellTrapTemplatesFromCSV();
+        manager.loadData();
 
         User testUser = new User("testUser", "testPass", "testNick");
         testUser.increaseMoney(1000);
@@ -111,6 +125,12 @@ public class ShopTest {
         commands.add("menu enter kdsmkm");
         outputs.add("menu navigation is not possible");
 
+        commands.add("shop buy ");
+        outputs.add("invalid command");
+
+        commands.add("shop show --all");
+        outputs.add(getAllCardsString());
+
         commands.add("menu exit");
 
         StringBuilder commandsStringBuilder = new StringBuilder();
@@ -145,31 +165,20 @@ public class ShopTest {
 
     @Test
     public void showAllCardsTest() {
-        DataManager dataManager = DataManager.getInstance();
-        dataManager.loadMonsterTemplatesFromCSV();
-        dataManager.loadSpellTrapTemplatesFromCSV();
-
         User testUser = new User("name", "pass", "nick");
         ShopMenuView view = new ShopMenuView(new ShopMenuController(testUser));
 
-        ArrayList<CardTemplate> allTemplates = dataManager.getCardTemplates();
-        allTemplates.sort(Comparator.comparing(CardTemplate::getName));
-
-        StringBuilder exceptedOutput = new StringBuilder();
-        for (CardTemplate template : allTemplates) {
-            exceptedOutput.append(template).append("\r\n");
-        }
+        String exceptedOutput = getAllCardsString();
 
         view.showAllCards();
-        assertOutputIsEqual(exceptedOutput.toString().trim());
+        assertOutputIsEqual(exceptedOutput.trim());
     }
 
 
     @Test
     public void showCardTest() {
         DataManager dataManager = DataManager.getInstance();
-        dataManager.loadMonsterTemplatesFromCSV();
-        dataManager.loadSpellTrapTemplatesFromCSV();
+        dataManager.loadData();
 
         User testUser = new User("name", "pass", "nick");
         testUser.increaseMoney(2900);
@@ -198,14 +207,15 @@ public class ShopTest {
         assertOutputIsEqual("not enough money");
         view.printBuyCardMessage(ShopMenuMessage.CARD_SUCCESSFULLY_PURCHASED);
         assertOutputIsEqual("card bought successfully!");
+        view.printBuyCardMessage(ShopMenuMessage.ERROR);
+        assertOutputIsEqual("unexpected error");
     }
 
 
     @Test
     public void byCardViewTest() {
         DataManager dataManager = DataManager.getInstance();
-        dataManager.loadMonsterTemplatesFromCSV();
-        dataManager.loadSpellTrapTemplatesFromCSV();
+        dataManager.loadData();
 
         User testUser = new User("name", "pass", "nick");
         testUser.increaseMoney(1000);
@@ -222,6 +232,9 @@ public class ShopTest {
 
         view.buyCard(new String[]{"shop", "buy", "Curtain of the dark ones"});
         assertOutputIsEqual("card bought successfully!");
+
+        view.buyCard(new String[]{"shop"});
+        assertOutputIsEqual("invalid command");
     }
 
 

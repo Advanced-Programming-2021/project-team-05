@@ -1,6 +1,8 @@
 package login;
 
 import controller.LoginMenuController;
+import controller.LoginMenuMessage;
+import model.User;
 import org.junit.jupiter.api.*;
 import utils.TestUtility;
 import view.LoginMenuView;
@@ -13,6 +15,12 @@ import java.util.ArrayList;
 public class LoginMenuTest {
     private static final PrintStream originalOut = System.out;
     private static final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+
+
+    private void assertOutputIsEqual(String expectedOutput) {
+        Assertions.assertEquals(expectedOutput, outContent.toString().trim());
+        outContent.reset();
+    }
 
 
     @BeforeAll
@@ -92,6 +100,25 @@ public class LoginMenuTest {
 
         Assertions.assertEquals(outputsStringBuilder.toString(), outContent.toString());
         System.setIn(stdIn);
+    }
+
+
+    @Test
+    public void loginMessageTest() {
+        LoginMenuView view = new LoginMenuView(new LoginMenuController());
+        String username = "name", nickname = "nick";
+
+        view.printCreateUserMessage(username, nickname, LoginMenuMessage.USER_CREATED);
+        assertOutputIsEqual("user created successfully!");
+
+        view.printCreateUserMessage(username, nickname, LoginMenuMessage.USERNAME_EXISTS);
+        assertOutputIsEqual("user with username " + username + " already exists");
+
+        view.printCreateUserMessage(username, nickname, LoginMenuMessage.NICKNAME_EXISTS);
+        assertOutputIsEqual("user with nickname " + nickname + " already exists");
+
+        view.printCreateUserMessage(username, nickname, LoginMenuMessage.ERROR);
+        assertOutputIsEqual("unexpected error");
     }
 
 

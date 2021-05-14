@@ -105,6 +105,20 @@ public class MainMenuTest {
     }
 
 
+    @Test
+    public void runTest() {
+        User user = new User("user", "pass", "nick");
+        MainMenuView view = new MainMenuView(new MainMenuController(user));
+
+        InputStream stdIn = TestUtility.giveInput("menu enter    Menu\nuser logout\nmenu exit\n");
+        Utility.initializeScanner();
+        view.run();
+
+        assertOutputIsEqual("invalid command\r\nuser logged out successfully!");
+        System.setIn(stdIn);
+    }
+
+
     @AfterAll
     public static void restoreStreams() {
         System.setOut(originalOut);
