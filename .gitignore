@@ -106,7 +106,7 @@ fabric.properties
 .idea/codestream.xml
 
 # json data files
-/data/*.json
+#/data/*.json
 
 # compiled .class files
 /target
