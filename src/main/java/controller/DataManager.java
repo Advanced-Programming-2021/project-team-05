@@ -279,11 +279,11 @@ public class DataManager {
 
     public void loadData() {
         allTemplates.clear();
-        loadUsers();
+//        loadUsers();
         loadMonsterTemplatesFromCSV();
         loadSpellTrapTemplatesFromCSV();
 //        loadCards();
-        loadDecks();
+//        loadDecks();
     }
 
 
