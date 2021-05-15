@@ -7,6 +7,7 @@ import model.card.Card;
 import model.card.Monster;
 import model.card.Spell;
 import model.card.Trap;
+import model.effect.Event;
 import model.template.property.CardType;
 import view.DuelMenuView;
 
@@ -31,8 +32,27 @@ public class DuelMenuController {
     }
 
 
+    public DuelMenuView getView() {
+        return this.view;
+    }
+
     public void setView(DuelMenuView view) {
         this.view = view;
+    }
+
+
+    public Board getBoard() {
+        return this.board;
+    }
+
+
+    public int getRounds() {
+        return this.rounds;
+    }
+
+
+    public Phase getPhase() {
+        return this.phase;
     }
 
 
@@ -43,6 +63,11 @@ public class DuelMenuController {
     private void setSelectedCard(Card card, CardAddress cardAddress) {
         this.selectedCard = card;
         this.selectedCardAddress = cardAddress;
+    }
+
+
+    public CardAddress getSelectedCardAddress() {
+        return this.selectedCardAddress;
     }
 
 
@@ -278,6 +303,7 @@ public class DuelMenuController {
         targetCell.setState(CardState.VERTICAL_UP);
         targetCell.setDoesPositionChanged(true);
         view.printFlipSummonMessage(DuelMenuMessage.FLIP_SUMMON_SUCCESSFUL);
+        Event.CARD_FLIP_SUMMONED.trigger(this);
         view.showBoard(board);
     }
 

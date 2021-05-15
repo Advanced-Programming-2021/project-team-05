@@ -1,6 +1,5 @@
 package view;
 
-
 import com.sanityinc.jargs.CmdLineParser;
 import control.DataManager;
 import control.controller.DuelMenuController;

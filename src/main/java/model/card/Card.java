@@ -1,9 +1,13 @@
 package model.card;
 
 import control.DataManager;
+import control.controller.DuelMenuController;
+import model.effect.Effect;
+import model.effect.Event;
 import model.template.CardTemplate;
 import model.template.property.CardType;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public abstract class Card {
@@ -12,6 +16,11 @@ public abstract class Card {
     protected String name;
     protected CardType type;
     protected String description;
+    protected ArrayList<Effect> effects;
+
+    {
+        effects = new ArrayList<>();
+    }
 
 
     protected Card(String name, CardType type, String description) {
@@ -55,6 +64,20 @@ public abstract class Card {
 
     protected void setDescription(String description) {
         this.description = description;
+    }
+
+
+    public void addEffect(Effect effect) {
+        this.effects.add(effect);
+    }
+
+
+    public void runActions(Event event, DuelMenuController controller) {
+        for (Effect effect : effects) {
+            if (event.equals(effect.getEvent())) {
+                effect.getAction().run(controller);
+            }
+        }
     }
 
 
