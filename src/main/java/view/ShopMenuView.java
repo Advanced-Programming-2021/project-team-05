@@ -1,8 +1,8 @@
 package view;
 
-import controller.DataManager;
-import controller.ShopMenuController;
-import controller.ShopMenuMessage;
+import control.DataManager;
+import control.controller.ShopMenuController;
+import control.message.ShopMenuMessage;
 import model.template.CardTemplate;
 import utils.Utility;
 

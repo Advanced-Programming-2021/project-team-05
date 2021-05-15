@@ -1,6 +1,6 @@
 package view;
 
-import controller.*;
+import control.controller.*;
 import utils.Utility;
 
 

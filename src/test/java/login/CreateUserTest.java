@@ -1,7 +1,7 @@
 package login;
 
-import controller.DataManager;
-import controller.LoginMenuController;
+import control.DataManager;
+import control.controller.LoginMenuController;
 import model.User;
 import org.junit.jupiter.api.*;
 import view.LoginMenuView;

@@ -1,6 +1,8 @@
 package shop;
 
-import controller.*;
+import control.*;
+import control.controller.ShopMenuController;
+import control.message.ShopMenuMessage;
 import model.User;
 import model.card.Card;
 import model.template.CardTemplate;

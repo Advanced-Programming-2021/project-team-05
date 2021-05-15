@@ -1,5 +1,9 @@
 package model.template;
 
+import model.template.property.CardType;
+import model.template.property.MonsterAttribute;
+import model.template.property.MonsterType;
+
 public class MonsterTemplate extends CardTemplate {
 
     private final MonsterType monsterType;

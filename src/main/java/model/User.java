@@ -1,6 +1,6 @@
 package model;
 
-import controller.DataManager;
+import control.DataManager;
 import model.card.Card;
 
 import java.util.ArrayList;

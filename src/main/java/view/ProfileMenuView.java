@@ -2,8 +2,8 @@ package view;
 
 import com.sanityinc.jargs.CmdLineParser;
 import com.sanityinc.jargs.CmdLineParser.Option;
-import controller.ProfileMenuController;
-import controller.ProfileMenuMessage;
+import control.controller.ProfileMenuController;
+import control.message.ProfileMenuMessage;
 import utils.Utility;
 
 

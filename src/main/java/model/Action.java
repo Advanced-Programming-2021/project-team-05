@@ -1,10 +1,7 @@
 package model;
 
-public abstract class Action {
+import model.board.Board;
 
-
-    public abstract void validate();
-
-
-    public abstract void run();
+public interface Action {
+    void run(Board board);
 }

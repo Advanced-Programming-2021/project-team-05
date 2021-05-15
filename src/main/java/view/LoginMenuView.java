@@ -2,9 +2,9 @@ package view;
 
 import com.sanityinc.jargs.CmdLineParser;
 import com.sanityinc.jargs.CmdLineParser.Option;
-import controller.LoginMenuController;
-import controller.LoginMenuMessage;
-import controller.MainMenuController;
+import control.controller.LoginMenuController;
+import control.message.LoginMenuMessage;
+import control.controller.MainMenuController;
 import model.User;
 import utils.Utility;
 

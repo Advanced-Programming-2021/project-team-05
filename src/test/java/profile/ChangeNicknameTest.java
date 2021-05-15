@@ -1,8 +1,8 @@
 package profile;
 
-import controller.DataManager;
-import controller.LoginMenuController;
-import controller.ProfileMenuController;
+import control.DataManager;
+import control.controller.LoginMenuController;
+import control.controller.ProfileMenuController;
 import model.User;
 import org.junit.jupiter.api.*;
 import view.LoginMenuView;

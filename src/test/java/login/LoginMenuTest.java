@@ -1,8 +1,7 @@
 package login;
 
-import controller.LoginMenuController;
-import controller.LoginMenuMessage;
-import model.User;
+import control.controller.LoginMenuController;
+import control.message.LoginMenuMessage;
 import org.junit.jupiter.api.*;
 import utils.TestUtility;
 import view.LoginMenuView;

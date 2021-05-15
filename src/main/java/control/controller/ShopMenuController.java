@@ -1,5 +1,7 @@
-package controller;
+package control.controller;
 
+import control.DataManager;
+import control.message.ShopMenuMessage;
 import model.User;
 import model.card.Card;
 import model.card.Monster;

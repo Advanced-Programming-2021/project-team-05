@@ -1,20 +1,14 @@
 package model.template;
 
-import model.Action;
 
-import java.util.ArrayList;
+import model.template.property.CardType;
 
 public abstract class CardTemplate {
 
     protected String name;
     protected CardType type;
     protected String description;
-    protected ArrayList<Action> actions;
     protected int price;
-
-    {
-        actions = new ArrayList<>();
-    }
 
 
     protected CardTemplate(String name, CardType type, String description, int price) {
@@ -42,11 +36,6 @@ public abstract class CardTemplate {
 
     public int getPrice() {
         return this.price;
-    }
-
-
-    public ArrayList<Action> getActions() {
-        return this.actions;
     }
 
 

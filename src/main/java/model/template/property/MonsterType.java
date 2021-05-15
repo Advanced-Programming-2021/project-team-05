@@ -1,4 +1,4 @@
-package model.template;
+package model.template.property;
 
 public enum MonsterType {
     BEAST_WARRIOR("Beast-Warrior"),

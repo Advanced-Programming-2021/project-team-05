@@ -2,9 +2,9 @@ package view;
 
 import com.sanityinc.jargs.CmdLineParser;
 import com.sanityinc.jargs.CmdLineParser.Option;
-import controller.DataManager;
-import controller.DeckMenuController;
-import controller.DeckMenuMessage;
+import control.DataManager;
+import control.controller.DeckMenuController;
+import control.message.DeckMenuMessage;
 import model.Deck;
 import model.User;
 import model.card.Card;

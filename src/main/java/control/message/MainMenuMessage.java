@@ -1,6 +1,6 @@
-package controller;
+package control.message;
 
-enum MainMenuMessage {
+public enum MainMenuMessage {
     LOGGED_OUT,
     NO_PLAYER_EXISTS,
     NO_ACTIVE_DECK_1,

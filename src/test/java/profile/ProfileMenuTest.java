@@ -1,9 +1,9 @@
 package profile;
 
-import controller.DataManager;
-import controller.LoginMenuController;
-import controller.ProfileMenuController;
-import controller.ProfileMenuMessage;
+import control.DataManager;
+import control.controller.LoginMenuController;
+import control.controller.ProfileMenuController;
+import control.message.ProfileMenuMessage;
 import model.User;
 import org.junit.jupiter.api.*;
 import utils.TestUtility;

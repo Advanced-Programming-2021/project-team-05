@@ -1,4 +1,4 @@
-package model.template;
+package model.template.property;
 
 public enum MonsterAttribute {
     EARTH("EARTH"),

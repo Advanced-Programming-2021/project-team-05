@@ -1,6 +1,6 @@
 package view;
 
-import controller.DataManager;
+import control.DataManager;
 import utils.Utility;
 
 

@@ -2,12 +2,12 @@ package view;
 
 
 import com.sanityinc.jargs.CmdLineParser;
-import controller.DataManager;
-import controller.DuelMenuController;
-import controller.DuelMenuMessage;
-import model.Board;
-import model.CardAddress;
-import model.CardAddressZone;
+import control.DataManager;
+import control.controller.DuelMenuController;
+import control.message.DuelMenuMessage;
+import model.board.Board;
+import model.board.CardAddress;
+import model.board.CardAddressZone;
 import model.card.Card;
 import model.template.CardTemplate;
 import utils.Utility;

@@ -1,6 +1,6 @@
 package main;
 
-import controller.MainMenuController;
+import control.controller.MainMenuController;
 import model.User;
 import org.junit.jupiter.api.*;
 import utils.TestUtility;

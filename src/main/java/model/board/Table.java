@@ -1,5 +1,7 @@
-package model;
+package model.board;
 
+import model.Deck;
+import model.User;
 import model.card.Card;
 import model.card.Monster;
 import model.card.Spell;

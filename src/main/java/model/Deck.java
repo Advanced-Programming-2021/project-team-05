@@ -1,14 +1,8 @@
 package model;
 
-import controller.DataManager;
+import control.DataManager;
 import model.card.Card;
 import model.card.Monster;
-import model.card.Spell;
-import model.card.Trap;
-import model.template.CardTemplate;
-import model.template.MonsterTemplate;
-import model.template.SpellTemplate;
-import model.template.TrapTemplate;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -186,7 +180,7 @@ public class Deck implements Cloneable {
 
 
     @Override
-    protected Deck clone() throws CloneNotSupportedException {
+    public Deck clone() throws CloneNotSupportedException {
         Deck cloned = (Deck) super.clone();
         DataManager dataManager = DataManager.getInstance();
 

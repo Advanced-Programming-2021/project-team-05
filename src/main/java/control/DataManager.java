@@ -1,4 +1,4 @@
-package controller;
+package control;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,6 +15,10 @@ import model.card.Monster;
 import model.card.Spell;
 import model.card.Trap;
 import model.template.*;
+import model.template.property.CardType;
+import model.template.property.MonsterAttribute;
+import model.template.property.MonsterType;
+import model.template.property.SpellTrapStatus;
 
 import java.io.*;
 import java.lang.reflect.Type;

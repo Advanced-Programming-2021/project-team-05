@@ -1,11 +1,13 @@
-package controller;
+package control.controller;
 
+import control.message.DuelMenuMessage;
 import model.*;
+import model.board.*;
 import model.card.Card;
 import model.card.Monster;
 import model.card.Spell;
 import model.card.Trap;
-import model.template.CardType;
+import model.template.property.CardType;
 import view.DuelMenuView;
 
 import java.util.ArrayList;

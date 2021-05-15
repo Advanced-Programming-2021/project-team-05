@@ -1,5 +1,7 @@
-package controller;
+package control.controller;
 
+import control.DataManager;
+import control.message.MainMenuMessage;
 import model.User;
 
 public class MainMenuController {

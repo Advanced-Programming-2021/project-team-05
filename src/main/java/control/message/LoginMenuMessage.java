@@ -1,4 +1,4 @@
-package controller;
+package control.message;
 
 public enum LoginMenuMessage {
     USER_CREATED,

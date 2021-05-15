@@ -1,5 +1,8 @@
 package model.template;
 
+import model.template.property.CardType;
+import model.template.property.SpellTrapStatus;
+
 public class SpellTemplate extends CardTemplate {
 
     private final SpellTrapStatus status;

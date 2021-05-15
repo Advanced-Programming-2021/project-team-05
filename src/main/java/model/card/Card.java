@@ -1,11 +1,9 @@
 package model.card;
 
-import controller.DataManager;
-import model.Action;
+import control.DataManager;
 import model.template.CardTemplate;
-import model.template.CardType;
+import model.template.property.CardType;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 public abstract class Card {
@@ -14,11 +12,6 @@ public abstract class Card {
     protected String name;
     protected CardType type;
     protected String description;
-    protected ArrayList<Action> actions;
-
-    {
-        actions = new ArrayList<>();
-    }
 
 
     protected Card(String name, CardType type, String description) {
@@ -53,15 +46,6 @@ public abstract class Card {
 
     protected void setType(CardType type) {
         this.type = type;
-    }
-
-
-    public ArrayList<Action> getActions() {
-        return this.actions;
-    }
-
-    protected void setActions(ArrayList<Action> actions) {
-        this.actions = actions;
     }
 
 

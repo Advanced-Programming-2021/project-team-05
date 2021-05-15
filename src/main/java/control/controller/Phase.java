@@ -1,4 +1,4 @@
-package model;
+package control.controller;
 
 public enum Phase {
     DRAW(0, "draw phase"),

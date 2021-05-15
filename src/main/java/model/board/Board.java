@@ -1,4 +1,6 @@
-package model;
+package model.board;
+
+import model.User;
 
 public class Board {
     private Table playerTable;

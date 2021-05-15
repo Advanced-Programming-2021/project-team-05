@@ -1,4 +1,4 @@
-package model;
+package model.board;
 
 public enum CardState {
     VERTICAL_UP,

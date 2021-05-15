@@ -2,15 +2,15 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/controller/DataManager.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/controller/DeckMenuController.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/controller/DeckMenuMessage.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/controller/DuelMenuController.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/controller/DuelMenuMessage.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/controller/LoginMenuController.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/controller/LoginMenuMessage.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/controller/MainMenuController.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/controller/MainMenuMessage.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/controller/ProfileMenuController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/control/DataManager.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/control/controller/DeckMenuController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/control/controller/DuelMenuController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/control/controller/LoginMenuController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/control/controller/MainMenuController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/control/controller/ProfileMenuController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/control/message/DeckMenuMessage.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/control/message/DuelMenuMessage.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/control/message/LoginMenuMessage.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/control/message/MainMenuMessage.java" charset="UTF-8" />
   </component>
 </project>
