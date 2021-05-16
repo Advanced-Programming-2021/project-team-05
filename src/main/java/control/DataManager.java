@@ -30,6 +30,7 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class DataManager {
 
@@ -149,7 +150,19 @@ public class DataManager {
 
 
     public String getScoreboard() {
-        return null;
+        this.allUsers.sort(Comparator
+                .comparing(User::getScore, Comparator.reverseOrder())
+                .thenComparing(User::getNickname));
+        StringBuilder scoreboard = new StringBuilder();
+        int position = 1;
+        for (int i = 0; i < this.allUsers.size(); i++) {
+            User user = this.allUsers.get(i);
+            scoreboard.append(position).append(". ").append(user.getNickname()).append(": ").append(user.getScore()).append("\r\n");
+            if (i != this.allUsers.size() - 1 && user.getScore() != this.allUsers.get(i + 1).getScore()) {
+                position = i + 2;
+            }
+        }
+        return scoreboard.toString();
     }
 
 
