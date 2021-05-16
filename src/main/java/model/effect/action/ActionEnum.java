@@ -7,9 +7,9 @@ public enum ActionEnum {
     public Action getAction() {
         switch (this) {
             case DESTROY_OPPONENT_ONE_CARD:
-                return new DestroyOpponentOneCard();
+                return new DestroyOpponentOneCardAction();
             default:
-                return null;
+                return new NullAction();
         }
     }
 }

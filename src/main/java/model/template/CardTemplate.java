@@ -1,7 +1,10 @@
 package model.template;
 
 
+import model.effect.Effect;
 import model.template.property.CardType;
+
+import java.util.ArrayList;
 
 public abstract class CardTemplate {
 
@@ -9,6 +12,11 @@ public abstract class CardTemplate {
     protected CardType type;
     protected String description;
     protected int price;
+    protected ArrayList<Effect> effects;
+
+    {
+        effects = new ArrayList<>();
+    }
 
 
     protected CardTemplate(String name, CardType type, String description, int price) {
@@ -36,6 +44,15 @@ public abstract class CardTemplate {
 
     public int getPrice() {
         return this.price;
+    }
+
+
+    public ArrayList<Effect> getEffects() {
+        return this.effects;
+    }
+
+    public void addEffect(Effect effect) {
+        this.effects.add(effect);
     }
 
 

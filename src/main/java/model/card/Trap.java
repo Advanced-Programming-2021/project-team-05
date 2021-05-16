@@ -4,6 +4,6 @@ import model.template.TrapTemplate;
 
 public class Trap extends Card {
     public Trap(TrapTemplate template) {
-        super(template.getName(), template.getType(), template.getDescription());
+        super(template.getName(), template.getType(), template.getDescription(), template.getEffects());
     }
 }

@@ -5,7 +5,7 @@ import model.board.Table;
 import view.DuelMenuView;
 
 
-public class DestroyOpponentOneCard implements Action {
+public class DestroyOpponentOneCardAction implements Action {
 
     @Override
     public void run(DuelMenuController controller) {

@@ -18,16 +18,13 @@ public abstract class Card {
     protected String description;
     protected ArrayList<Effect> effects;
 
-    {
-        effects = new ArrayList<>();
-    }
 
-
-    protected Card(String name, CardType type, String description) {
+    protected Card(String name, CardType type, String description, ArrayList<Effect> effects) {
         this.setId(UUID.randomUUID().toString());
         this.setName(name);
         this.setDescription(description);
         this.setType(type);
+        this.effects = effects;
     }
 
 
@@ -67,15 +64,10 @@ public abstract class Card {
     }
 
 
-    public void addEffect(Effect effect) {
-        this.effects.add(effect);
-    }
-
-
     public void runActions(Event event, DuelMenuController controller) {
         for (Effect effect : effects) {
             if (event.equals(effect.getEvent())) {
-                effect.getAction().run(controller);
+                effect.getActionEnum().getAction().run(controller);
             }
         }
     }

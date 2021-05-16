@@ -10,7 +10,7 @@ public class Monster extends Card {
 
 
     public Monster(MonsterTemplate template) {
-        super(template.getName(), template.getType(), template.getDescription());
+        super(template.getName(), template.getType(), template.getDescription(), template.getEffects());
         this.setLevel(template.getLevel());
         this.setAttack(template.getAttack());
         this.setDefence(template.getDefence());

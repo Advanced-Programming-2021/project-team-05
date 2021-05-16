@@ -1,7 +1,6 @@
 package control;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
@@ -14,7 +13,13 @@ import model.card.Card;
 import model.card.Monster;
 import model.card.Spell;
 import model.card.Trap;
-import model.template.*;
+import model.effect.Effect;
+import model.effect.Event;
+import model.effect.action.ActionEnum;
+import model.template.CardTemplate;
+import model.template.MonsterTemplate;
+import model.template.SpellTemplate;
+import model.template.TrapTemplate;
 import model.template.property.CardType;
 import model.template.property.MonsterAttribute;
 import model.template.property.MonsterType;
@@ -282,6 +287,25 @@ public class DataManager {
         }
     }
 
+    private void loadEffects() {
+        try {
+            JsonParser parser = new JsonParser();
+            JsonReader effectReader = new JsonReader(new FileReader("data\\effects.json"));
+            JsonArray effectsArray = parser.parse(effectReader).getAsJsonArray();
+            for (JsonElement effectElement : effectsArray) {
+                JsonObject effectObject = effectElement.getAsJsonObject();
+                String cardName = effectObject.get("name").getAsString();
+                Event event = Event.valueOf(effectObject.get("event").getAsString());
+                ActionEnum action = ActionEnum.valueOf(effectObject.get("action").getAsString());
+
+                Effect effect = new Effect(event, action);
+                this.getCardTemplateByName(cardName).addEffect(effect);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void loadData() {
         allTemplates.clear();
         loadUsers();
@@ -289,6 +313,7 @@ public class DataManager {
         loadSpellTrapTemplatesFromCSV();
         loadCards();
         loadDecks();
+        loadEffects();
     }
 
 

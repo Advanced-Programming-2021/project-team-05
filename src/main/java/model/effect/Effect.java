@@ -1,16 +1,16 @@
 package model.effect;
 
-import model.effect.action.Action;
+import model.effect.action.ActionEnum;
 
 public class Effect {
 
     private final Event event;
-    private final Action action;
+    private final ActionEnum actionEnum;
 
 
-    public Effect(Event event, Action action) {
+    public Effect(Event event, ActionEnum actionEnum) {
         this.event = event;
-        this.action = action;
+        this.actionEnum = actionEnum;
     }
 
 
@@ -18,7 +18,7 @@ public class Effect {
         return this.event;
     }
 
-    public Action getAction() {
-        return this.action;
+    public ActionEnum getActionEnum() {
+        return this.actionEnum;
     }
 }
