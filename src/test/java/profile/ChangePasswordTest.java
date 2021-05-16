@@ -79,7 +79,7 @@ public class ChangePasswordTest {
         view.changePassword("profile change -p --new pass --current pass".split("\\s"));
         assertOutputIsEqual("please enter a new password");
 
-        view.changePassword("profile change -p -n newPass --current pass".split("\\s"));
+        view.changePassword("profile change -n newPass -p --current pass".split("\\s"));
         assertOutputIsEqual("password changed successfully!");
 
         view.changePassword("profile change --password --new newPass -c newPass".split("\\s"));

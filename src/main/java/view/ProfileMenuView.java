@@ -4,6 +4,7 @@ import com.sanityinc.jargs.CmdLineParser;
 import com.sanityinc.jargs.CmdLineParser.Option;
 import control.controller.ProfileMenuController;
 import control.message.ProfileMenuMessage;
+import model.board.Board;
 import utils.Utility;
 
 
@@ -22,7 +23,7 @@ public class ProfileMenuView {
             String command = Utility.getNextLine();
             if (command.startsWith("profile change --nickname") || command.startsWith("profile change -n")) {
                 changeNickname(command.split("\\s"));
-            } else if (command.startsWith("profile change --password") || command.startsWith("profile change -p")) {
+            } else if (command.startsWith("profile change")) {
                 changePassword(command.split("\\s"));
             } else if (command.equals("menu show-current")) {
                 showCurrentMenu();
@@ -82,10 +83,11 @@ public class ProfileMenuView {
             return;
         }
         CmdLineParser parser = new CmdLineParser();
+        Option<Boolean> passwordOption = parser.addBooleanOption('p', "password");
         Option<String> currentPasswordOption = parser.addStringOption('c', "current");
         Option<String> newPasswordOption = parser.addStringOption('n', "new");
 
-        command[2] = "password";
+
         try {
             parser.parse(command);
         } catch (CmdLineParser.OptionException e) {
@@ -93,9 +95,10 @@ public class ProfileMenuView {
             return;
         }
 
+        boolean password = parser.getOptionValue(passwordOption, false);
         String currentPassword = parser.getOptionValue(currentPasswordOption);
         String newPassword = parser.getOptionValue(newPasswordOption);
-        if (currentPassword == null || newPassword == null) {
+        if (!password || currentPassword == null || newPassword == null) {
             System.out.println("invalid command");
             return;
         }
