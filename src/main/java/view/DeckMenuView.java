@@ -35,9 +35,9 @@ public class DeckMenuView {
             } else if (command.matches("^deck set-activate \\S+$")) {
                 activateDeck(command.split("\\s"));
             } else if (command.startsWith("deck add-card")) {
-                addCard(command.split("\\s"));
+                addOrRemoveCard(command.split("\\s"), true);
             } else if (command.startsWith("deck rm-card")) {
-                removeCard(command.split("\\s"));
+                addOrRemoveCard(command.split("\\s"), false);
             } else if (command.equals("deck show --all")) {
                 showAllDecks();
             } else if (command.equals("deck show --cards")) {
@@ -60,6 +60,10 @@ public class DeckMenuView {
 
 
     private void createDeck(String[] command) {
+        if (command.length != 3) {
+            System.out.println("invalid command");
+            return;
+        }
         String deckName;
         try {
             deckName = command[2];
@@ -87,6 +91,10 @@ public class DeckMenuView {
 
 
     private void deleteDeck(String[] command) {
+        if (command.length != 3) {
+            System.out.println("invalid command");
+            return;
+        }
         String deckName;
         try {
             deckName = command[2];
@@ -114,6 +122,10 @@ public class DeckMenuView {
 
 
     private void activateDeck(String[] command) {
+        if (command.length != 3) {
+            System.out.println("invalid command");
+            return;
+        }
         String deckName;
         try {
             deckName = command[2];
@@ -140,7 +152,7 @@ public class DeckMenuView {
     }
 
 
-    private void addCard(String[] command) {
+    private void addOrRemoveCard(String[] command, boolean addCard) {
         CmdLineParser parser = new CmdLineParser();
         Option<String> deckNameOption = parser.addStringOption('d', "deck");
         Option<String> cardNameOption = parser.addStringOption('c', "card");
@@ -160,9 +172,19 @@ public class DeckMenuView {
             System.out.println("invalid command");
             return;
         }
+        if ((isSide && command.length != 7) || (!isSide && command.length != 6)) {
+            System.out.println("invalid command");
+            return;
+        }
+        cardName = cardName.replace('_', ' ');
 
-        DeckMenuMessage message = deckMenuController.addCard(deckName, cardName, isSide);
-        printAddCardMessage(deckName, cardName, message);
+        if (addCard) {
+            DeckMenuMessage message = deckMenuController.addCard(deckName, cardName, isSide);
+            printAddCardMessage(deckName, cardName, message);
+        } else {
+            DeckMenuMessage message = deckMenuController.removeCard(deckName, cardName, isSide);
+            printRemoveCardMessage(deckName, cardName, message);
+        }
     }
 
     private void printAddCardMessage(String deckName, String cardName, DeckMenuMessage message) {
@@ -188,32 +210,6 @@ public class DeckMenuView {
             default:
                 System.out.println("unexpected error");
         }
-    }
-
-
-    private void removeCard(String[] command) {
-        CmdLineParser parser = new CmdLineParser();
-        Option<String> deckNameOption = parser.addStringOption('d', "deck");
-        Option<String> cardNameOption = parser.addStringOption('c', "card");
-        Option<Boolean> isSideOption = parser.addBooleanOption('s', "side");
-
-        try {
-            parser.parse(command);
-        } catch (CmdLineParser.OptionException e) {
-            System.out.println("invalid command");
-            return;
-        }
-
-        String deckName = parser.getOptionValue(deckNameOption);
-        String cardName = parser.getOptionValue(cardNameOption);
-        Boolean isSide = parser.getOptionValue(isSideOption, Boolean.FALSE);
-        if (deckName == null || cardName == null) {
-            System.out.println("invalid command");
-            return;
-        }
-
-        DeckMenuMessage message = deckMenuController.removeCard(deckName, cardName, isSide);
-        printRemoveCardMessage(deckName, cardName, message);
     }
 
     private void printRemoveCardMessage(String deckName, String cardName, DeckMenuMessage message) {
@@ -277,6 +273,10 @@ public class DeckMenuView {
             System.out.println("invalid command");
             return;
         }
+        if ((isSide && command.length != 5) || (!isSide && command.length != 4)) {
+            System.out.println("invalid command");
+            return;
+        }
 
         User user = deckMenuController.getUser();
         Deck deck = user.getDeckByName(deckName);
@@ -299,10 +299,14 @@ public class DeckMenuView {
     }
 
 
-    private void showCard(String[] command) {
+    public void showCard(String[] command) {
+        if (command.length != 3) {
+            System.out.println("invalid command");
+            return;
+        }
         String cardName;
         try {
-            cardName = command[2];
+            cardName = command[2].replace('_', ' ');
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("invalid command");
             return;

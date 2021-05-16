@@ -23,11 +23,11 @@ public class ShopMenuView {
     public final void run() {
         while (true) {
             String command = Utility.getNextLine();
-            if (command.matches("^shop buy .+$")) {
+            if (command.matches("^shop buy \\S$")) {
                 buyCard(command.split("\\s"));
             } else if (command.equals("shop show --all")) {
                 showAllCards();
-            } else if (command.matches("^card show .+$")) {
+            } else if (command.matches("^card show \\S$")) {
                 showCard(command.split("\\s"));
             } else if (command.equals("menu show-current")) {
                 showCurrentMenu();
@@ -43,11 +43,13 @@ public class ShopMenuView {
 
 
     public void buyCard(String[] command) {
+        if (command.length != 3) {
+            System.out.println("invalid command");
+            return;
+        }
         String cardName;
         try {
-            command[0] = "";
-            command[1] = "";
-            cardName = Utility.joinArray(command, ' ').trim();
+            cardName = command[2].replace('_', ' ');
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("invalid command");
             return;
@@ -85,9 +87,13 @@ public class ShopMenuView {
 
 
     public void showCard(String[] command) {
+        if (command.length != 3) {
+            System.out.println("invalid command");
+            return;
+        }
         String cardName;
         try {
-            cardName = command[2];
+            cardName = command[2].replace('_', ' ');
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("invalid command");
             return;

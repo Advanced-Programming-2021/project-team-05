@@ -19,9 +19,9 @@ public class ImportExportMenuView {
         while (true) {
             String command = Utility.getNextLine();
             if (command.matches("^import card \\S+$")) {
-                importCard(command.split("\\s"));
+                importOrExportCard(command.split("\\s"), true);
             } else if (command.matches("^export card \\S+$")) {
-                exportCard(command.split("\\s"));
+                importOrExportCard(command.split("\\s"), false);
             } else if (command.equals("menu show-current")) {
                 showCurrentMenu();
             } else if (command.startsWith("menu enter")) {
@@ -35,17 +35,26 @@ public class ImportExportMenuView {
     }
 
 
-    private void importCard(String[] command) {
+    private void importOrExportCard(String[] command, boolean importCard) {
+        if (command.length != 3) {
+            System.out.println("invalid command");
+            return;
+        }
         String cardName;
         try {
-            cardName = command[2];
+            cardName = command[2].replace('_', ' ');
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("invalid command");
             return;
         }
 
-        ImportExportMessage message = importExportController.importCard(cardName);
-        printImportCardMessage(message);
+        if (importCard) {
+            ImportExportMessage message = importExportController.importCard(cardName);
+            printImportCardMessage(message);
+        } else {
+            ImportExportMessage message = importExportController.exportCard(cardName);
+            printExportCardMessage(message);
+        }
     }
 
     private void printImportCardMessage(ImportExportMessage message) {
@@ -57,20 +66,6 @@ public class ImportExportMenuView {
             default:
                 System.out.println("unexpected error");
         }
-    }
-
-
-    private void exportCard(String[] command) {
-        String cardName;
-        try {
-            cardName = command[2];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("invalid command");
-            return;
-        }
-
-        ImportExportMessage message = importExportController.exportCard(cardName);
-        printExportCardMessage(message);
     }
 
     private void printExportCardMessage(ImportExportMessage message) {
