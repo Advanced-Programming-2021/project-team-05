@@ -9,6 +9,7 @@ import model.board.CardAddress;
 import model.board.CardAddressZone;
 import model.card.Card;
 import model.template.CardTemplate;
+import utils.CoinSide;
 import utils.Utility;
 
 import java.util.ArrayList;
@@ -19,11 +20,13 @@ import java.util.Map;
 public class DuelMenuView {
 
     private DuelMenuController controller;
+    private boolean endMatch;
 
 
     public DuelMenuView(DuelMenuController controller) {
         this.setController(controller);
         controller.setView(this);
+        this.endMatch = false;
     }
 
 
@@ -33,7 +36,7 @@ public class DuelMenuView {
 
 
     public void run() {
-        while (true) {
+        while (!endMatch) {
             String command = Utility.getNextLine();
             if (command.equals("next phase")) {
                 nextPhase();
@@ -454,6 +457,27 @@ public class DuelMenuView {
     }
 
 
+    public void printRitualSummonMessage(DuelMenuMessage message) {
+        switch (message) {
+            case NO_WAY_TO_RITUAL_SUMMON:
+                System.out.println("there is no way you could ritual summon a monster");
+                break;
+            case RITUAL_SUMMON_RIGHT_NOW:
+                System.out.println("you should ritual summon right now");
+                break;
+            case DONT_MATCH_WITH_RITUAL_MONSTER:
+                System.out.println("selected monsters levels don’t match with ritual monster");
+                break;
+            case SUMMON_SUCCESSFUL:
+                System.out.println("summoned successfully");
+                break;
+            default:
+                System.out.println("unexpected error");
+                break;
+        }
+    }
+
+
     private void showGraveyard() {
         // ToDo: show graveyard
     }
@@ -493,6 +517,11 @@ public class DuelMenuView {
     }
 
 
+    public void showFlipCoinResult(String starterUsername, CoinSide coinSide) {
+        System.out.println("coin side was " + coinSide.getName() + " and " + starterUsername + " starts duel");
+    }
+
+
     public void showTurn(String playerNickname) {
         System.out.println("its " + playerNickname + "'s turn");
     }
@@ -505,5 +534,15 @@ public class DuelMenuView {
 
     public void showPhase(String phaseName) {
         System.out.println("phase: " + phaseName);
+    }
+
+
+    public void printWinnerMessage(boolean isWholeMatch, String winnerUsername, int score1, int score2) {
+        if (isWholeMatch) {
+            System.out.println(winnerUsername + " won the game with score: " + score1 + "-" + score2);
+            endMatch = true;
+        } else {
+            System.out.println(winnerUsername + " won the whole match with score: " + score1 + "-" + score2);
+        }
     }
 }

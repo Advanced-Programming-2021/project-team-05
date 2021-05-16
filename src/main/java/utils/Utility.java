@@ -46,7 +46,7 @@ public class Utility {
     }
 
 
-    public static CoinSide spinCoin() {
+    public static CoinSide flipCoin() {
         Random rand = new Random();
         return CoinSide.values()[rand.nextInt(2)];
     }

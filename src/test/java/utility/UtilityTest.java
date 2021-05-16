@@ -20,7 +20,7 @@ public class UtilityTest {
     @Test
     public void spinCoinTest() {
         for (int i = 0; i < 1000; i++) {
-            Assertions.assertNotNull(Utility.spinCoin());
+            Assertions.assertNotNull(Utility.flipCoin());
         }
     }
 

@@ -5,11 +5,15 @@ import model.User;
 public class Board {
     private Table playerTable;
     private Table opponentTable;
+    private Table winnerTable;
+    private Table loserTable;
 
 
     public Board(User player, User opponent) {
         this.playerTable = new Table(player);
+        this.playerTable.initializeHand();
         this.opponentTable = new Table(opponent);
+        this.opponentTable.initializeHand();
     }
 
 
@@ -19,6 +23,24 @@ public class Board {
 
     public Table getOpponentTable() {
         return this.opponentTable;
+    }
+
+
+    public Table getWinnerTable() {
+        return this.winnerTable;
+    }
+
+    public void setWinnerTable(Table winnerTable) {
+        this.winnerTable = winnerTable;
+    }
+
+
+    public Table getLoserTable() {
+        return this.loserTable;
+    }
+
+    public void setLoserTable(Table loserTable) {
+        this.loserTable = loserTable;
     }
 
 

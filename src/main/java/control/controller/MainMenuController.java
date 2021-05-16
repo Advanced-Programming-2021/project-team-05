@@ -59,8 +59,9 @@ public class MainMenuController {
         }
 
         view.printStartDuelMessage(MainMenuMessage.GAME_STARTED_SUCCESSFULLY, null);
-        DuelMenuController duelMenuController = new DuelMenuController(user, opponent);
+        DuelMenuController duelMenuController = new DuelMenuController(user, opponent, rounds);
         DuelMenuView duelMenuView = new DuelMenuView(duelMenuController);
+        duelMenuController.startNextRound();
         duelMenuView.run();
     }
 

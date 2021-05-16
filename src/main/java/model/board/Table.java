@@ -8,6 +8,7 @@ import model.card.Spell;
 import utils.Utility;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class Table {
@@ -47,11 +48,16 @@ public class Table {
             e.printStackTrace();
         }
         this.setCanSummonOrSet(true);
+        this.setLifePoint(7000);
     }
 
 
     public final int getLifePoint() {
         return this.lifePoint;
+    }
+
+    public final void setLifePoint(int lifePoint) {
+        this.lifePoint = lifePoint;
     }
 
     public final void increaseLifePoint(int amount) {
@@ -119,10 +125,17 @@ public class Table {
         this.hand.remove(card);
     }
 
+    public final void initializeHand() {
+        this.getDeck().shuffleMainDeck();
+        for (int i = 0; i < 5; i++) {
+            this.drawCard();
+        }
+    }
+
 
     public final void drawCard() {
         Card card = deck.drawCard();
-        this.getHand().add(card);
+        this.addCardToHand(card);
     }
 
 

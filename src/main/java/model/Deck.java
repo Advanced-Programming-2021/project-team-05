@@ -5,6 +5,7 @@ import model.card.Card;
 import model.card.Monster;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.UUID;
 
@@ -122,6 +123,15 @@ public class Deck implements Cloneable {
 
     public final boolean isValid() {
         return this.mainDeckCards.size() >= 40;
+    }
+
+
+    public final void shuffleMainDeck() {
+        Collections.shuffle(this.mainDeckCards);
+    }
+
+    public final void shuffleSideDeck() {
+        Collections.shuffle(this.sideDeckCards);
     }
 
 

@@ -1,7 +1,7 @@
 package control.controller;
 
 import control.message.DuelMenuMessage;
-import model.*;
+import model.User;
 import model.board.*;
 import model.card.Card;
 import model.card.Monster;
@@ -9,6 +9,8 @@ import model.card.Spell;
 import model.card.Trap;
 import model.effect.Event;
 import model.template.property.CardType;
+import utils.CoinSide;
+import utils.Utility;
 import view.DuelMenuView;
 
 import java.util.ArrayList;
@@ -16,19 +18,23 @@ import java.util.ArrayList;
 public class DuelMenuController {
 
     private DuelMenuView view;
-    private Board board;
-    private int rounds;
+    private final User player1;
+    private final User player2;
+    private final Board[] boards;
+    private final int rounds;
+    private int currentRound;
     private Phase phase;
+    private Board board;
     private Card selectedCard;
     private CardAddress selectedCardAddress;
 
-    {
-        phase = Phase.DRAW;
-    }
 
-
-    public DuelMenuController(User player, User opponent) {
-        this.board = new Board(player, opponent);
+    public DuelMenuController(User player1, User player2, int rounds) {
+        this.player1 = player1;
+        this.player2 = player2;
+        this.currentRound = 0;
+        this.rounds = rounds;
+        this.boards = new Board[rounds];
     }
 
 
@@ -82,17 +88,36 @@ public class DuelMenuController {
 
         if (phase == Phase.DRAW) {
             if (board.getPlayerTable().getDeck().getMainDeckSize() == 0) {
-                // ToDo: here, players losses the game
+                win(board.getPlayerTable(), board.getOpponentTable());
                 return;
             }
             board.getPlayerTable().drawCard();
         } else if (phase == Phase.MAIN_1) {
             view.showBoard(board);
-        }
-        else if (phase == Phase.END) {
+        } else if (phase == Phase.END) {
             changeTurn();
             view.showTurn(board.getPlayerTable().getOwner().getNickname());
         }
+    }
+
+
+    public void startNextRound() {
+        CoinSide coinSide = Utility.flipCoin();
+        User player;
+        User opponent;
+        if (coinSide == CoinSide.HEADS) {
+            player = player1;
+            opponent = player2;
+        } else {
+            player = player2;
+            opponent = player1;
+        }
+        view.showFlipCoinResult(player1.getUsername(), coinSide);
+        currentRound++;
+        phase = Phase.DRAW;
+        board = new Board(player, opponent);
+        board.getPlayerTable().drawCard();
+        boards[currentRound - 1] = board;
     }
 
 
@@ -439,18 +464,22 @@ public class DuelMenuController {
         int targetCardAttack = ((Monster) targetCell.getCard()).getAttack();
         int damage = attackerCardAttack - targetCardAttack;
         if (damage > 0) {
-            targetTable.decreaseLifePoint(damage);
             targetTable.moveMonsterToGraveyard(targetPosition);
             view.printAttackMessage(DuelMenuMessage.OPPONENT_ATTACK_POSITION_MONSTER_DESTROYED, damage, null);
+            if (checkLifePoint(targetTable, attackerTable, damage)) {
+                targetTable.decreaseLifePoint(damage);
+            }
         } else if (damage == 0) {
             attackerTable.moveMonsterToGraveyard(selectedCardAddress.getPosition());
             targetTable.moveMonsterToGraveyard(targetPosition);
             view.printAttackMessage(DuelMenuMessage.BOTH_ATTACK_POSITION_MONSTERS_DESTROYED, 0, null);
         } else {
             damage = Math.abs(damage);
-            attackerTable.decreaseLifePoint(damage);
             attackerTable.moveMonsterToGraveyard(selectedCardAddress.getPosition());
             view.printAttackMessage(DuelMenuMessage.YOUR_ATTACK_POSITION_MONSTER_DESTROYED, damage, null);
+            if (checkLifePoint(attackerTable, targetTable, damage)) {
+                attackerTable.decreaseLifePoint(damage);
+            }
         }
     }
 
@@ -465,14 +494,15 @@ public class DuelMenuController {
         int targetCardDefense = ((Monster) targetCell.getCard()).getDefence();
         int damage = attackerCardAttack - targetCardDefense;
         if (damage > 0) {
-            targetTable.decreaseLifePoint(damage);
             targetTable.moveMonsterToGraveyard(targetPosition);
             view.printAttackMessage(DuelMenuMessage.OPPONENT_DEFENSE_POSITION_MONSTER_DESTROYED, 0, hiddenCardName);
         } else if (damage == 0) {
             view.printAttackMessage(DuelMenuMessage.NO_CARD_DESTROYED_AND_NO_DAMAGE, 0, hiddenCardName);
         } else {
-            attackerTable.decreaseLifePoint(Math.abs(damage));
             view.printAttackMessage(DuelMenuMessage.NO_CARD_DESTROYED_WITH_DAMAGE, Math.abs(damage), hiddenCardName);
+            if (checkLifePoint(attackerTable, targetTable, damage)) {
+                attackerTable.decreaseLifePoint(Math.abs(damage));
+            }
         }
     }
 
@@ -500,12 +530,68 @@ public class DuelMenuController {
             return;
         }
 
+        Table opponentTable = board.getOpponentTable();
         int damage = ((Monster) attackerCell.getCard()).getAttack();
-        board.getOpponentTable().decreaseLifePoint(damage);
         attackerCell.setDidAttack(true);
         deselect(false);
         view.printDirectAttackMessage(DuelMenuMessage.DIRECT_ATTACK_SUCCESSFUL, damage);
-        view.showBoard(board);
+        if (checkLifePoint(opponentTable, board.getPlayerTable(), damage)) {
+            opponentTable.decreaseLifePoint(damage);
+            view.showBoard(board);
+        }
+    }
+
+
+    private boolean checkLifePoint(Table table, Table otherTable, int damage) {
+        if (damage >= table.getLifePoint()) {
+            table.setLifePoint(0);
+            win(otherTable, table);
+            return false;
+        }
+        return true;
+    }
+
+
+    private void win(Table winnerTable, Table loserTable) {
+        board.setWinnerTable(winnerTable);
+        board.setLoserTable(loserTable);
+
+        int player1Score = 0;
+        int player2Score = 0;
+        for (Board board : boards) {
+            if (board != null) {
+                if (player1.getUsername().equals(board.getWinnerTable().getOwner().getUsername())) {
+                    player1Score++;
+                } else {
+                    player2Score++;
+                }
+            }
+        }
+
+        boolean wonWholeMatch = player1Score == rounds / 2 + 1 || player2Score == rounds / 2 + 1;
+        if (wonWholeMatch) {
+            int maxLifePoint = getMaxLifePoint(winnerTable);
+            winnerTable.getOwner().increaseMoney(rounds * 1000 + maxLifePoint);
+            winnerTable.getOwner().increaseScore(Math.max(player1Score, player2Score));
+            loserTable.getOwner().increaseMoney(rounds * 100);
+            winnerTable.getOwner().increaseScore(Math.min(player1Score, player2Score));
+        }
+        view.printWinnerMessage(wonWholeMatch, winnerTable.getOwner().getUsername(), player1Score, player2Score);
+        if (!wonWholeMatch) {
+            startNextRound();
+        }
+    }
+
+    private int getMaxLifePoint(Table table) {
+        int maxLifePoint = 0;
+        for (Board board : boards) {
+            if (table.getOwner().getUsername().equals(board.getWinnerTable().getOwner().getUsername())) {
+                if (board.getWinnerTable().getLifePoint() > maxLifePoint) {
+                    maxLifePoint = board.getWinnerTable().getLifePoint();
+                }
+            }
+        }
+        return maxLifePoint;
     }
 
 
