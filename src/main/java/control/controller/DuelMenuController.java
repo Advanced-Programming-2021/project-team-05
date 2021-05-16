@@ -27,8 +27,8 @@ public class DuelMenuController {
     }
 
 
-    public DuelMenuController(User user1, User user2) {
-        this.board = new Board(user1, user2);
+    public DuelMenuController(User player, User opponent) {
+        this.board = new Board(player, opponent);
     }
 
 

@@ -2,10 +2,14 @@ package control.controller;
 
 import control.DataManager;
 import control.message.MainMenuMessage;
+import model.Deck;
 import model.User;
+import view.DuelMenuView;
+import view.MainMenuView;
 
 public class MainMenuController {
 
+    MainMenuView view;
     private final User user;
 
 
@@ -14,40 +18,68 @@ public class MainMenuController {
     }
 
 
+    public void setView(MainMenuView view) {
+        this.view = view;
+    }
+
+
     public User getUser() {
         return this.user;
     }
 
 
-    public final MainMenuMessage startGameWithUser(String opponentUsername, int rounds) {
-        // TODO: Complete conditions
-        if (DataManager.getInstance().getUserByUsername(opponentUsername) == null) {
-            return MainMenuMessage.NO_PLAYER_EXISTS;
-        } else if (false) {
-            return MainMenuMessage.NO_ACTIVE_DECK_1;
-        } else if (false) {
-            return MainMenuMessage.NO_ACTIVE_DECK_2;
-        } else if (false) {
-            return MainMenuMessage.INVALID_DECK_1;
-        } else if (false) {
-            return MainMenuMessage.INVALID_DECK_2;
-        } else if (rounds != 3 && rounds != 1) {
-            return MainMenuMessage.INVALID_ROUND;
-        } else {
-            return MainMenuMessage.GAME_STARTED_SUCCESSFULLY;
+    public final void startDuelWithUser(String opponentUsername, int rounds) {
+        DataManager dataManager = DataManager.getInstance();
+        User opponent = dataManager.getUserByUsername(opponentUsername);
+        if (opponent == null) {
+            view.printStartDuelMessage(MainMenuMessage.NO_PLAYER_EXISTS, user.getUsername());
+            return;
         }
+        Deck userDeck = user.getActiveDeck();
+        if (userDeck == null) {
+            view.printStartDuelMessage(MainMenuMessage.NO_ACTIVE_DECK, user.getUsername());
+            return;
+        }
+        Deck opponentDeck = opponent.getActiveDeck();
+        if (opponentDeck == null) {
+            view.printStartDuelMessage(MainMenuMessage.NO_ACTIVE_DECK, opponentUsername);
+            return;
+        }
+        if (!userDeck.isValid()) {
+            view.printStartDuelMessage(MainMenuMessage.INVALID_DECK, user.getUsername());
+            return;
+        }
+        if (!opponentDeck.isValid()) {
+            view.printStartDuelMessage(MainMenuMessage.INVALID_DECK, opponentUsername);
+            return;
+        }
+        if (rounds != 1 && rounds != 3) {
+            view.printStartDuelMessage(MainMenuMessage.INVALID_ROUND, null);
+            return;
+        }
+
+        view.printStartDuelMessage(MainMenuMessage.GAME_STARTED_SUCCESSFULLY, null);
+        DuelMenuController duelMenuController = new DuelMenuController(user, opponent);
+        DuelMenuView duelMenuView = new DuelMenuView(duelMenuController);
+        duelMenuView.run();
     }
 
-    public final MainMenuMessage startGameWithAi(int rounds) {
-        // TODO: Complete conditions
-        if (false) {
-            return MainMenuMessage.NO_ACTIVE_DECK_1;
-        } else if (false) {
-            return MainMenuMessage.INVALID_DECK_1;
-        } else if (rounds != 3 && rounds != 1) {
-            return MainMenuMessage.INVALID_ROUND;
-        } else {
-            return MainMenuMessage.GAME_STARTED_SUCCESSFULLY;
+    public final void startDuelWithAi(int rounds) {
+        Deck userDeck = user.getActiveDeck();
+        if (userDeck == null) {
+            view.printStartDuelMessage(MainMenuMessage.NO_ACTIVE_DECK, user.getUsername());
+            return;
         }
+        if (!userDeck.isValid()) {
+            view.printStartDuelMessage(MainMenuMessage.INVALID_DECK, user.getUsername());
+            return;
+        }
+        if (rounds != 1 && rounds != 3) {
+            view.printStartDuelMessage(MainMenuMessage.INVALID_ROUND, null);
+            return;
+        }
+
+        // ToDo: start duel with ai
+        view.printStartDuelMessage(MainMenuMessage.GAME_STARTED_SUCCESSFULLY, null);
     }
 }

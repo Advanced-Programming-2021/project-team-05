@@ -21,6 +21,12 @@ public class DuelMenuView {
     private DuelMenuController controller;
 
 
+    public DuelMenuView(DuelMenuController controller) {
+        this.setController(controller);
+        controller.setView(this);
+    }
+
+
     public void setController(DuelMenuController controller) {
         this.controller = controller;
     }
