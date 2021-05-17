@@ -1,8 +1,9 @@
 package model.effect.action;
 
 public enum ActionEnum {
-    DESTROY_OPPONENT_ONE_CARD,
+    DESTROY_OPPONENT_ONE_CARD,YOMISHIP,
     RITUAL_SUMMON;
+
 
 
     public Action getAction() {
@@ -11,6 +12,8 @@ public enum ActionEnum {
                 return new DestroyOpponentOneCardAction();
             case RITUAL_SUMMON:
                 return new RitualSummonAction();
+            case YOMISHIP:
+                return new YomiShipAction();
             default:
                 return new NullAction();
         }

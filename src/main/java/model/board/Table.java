@@ -22,6 +22,7 @@ public class Table {
     private Deck deck;
     private boolean canSummonOrSet;
 
+
     {
         hand = new ArrayList<>();
         graveyard = new ArrayList<>();

@@ -1,12 +1,15 @@
 package model.board;
 
 import model.User;
+import model.card.Card;
+import model.card.Monster;
 
 public class Board {
     private Table playerTable;
     private Table opponentTable;
     private Table winnerTable;
     private Table loserTable;
+    private Card attackerMonster;
 
 
     public Board(User player, User opponent) {
@@ -16,6 +19,14 @@ public class Board {
         this.opponentTable.initializeHand();
     }
 
+
+    public Card getAttackerMonster() {
+        return attackerMonster;
+    }
+
+    public void setAttackerMonster(Card attackerMonster) {
+        this.attackerMonster = attackerMonster;
+    }
 
     public Table getPlayerTable() {
         return this.playerTable;

@@ -491,6 +491,7 @@ public class DuelMenuController {
             return;
         }
         Cell attackerCell = board.getPlayerTable().getCellByAddress(selectedCardAddress);
+        board.setAttackerMonster(board.getPlayerTable().getCellByAddress(selectedCardAddress).getCard());
         if (attackerCell == null || selectedCardAddress.getZone() != CardAddressZone.MONSTER) {
             view.printAttackMessage(DuelMenuMessage.CANT_ATTACK, 0, null);
             return;
