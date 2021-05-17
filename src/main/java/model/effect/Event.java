@@ -6,6 +6,8 @@ import model.card.Card;
 
 public enum Event {
     YOU_FLIP_SUMMONED,
+    YOU_DESTROYED,
+    YOU_NORMAL_SUMMONED,
     ACTIVATE_EFFECT;
 
 

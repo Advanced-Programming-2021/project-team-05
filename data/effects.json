@@ -11,18 +11,23 @@
   },
   {
     "name": "Yomi Ship",
-    "event": "ACTIVATE_EFFECT",
-    "action": "DESTROY_OPPONENT_ATTACKER_MONSTER"
-  },
-{
-    "name": "Exploder Dragon",
-    "event": "ACTIVATE_EFFECT",
-    "action": "DESTROY_OPPONENT_ATTACKER_MONSTER_WITH_NO_DAMAGE"
+    "event": "YOU_DESTROYED",
+    "action": "DESTROY_OPPONENT_ATTACKER"
   },
   {
-    "name": "Terratiger",
-    "event": "ACTIVATE_EFFECT",
-    "action": "YOU_NORMAL_SUMMONED"
+    "name": "Exploder Dragon",
+    "event": "YOU_DESTROYED",
+    "action": "DESTROY_OPPONENT_ATTACKER"
+  },
+  {
+    "name": "Exploder Dragon",
+    "event": "YOU_DESTROYED",
+    "action": "NO_DAMAGE"
+  },
+  {
+    "name": "Terratiger, the Empowered Warrior",
+    "event": "YOU_NORMAL_SUMMONED",
+    "action": "SUMMON_MONSTER_IN_DEFENSE_POS"
   },
 
   {

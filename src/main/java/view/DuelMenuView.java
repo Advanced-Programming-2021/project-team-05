@@ -4,8 +4,10 @@ import com.sanityinc.jargs.CmdLineParser;
 import control.DataManager;
 import control.controller.DuelMenuController;
 import control.message.DuelMenuMessage;
-import model.board.*;
-import model.card.Card;
+import model.board.Board;
+import model.board.CardAddress;
+import model.board.CardAddressZone;
+import model.board.Table;
 import model.template.CardTemplate;
 import utils.CoinSide;
 import utils.Utility;
@@ -36,7 +38,9 @@ public class DuelMenuView {
     public void run() {
         while (!endMatch) {
             String command = Utility.getNextLine();
-            if (command.equals("next phase")) {
+            if (command.equals("cancel")) {
+                controller.cancel();
+            } else if (command.equals("next phase")) {
                 nextPhase();
             } else if (command.equals("select -d")) {
                 deselect();
@@ -224,6 +228,9 @@ public class DuelMenuView {
                 break;
             case SUMMON_SUCCESSFUL:
                 System.out.println("summoned successfully!");
+                break;
+            case SPECIAL_SUMMON_RIGHT_NOW:
+                System.out.println("you should special summon right now");
                 break;
             default:
                 System.out.println("unexpected error");
@@ -490,6 +497,20 @@ public class DuelMenuView {
             default:
                 System.out.println("unexpected error");
                 break;
+        }
+    }
+
+
+    public void printCancelMessage(DuelMenuMessage message) {
+        switch (message) {
+            case ACTION_CANCELED:
+                System.out.println("action canceled");
+                break;
+            case NOTHING_TO_CANCEL:
+                System.out.println("there is nothing to cancel");
+                break;
+            default:
+                System.out.println("unexpected error");
         }
     }
 

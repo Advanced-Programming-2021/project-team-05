@@ -28,7 +28,7 @@ public class DuelMenuController {
     private Card selectedCard;
     private CardAddress selectedCardAddress;
     private Integer ritualSummonSpellPosition;
-    private boolean specialSummon;
+    private boolean specialSummonDefensive;
 
 
     public DuelMenuController(User player1, User player2, int rounds) {
@@ -37,14 +37,6 @@ public class DuelMenuController {
         this.currentRound = 0;
         this.rounds = rounds;
         this.boards = new Board[rounds];
-    }
-
-    public void setSpecialSummon(boolean specialSummon) {
-        this.specialSummon = specialSummon;
-    }
-
-    public boolean getSpecialSummon() {
-        return this.specialSummon;
     }
 
     public DuelMenuView getView() {
@@ -91,6 +83,11 @@ public class DuelMenuController {
     }
 
 
+    public void setSpecialSummonDefensive(boolean specialSummonDefensive) {
+        this.specialSummonDefensive = specialSummonDefensive;
+    }
+
+
     private void changeTurn() {
         board.swapTables();
     }
@@ -101,21 +98,26 @@ public class DuelMenuController {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
             return;
         }
+        if (specialSummonDefensive) {
+            view.printSummonMessage(DuelMenuMessage.SPECIAL_SUMMON_RIGHT_NOW);
+            return;
+        }
         deselect(false);
         phase = phase.getNextPhase();
         view.showPhase(phase.getName());
 
         if (phase == Phase.DRAW) {
-            if (board.getPlayerTable().getDeck().getMainDeckSize() == 0) {
-                win(board.getPlayerTable(), board.getOpponentTable());
-                return;
-            }
-            board.getPlayerTable().drawCard();
-        } else if (phase == Phase.MAIN_1) {
-            view.showBoard(board);
-        } else if (phase == Phase.END) {
             changeTurn();
             view.showTurn(board.getPlayerTable().getOwner().getNickname());
+            if (board.getPlayerTable().getHand().size() < 6) {
+                if (board.getPlayerTable().getDeck().getMainDeckSize() == 0) {
+                    win(board.getPlayerTable(), board.getOpponentTable());
+                    return;
+                }
+                board.getPlayerTable().drawCard();
+            }
+        } else if (phase == Phase.MAIN_1) {
+            view.showBoard(board);
         }
     }
 
@@ -259,6 +261,15 @@ public class DuelMenuController {
             tributeSummon(3, true);
             return;
         }
+        if (specialSummonDefensive) {
+            if (card.getLevel() > 4) {
+                view.printSummonMessage(DuelMenuMessage.SPECIAL_SUMMON_RIGHT_NOW);
+                return;
+            }
+            specialSummonDefensive = false;
+            summon(card, true);
+            return;
+        }
         Table playerTable = board.getPlayerTable();
         if (!isSpecial && !playerTable.canSummonOrSet()) {
             view.printSummonMessage(DuelMenuMessage.ALREADY_SUMMONED_SET);
@@ -349,7 +360,8 @@ public class DuelMenuController {
         if (!isSpecial) {
             playerTable.setCanSummonOrSet(false);
         }
-        view.printTributeSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
+        view.printSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
+        monster.runActions(Event.YOU_NORMAL_SUMMONED, this);
         view.showBoard(board);
         deselect(false);
     }
@@ -368,6 +380,10 @@ public class DuelMenuController {
     public final void flipSummon() {
         if (ritualSummonSpellPosition != null) {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
+            return;
+        }
+        if (specialSummonDefensive) {
+            view.printSummonMessage(DuelMenuMessage.SPECIAL_SUMMON_RIGHT_NOW);
             return;
         }
         if (selectedCard == null) {
@@ -399,6 +415,10 @@ public class DuelMenuController {
     public final void set() {
         if (ritualSummonSpellPosition != null) {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
+            return;
+        }
+        if (specialSummonDefensive) {
+            view.printSummonMessage(DuelMenuMessage.SPECIAL_SUMMON_RIGHT_NOW);
             return;
         }
         if (selectedCard == null) {
@@ -446,6 +466,10 @@ public class DuelMenuController {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
             return;
         }
+        if (specialSummonDefensive) {
+            view.printSummonMessage(DuelMenuMessage.SPECIAL_SUMMON_RIGHT_NOW);
+            return;
+        }
         CardState targetState;
         switch (position) {
             case "attack":
@@ -489,8 +513,7 @@ public class DuelMenuController {
     }
 
 
-    public final void attack(int targetPosition) {
-
+    public final void attack(int targetPosition)    {
         if (targetPosition < 1 || targetPosition > 5) {
             view.printAttackMessage(DuelMenuMessage.INVALID_POSITION, 0, null);
             return;
@@ -538,6 +561,7 @@ public class DuelMenuController {
         if (damage > 0) {
             targetTable.moveMonsterToGraveyard(targetPosition);
             view.printAttackMessage(DuelMenuMessage.OPPONENT_ATTACK_POSITION_MONSTER_DESTROYED, damage, null);
+            targetCell.getCard().runActions(Event.YOU_DESTROYED, this);
             if (checkLifePoint(targetTable, attackerTable, damage)) {
                 targetTable.decreaseLifePoint(damage);
             }
@@ -545,6 +569,7 @@ public class DuelMenuController {
             attackerTable.moveMonsterToGraveyard(selectedCardAddress.getPosition());
             targetTable.moveMonsterToGraveyard(targetPosition);
             view.printAttackMessage(DuelMenuMessage.BOTH_ATTACK_POSITION_MONSTERS_DESTROYED, 0, null);
+            targetCell.getCard().runActions(Event.YOU_DESTROYED, this);
         } else {
             damage = Math.abs(damage);
             attackerTable.moveMonsterToGraveyard(selectedCardAddress.getPosition());
@@ -568,6 +593,7 @@ public class DuelMenuController {
         if (damage > 0) {
             targetTable.moveMonsterToGraveyard(targetPosition);
             view.printAttackMessage(DuelMenuMessage.OPPONENT_DEFENSE_POSITION_MONSTER_DESTROYED, 0, hiddenCardName);
+            targetCell.getCard().runActions(Event.YOU_DESTROYED, this);
         } else if (damage == 0) {
             view.printAttackMessage(DuelMenuMessage.NO_CARD_DESTROYED_AND_NO_DAMAGE, 0, hiddenCardName);
         } else {
@@ -624,6 +650,61 @@ public class DuelMenuController {
     }
 
 
+    public final void activeEffect() {
+        if (ritualSummonSpellPosition != null) {
+            view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
+            return;
+        }
+        if (specialSummonDefensive) {
+            view.printSummonMessage(DuelMenuMessage.SPECIAL_SUMMON_RIGHT_NOW);
+            return;
+        }
+        if (selectedCard == null) {
+            view.printActivateEffectMessage(DuelMenuMessage.NO_CARD_IS_SELECTED);
+            return;
+        }
+        if (!(selectedCard instanceof Spell)) {
+            view.printActivateEffectMessage(DuelMenuMessage.ONLY_FOR_SPELLS);
+            return;
+        }
+        if (phase != Phase.MAIN_1 && phase != Phase.MAIN_2) {
+            view.printActivateEffectMessage(DuelMenuMessage.ACTION_NOT_ALLOWED);
+            return;
+        }
+        Table table = board.getPlayerTable();
+        if (selectedCardAddress.getZone() == CardAddressZone.HAND) {
+            if (selectedCard.getType() != CardType.FIELD && table.isSpellTrapZoneFull()) {
+                view.printActivateEffectMessage(DuelMenuMessage.SPELL_ZONE_FULL);
+                return;
+            }
+        } else {
+            SpellTrapCell cell;
+            if (selectedCardAddress.getZone() == CardAddressZone.SPELL) {
+                cell = table.getSpellOrTrapCell(selectedCardAddress.getPosition());
+            } else {
+                cell = table.getFieldSpellCell();
+            }
+            if (cell.isEffectActivated()) {
+                view.printActivateEffectMessage(DuelMenuMessage.CARD_ALREADY_ACTIVATED);
+                return;
+            }
+        }
+        selectedCard.runActions(Event.ACTIVATE_EFFECT, this);
+        view.showBoard(board);
+    }
+
+
+    public final void cancel() {
+        if (ritualSummonSpellPosition != null) {
+            ritualSummonSpellPosition = null;
+            view.printCancelMessage(DuelMenuMessage.ACTION_CANCELED);
+            return;
+        }
+
+        view.printCancelMessage(DuelMenuMessage.NOTHING_TO_CANCEL);
+    }
+
+
     private void win(Table winnerTable, Table loserTable) {
         board.setWinnerTable(winnerTable);
         board.setLoserTable(loserTable);
@@ -664,46 +745,6 @@ public class DuelMenuController {
             }
         }
         return maxLifePoint;
-    }
-
-
-    public final void activeEffect() {
-        if (ritualSummonSpellPosition != null) {
-            view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
-            return;
-        }
-        if (selectedCard == null) {
-            view.printActivateEffectMessage(DuelMenuMessage.NO_CARD_IS_SELECTED);
-            return;
-        }
-        if (!(selectedCard instanceof Spell)) {
-            view.printActivateEffectMessage(DuelMenuMessage.ONLY_FOR_SPELLS);
-            return;
-        }
-        if (phase != Phase.MAIN_1 && phase != Phase.MAIN_2) {
-            view.printActivateEffectMessage(DuelMenuMessage.ACTION_NOT_ALLOWED);
-            return;
-        }
-        Table table = board.getPlayerTable();
-        if (selectedCardAddress.getZone() == CardAddressZone.HAND) {
-            if (selectedCard.getType() != CardType.FIELD && table.isSpellTrapZoneFull()) {
-                view.printActivateEffectMessage(DuelMenuMessage.SPELL_ZONE_FULL);
-                return;
-            }
-        } else {
-            SpellTrapCell cell;
-            if (selectedCardAddress.getZone() == CardAddressZone.SPELL) {
-                cell = table.getSpellOrTrapCell(selectedCardAddress.getPosition());
-            } else {
-                cell = table.getFieldSpellCell();
-            }
-            if (cell.isEffectActivated()) {
-                view.printActivateEffectMessage(DuelMenuMessage.CARD_ALREADY_ACTIVATED);
-                return;
-            }
-        }
-        selectedCard.runActions(Event.ACTIVATE_EFFECT, this);
-        view.showBoard(board);
     }
 
 

@@ -2,25 +2,23 @@ package model.effect.action;
 
 import control.controller.DuelMenuController;
 import model.board.Table;
+import model.card.Card;
+import model.card.Monster;
 
 public class SummonMonsterInDefensePos implements Action {
     @Override
     public void run(DuelMenuController controller) {
         Table table = controller.getBoard().getPlayerTable();
-
-        boolean canSummon = canSummon(table);
-
-        if (table.getHand().size() == 0) {
-            canSummon = false;
-        }
-
-        controller.setSpecialSummon(canSummon);
+        boolean canSummon = !table.isMonsterZoneFull() && handHasMonster(table);
+        controller.setSpecialSummonDefensive(canSummon);
     }
 
-    boolean canSummon(Table table) {
-        for (int i = 0; i < 5; i++) {
-            if (table.getMonster(i) == null) {
-                return true;
+    private boolean handHasMonster(Table table) {
+        for (Card card : table.getHand()) {
+            if (card instanceof Monster) {
+                if (((Monster) card).getLevel() <= 4) {
+                    return true;
+                }
             }
         }
         return false;

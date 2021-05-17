@@ -124,7 +124,6 @@ public class Table {
     }
 
     public final void removeCardFromDeck(Card card) {
-
         this.deck.removeCardFromMainDeck(card);
     }
 

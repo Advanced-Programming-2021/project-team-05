@@ -9,7 +9,7 @@ public class Board {
     private Table opponentTable;
     private Table winnerTable;
     private Table loserTable;
-    private Card attackerMonster;
+    private int attackerMonsterPosition;
     private int attackerMonsterPos;
     private boolean noDamageToAnyPlayer;
 
@@ -37,14 +37,6 @@ public class Board {
         this.noDamageToAnyPlayer = noDamageToAnyPlayer;
     }
 
-    public Card getAttackerMonster() {
-        return attackerMonster;
-    }
-
-    public void setAttackerMonster(Card attackerMonster) {
-        this.attackerMonster = attackerMonster;
-    }
-
     public Table getPlayerTable() {
         return this.playerTable;
     }
@@ -69,6 +61,15 @@ public class Board {
 
     public void setLoserTable(Table loserTable) {
         this.loserTable = loserTable;
+    }
+
+
+    public int getAttackerMonster() {
+        return attackerMonsterPosition;
+    }
+
+    public void setAttackerMonster(int attackerMonsterPosition) {
+        this.attackerMonsterPosition = attackerMonsterPosition;
     }
 
 
