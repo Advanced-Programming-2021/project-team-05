@@ -9,6 +9,11 @@
     "event": "ACTIVATE_EFFECT",
     "action": "RITUAL_SUMMON"
   },
+  {
+    "name": "Yomi Ship",
+    "event": "ACTIVATE_EFFECT",
+    "action": "YOMISHIP"
+  },
 
   {
     "name": "Monster Reborn",
