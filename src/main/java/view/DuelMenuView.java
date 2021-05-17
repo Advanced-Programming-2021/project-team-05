@@ -4,10 +4,7 @@ import com.sanityinc.jargs.CmdLineParser;
 import control.DataManager;
 import control.controller.DuelMenuController;
 import control.message.DuelMenuMessage;
-import model.board.Board;
-import model.board.CardAddress;
-import model.board.CardAddressZone;
-import model.board.Table;
+import model.board.*;
 import model.card.Card;
 import model.template.CardTemplate;
 import utils.CoinSide;
@@ -138,17 +135,17 @@ public class DuelMenuView {
     }
 
 
-    public String getState() {
-        System.out.println("enter monster state (attack/defense)");
+    public String getOneOfValues(String firstValue, String secondValue, String message, String invalidMessage) {
+        System.out.println(message);
         while (true) {
             String state = Utility.getNextLine();
             if ("cancel".equals(state)) {
                 return null;
             }
-            if (state.equals("attack") || state.equals("defense")) {
+            if (state.equals(firstValue) || state.equals(secondValue)) {
                 return state;
             }
-            System.out.println("invalid state");
+            System.out.println(invalidMessage);
         }
     }
 
@@ -535,12 +532,7 @@ public class DuelMenuView {
 
 
     private void showSelectedCard() {
-        Card selectedCard = controller.getSelectedCard();
-        if (selectedCard == null) {
-            System.out.println("no card is selected yet");
-            return;
-        }
-        System.out.println(selectedCard.detailedToString());
+        System.out.println(controller.selectedCardToString());
     }
 
 

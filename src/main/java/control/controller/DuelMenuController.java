@@ -312,7 +312,7 @@ public class DuelMenuController {
                 view.printRitualSummonMessage(DuelMenuMessage.DONT_MATCH_WITH_RITUAL_MONSTER);
                 return;
             }
-            String stateString = view.getState();
+            String stateString = view.getOneOfValues("attack", "defense", "enter monster state (attack/defense)", "invalid state");
             if (stateString == null) {
                 view.printActionCanceled();
                 return;
@@ -335,7 +335,7 @@ public class DuelMenuController {
         }
     }
 
-    private void summon(Monster monster, boolean isSpecial) {
+    public void summon(Monster monster, boolean isSpecial) {
         Table playerTable = board.getPlayerTable();
         playerTable.addMonster(monster, CardState.VERTICAL_UP);
         if (!isSpecial) {
@@ -366,8 +366,7 @@ public class DuelMenuController {
             view.printFlipSummonMessage(DuelMenuMessage.NO_CARD_IS_SELECTED);
             return;
         }
-        Cell targetCell = board.getPlayerTable().getCellByAddress(selectedCardAddress);
-        if (targetCell == null || selectedCardAddress.getZone() != CardAddressZone.MONSTER) {
+        if (selectedCardAddress.getZone() != CardAddressZone.MONSTER) {
             view.printFlipSummonMessage(DuelMenuMessage.CANT_CHANGE_POSITION);
             return;
         }
@@ -375,6 +374,7 @@ public class DuelMenuController {
             view.printFlipSummonMessage(DuelMenuMessage.ACTION_NOT_ALLOWED);
             return;
         }
+        MonsterCell targetCell = board.getPlayerTable().getMonsterCell(selectedCardAddress.getPosition());
         if (targetCell.getState() != CardState.HORIZONTAL_DOWN || targetCell.isNewlyAdded()) {
             view.printFlipSummonMessage(DuelMenuMessage.CANT_FLIP_SUMMON);
             return;
@@ -383,7 +383,7 @@ public class DuelMenuController {
         targetCell.setState(CardState.VERTICAL_UP);
         targetCell.setDoesPositionChanged(true);
         view.printFlipSummonMessage(DuelMenuMessage.FLIP_SUMMON_SUCCESSFUL);
-        Event.CARD_FLIP_SUMMONED.trigger(this);
+        selectedCard.runActions(Event.YOU_FLIP_SUMMONED, this);
         view.showBoard(board);
     }
 
@@ -455,8 +455,7 @@ public class DuelMenuController {
             view.printChangePositionMessage(DuelMenuMessage.NO_CARD_IS_SELECTED);
             return;
         }
-        Cell targetCell = board.getPlayerTable().getCellByAddress(selectedCardAddress);
-        if (targetCell == null || selectedCardAddress.getZone() != CardAddressZone.MONSTER) {
+        if (selectedCardAddress.getZone() != CardAddressZone.MONSTER) {
             view.printChangePositionMessage(DuelMenuMessage.CANT_CHANGE_POSITION);
             return;
         }
@@ -464,6 +463,7 @@ public class DuelMenuController {
             view.printChangePositionMessage(DuelMenuMessage.ACTION_NOT_ALLOWED);
             return;
         }
+        MonsterCell targetCell = board.getPlayerTable().getMonsterCell(selectedCardAddress.getPosition());
         if ((targetState == CardState.VERTICAL_UP && targetCell.getState() != CardState.HORIZONTAL_UP) ||
                 (targetState == CardState.HORIZONTAL_UP && targetCell.getState() != CardState.VERTICAL_UP)) {
             view.printChangePositionMessage(DuelMenuMessage.ALREADY_IN_WANTED_POSITION);
@@ -490,9 +490,7 @@ public class DuelMenuController {
             view.printAttackMessage(DuelMenuMessage.NO_CARD_IS_SELECTED, 0, null);
             return;
         }
-        Cell attackerCell = board.getPlayerTable().getCellByAddress(selectedCardAddress);
-        board.setAttackerMonster(board.getPlayerTable().getCellByAddress(selectedCardAddress).getCard());
-        if (attackerCell == null || selectedCardAddress.getZone() != CardAddressZone.MONSTER) {
+        if (selectedCardAddress.getZone() != CardAddressZone.MONSTER) {
             view.printAttackMessage(DuelMenuMessage.CANT_ATTACK, 0, null);
             return;
         }
@@ -500,6 +498,7 @@ public class DuelMenuController {
             view.printAttackMessage(DuelMenuMessage.ACTION_NOT_ALLOWED, 0, null);
             return;
         }
+        MonsterCell attackerCell = board.getPlayerTable().getMonsterCell(selectedCardAddress.getPosition());
         if (attackerCell.didAttack()) {
             view.printAttackMessage(DuelMenuMessage.ALREADY_ATTACKED, 0, null);
             return;
@@ -576,8 +575,7 @@ public class DuelMenuController {
             view.printDirectAttackMessage(DuelMenuMessage.NO_CARD_IS_SELECTED, 0);
             return;
         }
-        Cell attackerCell = board.getPlayerTable().getCellByAddress(selectedCardAddress);
-        if (attackerCell == null || selectedCardAddress.getZone() != CardAddressZone.MONSTER) {
+        if (selectedCardAddress.getZone() != CardAddressZone.MONSTER) {
             view.printDirectAttackMessage(DuelMenuMessage.CANT_ATTACK, 0);
             return;
         }
@@ -585,6 +583,7 @@ public class DuelMenuController {
             view.printDirectAttackMessage(DuelMenuMessage.ACTION_NOT_ALLOWED, 0);
             return;
         }
+        MonsterCell attackerCell = board.getPlayerTable().getMonsterCell(selectedCardAddress.getPosition());
         if (attackerCell.didAttack()) {
             view.printDirectAttackMessage(DuelMenuMessage.ALREADY_ATTACKED, 0);
             return;
@@ -664,5 +663,52 @@ public class DuelMenuController {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
             return;
         }
+        if (selectedCard == null) {
+            view.printActivateEffectMessage(DuelMenuMessage.NO_CARD_IS_SELECTED);
+            return;
+        }
+        if (!(selectedCard instanceof Spell)) {
+            view.printActivateEffectMessage(DuelMenuMessage.ONLY_FOR_SPELLS);
+            return;
+        }
+        if (phase != Phase.MAIN_1 && phase != Phase.MAIN_2) {
+            view.printActivateEffectMessage(DuelMenuMessage.ACTION_NOT_ALLOWED);
+            return;
+        }
+        Table table = board.getPlayerTable();
+        if (selectedCardAddress.getZone() == CardAddressZone.HAND) {
+            if (selectedCard.getType() != CardType.FIELD && table.isSpellTrapZoneFull()) {
+                view.printActivateEffectMessage(DuelMenuMessage.SPELL_ZONE_FULL);
+                return;
+            }
+        } else {
+            SpellTrapCell cell;
+            if (selectedCardAddress.getZone() == CardAddressZone.SPELL) {
+                cell = table.getSpellOrTrapCell(selectedCardAddress.getPosition());
+            } else {
+                cell = table.getFieldSpellCell();
+            }
+            if (cell.isEffectActivated()) {
+                view.printActivateEffectMessage(DuelMenuMessage.CARD_ALREADY_ACTIVATED);
+                return;
+            }
+        }
+        selectedCard.runActions(Event.ACTIVATE_EFFECT, this);
+        view.showBoard(board);
+    }
+
+
+    public final String selectedCardToString() {
+        if (selectedCard == null) {
+            return "no card is selected yet";
+        }
+        if (selectedCardAddress.isForOpponent()) {
+            CardAddress copyAddress = new CardAddress(selectedCardAddress.getZone(), selectedCardAddress.getPosition(), false);
+            Cell cell = board.getOpponentTable().getCellByAddress(copyAddress);
+            if (cell == null || cell.getState() == CardState.VERTICAL_DOWN || cell.getState() == CardState.HORIZONTAL_DOWN) {
+                return "card is not visible";
+            }
+        }
+        return selectedCard.detailedToString();
     }
 }
