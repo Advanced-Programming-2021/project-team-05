@@ -12,7 +12,12 @@
   {
     "name": "Yomi Ship",
     "event": "ACTIVATE_EFFECT",
-    "action": "YOMISHIP"
+    "action": "DESTROY_OPPONENT_ATTACKER_MONSTER"
+  },
+{
+    "name": "Exploder Dragon",
+    "event": "ACTIVATE_EFFECT",
+    "action": "DESTROY_OPPONENT_ATTACKER_MONSTER_WITH_NO_DAMAGE"
   },
 
   {

@@ -3,7 +3,8 @@ package model.effect.action;
 public enum ActionEnum {
     DESTROY_OPPONENT_ONE_CARD,
     RITUAL_SUMMON,
-    YOMISHIP,
+    DESTROY_OPPONENT_ATTACKER_MONSTER,
+    DESTROY_OPPONENT_ATTACKER_MONSTER_WITH_NO_DAMAGE,
     RETURN_ONE_CARD_FROM_GRAVEYARD;
 
 
@@ -15,8 +16,10 @@ public enum ActionEnum {
                 return new RitualSummonAction();
             case RETURN_ONE_CARD_FROM_GRAVEYARD:
                 return new ReturnOneCardFromGraveyardAction();
-            case YOMISHIP:
-                return new YomiShipAction();
+            case DESTROY_OPPONENT_ATTACKER_MONSTER:
+                return new DestroyOpponentAttackerMonsterAction();
+            case DESTROY_OPPONENT_ATTACKER_MONSTER_WITH_NO_DAMAGE:
+                return new DestroyOpponentAttackerMonsterWithNoDamageAction();
             default:
                 return new NullAction();
         }

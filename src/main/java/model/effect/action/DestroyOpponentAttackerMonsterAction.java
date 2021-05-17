@@ -4,7 +4,7 @@ import control.controller.DuelMenuController;
 import model.board.Table;
 import model.card.Card;
 
-public class YomiShipAction implements Action {
+public class DestroyOpponentAttackerMonsterAction implements Action {
 
     @Override
     public void run(DuelMenuController controller) {
