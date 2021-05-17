@@ -8,10 +8,9 @@ public class DestroyOpponentAttackerMonsterWithNoDamageAction implements Action 
     @Override
     public void run(DuelMenuController controller) {
 
-        Card attackerMonster = controller.getBoard().getAttackerMonster();
         Table opponentTable = controller.getBoard().getOpponentTable();
 
-        opponentTable.addCardToGraveyard(attackerMonster);
+        opponentTable.moveMonsterToGraveyard(controller.getSelectedCardAddress().getPosition());
         controller.getBoard().setNoDamageToAnyPlayer(true);
 
     }

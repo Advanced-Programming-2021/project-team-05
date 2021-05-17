@@ -28,6 +28,7 @@ public class DuelMenuController {
     private Card selectedCard;
     private CardAddress selectedCardAddress;
     private Integer ritualSummonSpellPosition;
+    private boolean specialSummon;
 
 
     public DuelMenuController(User player1, User player2, int rounds) {
@@ -38,6 +39,13 @@ public class DuelMenuController {
         this.boards = new Board[rounds];
     }
 
+    public void setSpecialSummon(boolean specialSummon) {
+        this.specialSummon = specialSummon;
+    }
+
+    public boolean getSpecialSummon() {
+        return this.specialSummon;
+    }
 
     public DuelMenuView getView() {
         return this.view;
@@ -482,6 +490,7 @@ public class DuelMenuController {
 
 
     public final void attack(int targetPosition) {
+
         if (targetPosition < 1 || targetPosition > 5) {
             view.printAttackMessage(DuelMenuMessage.INVALID_POSITION, 0, null);
             return;

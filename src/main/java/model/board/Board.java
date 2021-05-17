@@ -10,6 +10,7 @@ public class Board {
     private Table winnerTable;
     private Table loserTable;
     private Card attackerMonster;
+    private int attackerMonsterPos;
     private boolean noDamageToAnyPlayer;
 
 
@@ -18,6 +19,14 @@ public class Board {
         this.playerTable.initializeHand();
         this.opponentTable = new Table(opponent);
         this.opponentTable.initializeHand();
+    }
+
+    public void setAttackerMonsterPos(int attackerMonsterPos) {
+        this.attackerMonsterPos = attackerMonsterPos;
+    }
+
+    public int getAttackerMonsterPos() {
+        return attackerMonsterPos;
     }
 
     public boolean isNoDamageToAnyPlayer() {

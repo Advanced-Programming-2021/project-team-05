@@ -19,6 +19,11 @@
     "event": "ACTIVATE_EFFECT",
     "action": "DESTROY_OPPONENT_ATTACKER_MONSTER_WITH_NO_DAMAGE"
   },
+  {
+    "name": "Terratiger",
+    "event": "ACTIVATE_EFFECT",
+    "action": "YOU_NORMAL_SUMMONED"
+  },
 
   {
     "name": "Monster Reborn",
