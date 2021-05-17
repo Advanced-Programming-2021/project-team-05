@@ -2,28 +2,20 @@ package model.board;
 
 import model.card.Card;
 
-public class Cell {
-    private Card card;
-    private CardState state;
-    boolean doesPositionChanged;
-    boolean isNewlyAdded;
-    boolean didAttack;
+public abstract class Cell {
+    protected Card card;
+    protected CardState state;
+    protected boolean isNewlyAdded;
 
 
     public Cell(Card card, CardState cardState) {
-        this.resetCell();
+        this.reset();
         this.setCard(card);
         this.setState(cardState);
     }
 
 
-    public void resetCell() {
-        this.setCard(null);
-        this.setState(null);
-        this.setDoesPositionChanged(false);
-        this.setDidAttack(false);
-        this.setNewlyAdded(false);
-    }
+    public abstract void reset();
 
 
     public Card getCard() {
@@ -44,29 +36,11 @@ public class Cell {
     }
 
 
-    public boolean doesPositionChanged() {
-        return this.doesPositionChanged;
-    }
-
-    public void setDoesPositionChanged(boolean doesPositionChanged) {
-        this.doesPositionChanged = doesPositionChanged;
-    }
-
-
     public boolean isNewlyAdded() {
         return this.isNewlyAdded;
     }
 
     public void setNewlyAdded(boolean isNewlyAdded) {
         this.isNewlyAdded = isNewlyAdded;
-    }
-
-
-    public boolean didAttack() {
-        return this.didAttack;
-    }
-
-    public void setDidAttack(boolean didAttack) {
-        this.didAttack = didAttack;
     }
 }

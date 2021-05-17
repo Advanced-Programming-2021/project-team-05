@@ -5,7 +5,7 @@ import model.board.Board;
 import model.card.Card;
 
 public enum Event {
-    CARD_FLIP_SUMMONED,
+    YOU_FLIP_SUMMONED,
     ACTIVATE_EFFECT;
 
 

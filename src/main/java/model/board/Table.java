@@ -8,15 +8,14 @@ import model.card.Spell;
 import utils.Utility;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 
 public class Table {
-    private final Cell[] monsterCells;
-    private final Cell[] spellAndTrapCells;
+    private final MonsterCell[] monsterCells;
+    private final SpellTrapCell[] spellAndTrapCells;
     private final ArrayList<Card> hand;
     private final ArrayList<Card> graveyard;
-    private final Cell fieldZoneCell;
+    private final SpellTrapCell fieldZoneCell;
     private User Owner;
     private int lifePoint;
     private Deck deck;
@@ -26,17 +25,17 @@ public class Table {
         hand = new ArrayList<>();
         graveyard = new ArrayList<>();
 
-        monsterCells = new Cell[5];
+        monsterCells = new MonsterCell[5];
         for (int i = 0; i < monsterCells.length; i++) {
-            monsterCells[i] = new Cell(null, null);
+            monsterCells[i] = new MonsterCell(null, null);
         }
 
-        spellAndTrapCells = new Cell[5];
+        spellAndTrapCells = new SpellTrapCell[5];
         for (int i = 0; i < spellAndTrapCells.length; i++) {
-            spellAndTrapCells[i] = new Cell(null, null);
+            spellAndTrapCells[i] = new SpellTrapCell(null, null);
         }
 
-        fieldZoneCell = new Cell(null, null);
+        fieldZoneCell = new SpellTrapCell(null, null);
     }
 
 
@@ -100,6 +99,18 @@ public class Table {
             default:
                 return null;
         }
+    }
+
+    public final MonsterCell getMonsterCell(int position) {
+        return this.monsterCells[position - 1];
+    }
+
+    public final SpellTrapCell getSpellOrTrapCell(int position) {
+        return this.spellAndTrapCells[position - 1];
+    }
+
+    public final SpellTrapCell getFieldSpellCell() {
+        return this.fieldZoneCell;
     }
 
 
@@ -170,18 +181,17 @@ public class Table {
         for (int i = 0; i < 5; i++) {
             Cell cell = this.monsterCells[i];
             if (cell.getCard() == null) {
+                cell.reset();
                 cell.setCard(monster);
                 cell.setState(state);
-                cell.setDoesPositionChanged(false);
                 cell.setNewlyAdded(true);
-                cell.setDidAttack(false);
                 return;
             }
         }
     }
 
     public final void removeMonster(int position) {
-        this.monsterCells[position - 1].resetCell();
+        this.monsterCells[position - 1].reset();
     }
 
     public final int getMonsterCardsCount() {
@@ -216,9 +226,9 @@ public class Table {
         for (int i = 0; i < 5; i++) {
             Cell cell = this.spellAndTrapCells[i];
             if (cell.getCard() == null) {
+                cell.reset();
                 cell.setCard(card);
                 cell.setState(state);
-                cell.setDoesPositionChanged(false);
                 cell.setNewlyAdded(true);
                 return;
             }
@@ -227,7 +237,7 @@ public class Table {
     }
 
     public final void removeSpellOrTrap(int position) {
-        this.spellAndTrapCells[position - 1].resetCell();
+        this.spellAndTrapCells[position - 1].reset();
     }
 
     public final boolean isSpellTrapZoneFull() {
@@ -247,11 +257,10 @@ public class Table {
     public final void setFieldSpell(Spell spell, CardState state) {
         this.fieldZoneCell.setCard(spell);
         this.fieldZoneCell.setState(state);
-        this.fieldZoneCell.setDoesPositionChanged(false);
     }
 
     public final void removeFieldSpell() {
-        this.fieldZoneCell.resetCell();
+        this.fieldZoneCell.reset();
     }
 
 
@@ -396,4 +405,4 @@ public class Table {
             return tableString.toString();
         }
     }
-}
+    }
