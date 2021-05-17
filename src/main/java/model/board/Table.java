@@ -322,6 +322,21 @@ public class Table {
         return handString;
     }
 
+    public String graveyardToString() {
+        if (this.graveyard.size() == 0) {
+            return "graveyard empty";
+        }
+        StringBuilder graveyardString = new StringBuilder();
+        for (int i = 0, cardsSize = this.graveyard.size(); i < cardsSize; i++) {
+            Card card = this.graveyard.get(i);
+            graveyardString.append(i + 1).append(". ").append(card.toString());
+            if (i < cardsSize - 1) {
+                graveyardString.append("\r\n");
+            }
+        }
+        return graveyardString.toString();
+    }
+
 
     public String toString(boolean isReversed) {
         StringBuilder tableString = new StringBuilder();

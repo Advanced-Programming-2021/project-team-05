@@ -4,6 +4,8 @@ import control.controller.DuelMenuController;
 import model.board.Table;
 import view.DuelMenuView;
 
+import java.util.ArrayList;
+
 
 public class DestroyOpponentOneCardAction implements Action {
 
@@ -18,7 +20,12 @@ public class DestroyOpponentOneCardAction implements Action {
         int number;
         String message = "enter monster position to destroy:";
         while (true) {
-            number = view.getNumbers(1, message).get(1);
+            ArrayList<Integer> numbers = view.getNumbers(1, message);
+            if (numbers == null) {
+                view.printActionCanceled();
+                return;
+            }
+            number = numbers.get(0);
             if (number < 1 || number > 5) {
                 message = "number should be between 1 and 5";
             } else if (targetTable.getMonster(number) == null) {

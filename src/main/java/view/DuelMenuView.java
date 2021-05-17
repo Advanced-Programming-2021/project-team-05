@@ -7,6 +7,7 @@ import control.message.DuelMenuMessage;
 import model.board.Board;
 import model.board.CardAddress;
 import model.board.CardAddressZone;
+import model.board.Table;
 import model.card.Card;
 import model.template.CardTemplate;
 import utils.CoinSide;
@@ -58,8 +59,8 @@ public class DuelMenuView {
                 attack(command.split("\\s"));
             } else if (command.equals("activate effect")) {
                 activateEffect();
-            } else if (command.equals("show graveyard")) {
-                showGraveyard();
+            } else if (command.startsWith("show graveyard")) {
+                showGraveyard(command.split("\\s"));
             } else if (command.equals("card show --selected") || command.equals("card show -s")) {
                 showSelectedCard();
             } else if (command.matches("^card show \\S+$")) {
@@ -87,14 +88,17 @@ public class DuelMenuView {
         System.out.println(message);
         for (int i = 1; i <= numbersCount; i++) {
             try {
-                int number = Integer.parseInt(Utility.getNextLine());
+                String input = Utility.getNextLine();
+                if ("cancel".equals(input)) {
+                    return null;
+                }
+                int number = Integer.parseInt(input);
                 numbers.add(number);
             } catch (NumberFormatException e) {
                 System.out.println("please enter a number");
                 i--;
             }
         }
-
         return numbers;
     }
 
@@ -138,6 +142,9 @@ public class DuelMenuView {
         System.out.println("enter monster state (attack/defense)");
         while (true) {
             String state = Utility.getNextLine();
+            if ("cancel".equals(state)) {
+                return null;
+            }
             if (state.equals("attack") || state.equals("defense")) {
                 return state;
             }
@@ -490,8 +497,40 @@ public class DuelMenuView {
     }
 
 
-    private void showGraveyard() {
-        // ToDo: show graveyard
+    private void showGraveyard(String[] command) {
+        CmdLineParser parser = new CmdLineParser();
+        CmdLineParser.Option<Boolean> isOpponentOption = parser.addBooleanOption('o', "opponent");
+
+        try {
+            parser.parse(command);
+        } catch (CmdLineParser.OptionException e) {
+            System.out.println("invalid command");
+            return;
+        }
+
+        boolean isOpponent = parser.getOptionValue(isOpponentOption, false);
+        Table table;
+        if (isOpponent) {
+            if (command.length != 3) {
+                System.out.println("invalid command");
+                return;
+            }
+            table = controller.getBoard().getOpponentTable();
+        } else {
+            if (command.length != 2) {
+                System.out.println("invalid command");
+                return;
+            }
+            table = controller.getBoard().getPlayerTable();
+        }
+        System.out.println(table.graveyardToString());
+        while (true) {
+            System.out.println("enter \"back\" to return to game");
+            String input = Utility.getNextLine();
+            if (input.equals("back")) {
+                break;
+            }
+        }
     }
 
 
@@ -556,5 +595,10 @@ public class DuelMenuView {
         } else {
             System.out.println(winnerUsername + " won the whole match with score: " + score1 + "-" + score2);
         }
+    }
+
+
+    public void printActionCanceled() {
+        System.out.println("action canceled");
     }
 }
