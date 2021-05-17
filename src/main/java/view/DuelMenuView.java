@@ -134,6 +134,18 @@ public class DuelMenuView {
     }
 
 
+    public String getState() {
+        System.out.println("enter monster state (attack/defense)");
+        while (true) {
+            String state = Utility.getNextLine();
+            if (state.equals("attack") || state.equals("defense")) {
+                return state;
+            }
+            System.out.println("invalid state");
+        }
+    }
+
+
     private void select(String[] command) {
         CardAddress cardAddress = getAddress(command);
         if (cardAddress == null || CardAddressZone.GRAVEYARD.equals(cardAddress.getZone())) {
@@ -180,7 +192,7 @@ public class DuelMenuView {
 
 
     private void summon() {
-        controller.checkSummon();
+        controller.checkSummon(false);
     }
 
     public void printSummonMessage(DuelMenuMessage message) {

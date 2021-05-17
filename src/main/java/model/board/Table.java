@@ -152,6 +152,11 @@ public class Table {
         this.removeMonster(position);
     }
 
+    public final void moveSpellOrTrapToGraveyard(int position) {
+        this.addCardToGraveyard(this.getSpellOrTrap(position));
+        this.removeSpellOrTrap(position);
+    }
+
 
     public final Monster getMonster(int position) {
         return (Monster) this.monsterCells[position - 1].getCard();

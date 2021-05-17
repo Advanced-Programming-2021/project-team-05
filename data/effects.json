@@ -3,5 +3,10 @@
     "name": "Man-Eater Bug",
     "event": "CARD_FLIP_SUMMONED",
     "action": "DESTROY_OPPONENT_ONE_CARD"
+  },
+  {
+    "name": "Advanced Ritual Art",
+    "event": "ACTIVATE_EFFECT",
+    "action": "RITUAL_SUMMON"
   }
 ]
