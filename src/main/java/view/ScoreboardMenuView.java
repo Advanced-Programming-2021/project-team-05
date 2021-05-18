@@ -24,7 +24,7 @@ public class ScoreboardMenuView {
     }
 
 
-    private void showScoreboard() {
+    public void showScoreboard() {
         System.out.println(DataManager.getInstance().getScoreboard());
     }
 
