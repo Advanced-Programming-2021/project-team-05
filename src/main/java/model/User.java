@@ -4,6 +4,7 @@ import control.DataManager;
 import model.card.Card;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class User {
 
@@ -14,7 +15,7 @@ public class User {
     private String nickname;
     private String activeDeck;
     private int score;
-    private int money;
+    private long money;
 
     {
         purchasedCards = new ArrayList<>();
@@ -26,11 +27,13 @@ public class User {
         this.setUsername(username);
         this.setPassword(password);
         this.setNickname(nickname);
+        this.setScore(0);
+        this.setMoney(100000);
     }
 
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public void setUsername(String username) {
@@ -39,7 +42,7 @@ public class User {
 
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -48,7 +51,7 @@ public class User {
 
 
     public String getNickname() {
-        return nickname;
+        return this.nickname;
     }
 
     public void setNickname(String nickname) {
@@ -57,7 +60,7 @@ public class User {
 
 
     public int getScore() {
-        return score;
+        return this.score;
     }
 
     public void setScore(int score) {
@@ -69,19 +72,19 @@ public class User {
     }
 
 
-    public int getMoney() {
-        return money;
+    public long getMoney() {
+        return this.money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(long money) {
         this.money = money;
     }
 
-    public void increaseMoney(int amount) {
+    public void increaseMoney(long amount) {
         this.money += amount;
     }
 
-    public void decreaseMoney(int amount) {
+    public void decreaseMoney(long amount) {
         this.money -= amount;
     }
 
@@ -161,6 +164,15 @@ public class User {
 
     public void setActiveDeck(Deck activeDeck) {
         this.activeDeck = activeDeck.getId();
+    }
+
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || this.getClass() != object.getClass()) return false;
+        User user = (User) object;
+        return this.username.equals(user.getUsername());
     }
 
 

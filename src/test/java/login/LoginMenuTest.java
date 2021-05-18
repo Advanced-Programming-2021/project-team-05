@@ -15,24 +15,25 @@ public class LoginMenuTest {
     private static final PrintStream originalOut = System.out;
     private static final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
+    @BeforeAll
+    public static void setUpStreams() {
+        System.setOut(new PrintStream(outContent));
+    }
+
+    @AfterAll
+    public static void restoreStreams() {
+        System.setOut(originalOut);
+    }
 
     private void assertOutputIsEqual(String expectedOutput) {
         Assertions.assertEquals(expectedOutput, outContent.toString().trim());
         outContent.reset();
     }
 
-
-    @BeforeAll
-    public static void setUpStreams() {
-        System.setOut(new PrintStream(outContent));
-    }
-
-
     @BeforeEach
     public void resetUpStreams() {
         outContent.reset();
     }
-
 
     @Test
     public void showCurrentMenuTest() {
@@ -41,7 +42,6 @@ public class LoginMenuTest {
         view.showCurrentMenu();
         Assertions.assertEquals("Login Menu\r\n", outContent.toString());
     }
-
 
     @Test
     public void runTest() {
@@ -57,7 +57,7 @@ public class LoginMenuTest {
         outputs.add("invalid command");
 
         commands.add("user login --username test --password password");
-        outputs.add("username and password didn't match!");
+        outputs.add("username and password didn't match");
 
         commands.add("login user --username test --password password");
         outputs.add("invalid command");
@@ -80,6 +80,15 @@ public class LoginMenuTest {
         commands.add("user logout");
         outputs.add("user logged out successfully!");
 
+        commands.add("menu help");
+        outputs.add("commands:\r\n" +
+                "\tuser create --username <username> --nickname <nickname> --password <password>\r\n" +
+                "\tuser login --username <username> --password <password>\r\n" +
+                "\tmenu show-current\r\n" +
+                "\tmenu enter\r\n" +
+                "\tmenu exit\r\n" +
+                "\tmenu help");
+
         commands.add("menu exit");
 
 
@@ -101,28 +110,30 @@ public class LoginMenuTest {
         System.setIn(stdIn);
     }
 
-
     @Test
     public void loginMessageTest() {
         LoginMenuView view = new LoginMenuView(new LoginMenuController());
         String username = "name", nickname = "nick";
 
-        view.printCreateUserMessage(username, nickname, LoginMenuMessage.USER_CREATED);
+        view.printCreateUserMessage(LoginMenuMessage.USER_CREATED, username, nickname);
         assertOutputIsEqual("user created successfully!");
 
-        view.printCreateUserMessage(username, nickname, LoginMenuMessage.USERNAME_EXISTS);
+        view.printCreateUserMessage(LoginMenuMessage.USERNAME_EXISTS, username, nickname);
         assertOutputIsEqual("user with username " + username + " already exists");
 
-        view.printCreateUserMessage(username, nickname, LoginMenuMessage.NICKNAME_EXISTS);
+        view.printCreateUserMessage(LoginMenuMessage.NICKNAME_EXISTS, username, nickname);
         assertOutputIsEqual("user with nickname " + nickname + " already exists");
 
-        view.printCreateUserMessage(username, nickname, LoginMenuMessage.ERROR);
+        view.printCreateUserMessage(LoginMenuMessage.ERROR, username, nickname);
         assertOutputIsEqual("unexpected error");
-    }
 
+        view.printLoginUserMessage(LoginMenuMessage.NO_MATCH);
+        assertOutputIsEqual("username and password didn't match");
 
-    @AfterAll
-    public static void restoreStreams() {
-        System.setOut(originalOut);
+        view.printLoginUserMessage(LoginMenuMessage.LOGGED_IN);
+        assertOutputIsEqual("user logged in successfully!");
+
+        view.printLoginUserMessage(LoginMenuMessage.ERROR);
+        assertOutputIsEqual("unexpected error");
     }
 }
