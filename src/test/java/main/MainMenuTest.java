@@ -47,7 +47,7 @@ public class MainMenuTest {
         assertOutputIsEqual("menu name is not valid");
 
         view.enterMenu(new String[]{"menu", "enter", "Menu"});
-        assertOutputIsEqual("menu name is not valid");
+        assertOutputIsEqual("invalid command");
 
         view.enterMenu(new String[]{"menu", "enter", "test test", "Menu"});
         assertOutputIsEqual("menu name is not valid");
