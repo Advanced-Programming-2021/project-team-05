@@ -72,7 +72,7 @@ public class ShopTest {
         manager.loadData();
 
         User testUser = new User("testUser", "testPass", "testNick");
-        testUser.increaseMoney(1000);
+        testUser.setMoney(1000);
         ShopMenuController shop = new ShopMenuController(testUser);
 
         ShopMenuMessage notEnoughMoney = shop.buyCard("Battle warrior");
@@ -99,7 +99,7 @@ public class ShopTest {
     @Test
     public void runTest() {
         User testUser = new User("name", "pass", "nick");
-        testUser.increaseMoney(1300);
+        testUser.setMoney(1300);
         ShopMenuView view = new ShopMenuView(new ShopMenuController(testUser));
 
         ArrayList<String> commands = new ArrayList<>();
@@ -189,7 +189,7 @@ public class ShopTest {
         dataManager.loadData();
 
         User testUser = new User("name", "pass", "nick");
-        testUser.increaseMoney(2900);
+        testUser.setMoney(2900);
         ShopMenuView view = new ShopMenuView(new ShopMenuController(testUser));
 
         view.showCard(new String[]{"card", "show"});
@@ -226,7 +226,7 @@ public class ShopTest {
         dataManager.loadData();
 
         User testUser = new User("name", "pass", "nick");
-        testUser.increaseMoney(1000);
+        testUser.setMoney(1000);
         ShopMenuView view = new ShopMenuView(new ShopMenuController(testUser));
 
         view.showCard(new String[]{"shop", "buy"});
