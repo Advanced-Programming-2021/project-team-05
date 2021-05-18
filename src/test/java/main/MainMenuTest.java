@@ -1,7 +1,13 @@
 package main;
 
+import control.DataManager;
 import control.controller.MainMenuController;
+import control.message.MainMenuMessage;
+import model.Deck;
 import model.User;
+import model.card.Card;
+import model.card.Monster;
+import model.template.MonsterTemplate;
 import org.junit.jupiter.api.*;
 import utils.TestUtility;
 import utils.Utility;
@@ -107,15 +113,233 @@ public class MainMenuTest {
 
     @Test
     public void runTest() {
-        User user = new User("user", "pass", "nick");
+        User user = new User("name", "pass", "nick");
         MainMenuView view = new MainMenuView(new MainMenuController(user));
 
-        InputStream stdIn = TestUtility.giveInput("menu enter    Menu\nuser logout\nmenu exit\n");
+        ArrayList<String> commands = new ArrayList<>();
+        ArrayList<String> outputs = new ArrayList<>();
+
+        commands.add("duel mmd ali sdq");
+        outputs.add("invalid command");
+
+        commands.add("menu enter    Menu");
+        outputs.add("invalid command");
+
+        commands.add("user logout");
+        outputs.add("user logged out successfully!");
+
+        commands.add("menu exit");
+
+        StringBuilder commandsStringBuilder = new StringBuilder();
+        for (String command : commands) {
+            commandsStringBuilder.append(command).append("\n");
+        }
+
+        StringBuilder outputsStringBuilder = new StringBuilder();
+        for (String output : outputs) {
+            outputsStringBuilder.append(output).append("\r\n");
+        }
+
+        InputStream stdIn = TestUtility.giveInput(commandsStringBuilder.toString());
         Utility.initializeScanner();
         view.run();
 
-        assertOutputIsEqual("invalid command\r\nuser logged out successfully!");
+        assertOutputIsEqual(outputsStringBuilder.toString().trim());
         System.setIn(stdIn);
+    }
+
+
+    @Test
+    public void printStartDuelMessageTest() {
+        User user = new User("name", "pass", "nick");
+        MainMenuView view = new MainMenuView(new MainMenuController(user));
+
+        String username = "mmd";
+
+        view.printStartDuelMessage(MainMenuMessage.NO_PLAYER_EXISTS, username);
+        assertOutputIsEqual("there is no player with this username");
+
+        view.printStartDuelMessage(MainMenuMessage.NO_ACTIVE_DECK, username);
+        assertOutputIsEqual(username + " has no active deck");
+
+        view.printStartDuelMessage(MainMenuMessage.INVALID_DECK, username);
+        assertOutputIsEqual(username + "'s deck is invalid");
+
+        view.printStartDuelMessage(MainMenuMessage.INVALID_ROUND, username);
+        assertOutputIsEqual("number of rounds is not supported");
+
+        view.printStartDuelMessage(MainMenuMessage.GAME_STARTED_SUCCESSFULLY, username);
+        assertOutputIsEqual("unexpected error");
+
+        view.printStartDuelMessage(MainMenuMessage.ERROR, username);
+        assertOutputIsEqual("unexpected error");
+    }
+
+
+    @Test
+    public void startDuelTest() {
+        User user = new User("name", "pass", "nick");
+        MainMenuView view = new MainMenuView(new MainMenuController(user));
+
+        ArrayList<String> commands = new ArrayList<>();
+        ArrayList<String> outputs = new ArrayList<>();
+
+        commands.add("duel --new --second-player mmd 3 --rounds");
+        outputs.add("invalid command");
+
+        commands.add("duel --new --second-player mmd --rounds 3 1");
+        outputs.add("invalid command");
+
+        commands.add("duel --new --ai --rounds 1 2");
+        outputs.add("invalid command");
+
+        commands.add("duel --ai --new --rounds 1 2");
+        outputs.add("invalid command");
+
+        commands.add("duel --second-player mmd --rounds 2");
+        outputs.add("invalid command");
+
+        commands.add("duel --new --second-player mmd");
+        outputs.add("invalid command");
+
+        commands.add("duel --rounds 1 --second-player mmd --new");
+        outputs.add("there is no player with this username");
+
+        commands.add("duel --new --rounds 2 --ai");
+        outputs.add("name has no active deck");
+
+        commands.add("menu enter    Menu");
+        outputs.add("invalid command");
+
+        commands.add("user logout");
+        outputs.add("user logged out successfully!");
+
+        commands.add("menu exit");
+
+        StringBuilder commandsStringBuilder = new StringBuilder();
+        for (String command : commands) {
+            commandsStringBuilder.append(command).append("\n");
+        }
+
+        StringBuilder outputsStringBuilder = new StringBuilder();
+        for (String output : outputs) {
+            outputsStringBuilder.append(output).append("\r\n");
+        }
+
+        InputStream stdIn = TestUtility.giveInput(commandsStringBuilder.toString());
+        Utility.initializeScanner();
+        view.run();
+
+        assertOutputIsEqual(outputsStringBuilder.toString().trim());
+        System.setIn(stdIn);
+
+    }
+
+
+    @Test
+    public void startDuelWithUserTest() {
+        DataManager manager = DataManager.getInstance();
+        manager.loadData();
+
+        String myName = "myName";
+        String opName = "opponentsName";
+        User myUser = new User(myName, "myPassword", "myNickname");
+        User opponentsUser = new User(opName, "opponentsPass", "opponentsNick");
+
+        manager.addUser(myUser);
+        manager.addUser(opponentsUser);
+        MainMenuController controller = new MainMenuController(myUser);
+        MainMenuView view = new MainMenuView(controller);
+
+        controller.startDuelWithUser("mmd", 1);
+        assertOutputIsEqual("there is no player with this username");
+
+        controller.startDuelWithUser(opName, 1);
+        assertOutputIsEqual(myName + " has no active deck");
+
+        Deck myDeck = new Deck("my active deck");
+        myDeck.setId("1");
+        manager.addDeck(myDeck);
+        myUser.setActiveDeck(myDeck);
+
+        controller.startDuelWithUser(opName, 1);
+        assertOutputIsEqual(opName + " has no active deck");
+
+        Deck opponentsDeck = new Deck("opponents active deck");
+        opponentsDeck.setId("2");
+        manager.addDeck(opponentsDeck);
+        opponentsUser.setActiveDeck(opponentsDeck);
+
+        controller.startDuelWithUser(opName, 1);
+        assertOutputIsEqual(myName + "'s deck is invalid");
+
+        for (int i = 0; i < 41; i++) {
+            Card card = new Monster((MonsterTemplate) manager.getCardTemplateByName("Suijin"));
+            myDeck.addCardToMainDeck(card);
+            manager.addCard(card);
+        }
+
+        controller.startDuelWithUser(opName, 1);
+        assertOutputIsEqual(opName + "'s deck is invalid");
+
+        for (int i = 0; i < 41; i++) {
+            Card card = new Monster((MonsterTemplate) manager.getCardTemplateByName("Suijin"));
+            opponentsDeck.addCardToMainDeck(card);
+            manager.addCard(card);
+        }
+
+        controller.startDuelWithUser(opName, 2);
+        assertOutputIsEqual("number of rounds is not supported");
+
+        InputStream stdIn = TestUtility.giveInput("menu exit\nuser logout\nmenu exit");
+        Utility.initializeScanner();
+
+        controller.startDuelWithUser(opName, 1);
+        String output = outContent.toString().trim();
+        outContent.reset();
+        Assertions.assertTrue(output.equals("coin side was tails and " + myName + " starts duel") ||
+                        output.equals("coin side was heads and " + myName + " starts duel"));
+        view.run();
+
+        assertOutputIsEqual("user logged out successfully!");
+        System.setIn(stdIn);
+    }
+
+
+    @Test
+    public void startDuelWithAi() {
+        DataManager manager = DataManager.getInstance();
+        manager.loadData();
+
+        String myName = "myName";
+        String opName = "opponentsName";
+        User myUser = new User(myName, "myPassword", "myNickname");
+        User opponentsUser = new User(opName, "opponentsPass", "opponentsNick");
+
+        manager.addUser(myUser);
+        manager.addUser(opponentsUser);
+        MainMenuController controller = new MainMenuController(myUser);
+        MainMenuView view = new MainMenuView(controller);
+
+        controller.startDuelWithAi(1);
+        assertOutputIsEqual(myName + " has no active deck");
+
+        Deck myDeck = new Deck("my active deck");
+        myDeck.setId("1");
+        manager.addDeck(myDeck);
+        myUser.setActiveDeck(myDeck);
+
+        controller.startDuelWithAi(1);
+        assertOutputIsEqual(myName + "'s deck is invalid");
+
+        for (int i = 0; i < 41; i++) {
+            Card card = new Monster((MonsterTemplate) manager.getCardTemplateByName("Suijin"));
+            myDeck.addCardToMainDeck(card);
+            manager.addCard(card);
+        }
+
+        controller.startDuelWithAi(2);
+        assertOutputIsEqual("number of rounds is not supported");
     }
 
 

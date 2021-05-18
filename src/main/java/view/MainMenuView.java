@@ -42,9 +42,9 @@ public class MainMenuView {
     }
 
 
-    private void startDuel(String[] command) {
+    public void startDuel(String[] command) {
         CmdLineParser parser = new CmdLineParser();
-        Option<Boolean> newOption = parser.addBooleanOption('n', "new");
+        Option<Boolean> userOption = parser.addBooleanOption('n', "new");
         Option<String> opponentUsernameOption = parser.addStringOption('p', "second-player");
         Option<Integer> roundsOption = parser.addIntegerOption('r', "rounds");
         Option<Boolean> aiOption = parser.addBooleanOption('a', "ai");
@@ -56,7 +56,7 @@ public class MainMenuView {
             return;
         }
 
-        boolean newDuel = parser.getOptionValue(newOption, false);
+        boolean newDuel = parser.getOptionValue(userOption, false);
         String opponentUsername = parser.getOptionValue(opponentUsernameOption);
         Integer rounds = parser.getOptionValue(roundsOption);
         boolean ai = parser.getOptionValue(aiOption, false);
@@ -69,7 +69,6 @@ public class MainMenuView {
             return;
         }
 
-        MainMenuMessage message;
         if (ai) {
             mainMenuController.startDuelWithAi(rounds);
         } else {
@@ -107,13 +106,8 @@ public class MainMenuView {
             System.out.println("invalid command");
             return;
         }
-        String menuName;
-        try {
-            menuName = command[2];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("invalid command");
-            return;
-        }
+
+        String menuName = command[2];
 
         switch (menuName) {
             case "Deck":
