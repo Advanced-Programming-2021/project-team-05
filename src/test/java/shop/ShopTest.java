@@ -113,7 +113,7 @@ public class ShopTest {
         commands.add("shop buy Haniwa");
         outputs.add("card bought successfully!");
 
-        commands.add("shop buy Curtain of the dark ones");
+        commands.add("shop buy Curtain_of_the_dark_ones");
         outputs.add("card bought successfully!");
 
         commands.add("card show Fireyarou");
