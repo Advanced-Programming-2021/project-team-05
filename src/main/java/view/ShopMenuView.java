@@ -23,11 +23,11 @@ public class ShopMenuView {
     public final void run() {
         while (true) {
             String command = Utility.getNextLine();
-            if (command.matches("^shop buy \\S$")) {
+            if (command.matches("^shop buy \\S+$")) {
                 buyCard(command.split("\\s"));
             } else if (command.equals("shop show --all")) {
                 showAllCards();
-            } else if (command.matches("^card show \\S$")) {
+            } else if (command.matches("^card show \\S+$")) {
                 showCard(command.split("\\s"));
             } else if (command.equals("menu show-current")) {
                 showCurrentMenu();

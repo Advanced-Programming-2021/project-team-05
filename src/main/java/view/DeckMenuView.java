@@ -234,7 +234,7 @@ public class DeckMenuView {
 
     private void showAllDecks() {
         User user = deckMenuController.getUser();
-        ArrayList<Deck> allDecks = user.getAllDecks();
+        ArrayList<Deck> allDecks = user.getDecks();
 
         System.out.println("Decks:");
 
@@ -290,7 +290,7 @@ public class DeckMenuView {
 
     private void showAllCards() {
         User user = deckMenuController.getUser();
-        ArrayList<Card> cards = user.getAllCards();
+        ArrayList<Card> cards = user.getPurchasedCards();
         cards.sort(Comparator.comparing(Card::getName));
 
         for (Card card : cards) {

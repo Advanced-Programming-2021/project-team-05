@@ -69,7 +69,6 @@ public class MainMenuView {
             return;
         }
 
-        MainMenuMessage message;
         if (ai) {
             mainMenuController.startDuelWithAi(rounds);
         } else {

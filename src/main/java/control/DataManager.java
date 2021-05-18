@@ -25,27 +25,35 @@ import model.template.property.MonsterAttribute;
 import model.template.property.MonsterType;
 import model.template.property.SpellTrapStatus;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 public class DataManager {
 
+    private static final String USERS_JSON_PATH = "data\\users.json";
+    private static final String CARDS_JSON_PATH = "data\\cards.json";
+    private static final String DECKS_JSON_PATH = "data\\decks.json";
+    private static final String EFFECTS_JSON_PATH = "data\\effects.json";
+    private static final String MONSTER_CSV_PATH = "data\\Monster.csv";
+    private static final String SPELL_TRAP_CSV_PATH = "data\\SpellTrap.csv";
+
     private static DataManager dataManager;
 
-    private ArrayList<User> allUsers;
-    private ArrayList<Card> allCards;
-    private ArrayList<CardTemplate> allTemplates;
-    private ArrayList<Deck> allDecks;
+    private ArrayList<User> users;
+    private ArrayList<Card> cards;
+    private final ArrayList<CardTemplate> templates;
+    private ArrayList<Deck> decks;
 
     {
-        allUsers = new ArrayList<>();
-        allCards = new ArrayList<>();
-        allTemplates = new ArrayList<>();
-        allDecks = new ArrayList<>();
+        users = new ArrayList<>();
+        cards = new ArrayList<>();
+        templates = new ArrayList<>();
+        decks = new ArrayList<>();
     }
 
 
@@ -62,16 +70,16 @@ public class DataManager {
     }
 
 
-    public ArrayList<User> getAllUsers() {
-        return this.allUsers;
+    public ArrayList<User> getUsers() {
+        return this.users;
     }
 
     public void addUser(User user) {
-        this.allUsers.add(user);
+        this.users.add(user);
     }
 
     public User getUserByUsername(String username) {
-        for (User user : this.allUsers) {
+        for (User user : this.users) {
             if (username.equals(user.getUsername())) {
                 return user;
             }
@@ -80,7 +88,7 @@ public class DataManager {
     }
 
     public User getUserByNickname(String nickname) {
-        for (User user : this.allUsers) {
+        for (User user : this.users) {
             if (nickname.equals(user.getNickname())) {
                 return user;
             }
@@ -88,90 +96,83 @@ public class DataManager {
         return null;
     }
 
+    private void sortUsers() {
+        this.users.sort(Comparator
+                .comparing(User::getScore, Comparator.reverseOrder())
+                .thenComparing(User::getNickname));
+    }
+
 
     public ArrayList<CardTemplate> getCardTemplates() {
-        return this.allTemplates;
+        return this.templates;
     }
 
     public CardTemplate getCardTemplateByName(String name) {
-        for (CardTemplate template : this.allTemplates) {
+        for (CardTemplate template : this.templates) {
             if (name.equals(template.getName())) {
                 return template;
             }
         }
-
         return null;
     }
 
 
-    public ArrayList<Deck> getAllDecks() {
-        return this.allDecks;
+    public ArrayList<Deck> getDecks() {
+        return this.decks;
     }
 
     public void addDeck(Deck deck) {
-        this.allDecks.add(deck);
+        this.decks.add(deck);
     }
 
-    public Deck getDeckByUUID(String uuid) {
-        for (Deck deck : this.allDecks) {
-            if (deck.getId().equals(uuid)) {
+    public Deck getDeckById(String id) {
+        for (Deck deck : this.decks) {
+            if (deck.getId().equals(id)) {
                 return deck;
             }
         }
-
         return null;
     }
 
     public void removeDeck(Deck deck) {
-        this.allDecks.remove(deck);
+        this.decks.remove(deck);
     }
 
 
-    public ArrayList<Card> getAllCards() {
-        return this.allCards;
+    public ArrayList<Card> getCards() {
+        return this.cards;
     }
 
     public void addCard(Card card) {
-        this.allCards.add(card);
+        this.cards.add(card);
     }
 
-    public Card getCardByUUID(String uuid) {
-        for (Card card : this.allCards) {
-            if (card.getId().equals(uuid)) {
+    public Card getCardById(String id) {
+        for (Card card : this.cards) {
+            if (card.getId().equals(id)) {
                 return card;
             }
         }
-
         return null;
     }
 
 
     public String getScoreboard() {
-        this.allUsers.sort(Comparator
-                .comparing(User::getScore, Comparator.reverseOrder())
-                .thenComparing(User::getNickname));
-        StringBuilder scoreboard = new StringBuilder();
-        int position = 1;
-        for (int i = 0; i < this.allUsers.size(); i++) {
-            User user = this.allUsers.get(i);
-            scoreboard.append(position).append(". ").append(user.getNickname()).append(": ").append(user.getScore()).append("\r\n");
-            if (i != this.allUsers.size() - 1 && user.getScore() != this.allUsers.get(i + 1).getScore()) {
-                position = i + 2;
+        sortUsers();
+        StringBuilder scoreboardString = new StringBuilder();
+        for (int i = 0, rank = 1, size = this.users.size(); i < size; i++) {
+            User user = this.users.get(i);
+            scoreboardString.append(rank).append(". ")
+                    .append(user.getNickname()).append(": ")
+                    .append(user.getScore()).append("\r\n");
+            if (i < size - 1 && user.getScore() != this.users.get(i + 1).getScore()) {
+                rank = i + 2;
             }
         }
-        return scoreboard.toString();
+        scoreboardString.delete(scoreboardString.length() - 2, scoreboardString.length());
+        return scoreboardString.toString();
     }
 
-
-    public void createDataFolder() {
-        String path = "data";
-        File file = new File(path);
-        if (!Files.exists(Paths.get(path))) {
-            if (!file.mkdir()) {
-                System.out.println("could not create data folder");
-            }
-        }
-    }
 
     private RuntimeTypeAdapterFactory<Card> getCardAdapter() {
         return RuntimeTypeAdapterFactory
@@ -181,35 +182,14 @@ public class DataManager {
                 .registerSubtype(Trap.class, TrapTemplate.class.getName());
     }
 
-    private RuntimeTypeAdapterFactory<CardTemplate> getCardTemplateAdapter() {
-        return RuntimeTypeAdapterFactory
-                .of(CardTemplate.class, "template_type")
-                .registerSubtype(MonsterTemplate.class, MonsterTemplate.class.getName())
-                .registerSubtype(SpellTemplate.class, SpellTemplate.class.getName())
-                .registerSubtype(TrapTemplate.class, TrapTemplate.class.getName());
-    }
-
 
     private void loadUsers() {
         try {
             Gson gson = new Gson();
-            JsonReader userReader = new JsonReader(new FileReader("data\\users.json"));
+            JsonReader userReader = new JsonReader(new FileReader(USERS_JSON_PATH));
             Type userType = new TypeToken<ArrayList<User>>() {
             }.getType();
-            this.allUsers = gson.fromJson(userReader, userType);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadTemplates() {
-        try {
-            RuntimeTypeAdapterFactory<CardTemplate> templateAdapter = getCardTemplateAdapter();
-            Gson templateGson = new GsonBuilder().registerTypeAdapterFactory(templateAdapter).create();
-            JsonReader templateReader = new JsonReader(new FileReader("data\\templates.json"));
-            Type templateType = new TypeToken<ArrayList<CardTemplate>>() {
-            }.getType();
-            this.allTemplates = templateGson.fromJson(templateReader, templateType);
+            this.users = gson.fromJson(userReader, userType);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -217,8 +197,7 @@ public class DataManager {
 
     public void loadMonsterTemplatesFromCSV() {
         try {
-            CSVReader csvReader = new CSVReaderBuilder(new FileReader("data\\Monster.csv")).withSkipLines(1).build();
-
+            CSVReader csvReader = new CSVReaderBuilder(new FileReader(MONSTER_CSV_PATH)).withSkipLines(1).build();
             String[] nextLine;
             while ((nextLine = csvReader.readNext()) != null) {
                 String name = nextLine[0];
@@ -235,7 +214,7 @@ public class DataManager {
                     throw new Exception("error at " + nextLine[2] + "|" + nextLine[3] + "|" + nextLine[4]);
                 }
 
-                dataManager.allTemplates.add(new MonsterTemplate(name, type, description, price, monsterType, attribute, level, attack, defense));
+                this.templates.add(new MonsterTemplate(name, type, description, price, monsterType, attribute, level, attack, defense));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -244,8 +223,7 @@ public class DataManager {
 
     public void loadSpellTrapTemplatesFromCSV() {
         try {
-            CSVReader csvReader = new CSVReaderBuilder(new FileReader("data\\SpellTrap.csv")).withSkipLines(1).build();
-
+            CSVReader csvReader = new CSVReaderBuilder(new FileReader(SPELL_TRAP_CSV_PATH)).withSkipLines(1).build();
             String[] nextLine;
             while ((nextLine = csvReader.readNext()) != null) {
                 String name = nextLine[0];
@@ -260,11 +238,11 @@ public class DataManager {
                 }
 
                 if ("Spell".equals(cardType)) {
-                    allTemplates.add(new SpellTemplate(name, type, description, price, status));
+                    this.templates.add(new SpellTemplate(name, type, description, price, status));
                 } else if ("Trap".equals(cardType)) {
-                    allTemplates.add(new TrapTemplate(name, type, description, price, status));
+                    this.templates.add(new TrapTemplate(name, type, description, price, status));
                 } else {
-                    throw new Exception("Spell Trap");
+                    throw new Exception("card type wasn't Speel or Trap");
                 }
             }
         } catch (Exception e) {
@@ -276,10 +254,10 @@ public class DataManager {
         try {
             RuntimeTypeAdapterFactory<Card> cardAdapter = getCardAdapter();
             Gson cardGson = new GsonBuilder().registerTypeAdapterFactory(cardAdapter).create();
-            JsonReader cardReader = new JsonReader(new FileReader("data\\cards.json"));
+            JsonReader cardReader = new JsonReader(new FileReader(CARDS_JSON_PATH));
             Type cardType = new TypeToken<ArrayList<Card>>() {
             }.getType();
-            this.allCards = cardGson.fromJson(cardReader, cardType);
+            this.cards = cardGson.fromJson(cardReader, cardType);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -288,10 +266,10 @@ public class DataManager {
     private void loadDecks() {
         try {
             Gson gson = new Gson();
-            JsonReader deckReader = new JsonReader(new FileReader("data\\decks.json"));
+            JsonReader deckReader = new JsonReader(new FileReader(DECKS_JSON_PATH));
             Type deckType = new TypeToken<ArrayList<Deck>>() {
             }.getType();
-            this.allDecks = gson.fromJson(deckReader, deckType);
+            this.decks = gson.fromJson(deckReader, deckType);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -300,11 +278,11 @@ public class DataManager {
     private void loadEffects() {
         try {
             JsonParser parser = new JsonParser();
-            JsonReader effectReader = new JsonReader(new FileReader("data\\effects.json"));
+            JsonReader effectReader = new JsonReader(new FileReader(EFFECTS_JSON_PATH));
             JsonArray effectsArray = parser.parse(effectReader).getAsJsonArray();
             for (JsonElement effectElement : effectsArray) {
                 JsonObject effectObject = effectElement.getAsJsonObject();
-                String cardName = effectObject.get("name").getAsString();
+                String cardName = effectObject.get("cardName").getAsString();
                 Event event = Event.valueOf(effectObject.get("event").getAsString());
                 ActionEnum action = ActionEnum.valueOf(effectObject.get("action").getAsString());
 
@@ -317,7 +295,7 @@ public class DataManager {
     }
 
     public void loadData() {
-        allTemplates.clear();
+        templates.clear();
         loadUsers();
         loadMonsterTemplatesFromCSV();
         loadSpellTrapTemplatesFromCSV();
@@ -330,25 +308,10 @@ public class DataManager {
     private void saveUsers() {
         try {
             Gson gson = new GsonBuilder().serializeNulls().create();
-            FileWriter userWriter = new FileWriter("data\\users.json");
-            gson.toJson(this.allUsers, userWriter);
+            FileWriter userWriter = new FileWriter(USERS_JSON_PATH);
+            gson.toJson(this.users, userWriter);
             userWriter.flush();
             userWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void saveCardTemplates() {
-        try {
-            RuntimeTypeAdapterFactory<CardTemplate> templateAdapter = getCardTemplateAdapter();
-            Gson templateGson = new GsonBuilder().serializeNulls().registerTypeAdapterFactory(templateAdapter).create();
-            FileWriter templatesWriter = new FileWriter("data\\templates.json");
-            Type type = new TypeToken<ArrayList<CardTemplate>>() {
-            }.getType();
-            templateGson.toJson(this.allTemplates, type, templatesWriter);
-            templatesWriter.flush();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -358,10 +321,10 @@ public class DataManager {
         try {
             RuntimeTypeAdapterFactory<Card> cardAdapter = getCardAdapter();
             Gson cardGson = new GsonBuilder().serializeNulls().registerTypeAdapterFactory(cardAdapter).create();
-            FileWriter cardsWriter = new FileWriter("data\\cards.json");
+            FileWriter cardsWriter = new FileWriter(CARDS_JSON_PATH);
             Type type = new TypeToken<ArrayList<Card>>() {
             }.getType();
-            cardGson.toJson(this.allCards, type, cardsWriter);
+            cardGson.toJson(this.cards, type, cardsWriter);
             cardsWriter.flush();
             cardsWriter.close();
         } catch (IOException e) {
@@ -372,8 +335,8 @@ public class DataManager {
     private void saveDecks() {
         try {
             Gson gson = new GsonBuilder().serializeNulls().create();
-            FileWriter decksWriter = new FileWriter("data\\decks.json");
-            gson.toJson(this.allDecks, decksWriter);
+            FileWriter decksWriter = new FileWriter(DECKS_JSON_PATH);
+            gson.toJson(this.decks, decksWriter);
             decksWriter.flush();
             decksWriter.close();
         } catch (IOException e) {
@@ -387,36 +350,16 @@ public class DataManager {
         saveDecks();
     }
 
+
     public void addTemplateToCSV(CardTemplate template) {
         String[] line;
         String path;
         if (template instanceof MonsterTemplate) {
-            path = "data\\Monster.csv";
-            line = new String[9];
-            line[0] = template.getName();
-            line[1] = String.valueOf(((MonsterTemplate) template).getLevel());
-            line[2] = ((MonsterTemplate) template).getAttribute().getName();
-            line[3] = ((MonsterTemplate) template).getMonsterType().getName();
-            line[4] = template.getType().getName();
-            line[5] = String.valueOf(((MonsterTemplate) template).getAttack());
-            line[6] = String.valueOf(((MonsterTemplate) template).getDefence());
-            line[7] = template.getDescription();
-            line[8] = String.valueOf(template.getPrice());
+            path = MONSTER_CSV_PATH;
+            line = getCSVLineMonster(template);
         } else {
-            path = "data\\SpellTrap.csv";
-            line = new String[6];
-            line[0] = template.getName();
-            line[2] = template.getType().getName();
-            line[3] = template.getDescription();
-            line[5] = String.valueOf(template.getPrice());
-
-            if (template instanceof SpellTemplate) {
-                line[1] = "Spell";
-                line[4] = ((SpellTemplate) template).getStatus().getName();
-            } else if (template instanceof TrapTemplate) {
-                line[1] = "Trap";
-                line[4] = ((TrapTemplate) template).getStatus().getName();
-            }
+            path = SPELL_TRAP_CSV_PATH;
+            line = getCSVLineSpellTrap(template);
         }
 
         try {
@@ -426,5 +369,36 @@ public class DataManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String[] getCSVLineMonster(CardTemplate template) {
+        String[] line = new String[9];
+        line[0] = template.getName();
+        line[1] = String.valueOf(((MonsterTemplate) template).getLevel());
+        line[2] = ((MonsterTemplate) template).getAttribute().getName();
+        line[3] = ((MonsterTemplate) template).getMonsterType().getName();
+        line[4] = template.getType().getName();
+        line[5] = String.valueOf(((MonsterTemplate) template).getAttack());
+        line[6] = String.valueOf(((MonsterTemplate) template).getDefence());
+        line[7] = template.getDescription();
+        line[8] = String.valueOf(template.getPrice());
+        return line;
+    }
+
+    private String[] getCSVLineSpellTrap(CardTemplate template) {
+        String[] line = new String[6];
+        line[0] = template.getName();
+        line[2] = template.getType().getName();
+        line[3] = template.getDescription();
+        line[5] = String.valueOf(template.getPrice());
+
+        if (template instanceof SpellTemplate) {
+            line[1] = "Spell";
+            line[4] = ((SpellTemplate) template).getStatus().getName();
+        } else if (template instanceof TrapTemplate) {
+            line[1] = "Trap";
+            line[4] = ((TrapTemplate) template).getStatus().getName();
+        }
+        return line;
     }
 }

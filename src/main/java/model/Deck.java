@@ -62,7 +62,7 @@ public class Deck implements Cloneable {
         DataManager dataManager = DataManager.getInstance();
 
         for (String id : this.mainDeckCards) {
-            Card card = dataManager.getCardByUUID(id);
+            Card card = dataManager.getCardById(id);
             if (name.equals(card.getName())) cards.add(card);
         }
 
@@ -70,7 +70,7 @@ public class Deck implements Cloneable {
     }
 
     public final Card drawCard() {
-        Card card = DataManager.getInstance().getCardByUUID(this.mainDeckCards.get(0));
+        Card card = DataManager.getInstance().getCardById(this.mainDeckCards.get(0));
         this.mainDeckCards.remove(0);
         return card;
     }
@@ -101,7 +101,7 @@ public class Deck implements Cloneable {
         DataManager dataManager = DataManager.getInstance();
 
         for (String id : this.sideDeckCards) {
-            Card card = dataManager.getCardByUUID(id);
+            Card card = dataManager.getCardById(id);
             if (name.equals(card.getName())) cards.add(card);
         }
 
@@ -142,7 +142,7 @@ public class Deck implements Cloneable {
         DataManager dataManager = DataManager.getInstance();
 
         for (String id : cards) {
-            Card card = dataManager.getCardByUUID(id);
+            Card card = dataManager.getCardById(id);
             if (card instanceof Monster) {
                 monsters.add(card);
             } else {
@@ -196,12 +196,12 @@ public class Deck implements Cloneable {
 
         cloned.mainDeckCards = new ArrayList<>();
         for (String cardId : this.mainDeckCards) {
-            cloned.addCardToMainDeck(dataManager.getCardByUUID(cardId));
+            cloned.addCardToMainDeck(dataManager.getCardById(cardId));
         }
 
         cloned.sideDeckCards = new ArrayList<>();
         for (String cardId : this.sideDeckCards) {
-            cloned.addCardToSideDeck(dataManager.getCardByUUID(cardId));
+            cloned.addCardToSideDeck(dataManager.getCardById(cardId));
         }
 
         return cloned;

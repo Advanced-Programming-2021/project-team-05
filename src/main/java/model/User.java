@@ -8,18 +8,18 @@ import java.util.Objects;
 
 public class User {
 
-    private final ArrayList<String> purchasedCards;
-    private final ArrayList<String> decks;
+    private final ArrayList<String> purchasedCardsIds;
+    private final ArrayList<String> decksIds;
     private String username;
     private String password;
     private String nickname;
-    private String activeDeck;
+    private String activeDeckId;
     private int score;
     private long money;
 
     {
-        purchasedCards = new ArrayList<>();
-        decks = new ArrayList<>();
+        purchasedCardsIds = new ArrayList<>();
+        decksIds = new ArrayList<>();
     }
 
 
@@ -89,81 +89,71 @@ public class User {
     }
 
 
-    public ArrayList<Card> getAllCards() {
-        ArrayList<Card> cards = new ArrayList<>();
+    public ArrayList<Card> getPurchasedCards() {
         DataManager dataManager = DataManager.getInstance();
-        for (String cardId : purchasedCards) {
-            cards.add(dataManager.getCardByUUID(cardId));
+        ArrayList<Card> cards = new ArrayList<>();
+        for (String cardId : purchasedCardsIds) {
+            cards.add(dataManager.getCardById(cardId));
         }
-
         return cards;
     }
 
     public void purchaseCard(Card card) {
-        this.purchasedCards.add(card.getId());
+        this.purchasedCardsIds.add(card.getId());
     }
 
     public void removeCard(Card card) {
-        this.purchasedCards.remove(card.getId());
+        this.purchasedCardsIds.remove(card.getId());
     }
 
     public ArrayList<Card> getPurchasedCardsByName(String name) {
-        ArrayList<Card> purchasedCards = new ArrayList<>();
         DataManager dataManager = DataManager.getInstance();
-
-        for (String id : this.purchasedCards) {
-            Card card = dataManager.getCardByUUID(id);
+        ArrayList<Card> purchasedCards = new ArrayList<>();
+        for (String cardId : this.purchasedCardsIds) {
+            Card card = dataManager.getCardById(cardId);
             if (name.equals(card.getName())) {
                 purchasedCards.add(card);
             }
         }
-
         return purchasedCards;
     }
 
 
-    public ArrayList<String> getDecks() {
-        return this.decks;
-    }
-
-    public ArrayList<Deck> getAllDecks() {
-        ArrayList<Deck> allDecks = new ArrayList<>();
+    public ArrayList<Deck> getDecks() {
         DataManager dataManager = DataManager.getInstance();
-        for (String deckId : this.decks) {
-            allDecks.add(dataManager.getDeckByUUID(deckId));
+        ArrayList<Deck> allDecks = new ArrayList<>();
+        for (String deckId : this.decksIds) {
+            allDecks.add(dataManager.getDeckById(deckId));
         }
-
         return allDecks;
     }
 
     public void addDeck(Deck deck) {
-        this.decks.add(deck.getId());
+        this.decksIds.add(deck.getId());
     }
 
     public void removeDeck(Deck deck) {
-        this.decks.remove(deck.getId());
+        this.decksIds.remove(deck.getId());
     }
 
     public Deck getDeckByName(String name) {
         DataManager dataManager = DataManager.getInstance();
-
-        for (String id : this.decks) {
-            Deck deck = dataManager.getDeckByUUID(id);
+        for (String deckId : this.decksIds) {
+            Deck deck = dataManager.getDeckById(deckId);
             if (name.equals(deck.getName())) {
                 return deck;
             }
         }
-
         return null;
     }
 
 
     public Deck getActiveDeck() {
-        return DataManager.getInstance().getDeckByUUID(this.activeDeck);
+        return DataManager.getInstance().getDeckById(this.activeDeckId);
     }
 
     public void setActiveDeck(Deck activeDeck) {
-        this.activeDeck = activeDeck.getId();
+        this.activeDeckId = activeDeck.getId();
     }
 
 
@@ -172,7 +162,13 @@ public class User {
         if (this == object) return true;
         if (object == null || this.getClass() != object.getClass()) return false;
         User user = (User) object;
-        return this.username.equals(user.getUsername());
+        return this.getUsername().equals(user.getUsername());
+    }
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getUsername());
     }
 
 

@@ -45,7 +45,7 @@ public class CreateUserTest {
 
     @BeforeEach
     public void clearUsersInDataManager() {
-        DataManager.getInstance().getAllUsers().clear();
+        DataManager.getInstance().getUsers().clear();
     }
 
 

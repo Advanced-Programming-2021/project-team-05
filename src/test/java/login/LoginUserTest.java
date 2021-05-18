@@ -2,7 +2,6 @@ package login;
 
 import control.DataManager;
 import control.controller.LoginMenuController;
-import model.User;
 import org.junit.jupiter.api.*;
 import view.LoginMenuView;
 
@@ -31,7 +30,7 @@ public class LoginUserTest {
     public static void createUsers() {
         LoginMenuController controller = new LoginMenuController();
         LoginMenuView view = new LoginMenuView(controller);
-        DataManager.getInstance().getAllUsers().clear();
+        DataManager.getInstance().getUsers().clear();
 
         view.createUser("user create --username test1 --password pass1 --nickname nick1".split("\\s"));
         view.createUser("user create --username test2 --password pass2 --nickname nick2".split("\\s"));

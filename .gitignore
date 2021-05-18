@@ -105,9 +105,5 @@ fabric.properties
 # https://plugins.jetbrains.com/plugin/12206-codestream
 .idea/codestream.xml
 
-# json data files
-/data/templates.json
-#/data/*.json
-
 # compiled .class files
 /target
