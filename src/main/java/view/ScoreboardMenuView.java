@@ -17,6 +17,8 @@ public class ScoreboardMenuView {
                 System.out.println("menu navigation is not possible");
             } else if (command.equals("menu exit")) {
                 break;
+            } else if (command.equals("menu help")) {
+                showHelp();
             } else {
                 System.out.println("invalid command");
             }
@@ -29,7 +31,18 @@ public class ScoreboardMenuView {
     }
 
 
-    private void showCurrentMenu() {
+    public void showCurrentMenu() {
         System.out.println("Scoreboard Menu");
+    }
+
+
+    public void showHelp() {
+        System.out.println(
+                "commands:\r\n" +
+                        "\tscoreboard show\r\n" +
+                        "\tmenu show-current\r\n" +
+                        "\tmenu exit\r\n" +
+                        "\tmenu help"
+        );
     }
 }

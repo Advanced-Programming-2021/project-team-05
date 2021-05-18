@@ -9,17 +9,12 @@ import utils.Utility;
 
 public class MainMenuView {
 
-    private MainMenuController mainMenuController;
+    private final MainMenuController controller;
 
 
-    public MainMenuView(MainMenuController mainMenuController) {
-        this.setMainMenuController(mainMenuController);
-        mainMenuController.setView(this);
-    }
-
-
-    public void setMainMenuController(MainMenuController mainMenuController) {
-        this.mainMenuController = mainMenuController;
+    public MainMenuView(MainMenuController controller) {
+        this.controller = controller;
+        controller.setView(this);
     }
 
 
@@ -35,6 +30,8 @@ public class MainMenuView {
                 showCurrentMenu();
             } else if (command.matches("^menu enter \\S+ Menu$")) {
                 enterMenu(command.split("\\s"));
+            } else if (command.equals("menu help")) {
+                showHelp();
             } else {
                 System.out.println("invalid command");
             }
@@ -44,11 +41,10 @@ public class MainMenuView {
 
     public void startDuel(String[] command) {
         CmdLineParser parser = new CmdLineParser();
-        Option<Boolean> userOption = parser.addBooleanOption('n', "new");
+        Option<Boolean> newOption = parser.addBooleanOption('n', "new");
         Option<String> opponentUsernameOption = parser.addStringOption('p', "second-player");
         Option<Integer> roundsOption = parser.addIntegerOption('r', "rounds");
         Option<Boolean> aiOption = parser.addBooleanOption('a', "ai");
-
         try {
             parser.parse(command);
         } catch (CmdLineParser.OptionException e) {
@@ -56,7 +52,7 @@ public class MainMenuView {
             return;
         }
 
-        boolean newDuel = parser.getOptionValue(userOption, false);
+        boolean newDuel = parser.getOptionValue(newOption, false);
         String opponentUsername = parser.getOptionValue(opponentUsernameOption);
         Integer rounds = parser.getOptionValue(roundsOption);
         boolean ai = parser.getOptionValue(aiOption, false);
@@ -70,9 +66,9 @@ public class MainMenuView {
         }
 
         if (ai) {
-            mainMenuController.startDuelWithAi(rounds);
+            controller.startDuelWithAi(rounds);
         } else {
-            mainMenuController.startDuelWithUser(opponentUsername, rounds);
+            controller.startDuelWithUser(opponentUsername, rounds);
         }
     }
 
@@ -108,7 +104,6 @@ public class MainMenuView {
         }
 
         String menuName = command[2];
-
         switch (menuName) {
             case "Deck":
                 enterDeckMenu();
@@ -136,12 +131,12 @@ public class MainMenuView {
     }
 
     private void enterShopMenu() {
-        ShopMenuView shopMenuView = new ShopMenuView(new ShopMenuController(mainMenuController.getUser()));
+        ShopMenuView shopMenuView = new ShopMenuView(new ShopMenuController(controller.getUser()));
         shopMenuView.run();
     }
 
     private void enterProfileMenu() {
-        ProfileMenuView profileMenuView = new ProfileMenuView(new ProfileMenuController(mainMenuController.getUser()));
+        ProfileMenuView profileMenuView = new ProfileMenuView(new ProfileMenuController(controller.getUser()));
         profileMenuView.run();
     }
 
@@ -151,7 +146,20 @@ public class MainMenuView {
     }
 
     private void enterDeckMenu() {
-        DeckMenuView deckMenuView = new DeckMenuView(new DeckMenuController(mainMenuController.getUser()));
+        DeckMenuView deckMenuView = new DeckMenuView(new DeckMenuController(controller.getUser()));
         deckMenuView.run();
+    }
+
+
+    public void showHelp() {
+        System.out.println(
+                "commands:\r\n" +
+                        "\tduel --new --second-player <player2 username> --rounds <1/3>\r\n" +
+                        "\tduel --new --ai --rounds <1/3>\r\n" +
+                        "\tuser logout\r\n" +
+                        "\tmenu show-current\r\n" +
+                        "\tmenu enter <menu name>\r\n" +
+                        "\tmenu help"
+        );
     }
 }

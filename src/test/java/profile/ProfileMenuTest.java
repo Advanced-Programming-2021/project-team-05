@@ -26,12 +26,15 @@ public class ProfileMenuTest {
         System.setOut(new PrintStream(outContent));
     }
 
+    @AfterAll
+    public static void restoreStreams() {
+        System.setOut(originalOut);
+    }
 
     @BeforeEach
     public void resetUpStreams() {
         outContent.reset();
     }
-
 
     @Test
     public void showCurrentMenuTest() {
@@ -41,15 +44,13 @@ public class ProfileMenuTest {
         Assertions.assertEquals("Profile Menu\r\n", outContent.toString());
     }
 
-
     @Test
     public void unexpectedErrorTest() {
         ProfileMenuView view = new ProfileMenuView(new ProfileMenuController(new User("", "", "")));
 
-        view.printChangeNicknameMessage("", ProfileMenuMessage.PASSWORD_CHANGED);
+        view.printChangeNicknameMessage(ProfileMenuMessage.PASSWORD_CHANGED, "");
         view.printChangePasswordMessage(ProfileMenuMessage.NICKNAME_EXISTS);
     }
-
 
     @Test
     public void runTest() {
@@ -89,6 +90,14 @@ public class ProfileMenuTest {
         commands.add("menu enter Duel Menu");
         outputs.add("menu navigation is not possible");
 
+        commands.add("menu help");
+        outputs.add("commands:\r\n" +
+                "\tprofile change --nickname <nickname>\r\n" +
+                "\tprofile change --password --current <current password> --new <new password>\r\n" +
+                "\tmenu show-current\r\n" +
+                "\tmenu exit\r\n" +
+                "\tmenu help");
+
         commands.add("menu exit");
 
 
@@ -109,11 +118,5 @@ public class ProfileMenuTest {
 
         Assertions.assertEquals(outputsStringBuilder.toString(), outContent.toString());
         System.setIn(stdIn);
-    }
-
-
-    @AfterAll
-    public static void restoreStreams() {
-        System.setOut(originalOut);
     }
 }

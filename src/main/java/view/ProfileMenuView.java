@@ -1,20 +1,19 @@
 package view;
 
 import com.sanityinc.jargs.CmdLineParser;
-import com.sanityinc.jargs.CmdLineParser.Option;
 import control.controller.ProfileMenuController;
 import control.message.ProfileMenuMessage;
-import model.board.Board;
 import utils.Utility;
 
 
 public class ProfileMenuView {
 
-    private final ProfileMenuController profileMenuController;
+    private final ProfileMenuController controller;
 
 
-    public ProfileMenuView(ProfileMenuController profileMenuController) {
-        this.profileMenuController = profileMenuController;
+    public ProfileMenuView(ProfileMenuController controller) {
+        this.controller = controller;
+        controller.setView(this);
     }
 
 
@@ -31,6 +30,8 @@ public class ProfileMenuView {
                 System.out.println("menu navigation is not possible");
             } else if (command.equals("menu exit")) {
                 break;
+            } else if (command.equals("menu help")) {
+                showHelp();
             } else {
                 System.out.println("invalid command");
             }
@@ -43,9 +44,9 @@ public class ProfileMenuView {
             System.out.println("invalid command");
             return;
         }
-        CmdLineParser parser = new CmdLineParser();
-        Option<String> nicknameOption = parser.addStringOption('n', "nickname");
 
+        CmdLineParser parser = new CmdLineParser();
+        CmdLineParser.Option<String> nicknameOption = parser.addStringOption('n', "nickname");
         try {
             parser.parse(command);
         } catch (CmdLineParser.OptionException e) {
@@ -59,11 +60,10 @@ public class ProfileMenuView {
             return;
         }
 
-        ProfileMenuMessage message = profileMenuController.changeNickname(nickname);
-        printChangeNicknameMessage(nickname, message);
+        controller.changeNickname(nickname);
     }
 
-    public void printChangeNicknameMessage(String nickname, ProfileMenuMessage message) {
+    public void printChangeNicknameMessage(ProfileMenuMessage message, String nickname) {
         switch (message) {
             case NICKNAME_EXISTS:
                 System.out.println("user with nickname " + nickname + " already exists");
@@ -82,12 +82,11 @@ public class ProfileMenuView {
             System.out.println("invalid command");
             return;
         }
+
         CmdLineParser parser = new CmdLineParser();
-        Option<Boolean> passwordOption = parser.addBooleanOption('p', "password");
-        Option<String> currentPasswordOption = parser.addStringOption('c', "current");
-        Option<String> newPasswordOption = parser.addStringOption('n', "new");
-
-
+        CmdLineParser.Option<Boolean> passwordOption = parser.addBooleanOption('p', "password");
+        CmdLineParser.Option<String> currentPasswordOption = parser.addStringOption('c', "current");
+        CmdLineParser.Option<String> newPasswordOption = parser.addStringOption('n', "new");
         try {
             parser.parse(command);
         } catch (CmdLineParser.OptionException e) {
@@ -103,8 +102,7 @@ public class ProfileMenuView {
             return;
         }
 
-        ProfileMenuMessage message = profileMenuController.changePassword(currentPassword, newPassword);
-        printChangePasswordMessage(message);
+        controller.changePassword(currentPassword, newPassword);
     }
 
     public void printChangePasswordMessage(ProfileMenuMessage message) {
@@ -126,5 +124,17 @@ public class ProfileMenuView {
 
     public void showCurrentMenu() {
         System.out.println("Profile Menu");
+    }
+
+
+    public void showHelp() {
+        System.out.println(
+                "commands:\r\n" +
+                        "\tprofile change --nickname <nickname>\r\n" +
+                        "\tprofile change --password --current <current password> --new <new password>\r\n" +
+                        "\tmenu show-current\r\n" +
+                        "\tmenu exit\r\n" +
+                        "\tmenu help"
+        );
     }
 }

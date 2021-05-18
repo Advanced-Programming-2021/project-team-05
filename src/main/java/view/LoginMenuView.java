@@ -136,8 +136,6 @@ public class LoginMenuView {
                         "\tuser create --username <username> --nickname <nickname> --password <password>\r\n" +
                         "\tuser login --username <username> --password <password>\r\n" +
                         "\tmenu show-current\r\n" +
-                        "\tmenu enter\r\n" +
-                        "\tmenu exit\r\n" +
                         "\tmenu help"
         );
     }

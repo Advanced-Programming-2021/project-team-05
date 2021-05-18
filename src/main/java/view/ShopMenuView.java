@@ -12,15 +12,17 @@ import java.util.Comparator;
 
 public class ShopMenuView {
 
-    private final ShopMenuController shopMenuController;
+    private final ShopMenuController controller;
 
 
-    public ShopMenuView(ShopMenuController shopMenuController) {
-        this.shopMenuController = shopMenuController;
+    public ShopMenuView(ShopMenuController controller) {
+        this.controller = controller;
+        controller.setView(this);
     }
 
 
     public final void run() {
+        System.out.println("separate card name words with '_'. example: Battle_OX");
         while (true) {
             String command = Utility.getNextLine();
             if (command.matches("^shop buy \\S+$")) {
@@ -35,6 +37,8 @@ public class ShopMenuView {
                 System.out.println("menu navigation is not possible");
             } else if (command.equals("menu exit")) {
                 break;
+            } else if (command.equals("menu help")) {
+                showHelp();
             } else {
                 System.out.println("invalid command");
             }
@@ -48,9 +52,7 @@ public class ShopMenuView {
             return;
         }
         String cardName = command[2].replace('_', ' ');
-
-        ShopMenuMessage message = shopMenuController.buyCard(cardName);
-        printBuyCardMessage(message);
+        controller.buyCard(cardName);
     }
 
     public void printBuyCardMessage(ShopMenuMessage message) {
@@ -75,7 +77,7 @@ public class ShopMenuView {
         ArrayList<CardTemplate> allTemplates = dataManager.getCardTemplates();
         allTemplates.sort(Comparator.comparing(CardTemplate::getName));
         for (CardTemplate template : allTemplates) {
-            System.out.println(template);
+            System.out.println(template.getName() + ": " + template.getPrice());
         }
     }
 
@@ -99,5 +101,18 @@ public class ShopMenuView {
 
     public void showCurrentMenu() {
         System.out.println("Shop Menu");
+    }
+
+
+    public void showHelp() {
+        System.out.println(
+                "commands:\r\n" +
+                        "\tshop buy <card name>\r\n" +
+                        "\tshop show --all\r\n" +
+                        "\tcard show <card name>\r\n" +
+                        "\tmenu show-current\r\n" +
+                        "\tmenu exit\r\n" +
+                        "\tmenu help"
+        );
     }
 }

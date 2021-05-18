@@ -3,10 +3,12 @@ package control.controller;
 import control.DataManager;
 import control.message.ProfileMenuMessage;
 import model.User;
+import view.ProfileMenuView;
 
 
 public class ProfileMenuController {
 
+    private ProfileMenuView view;
     private final User user;
 
 
@@ -15,26 +17,32 @@ public class ProfileMenuController {
     }
 
 
-    public final ProfileMenuMessage changeNickname(String newNickname) {
-        DataManager dataManager = DataManager.getInstance();
-        if (dataManager.getUserByNickname(newNickname) != null) {
-            return ProfileMenuMessage.NICKNAME_EXISTS;
-        }
-
-        user.setNickname(newNickname);
-        return ProfileMenuMessage.NICKNAME_CHANGED;
+    public void setView(ProfileMenuView view) {
+        this.view = view;
     }
 
 
-    public final ProfileMenuMessage changePassword(String currentPassword, String newPassword) {
+    public final void changeNickname(String newNickname) {
+        DataManager dataManager = DataManager.getInstance();
+        if (dataManager.getUserByNickname(newNickname) != null) {
+            view.printChangeNicknameMessage(ProfileMenuMessage.NICKNAME_EXISTS, newNickname);
+            return;
+        }
+        user.setNickname(newNickname);
+        view.printChangeNicknameMessage(ProfileMenuMessage.NICKNAME_CHANGED, newNickname);
+    }
+
+
+    public final void changePassword(String currentPassword, String newPassword) {
         if (!user.getPassword().equals(currentPassword)) {
-            return ProfileMenuMessage.INVALID_CURRENT_PASSWORD;
+            view.printChangePasswordMessage(ProfileMenuMessage.INVALID_CURRENT_PASSWORD);
+            return;
         }
         if (user.getPassword().equals(newPassword)) {
-            return ProfileMenuMessage.SAME_NEW_AND_CURRENT_PASSWORD;
+            view.printChangePasswordMessage(ProfileMenuMessage.SAME_NEW_AND_CURRENT_PASSWORD);
+            return;
         }
-
         user.setPassword(newPassword);
-        return ProfileMenuMessage.PASSWORD_CHANGED;
+        view.printChangePasswordMessage(ProfileMenuMessage.PASSWORD_CHANGED);
     }
 }

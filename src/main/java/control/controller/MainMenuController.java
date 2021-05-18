@@ -9,7 +9,7 @@ import view.MainMenuView;
 
 public class MainMenuController {
 
-    MainMenuView view;
+    private MainMenuView view;
     private final User user;
 
 

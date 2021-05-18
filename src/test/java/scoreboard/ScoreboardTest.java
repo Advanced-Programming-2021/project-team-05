@@ -87,6 +87,13 @@ public class ScoreboardTest {
                 "5. nick7: 500\r\n" +
                 "8. nick5: 0");
 
+        commands.add("menu help");
+        outputs.add("commands:\r\n" +
+                        "\tscoreboard show\r\n" +
+                        "\tmenu show-current\r\n" +
+                        "\tmenu exit\r\n" +
+                        "\tmenu help");
+
         commands.add("menu exit");
 
         StringBuilder commandsStringBuilder = new StringBuilder();

@@ -11,10 +11,12 @@ import model.template.CardTemplate;
 import model.template.MonsterTemplate;
 import model.template.SpellTemplate;
 import model.template.TrapTemplate;
+import view.ShopMenuView;
 
 
 public class ShopMenuController {
 
+    private ShopMenuView view;
     private final User user;
 
 
@@ -23,20 +25,26 @@ public class ShopMenuController {
     }
 
 
+    public void setView(ShopMenuView view) {
+        this.view = view;
+    }
+
+
     public User getUser() {
         return this.user;
     }
 
 
-    public final ShopMenuMessage buyCard(String cardName) {
+    public final void buyCard(String cardName) {
         DataManager dataManager = DataManager.getInstance();
         CardTemplate cardTemplate = dataManager.getCardTemplateByName(cardName);
-
         if (cardTemplate == null) {
-            return ShopMenuMessage.NO_CARD_EXISTS;
+            view.printBuyCardMessage(ShopMenuMessage.NO_CARD_EXISTS);
+            return;
         }
         if (cardTemplate.getPrice() > user.getMoney()) {
-            return ShopMenuMessage.NOT_ENOUGH_MONEY;
+            view.printBuyCardMessage(ShopMenuMessage.NOT_ENOUGH_MONEY);
+            return;
         }
 
         Card card;
@@ -51,6 +59,6 @@ public class ShopMenuController {
         dataManager.addCard(card);
         user.purchaseCard(card);
         user.decreaseMoney(cardTemplate.getPrice());
-        return ShopMenuMessage.CARD_SUCCESSFULLY_PURCHASED;
+        view.printBuyCardMessage(ShopMenuMessage.CARD_SUCCESSFULLY_PURCHASED);
     }
 }

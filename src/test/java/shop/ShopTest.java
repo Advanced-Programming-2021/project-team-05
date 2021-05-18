@@ -36,8 +36,9 @@ public class ShopTest {
 
         StringBuilder exceptedOutput = new StringBuilder();
         for (CardTemplate template : allTemplates) {
-            exceptedOutput.append(template).append("\r\n");
+            exceptedOutput.append(template.getName()).append(": ").append(template.getPrice()).append("\r\n");
         }
+        exceptedOutput.delete(exceptedOutput.length() - 2, exceptedOutput.length());
 
         return exceptedOutput.toString();
     }
@@ -74,14 +75,11 @@ public class ShopTest {
         User testUser = new User("testUser", "testPass", "testNick");
         testUser.setMoney(1000);
         ShopMenuController shop = new ShopMenuController(testUser);
+        ShopMenuView view = new ShopMenuView(shop);
 
-        ShopMenuMessage notEnoughMoney = shop.buyCard("Battle warrior");
-        ShopMenuMessage noCardExist = shop.buyCard("mohammadSadeghi");
-        ShopMenuMessage cardSuccessfullyPurchased = shop.buyCard("Curtain of the dark ones");
-
-        Assertions.assertEquals(notEnoughMoney, ShopMenuMessage.NOT_ENOUGH_MONEY);
-        Assertions.assertEquals(noCardExist, ShopMenuMessage.NO_CARD_EXISTS);
-        Assertions.assertEquals(cardSuccessfullyPurchased, ShopMenuMessage.CARD_SUCCESSFULLY_PURCHASED);
+        shop.buyCard("Battle warrior");
+        shop.buyCard("mohammadSadeghi");
+        shop.buyCard("Curtain of the dark ones");
 
         testUser.increaseMoney(5000);
         shop.buyCard("Trap Hole");
@@ -104,6 +102,8 @@ public class ShopTest {
 
         ArrayList<String> commands = new ArrayList<>();
         ArrayList<String> outputs = new ArrayList<>();
+
+        outputs.add("separate card name words with '_'. example: Battle_OX");
         commands.add("shop buy sadeghi");
         outputs.add("there is no card with this name");
 
@@ -138,6 +138,15 @@ public class ShopTest {
 
         commands.add("shop show --all");
         outputs.add(getAllCardsString());
+
+        commands.add("menu help");
+        outputs.add("commands:\r\n" +
+                        "\tshop buy <card name>\r\n" +
+                        "\tshop show --all\r\n" +
+                        "\tcard show <card name>\r\n" +
+                        "\tmenu show-current\r\n" +
+                        "\tmenu exit\r\n" +
+                        "\tmenu help");
 
         commands.add("menu exit");
 
