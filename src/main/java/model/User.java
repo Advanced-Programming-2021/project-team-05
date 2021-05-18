@@ -173,6 +173,15 @@ public class User {
 
 
     @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || this.getClass() != object.getClass()) return false;
+        User user = (User) object;
+        return this.username.equals(user.getUsername());
+    }
+
+
+    @Override
     public String toString() {
         return this.getUsername();
     }

@@ -58,7 +58,6 @@ public class MainMenuController {
             return;
         }
 
-        view.printStartDuelMessage(MainMenuMessage.GAME_STARTED_SUCCESSFULLY, null);
         DuelMenuController duelMenuController = new DuelMenuController(user, opponent, rounds);
         DuelMenuView duelMenuView = new DuelMenuView(duelMenuController);
         duelMenuController.startNextRound();
@@ -77,10 +76,9 @@ public class MainMenuController {
         }
         if (rounds != 1 && rounds != 3) {
             view.printStartDuelMessage(MainMenuMessage.INVALID_ROUND, null);
-            return;
+            // ToDo: After completing this function, return should be done here
         }
 
         // ToDo: start duel with ai
-        view.printStartDuelMessage(MainMenuMessage.GAME_STARTED_SUCCESSFULLY, null);
     }
 }
