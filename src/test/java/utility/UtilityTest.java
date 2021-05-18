@@ -1,6 +1,7 @@
 package utility;
 
 import org.junit.jupiter.api.*;
+import utils.CoinSide;
 import utils.RockPaperScissors;
 import utils.TestUtility;
 import utils.Utility;
@@ -120,6 +121,7 @@ public class UtilityTest {
         System.setIn(stdIn);
     }
 
+
     @Test
     public void getValueOfTest() {
         RockPaperScissors rock = RockPaperScissors.getValueOf("rOcK");
@@ -132,6 +134,7 @@ public class UtilityTest {
         Assertions.assertEquals(scissors, RockPaperScissors.SCISSORS);
         Assertions.assertNull(nullPointer);
     }
+
 
     @Test
     public void compareTest() {
@@ -151,5 +154,15 @@ public class UtilityTest {
                 scissorsVsPaper == -1 && scissorsVsRock == 1 && scissorsVsScissors == 0 &&
                 nullPointer == 0;
         Assertions.assertTrue(answer);
+    }
+
+
+    @Test
+    public void coinSideTest() {
+        for (int i = 0; i < 1000; i++) {
+            CoinSide coinSide = Utility.flipCoin();
+            String name = coinSide.getName();
+            Assertions.assertTrue(name.equals("heads") || name.equals("tails"));
+        }
     }
 }

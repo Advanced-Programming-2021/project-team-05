@@ -47,13 +47,7 @@ public class ShopMenuView {
             System.out.println("invalid command");
             return;
         }
-        String cardName;
-        try {
-            cardName = command[2].replace('_', ' ');
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("invalid command");
-            return;
-        }
+        String cardName = command[2].replace('_', ' ');
 
         ShopMenuMessage message = shopMenuController.buyCard(cardName);
         printBuyCardMessage(message);
@@ -91,13 +85,7 @@ public class ShopMenuView {
             System.out.println("invalid command");
             return;
         }
-        String cardName;
-        try {
-            cardName = command[2].replace('_', ' ');
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("invalid command");
-            return;
-        }
+        String cardName = command[2].replace('_', ' ');
 
         DataManager dataManager = DataManager.getInstance();
         CardTemplate template = dataManager.getCardTemplateByName(cardName);
