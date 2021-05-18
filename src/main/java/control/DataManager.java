@@ -62,15 +62,6 @@ public class DataManager {
     }
 
 
-    public ArrayList<Card> getAllCards() {
-        return this.allCards;
-    }
-
-    public ArrayList<Deck> getAllDecks() {
-        return this.allDecks;
-    }
-
-
     public ArrayList<User> getAllUsers() {
         return this.allUsers;
     }
@@ -85,7 +76,6 @@ public class DataManager {
                 return user;
             }
         }
-
         return null;
     }
 
@@ -95,7 +85,6 @@ public class DataManager {
                 return user;
             }
         }
-
         return null;
     }
 
@@ -115,6 +104,10 @@ public class DataManager {
     }
 
 
+    public ArrayList<Deck> getAllDecks() {
+        return this.allDecks;
+    }
+
     public void addDeck(Deck deck) {
         this.allDecks.add(deck);
     }
@@ -133,6 +126,10 @@ public class DataManager {
         this.allDecks.remove(deck);
     }
 
+
+    public ArrayList<Card> getAllCards() {
+        return this.allCards;
+    }
 
     public void addCard(Card card) {
         this.allCards.add(card);

@@ -1,21 +1,19 @@
 package view;
 
 import com.sanityinc.jargs.CmdLineParser;
-import com.sanityinc.jargs.CmdLineParser.Option;
 import control.controller.LoginMenuController;
 import control.message.LoginMenuMessage;
-import control.controller.MainMenuController;
-import model.User;
 import utils.Utility;
 
 
 public class LoginMenuView {
 
-    private final LoginMenuController loginMenuController;
+    private final LoginMenuController controller;
 
 
-    public LoginMenuView(LoginMenuController loginMenuController) {
-        this.loginMenuController = loginMenuController;
+    public LoginMenuView(LoginMenuController controller) {
+        this.controller = controller;
+        controller.setView(this);
     }
 
 
@@ -33,6 +31,8 @@ public class LoginMenuView {
                 System.out.println("please login first");
             } else if (command.equals("menu exit")) {
                 break;
+            } else if (command.equals("menu help")) {
+                showHelp();
             } else {
                 System.out.println("invalid command");
             }
@@ -45,11 +45,11 @@ public class LoginMenuView {
             System.out.println("invalid command");
             return;
         }
-        CmdLineParser parser = new CmdLineParser();
-        Option<String> usernameOption = parser.addStringOption('u', "username");
-        Option<String> nicknameOption = parser.addStringOption('n', "nickname");
-        Option<String> passwordOption = parser.addStringOption('p', "password");
 
+        CmdLineParser parser = new CmdLineParser();
+        CmdLineParser.Option<String> usernameOption = parser.addStringOption('u', "username");
+        CmdLineParser.Option<String> nicknameOption = parser.addStringOption('n', "nickname");
+        CmdLineParser.Option<String> passwordOption = parser.addStringOption('p', "password");
         try {
             parser.parse(command);
         } catch (CmdLineParser.OptionException e) {
@@ -65,11 +65,10 @@ public class LoginMenuView {
             return;
         }
 
-        LoginMenuMessage message = loginMenuController.createUser(username, password, nickname);
-        printCreateUserMessage(username, nickname, message);
+        controller.createUser(username, password, nickname);
     }
 
-    public void printCreateUserMessage(String username, String nickname, LoginMenuMessage message) {
+    public void printCreateUserMessage(LoginMenuMessage message, String username, String nickname) {
         switch (message) {
             case USERNAME_EXISTS:
                 System.out.println("user with username " + username + " already exists");
@@ -91,10 +90,10 @@ public class LoginMenuView {
             System.out.println("invalid command");
             return;
         }
-        CmdLineParser parser = new CmdLineParser();
-        Option<String> usernameOption = parser.addStringOption('u', "username");
-        Option<String> passwordOption = parser.addStringOption('p', "password");
 
+        CmdLineParser parser = new CmdLineParser();
+        CmdLineParser.Option<String> usernameOption = parser.addStringOption('u', "username");
+        CmdLineParser.Option<String> passwordOption = parser.addStringOption('p', "password");
         try {
             parser.parse(command);
         } catch (CmdLineParser.OptionException e) {
@@ -109,18 +108,37 @@ public class LoginMenuView {
             return;
         }
 
-        User user = loginMenuController.loginUser(username, password);
-        if (user == null) {
-            System.out.println("username and password didn't match!");
-        } else {
-            System.out.println("user logged in successfully!");
-            MainMenuView mainMenuView = new MainMenuView(new MainMenuController(user));
-            mainMenuView.run();
+        controller.loginUser(username, password);
+    }
+
+    public void printLoginUserMessage(LoginMenuMessage message) {
+        switch (message) {
+            case NO_MATCH:
+                System.out.println("username and password didn't match");
+                break;
+            case LOGGED_IN:
+                System.out.println("user logged in successfully!");
+                break;
+            default:
+                System.out.println("unexpected error");
         }
     }
 
 
     public void showCurrentMenu() {
         System.out.println("Login Menu");
+    }
+
+
+    public void showHelp() {
+        System.out.println(
+                "commands:\r\n" +
+                        "user create --username <username> --nickname <nickname> --password <password>\r\n" +
+                        "user login --username <username> --password <password>\r\n" +
+                        "menu show-current\r\n" +
+                        "menu enter\r\n" +
+                        "menu exit\r\n" +
+                        "menu help\r\n"
+        );
     }
 }

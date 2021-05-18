@@ -89,31 +89,30 @@ public class LoginUserTest {
 
         for (String command : commands) {
             view.loginUser(command.split("\\s"));
-            assertOutputIsEqual("username and password didn't match!");
+            assertOutputIsEqual("username and password didn't match");
         }
     }
 
 
-    @Test
-    public void loginUserSuccessful() {
-        LoginMenuController controller = new LoginMenuController();
-
-        User user5 = controller.loginUser("test5", "pass5");
-        Assertions.assertNotNull(user5);
-        Assertions.assertEquals("test5", user5.getUsername());
-        Assertions.assertEquals("pass5", user5.getPassword());
-
-        User user2 = controller.loginUser("test2", "pass2");
-        Assertions.assertNotNull(user2);
-        Assertions.assertEquals("test2", user2.getUsername());
-        Assertions.assertEquals("pass2", user2.getPassword());
-
-        User user9 = controller.loginUser("test9", "pass9");
-        Assertions.assertNotNull(user9);
-        Assertions.assertEquals("test9", user9.getUsername());
-        Assertions.assertEquals("pass9", user9.getPassword());
-
-    }
+//    @Test
+//    public void loginUserSuccessful() {
+//        LoginMenuController controller = new LoginMenuController();
+//
+//        User user5 = controller.loginUser("test5", "pass5");
+//        Assertions.assertNotNull(user5);
+//        Assertions.assertEquals("test5", user5.getUsername());
+//        Assertions.assertEquals("pass5", user5.getPassword());
+//
+//        User user2 = controller.loginUser("test2", "pass2");
+//        Assertions.assertNotNull(user2);
+//        Assertions.assertEquals("test2", user2.getUsername());
+//        Assertions.assertEquals("pass2", user2.getPassword());
+//
+//        User user9 = controller.loginUser("test9", "pass9");
+//        Assertions.assertNotNull(user9);
+//        Assertions.assertEquals("test9", user9.getUsername());
+//        Assertions.assertEquals("pass9", user9.getPassword());
+//    }
 
 
     @AfterAll
