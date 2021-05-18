@@ -53,6 +53,7 @@ public class ChangePasswordTest {
         commands.add("profile change -p -c current");
         commands.add("profile change --password -current");
         commands.add("profile change --password test t --current c");
+        commands.add("profile change --password  --current c");
 
         for (String command : commands) {
             view.changePassword(command.split("\\s"));
