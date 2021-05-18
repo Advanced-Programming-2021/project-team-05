@@ -116,6 +116,12 @@ public class ShopTest {
         commands.add("shop buy Curtain_of_the_dark_ones");
         outputs.add("card bought successfully!");
 
+        commands.add("shop buy Curtain of the dark ones");
+        outputs.add("invalid command");
+
+        commands.add("card show Curtain of the dark ones");
+        outputs.add("invalid command");
+
         commands.add("card show Fireyarou");
         outputs.add("Name: Fireyarou\n" +
                 "Level: 4\n" +
