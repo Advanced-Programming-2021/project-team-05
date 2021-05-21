@@ -13,5 +13,6 @@ public enum DeckMenuMessage {
     SIDE_DECK_IS_FULL,
     NO_CARD_EXISTS_IN_MAIN_DECK,
     NO_CARD_EXISTS_IN_SIDE_DECK,
-    CARD_REMOVED
+    CARD_REMOVED,
+    ERROR
 }
