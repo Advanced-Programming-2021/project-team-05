@@ -3,21 +3,21 @@ package model;
 import control.DataManager;
 import model.card.Card;
 import model.card.Monster;
+import model.card.Spell;
+import model.card.Trap;
+import model.template.property.SpellTrapStatus;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.UUID;
+import java.util.*;
 
 public class Deck implements Cloneable {
-    private ArrayList<String> mainDeckCards;
-    private ArrayList<String> sideDeckCards;
     private String id;
     private String name;
+    private ArrayList<String> mainDeckCardIds;
+    private ArrayList<String> sideDeckCardIds;
 
     {
-        mainDeckCards = new ArrayList<>();
-        sideDeckCards = new ArrayList<>();
+        mainDeckCardIds = new ArrayList<>();
+        sideDeckCardIds = new ArrayList<>();
     }
 
 
@@ -46,82 +46,82 @@ public class Deck implements Cloneable {
 
 
     public final void addCardToMainDeck(Card card) {
-        this.mainDeckCards.add(card.getId());
+        this.mainDeckCardIds.add(card.getId());
     }
 
     public final void removeCardFromMainDeck(Card card) {
-        this.mainDeckCards.remove(card.getId());
+        this.mainDeckCardIds.remove(card.getId());
     }
 
     public final boolean hasCardInMainDeck(Card card) {
-        return this.mainDeckCards.contains(card.getId());
+        return this.mainDeckCardIds.contains(card.getId());
     }
 
     public final ArrayList<Card> getCardsByNameInMainDeck(String name) {
-        ArrayList<Card> cards = new ArrayList<>();
         DataManager dataManager = DataManager.getInstance();
-
-        for (String id : this.mainDeckCards) {
+        ArrayList<Card> cards = new ArrayList<>();
+        for (String id : this.mainDeckCardIds) {
             Card card = dataManager.getCardById(id);
-            if (name.equals(card.getName())) cards.add(card);
+            if (name.equals(card.getName())) {
+                cards.add(card);
+            }
         }
-
         return cards;
     }
 
-    public final Card drawCard() {
-        Card card = DataManager.getInstance().getCardById(this.mainDeckCards.get(0));
-        this.mainDeckCards.remove(0);
-        return card;
-    }
-
     public final boolean isMainDeckFull() {
-        return this.mainDeckCards.size() == 60;
+        return this.getMainDeckSize() >= 60;
     }
 
     public final int getMainDeckSize() {
-        return this.mainDeckCards.size();
+        return this.mainDeckCardIds.size();
     }
 
     public final void shuffleMainDeck() {
-        Collections.shuffle(this.mainDeckCards);
+        Collections.shuffle(this.mainDeckCardIds);
+    }
+
+    public final Card drawCard() {
+        Card card = DataManager.getInstance().getCardById(this.mainDeckCardIds.get(0));
+        this.mainDeckCardIds.remove(0);
+        return card;
     }
 
 
     public final void addCardToSideDeck(Card card) {
-        this.sideDeckCards.add(card.getId());
+        this.sideDeckCardIds.add(card.getId());
     }
 
     public final void removeCardFromSideDeck(Card card) {
-        this.sideDeckCards.remove(card.getId());
+        this.sideDeckCardIds.remove(card.getId());
     }
 
     public final boolean hasCardInSideDeck(Card card) {
-        return this.sideDeckCards.contains(card.getId());
+        return this.sideDeckCardIds.contains(card.getId());
     }
 
     public final ArrayList<Card> getCardsByNameInSideDeck(String name) {
-        ArrayList<Card> cards = new ArrayList<>();
         DataManager dataManager = DataManager.getInstance();
-
-        for (String id : this.sideDeckCards) {
+        ArrayList<Card> cards = new ArrayList<>();
+        for (String id : this.sideDeckCardIds) {
             Card card = dataManager.getCardById(id);
-            if (name.equals(card.getName())) cards.add(card);
+            if (name.equals(card.getName())) {
+                cards.add(card);
+            }
         }
-
         return cards;
     }
 
     public final boolean isSideDeckFull() {
-        return this.sideDeckCards.size() == 20;
+        return this.getSideDeckSize() >= 20;
     }
 
     private int getSideDeckSize() {
-        return this.sideDeckCards.size();
+        return this.sideDeckCardIds.size();
     }
 
     public final void shuffleSideDeck() {
-        Collections.shuffle(this.sideDeckCards);
+        Collections.shuffle(this.sideDeckCardIds);
     }
 
 
@@ -129,18 +129,25 @@ public class Deck implements Cloneable {
         ArrayList<Card> mainCards = this.getCardsByNameInMainDeck(card.getName());
         ArrayList<Card> sideCards = this.getCardsByNameInSideDeck(card.getName());
 
-        return mainCards.size() + sideCards.size() == 3;
+        SpellTrapStatus status = SpellTrapStatus.UNLIMITED;
+        if (card instanceof Spell) {
+            status = ((Spell) card).getStatus();
+        } else if (card instanceof Trap) {
+            status = ((Trap) card).getStatus();
+        }
+
+        return mainCards.size() + sideCards.size() >= status.getMaxCount();
     }
 
 
     public final boolean isValid() {
-        return this.mainDeckCards.size() >= 40;
+        return this.mainDeckCardIds.size() >= 40;
     }
 
 
     public final String detailedToString(boolean isSide) {
         DataManager dataManager = DataManager.getInstance();
-        ArrayList<String> cards = isSide ? sideDeckCards : mainDeckCards;
+        ArrayList<String> cards = isSide ? sideDeckCardIds : mainDeckCardIds;
         ArrayList<Card> monsters = new ArrayList<>();
         ArrayList<Card> spellsAndTraps = new ArrayList<>();
 
@@ -174,15 +181,11 @@ public class Deck implements Cloneable {
 
 
     @Override
-    public final boolean equals(Object object) {
-        if (object == null) {
-            return false;
-        }
-        if (!(object instanceof Deck)) {
-            return false;
-        }
-
-        return this.getName().equals(((Deck) object).getName());
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || this.getClass() != object.getClass()) return false;
+        Deck deck = (Deck) object;
+        return this.getId().equals(deck.getId());
     }
 
 
@@ -200,13 +203,13 @@ public class Deck implements Cloneable {
         Deck cloned = (Deck) super.clone();
         DataManager dataManager = DataManager.getInstance();
 
-        cloned.mainDeckCards = new ArrayList<>();
-        for (String cardId : this.mainDeckCards) {
+        cloned.mainDeckCardIds = new ArrayList<>();
+        for (String cardId : this.mainDeckCardIds) {
             cloned.addCardToMainDeck(dataManager.getCardById(cardId));
         }
 
-        cloned.sideDeckCards = new ArrayList<>();
-        for (String cardId : this.sideDeckCards) {
+        cloned.sideDeckCardIds = new ArrayList<>();
+        for (String cardId : this.sideDeckCardIds) {
             cloned.addCardToSideDeck(dataManager.getCardById(cardId));
         }
 

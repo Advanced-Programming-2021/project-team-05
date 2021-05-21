@@ -47,10 +47,6 @@ public class ShopMenuView {
 
 
     public void buyCard(String[] command) {
-        if (command.length != 3) {
-            System.out.println("invalid command");
-            return;
-        }
         String cardName = command[2].replace('_', ' ');
         controller.buyCard(cardName);
     }

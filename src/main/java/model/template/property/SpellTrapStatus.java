@@ -1,15 +1,17 @@
 package model.template.property;
 
 public enum SpellTrapStatus {
-    UNLIMITED("Unlimited"),
-    LIMITED("Limited");
+    UNLIMITED("Unlimited", 3),
+    LIMITED("Limited", 1);
 
 
     private final String name;
+    private final int maxCount;
 
 
-    SpellTrapStatus(String name) {
+    SpellTrapStatus(String name, int maxCount) {
         this.name = name;
+        this.maxCount = maxCount;
     }
 
 
@@ -25,5 +27,10 @@ public enum SpellTrapStatus {
 
     public String getName() {
         return this.name;
+    }
+
+
+    public int getMaxCount() {
+        return this.maxCount;
     }
 }

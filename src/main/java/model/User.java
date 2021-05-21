@@ -4,12 +4,11 @@ import control.DataManager;
 import model.card.Card;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class User {
 
-    private final ArrayList<String> purchasedCardsIds;
-    private final ArrayList<String> decksIds;
+    private final ArrayList<String> purchasedCardIds;
+    private final ArrayList<String> deckIds;
     private String username;
     private String password;
     private String nickname;
@@ -18,8 +17,8 @@ public class User {
     private long money;
 
     {
-        purchasedCardsIds = new ArrayList<>();
-        decksIds = new ArrayList<>();
+        purchasedCardIds = new ArrayList<>();
+        deckIds = new ArrayList<>();
     }
 
 
@@ -92,53 +91,53 @@ public class User {
     public ArrayList<Card> getPurchasedCards() {
         DataManager dataManager = DataManager.getInstance();
         ArrayList<Card> cards = new ArrayList<>();
-        for (String cardId : purchasedCardsIds) {
+        for (String cardId : purchasedCardIds) {
             cards.add(dataManager.getCardById(cardId));
         }
         return cards;
     }
 
     public void purchaseCard(Card card) {
-        this.purchasedCardsIds.add(card.getId());
+        this.purchasedCardIds.add(card.getId());
     }
 
     public void removeCard(Card card) {
-        this.purchasedCardsIds.remove(card.getId());
+        this.purchasedCardIds.remove(card.getId());
     }
 
     public ArrayList<Card> getPurchasedCardsByName(String name) {
         DataManager dataManager = DataManager.getInstance();
-        ArrayList<Card> purchasedCards = new ArrayList<>();
-        for (String cardId : this.purchasedCardsIds) {
+        ArrayList<Card> cards = new ArrayList<>();
+        for (String cardId : this.purchasedCardIds) {
             Card card = dataManager.getCardById(cardId);
             if (name.equals(card.getName())) {
-                purchasedCards.add(card);
+                cards.add(card);
             }
         }
-        return purchasedCards;
+        return cards;
     }
 
 
     public ArrayList<Deck> getDecks() {
         DataManager dataManager = DataManager.getInstance();
-        ArrayList<Deck> allDecks = new ArrayList<>();
-        for (String deckId : this.decksIds) {
-            allDecks.add(dataManager.getDeckById(deckId));
+        ArrayList<Deck> decks = new ArrayList<>();
+        for (String deckId : this.deckIds) {
+            decks.add(dataManager.getDeckById(deckId));
         }
-        return allDecks;
+        return decks;
     }
 
     public void addDeck(Deck deck) {
-        this.decksIds.add(deck.getId());
+        this.deckIds.add(deck.getId());
     }
 
     public void removeDeck(Deck deck) {
-        this.decksIds.remove(deck.getId());
+        this.deckIds.remove(deck.getId());
     }
 
     public Deck getDeckByName(String name) {
         DataManager dataManager = DataManager.getInstance();
-        for (String deckId : this.decksIds) {
+        for (String deckId : this.deckIds) {
             Deck deck = dataManager.getDeckById(deckId);
             if (name.equals(deck.getName())) {
                 return deck;
@@ -163,12 +162,6 @@ public class User {
         if (object == null || this.getClass() != object.getClass()) return false;
         User user = (User) object;
         return this.getUsername().equals(user.getUsername());
-    }
-
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.getUsername());
     }
 
 

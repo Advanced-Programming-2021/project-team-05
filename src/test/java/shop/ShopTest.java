@@ -201,9 +201,6 @@ public class ShopTest {
         testUser.setMoney(2900);
         ShopMenuView view = new ShopMenuView(new ShopMenuController(testUser));
 
-        view.showCard(new String[]{"card", "show"});
-        assertOutputIsEqual("invalid command");
-
         view.showCard(new String[]{"card", "show", "parsaSeddighi"});
         assertOutputIsEqual("invalid card name");
 
@@ -238,16 +235,13 @@ public class ShopTest {
         testUser.setMoney(1000);
         ShopMenuView view = new ShopMenuView(new ShopMenuController(testUser));
 
-        view.showCard(new String[]{"shop", "buy"});
-        assertOutputIsEqual("invalid command");
-
         view.buyCard(new String[]{"shop", "buy", "parsaSeddighi"});
         assertOutputIsEqual("there is no card with this name");
 
-        view.buyCard(new String[]{"shop", "buy", "Battle OX"});
+        view.buyCard(new String[]{"shop", "buy", "Battle_OX"});
         assertOutputIsEqual("not enough money");
 
-        view.buyCard(new String[]{"shop", "buy", "Curtain of the dark ones"});
+        view.buyCard(new String[]{"shop", "buy", "Curtain_of_the_dark_ones"});
         assertOutputIsEqual("card bought successfully!");
 
         view.buyCard(new String[]{"shop"});
