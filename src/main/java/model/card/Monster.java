@@ -1,9 +1,13 @@
 package model.card;
 
 import model.template.MonsterTemplate;
+import model.template.property.MonsterAttribute;
+import model.template.property.MonsterType;
 
 public class Monster extends Card {
 
+    private MonsterType monsterType;
+    private MonsterAttribute attribute;
     private int level;
     private int attack;
     private int defense;
@@ -11,9 +15,29 @@ public class Monster extends Card {
 
     public Monster(MonsterTemplate template) {
         super(template.getName(), template.getType(), template.getDescription(), template.getEffects());
+        this.setMonsterType(template.getMonsterType());
+        this.setAttribute(template.getAttribute());
         this.setLevel(template.getLevel());
         this.setAttack(template.getAttack());
         this.setDefence(template.getDefence());
+    }
+
+
+    public MonsterType getMonsterType() {
+        return this.monsterType;
+    }
+
+    public void setMonsterType(MonsterType monsterType) {
+        this.monsterType = monsterType;
+    }
+
+
+    public MonsterAttribute getAttribute() {
+        return this.attribute;
+    }
+
+    public void setAttribute(MonsterAttribute attribute) {
+        this.attribute = attribute;
     }
 
 

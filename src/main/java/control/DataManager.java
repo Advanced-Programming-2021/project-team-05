@@ -242,7 +242,7 @@ public class DataManager {
                 } else if ("Trap".equals(cardType)) {
                     this.templates.add(new TrapTemplate(name, type, description, price, status));
                 } else {
-                    throw new Exception("card type wasn't Speel or Trap");
+                    throw new Exception("card type wasn't Spell or Trap");
                 }
             }
         } catch (Exception e) {

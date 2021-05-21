@@ -62,6 +62,7 @@ public class MainMenuTest {
         ArrayList<String> outputs = new ArrayList<>();
 
         commands.add("menu enter Deck Menu");
+        outputs.add("separate card name words with '_'. example: Battle_OX");
         commands.add("menu show-current");
         outputs.add("Deck Menu");
         commands.add("menu exit");
