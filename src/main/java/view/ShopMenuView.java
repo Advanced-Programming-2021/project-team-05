@@ -83,12 +83,7 @@ public class ShopMenuView {
 
 
     public void showCard(String[] command) {
-        if (command.length != 3) {
-            System.out.println("invalid command");
-            return;
-        }
         String cardName = command[2].replace('_', ' ');
-
         DataManager dataManager = DataManager.getInstance();
         CardTemplate template = dataManager.getCardTemplateByName(cardName);
         if (template == null) {

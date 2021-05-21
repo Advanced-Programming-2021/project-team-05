@@ -17,15 +17,17 @@ import java.util.Comparator;
 
 public class DeckMenuView {
 
-    private final DeckMenuController deckMenuController;
+    private final DeckMenuController controller;
 
 
-    public DeckMenuView(DeckMenuController deckMenuController) {
-        this.deckMenuController = deckMenuController;
+    public DeckMenuView(DeckMenuController controller) {
+        this.controller = controller;
+        controller.setView(this);
     }
 
 
     public final void run() {
+        System.out.println("separate card name words with '_'. example: Battle_OX");
         while (true) {
             String command = Utility.getNextLine();
             if (command.matches("^deck create \\S+$")) {
@@ -52,6 +54,8 @@ public class DeckMenuView {
                 System.out.println("menu navigation is not possible");
             } else if (command.equals("menu exit")) {
                 break;
+            } else if (command.equals("menu help")) {
+                showHelp();
             } else {
                 System.out.println("invalid command");
             }
@@ -60,23 +64,11 @@ public class DeckMenuView {
 
 
     private void createDeck(String[] command) {
-        if (command.length != 3) {
-            System.out.println("invalid command");
-            return;
-        }
-        String deckName;
-        try {
-            deckName = command[2];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("invalid command");
-            return;
-        }
-
-        DeckMenuMessage message = deckMenuController.createDeck(deckName);
-        printCreateDeckMessage(deckName, message);
+        String deckName = command[2];
+        controller.createDeck(deckName);
     }
 
-    private void printCreateDeckMessage(String deckName, DeckMenuMessage message) {
+    public void printCreateDeckMessage(DeckMenuMessage message, String deckName) {
         switch (message) {
             case DECK_NAME_EXISTS:
                 System.out.println("deck with name " + deckName + " already exists");
@@ -91,23 +83,11 @@ public class DeckMenuView {
 
 
     private void deleteDeck(String[] command) {
-        if (command.length != 3) {
-            System.out.println("invalid command");
-            return;
-        }
-        String deckName;
-        try {
-            deckName = command[2];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("invalid command");
-            return;
-        }
-
-        DeckMenuMessage message = deckMenuController.deleteDeck(deckName);
-        printDeleteDeckMessage(deckName, message);
+        String deckName = command[2];
+        controller.deleteDeck(deckName);
     }
 
-    private void printDeleteDeckMessage(String deckName, DeckMenuMessage message) {
+    public void printDeleteDeckMessage(DeckMenuMessage message, String deckName) {
         switch (message) {
             case NO_DECK_EXISTS:
                 System.out.println("deck with name " + deckName + " does not exist");
@@ -122,23 +102,11 @@ public class DeckMenuView {
 
 
     private void activateDeck(String[] command) {
-        if (command.length != 3) {
-            System.out.println("invalid command");
-            return;
-        }
-        String deckName;
-        try {
-            deckName = command[2];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("invalid command");
-            return;
-        }
-
-        DeckMenuMessage message = deckMenuController.activateDeck(deckName);
-        printActivateDeckMessage(deckName, message);
+        String deckName = command[2];
+        controller.activateDeck(deckName);
     }
 
-    private void printActivateDeckMessage(String deckName, DeckMenuMessage message) {
+    public void printActivateDeckMessage(DeckMenuMessage message, String deckName) {
         switch (message) {
             case NO_DECK_EXISTS:
                 System.out.println("deck with name " + deckName + " does not exist");
@@ -157,7 +125,6 @@ public class DeckMenuView {
         Option<String> deckNameOption = parser.addStringOption('d', "deck");
         Option<String> cardNameOption = parser.addStringOption('c', "card");
         Option<Boolean> isSideOption = parser.addBooleanOption('s', "side");
-
         try {
             parser.parse(command);
         } catch (CmdLineParser.OptionException e) {
@@ -167,7 +134,7 @@ public class DeckMenuView {
 
         String deckName = parser.getOptionValue(deckNameOption);
         String cardName = parser.getOptionValue(cardNameOption);
-        Boolean isSide = parser.getOptionValue(isSideOption, Boolean.FALSE);
+        Boolean isSide = parser.getOptionValue(isSideOption, false);
         if (deckName == null || cardName == null) {
             System.out.println("invalid command");
             return;
@@ -179,15 +146,13 @@ public class DeckMenuView {
         cardName = cardName.replace('_', ' ');
 
         if (addCard) {
-            DeckMenuMessage message = deckMenuController.addCard(deckName, cardName, isSide);
-            printAddCardMessage(deckName, cardName, message);
+            controller.addCard(deckName, cardName, isSide);
         } else {
-            DeckMenuMessage message = deckMenuController.removeCard(deckName, cardName, isSide);
-            printRemoveCardMessage(deckName, cardName, message);
+            controller.removeCard(deckName, cardName, isSide);
         }
     }
 
-    private void printAddCardMessage(String deckName, String cardName, DeckMenuMessage message) {
+    public void printAddCardMessage(DeckMenuMessage message, String deckName, String cardName) {
         switch (message) {
             case NO_CARD_EXISTS:
                 System.out.println("card with name " + cardName + " does not exist");
@@ -212,7 +177,7 @@ public class DeckMenuView {
         }
     }
 
-    private void printRemoveCardMessage(String deckName, String cardName, DeckMenuMessage message) {
+    public void printRemoveCardMessage(DeckMenuMessage message, String deckName, String cardName) {
         switch (message) {
             case NO_DECK_EXISTS:
                 System.out.println("deck with name " + deckName + " does not exist");
@@ -233,7 +198,7 @@ public class DeckMenuView {
 
 
     private void showAllDecks() {
-        User user = deckMenuController.getUser();
+        User user = controller.getUser();
         ArrayList<Deck> allDecks = user.getDecks();
 
         System.out.println("Decks:");
@@ -259,7 +224,6 @@ public class DeckMenuView {
         CmdLineParser parser = new CmdLineParser();
         Option<String> deckNameOption = parser.addStringOption('d', "deck-name");
         Option<Boolean> isSideOption = parser.addBooleanOption('s', "side");
-
         try {
             parser.parse(command);
         } catch (CmdLineParser.OptionException e) {
@@ -268,7 +232,7 @@ public class DeckMenuView {
         }
 
         String deckName = parser.getOptionValue(deckNameOption);
-        Boolean isSide = parser.getOptionValue(isSideOption, Boolean.FALSE);
+        Boolean isSide = parser.getOptionValue(isSideOption, false);
         if (deckName == null) {
             System.out.println("invalid command");
             return;
@@ -278,7 +242,7 @@ public class DeckMenuView {
             return;
         }
 
-        User user = deckMenuController.getUser();
+        User user = controller.getUser();
         Deck deck = user.getDeckByName(deckName);
         if (deck == null) {
             System.out.println("no deck found");
@@ -289,7 +253,7 @@ public class DeckMenuView {
 
 
     private void showAllCards() {
-        User user = deckMenuController.getUser();
+        User user = controller.getUser();
         ArrayList<Card> cards = user.getPurchasedCards();
         cards.sort(Comparator.comparing(Card::getName));
 
@@ -300,18 +264,7 @@ public class DeckMenuView {
 
 
     public void showCard(String[] command) {
-        if (command.length != 3) {
-            System.out.println("invalid command");
-            return;
-        }
-        String cardName;
-        try {
-            cardName = command[2].replace('_', ' ');
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("invalid command");
-            return;
-        }
-
+        String cardName = command[2].replace('_', ' ');
         DataManager dataManager = DataManager.getInstance();
         CardTemplate template = dataManager.getCardTemplateByName(cardName);
         if (template == null) {
@@ -324,5 +277,24 @@ public class DeckMenuView {
 
     private void showCurrentMenu() {
         System.out.println("Deck Menu");
+    }
+
+
+    public void showHelp() {
+        System.out.println(
+                "commands:\r\n" +
+                        "\tdeck create <deck name>\r\n" +
+                        "\tdeck delete <deck name>\r\n" +
+                        "\tdeck set-activate <deck name>\r\n" +
+                        "\tdeck add-card --card <card name> --deck <deck name> --side(optional)\r\n" +
+                        "\tdeck rm-card --card <card name> --deck <deck name> --side(optional)\r\n" +
+                        "\tdeck show --all\r\n" +
+                        "\tdeck show --deck-name <deck name> --side(optional)\r\n" +
+                        "\tdeck show --cards\r\n" +
+                        "\tcard show <card name>\r\n" +
+                        "\tmenu show-current\r\n" +
+                        "\tmenu exit\r\n" +
+                        "\tmenu help"
+        );
     }
 }

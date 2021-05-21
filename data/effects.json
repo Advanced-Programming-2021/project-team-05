@@ -1,38 +1,43 @@
 [
   {
-    "name": "Man-Eater Bug",
+    "cardName": "Man-Eater Bug",
     "event": "YOU_FLIP_SUMMONED",
     "action": "DESTROY_OPPONENT_ONE_CARD"
   },
   {
-    "name": "Advanced Ritual Art",
+    "cardName": "Advanced Ritual Art",
     "event": "ACTIVATE_EFFECT",
     "action": "RITUAL_SUMMON"
   },
   {
-    "name": "Yomi Ship",
+    "cardName": "Yomi Ship",
     "event": "YOU_DESTROYED",
     "action": "DESTROY_OPPONENT_ATTACKER"
   },
   {
-    "name": "Exploder Dragon",
+    "cardName": "Exploder Dragon",
     "event": "YOU_DESTROYED",
     "action": "DESTROY_OPPONENT_ATTACKER"
   },
   {
-    "name": "Exploder Dragon",
+    "cardName": "Exploder Dragon",
     "event": "YOU_DESTROYED",
     "action": "NO_DAMAGE"
   },
   {
-    "name": "Terratiger, the Empowered Warrior",
+    "cardName": "Terratiger, the Empowered Warrior",
     "event": "YOU_NORMAL_SUMMONED",
     "action": "SUMMON_MONSTER_IN_DEFENSE_POS"
   },
 
   {
-    "name": "Monster Reborn",
+    "cardName": "Monster Reborn",
     "event": "ACTIVATE_EFFECT",
     "action": "RETURN_ONE_CARD_FROM_GRAVEYARD"
+  },
+  {
+    "cardName": "Pot of Greed",
+    "event": "ACTIVATE_EFFECT",
+    "action": "DRAW_TWO_CARDS"
   }
 ]

@@ -83,6 +83,10 @@ public class Deck implements Cloneable {
         return this.mainDeckCards.size();
     }
 
+    public final void shuffleMainDeck() {
+        Collections.shuffle(this.mainDeckCards);
+    }
+
 
     public final void addCardToSideDeck(Card card) {
         this.sideDeckCards.add(card.getId());
@@ -112,6 +116,14 @@ public class Deck implements Cloneable {
         return this.sideDeckCards.size() == 20;
     }
 
+    private int getSideDeckSize() {
+        return this.sideDeckCards.size();
+    }
+
+    public final void shuffleSideDeck() {
+        Collections.shuffle(this.sideDeckCards);
+    }
+
 
     public final boolean isCardFull(Card card) {
         ArrayList<Card> mainCards = this.getCardsByNameInMainDeck(card.getName());
@@ -126,20 +138,11 @@ public class Deck implements Cloneable {
     }
 
 
-    public final void shuffleMainDeck() {
-        Collections.shuffle(this.mainDeckCards);
-    }
-
-    public final void shuffleSideDeck() {
-        Collections.shuffle(this.sideDeckCards);
-    }
-
-
     public final String detailedToString(boolean isSide) {
+        DataManager dataManager = DataManager.getInstance();
         ArrayList<String> cards = isSide ? sideDeckCards : mainDeckCards;
         ArrayList<Card> monsters = new ArrayList<>();
         ArrayList<Card> spellsAndTraps = new ArrayList<>();
-        DataManager dataManager = DataManager.getInstance();
 
         for (String id : cards) {
             Card card = dataManager.getCardById(id);
@@ -152,21 +155,21 @@ public class Deck implements Cloneable {
         monsters.sort(Comparator.comparing(Card::getName));
         spellsAndTraps.sort(Comparator.comparing(Card::getName));
 
-        StringBuilder stringedDeck = new StringBuilder();
-        stringedDeck.append("Deck: ").append(this.getName()).append("\n")
-                .append(isSide ? "Side" : "Main").append(" deck:\n");
+        StringBuilder deckString = new StringBuilder();
+        deckString.append("Deck: ").append(this.getName()).append("\r\n")
+                .append(isSide ? "Side" : "Main").append(" deck:\r\n");
 
-        stringedDeck.append("Monsters:\n");
+        deckString.append("Monsters:\r\n");
         for (Card monster : monsters) {
-            stringedDeck.append(monster).append("\n");
+            deckString.append(monster).append("\r\n");
         }
 
-        stringedDeck.append("Spell and Traps:\n");
+        deckString.append("Spell and Traps:\r\n");
         for (Card spellOrTrap : spellsAndTraps) {
-            stringedDeck.append(spellOrTrap).append("\n");
+            deckString.append(spellOrTrap).append("\r\n");
         }
 
-        return stringedDeck.toString();
+        return deckString.toString();
     }
 
 
@@ -185,7 +188,10 @@ public class Deck implements Cloneable {
 
     @Override
     public final String toString() {
-        return this.getName();
+        return this.getName() + ": " +
+                "main deck " + this.getMainDeckSize() +
+                ", side deck " + this.getSideDeckSize() +
+                ", " + (this.isValid() ? "valid" : "invalid");
     }
 
 

@@ -52,6 +52,7 @@ public class ReturnOneCardFromGraveyardAction implements Action {
 
         targetTable.getGraveyard().remove(position - 1);
         targetTable.addMonster((Monster) targetCard, CardState.VERTICAL_UP);
+        controller.getView().printActivateEffectMessage(DuelMenuMessage.SPELL_ACTIVATED);
     }
 
     private boolean checkPreparations(DuelMenuController controller) {

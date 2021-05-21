@@ -12,5 +12,6 @@
     <file url="file://$PROJECT_DIR$/src/main/java/control/message/DuelMenuMessage.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/control/message/LoginMenuMessage.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/control/message/MainMenuMessage.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>
 </project>
