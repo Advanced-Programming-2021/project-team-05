@@ -308,7 +308,7 @@ public class MainMenuTest {
         controller.startDuelWithUser(opName, 1);
         String output = outContent.toString().trim();
         outContent.reset();
-        Assertions.assertTrue(output.equals("coin side was tails and " + myName + " starts duel") ||
+        Assertions.assertTrue(output.equals("coin side was tails and " + opName + " starts duel") ||
                         output.equals("coin side was heads and " + myName + " starts duel"));
         view.run();
 
