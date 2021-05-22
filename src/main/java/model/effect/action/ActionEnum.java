@@ -24,7 +24,7 @@ public enum ActionEnum {
             case SUMMON_MONSTER_IN_DEFENSE_POS:
                 return new SummonMonsterInDefensePos();
             case DRAW_TWO_CARDS:
-                return new DrawTwoCards();
+//                return new DrawTwoCards();
             case RETURN_ONE_CARD_FROM_GRAVEYARD:
                 return new ReturnOneCardFromGraveyardAction();
             default:
