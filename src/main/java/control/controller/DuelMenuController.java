@@ -33,7 +33,7 @@ public class DuelMenuController {
     private Card selectedCard;
     private CardAddress selectedCardAddress;
 
-    private Integer ritualSummonSpellPosition;
+    private CardAddress ritualSummonSpellAddress;
     private boolean specialSummonDefensive;
 
 
@@ -85,8 +85,8 @@ public class DuelMenuController {
     }
 
 
-    public void setRitualSummonSpellPosition(int position) {
-        this.ritualSummonSpellPosition = position;
+    public void setRitualSummonSpellAddress(CardAddress address) {
+        this.ritualSummonSpellAddress = address;
     }
 
 
@@ -148,7 +148,7 @@ public class DuelMenuController {
 
 
     public void goToNextPhase() {
-        if (ritualSummonSpellPosition != null) {
+        if (ritualSummonSpellAddress != null) {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
             return;
         }
@@ -283,9 +283,9 @@ public class DuelMenuController {
             view.printSummonMessage(DuelMenuMessage.ACTION_NOT_ALLOWED);
             return;
         }
-        Monster card = (Monster) selectedCard;
-        if (ritualSummonSpellPosition != null) {
-            if (card.getType() != CardType.RITUAL) {
+        Monster monster = (Monster) selectedCard;
+        if (ritualSummonSpellAddress != null) {
+            if (monster.getType() != CardType.RITUAL) {
                 view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
                 return;
             }
@@ -293,12 +293,12 @@ public class DuelMenuController {
             return;
         }
         if (specialSummonDefensive) {
-            if (card.getLevel() > 4) {
+            if (monster.getLevel() > 4) {
                 view.printSummonMessage(DuelMenuMessage.SPECIAL_SUMMON_RIGHT_NOW);
                 return;
             }
             specialSummonDefensive = false;
-            summon(card, true);
+            summon(monster, true);
             return;
         }
         Table playerTable = board.getPlayerTable();
@@ -306,25 +306,25 @@ public class DuelMenuController {
             view.printSummonMessage(DuelMenuMessage.ALREADY_SUMMONED_SET);
             return;
         }
-        if (card.getLevel() <= 4) {
+        if (monster.getLevel() <= 4) {
             if (playerTable.isMonsterZoneFull()) {
                 view.printSummonMessage(DuelMenuMessage.MONSTER_ZONE_IS_FULL);
                 return;
             }
-            summon(card, false);
-        } else if (card.getLevel() <= 6) {
+            summon(monster, false);
+        } else if (monster.getLevel() <= 6) {
             if (playerTable.getMonsterCardsCount() == 0) {
                 view.printSummonMessage(DuelMenuMessage.NOT_ENOUGH_TRIBUTE);
                 return;
             }
             tributeSummon(1, false);
-        } else if (card.getLevel() <= 8) {
+        } else if (monster.getLevel() <= 8) {
             if (playerTable.getMonsterCardsCount() <= 1) {
                 view.printSummonMessage(DuelMenuMessage.NOT_ENOUGH_TRIBUTE);
                 return;
             }
             tributeSummon(2, false);
-        } else if ("Gate Guardian".equals(card.getName())) {
+        } else if ("Gate Guardian".equals(monster.getName())) {
             if (playerTable.getMonsterCardsCount() <= 2) {
                 view.printSummonMessage(DuelMenuMessage.NOT_ENOUGH_TRIBUTE);
                 return;
@@ -359,7 +359,7 @@ public class DuelMenuController {
         }
 
         CardState cardState = CardState.VERTICAL_UP;
-        if (ritualSummonSpellPosition != null) {
+        if (ritualSummonSpellAddress != null) {
             int levelsSum = 0;
             for (Monster tributeMonster : tributeCards) {
                 levelsSum += tributeMonster.getLevel();
@@ -384,7 +384,7 @@ public class DuelMenuController {
             playerTable.moveMonsterToGraveyard(position);
         }
 
-        if (ritualSummonSpellPosition != null) {
+        if (ritualSummonSpellAddress != null) {
             ritualSummon((Monster) selectedCard, cardState);
         } else {
             summon((Monster) selectedCard, isSpecial);
@@ -393,6 +393,7 @@ public class DuelMenuController {
 
     public void summon(Monster monster, boolean isSpecial) {
         Table playerTable = board.getPlayerTable();
+        playerTable.removeCardFromHand(selectedCardAddress.getPosition());
         playerTable.addMonster(monster, CardState.VERTICAL_UP);
         if (!isSpecial) {
             playerTable.setCanSummonOrSet(false);
@@ -405,17 +406,22 @@ public class DuelMenuController {
 
     private void ritualSummon(Monster monster, CardState state) {
         Table playerTable = board.getPlayerTable();
-        playerTable.moveSpellOrTrapToGraveyard(ritualSummonSpellPosition);
+        if (ritualSummonSpellAddress.getZone() == CardAddressZone.HAND) {
+            playerTable.removeCardFromHand(ritualSummonSpellAddress.getPosition());
+        } else if (ritualSummonSpellAddress.getZone() == CardAddressZone.SPELL) {
+            playerTable.moveSpellOrTrapToGraveyard(ritualSummonSpellAddress.getPosition());
+        }
+        playerTable.removeCardFromHand(monster);
         playerTable.addMonster(monster, state);
         view.printTributeSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
         view.showBoard(board);
         deselect(false);
-        ritualSummonSpellPosition = null;
+        ritualSummonSpellAddress = null;
     }
 
 
     public final void checkFlipSummon() {
-        if (ritualSummonSpellPosition != null) {
+        if (ritualSummonSpellAddress != null) {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
             return;
         }
@@ -457,7 +463,7 @@ public class DuelMenuController {
 
 
     public final void set() {
-        if (ritualSummonSpellPosition != null) {
+        if (ritualSummonSpellAddress != null) {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
             return;
         }
@@ -487,6 +493,7 @@ public class DuelMenuController {
                 view.printSetMessage(DuelMenuMessage.ALREADY_SUMMONED_SET);
                 return;
             }
+            playerTable.removeCardFromHand(selectedCardAddress.getPosition());
             playerTable.addMonster((Monster) selectedCard, CardState.HORIZONTAL_DOWN);
             playerTable.setCanSummonOrSet(false);
             view.printSetMessage(DuelMenuMessage.SET_SUCCESSFUL);
@@ -496,6 +503,7 @@ public class DuelMenuController {
                 return;
             }
             deselect(false);
+            playerTable.removeCardFromHand(selectedCardAddress.getPosition());
             playerTable.addSpellOrTrap(selectedCard, CardState.VERTICAL_DOWN);
             view.printSetMessage(DuelMenuMessage.SET_SUCCESSFUL);
             view.showBoard(board);
@@ -506,7 +514,7 @@ public class DuelMenuController {
 
 
     public final void changePosition(String position) {
-        if (ritualSummonSpellPosition != null) {
+        if (ritualSummonSpellAddress != null) {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
             return;
         }
@@ -700,7 +708,7 @@ public class DuelMenuController {
 
 
     public final void activeEffect() {
-        if (ritualSummonSpellPosition != null) {
+        if (ritualSummonSpellAddress != null) {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
             return;
         }
@@ -744,8 +752,8 @@ public class DuelMenuController {
 
 
     public final void cancel() {
-        if (ritualSummonSpellPosition != null) {
-            ritualSummonSpellPosition = null;
+        if (ritualSummonSpellAddress != null) {
+            ritualSummonSpellAddress = null;
             view.printCancelMessage(DuelMenuMessage.ACTION_CANCELED);
             return;
         }

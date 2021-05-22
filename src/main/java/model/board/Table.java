@@ -140,6 +140,10 @@ public class Table {
         this.hand.remove(card);
     }
 
+    public final void removeCardFromHand(int position) {
+        this.hand.remove(position - 1);
+    }
+
     public final void initializeHand() {
         this.getDeck().shuffleMainDeck();
         for (int i = 0; i < 5; i++) {

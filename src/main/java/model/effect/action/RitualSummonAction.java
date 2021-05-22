@@ -25,12 +25,11 @@ public class RitualSummonAction implements Action {
             controller.getView().printRitualSummonMessage(DuelMenuMessage.NO_WAY_TO_RITUAL_SUMMON);
             return;
         }
-        boolean canRitualSummon = canRitualSummon(table, ritualMonsterLevels);
-        if (!canRitualSummon) {
+        if (!canRitualSummon(table, ritualMonsterLevels)) {
             controller.getView().printRitualSummonMessage(DuelMenuMessage.NO_WAY_TO_RITUAL_SUMMON);
             return;
         }
-        controller.setRitualSummonSpellPosition(controller.getSelectedCardAddress().getPosition());
+        controller.setRitualSummonSpellAddress(controller.getSelectedCardAddress());
     }
 
     private boolean canRitualSummon(Table table, ArrayList<Integer> ritualMonsterLevels) {
