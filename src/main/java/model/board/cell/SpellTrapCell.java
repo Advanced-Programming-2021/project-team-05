@@ -1,5 +1,6 @@
-package model.board;
+package model.board.cell;
 
+import model.board.CardState;
 import model.card.Card;
 
 public class SpellTrapCell extends Cell {

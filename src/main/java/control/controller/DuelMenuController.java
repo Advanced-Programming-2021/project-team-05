@@ -3,6 +3,9 @@ package control.controller;
 import control.message.DuelMenuMessage;
 import model.User;
 import model.board.*;
+import model.board.cell.Cell;
+import model.board.cell.MonsterCell;
+import model.board.cell.SpellTrapCell;
 import model.card.Card;
 import model.card.Monster;
 import model.card.Spell;
@@ -17,27 +20,31 @@ import java.util.ArrayList;
 
 public class DuelMenuController {
 
-    private final User player1;
-    private final User player2;
-    private final Board[] boards;
+    private final User playerOne;
+    private final User playerTwo;
     private final int rounds;
+    private final Board[] boards;
+
     private DuelMenuView view;
     private int currentRound;
     private Phase phase;
     private Board board;
+
     private Card selectedCard;
     private CardAddress selectedCardAddress;
+
     private Integer ritualSummonSpellPosition;
     private boolean specialSummonDefensive;
 
 
-    public DuelMenuController(User player1, User player2, int rounds) {
-        this.player1 = player1;
-        this.player2 = player2;
+    public DuelMenuController(User playerOne, User playerTwo, int rounds) {
+        this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
         this.currentRound = 0;
         this.rounds = rounds;
         this.boards = new Board[rounds];
     }
+
 
     public DuelMenuView getView() {
         return this.view;
@@ -88,8 +95,55 @@ public class DuelMenuController {
     }
 
 
+    public void startNextRound() {
+        currentRound++;
+        initializeBoard();
+        phase = Phase.DRAW;
+        board.getPlayerTable().drawCard();
+        boards[currentRound - 1] = board;
+    }
+
+    private void initializeBoard() {
+        User player;
+        User opponent;
+        if (currentRound == 1) {
+            CoinSide coinSide = Utility.flipCoin();
+            if (coinSide == CoinSide.HEADS) {
+                player = playerOne;
+                opponent = playerTwo;
+            } else {
+                player = playerTwo;
+                opponent = playerOne;
+            }
+            view.showFlipCoinResult(player.getUsername(), coinSide);
+        } else {
+            Board previousBoard = boards[currentRound - 2];
+            player = previousBoard.getLoserTable().getOwner();
+            opponent = previousBoard.getWinnerTable().getOwner();
+        }
+        board = new Board(player, opponent);
+    }
+
+
     private void changeTurn() {
         board.swapTables();
+        Table[] tables = new Table[2];
+        tables[0] = board.getPlayerTable();
+        tables[1] = board.getOpponentTable();
+        for (Table table : tables) {
+            for (int i = 1; i <= 5; i++) {
+                MonsterCell monsterCell = table.getMonsterCell(i);
+                monsterCell.setDidAttack(false);
+                monsterCell.setDoesPositionChanged(false);
+                monsterCell.setNewlyAdded(false);
+
+                SpellTrapCell spellTrapCell = table.getSpellOrTrapCell(i);
+                spellTrapCell.setNewlyAdded(false);
+
+                SpellTrapCell fieldSpellCell = table.getFieldSpellCell();
+                fieldSpellCell.setNewlyAdded(false);
+            }
+        }
     }
 
 
@@ -105,7 +159,6 @@ public class DuelMenuController {
         deselect(false);
         phase = phase.getNextPhase();
         view.showPhase(phase.getName());
-
         if (phase == Phase.DRAW) {
             changeTurn();
             view.showTurn(board.getPlayerTable().getOwner().getNickname());
@@ -116,29 +169,9 @@ public class DuelMenuController {
                 }
                 board.getPlayerTable().drawCard();
             }
-        } else if (phase == Phase.MAIN_1) {
+        } else if (phase == Phase.MAIN_1 || phase == Phase.MAIN_2) {
             view.showBoard(board);
         }
-    }
-
-
-    public void startNextRound() {
-        CoinSide coinSide = Utility.flipCoin();
-        User player;
-        User opponent;
-        if (coinSide == CoinSide.HEADS) {
-            player = player1;
-            opponent = player2;
-        } else {
-            player = player2;
-            opponent = player1;
-        }
-        view.showFlipCoinResult(player1.getUsername(), coinSide);
-        currentRound++;
-        phase = Phase.DRAW;
-        board = new Board(player, opponent);
-        board.getPlayerTable().drawCard();
-        boards[currentRound - 1] = board;
     }
 
 
@@ -147,12 +180,12 @@ public class DuelMenuController {
             if (print) {
                 view.printDeselectMessage(DuelMenuMessage.NO_CARD_IS_SELECTED);
             }
-        } else {
-            selectedCard = null;
-            selectedCardAddress = null;
-            if (print) {
-                view.printDeselectMessage(DuelMenuMessage.CARD_DESELECTED);
-            }
+            return;
+        }
+        selectedCard = null;
+        selectedCardAddress = null;
+        if (print) {
+            view.printDeselectMessage(DuelMenuMessage.CARD_DESELECTED);
         }
     }
 
@@ -177,13 +210,13 @@ public class DuelMenuController {
     }
 
     private void selectCardFromHand(CardAddress cardAddress) {
-        int position = cardAddress.getPosition();
         boolean isForOpponent = cardAddress.isForOpponent();
-        Table targetTable = cardAddress.isForOpponent() ? board.getOpponentTable() : board.getPlayerTable();
         if (isForOpponent) {
             view.printSelectMessage(DuelMenuMessage.INVALID_SELECTION);
             return;
         }
+        int position = cardAddress.getPosition();
+        Table targetTable = board.getPlayerTable();
         int handSize = targetTable.getHand().size();
         if (position < 1 || position > handSize) {
             view.printSelectMessage(DuelMenuMessage.INVALID_SELECTION);
@@ -195,11 +228,11 @@ public class DuelMenuController {
 
     private void selectCardFromMonsterZone(CardAddress cardAddress) {
         int position = cardAddress.getPosition();
-        Table targetTable = cardAddress.isForOpponent() ? board.getOpponentTable() : board.getPlayerTable();
         if (position < 1 || position > 5) {
             view.printSelectMessage(DuelMenuMessage.INVALID_SELECTION);
             return;
         }
+        Table targetTable = cardAddress.isForOpponent() ? board.getOpponentTable() : board.getPlayerTable();
         Card targetCard = targetTable.getMonster(position);
         if (targetCard == null) {
             view.printSelectMessage(DuelMenuMessage.INVALID_SELECTION);
@@ -211,11 +244,11 @@ public class DuelMenuController {
 
     private void selectCardFromSpellZone(CardAddress cardAddress) {
         int position = cardAddress.getPosition();
-        Table targetTable = cardAddress.isForOpponent() ? board.getOpponentTable() : board.getPlayerTable();
         if (position < 1 || position > 5) {
             view.printSelectMessage(DuelMenuMessage.INVALID_SELECTION);
             return;
         }
+        Table targetTable = cardAddress.isForOpponent() ? board.getOpponentTable() : board.getPlayerTable();
         Card targetCard = targetTable.getSpellOrTrap(position);
         if (targetCard == null) {
             view.printSelectMessage(DuelMenuMessage.INVALID_SELECTION);
@@ -242,9 +275,7 @@ public class DuelMenuController {
             view.printSummonMessage(DuelMenuMessage.NO_CARD_IS_SELECTED);
             return;
         }
-        if (!(selectedCard instanceof Monster) ||
-                selectedCardAddress.getZone() != CardAddressZone.HAND ||
-                "Gate Guardian".equals(selectedCard.getName())) {
+        if (selectedCardAddress.getZone() != CardAddressZone.HAND || !(selectedCard instanceof Monster)) {
             view.printSummonMessage(DuelMenuMessage.CANT_SUMMON);
             return;
         }
@@ -284,15 +315,21 @@ public class DuelMenuController {
         } else if (card.getLevel() <= 6) {
             if (playerTable.getMonsterCardsCount() == 0) {
                 view.printSummonMessage(DuelMenuMessage.NOT_ENOUGH_TRIBUTE);
-            } else {
-                tributeSummon(1, false);
+                return;
             }
-        } else {
+            tributeSummon(1, false);
+        } else if (card.getLevel() <= 8) {
             if (playerTable.getMonsterCardsCount() <= 1) {
                 view.printSummonMessage(DuelMenuMessage.NOT_ENOUGH_TRIBUTE);
-            } else {
-                tributeSummon(2, false);
+                return;
             }
+            tributeSummon(2, false);
+        } else if ("Gate Guardian".equals(card.getName())) {
+            if (playerTable.getMonsterCardsCount() <= 2) {
+                view.printSummonMessage(DuelMenuMessage.NOT_ENOUGH_TRIBUTE);
+                return;
+            }
+            tributeSummon(3, true);
         }
     }
 
@@ -331,7 +368,7 @@ public class DuelMenuController {
                 view.printRitualSummonMessage(DuelMenuMessage.DONT_MATCH_WITH_RITUAL_MONSTER);
                 return;
             }
-            String stateString = view.getOneOfValues("attack", "defense", "enter monster state (attack/defense)", "invalid state");
+            String stateString = view.getOneOfValues("attack", "defense", "enter monster state: (attack/defense)", "invalid state");
             if (stateString == null) {
                 view.printActionCanceled();
                 return;
@@ -377,7 +414,7 @@ public class DuelMenuController {
     }
 
 
-    public final void flipSummon() {
+    public final void checkFlipSummon() {
         if (ritualSummonSpellPosition != null) {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
             return;
@@ -403,12 +440,19 @@ public class DuelMenuController {
             view.printFlipSummonMessage(DuelMenuMessage.CANT_FLIP_SUMMON);
             return;
         }
+        flipSummon(targetCell, true);
+    }
 
+    private void flipSummon(MonsterCell targetCell, boolean print) {
         targetCell.setState(CardState.VERTICAL_UP);
         targetCell.setDoesPositionChanged(true);
-        view.printFlipSummonMessage(DuelMenuMessage.FLIP_SUMMON_SUCCESSFUL);
+        if (print) {
+            view.printFlipSummonMessage(DuelMenuMessage.FLIP_SUMMON_SUCCESSFUL);
+        }
         selectedCard.runActions(Event.YOU_FLIP_SUMMONED, this);
-        view.showBoard(board);
+        if (print) {
+            view.showBoard(board);
+        }
     }
 
 
@@ -482,12 +526,14 @@ public class DuelMenuController {
                 view.printChangePositionMessage(DuelMenuMessage.INVALID_COMMAND);
                 return;
         }
-
         if (selectedCard == null) {
             view.printChangePositionMessage(DuelMenuMessage.NO_CARD_IS_SELECTED);
             return;
         }
-        if (selectedCardAddress.getZone() != CardAddressZone.MONSTER) {
+        MonsterCell targetCell = board.getPlayerTable().getMonsterCell(selectedCardAddress.getPosition());
+        if (selectedCardAddress.getZone() != CardAddressZone.MONSTER
+                || targetCell.getState() == CardState.HORIZONTAL_DOWN
+                || targetCell.getState() == CardState.VERTICAL_DOWN) {
             view.printChangePositionMessage(DuelMenuMessage.CANT_CHANGE_POSITION);
             return;
         }
@@ -495,9 +541,8 @@ public class DuelMenuController {
             view.printChangePositionMessage(DuelMenuMessage.ACTION_NOT_ALLOWED);
             return;
         }
-        MonsterCell targetCell = board.getPlayerTable().getMonsterCell(selectedCardAddress.getPosition());
-        if ((targetState == CardState.VERTICAL_UP && targetCell.getState() != CardState.HORIZONTAL_UP) ||
-                (targetState == CardState.HORIZONTAL_UP && targetCell.getState() != CardState.VERTICAL_UP)) {
+        if ((targetState == CardState.VERTICAL_UP && targetCell.getState() != CardState.HORIZONTAL_UP)
+                || (targetState == CardState.HORIZONTAL_UP && targetCell.getState() != CardState.VERTICAL_UP)) {
             view.printChangePositionMessage(DuelMenuMessage.ALREADY_IN_WANTED_POSITION);
             return;
         }
@@ -505,7 +550,6 @@ public class DuelMenuController {
             view.printChangePositionMessage(DuelMenuMessage.ALREADY_CHANGED_POSITION);
             return;
         }
-
         targetCell.setState(targetState);
         targetCell.setDoesPositionChanged(true);
         view.printChangePositionMessage(DuelMenuMessage.POSITION_CHANGED);
@@ -513,7 +557,7 @@ public class DuelMenuController {
     }
 
 
-    public final void attack(int targetPosition)    {
+    public final void attack(int targetPosition) {
         if (targetPosition < 1 || targetPosition > 5) {
             view.printAttackMessage(DuelMenuMessage.INVALID_POSITION, 0, null);
             return;
@@ -535,24 +579,21 @@ public class DuelMenuController {
             view.printAttackMessage(DuelMenuMessage.ALREADY_ATTACKED, 0, null);
             return;
         }
-        CardAddress targetCellAddress = new CardAddress(CardAddressZone.MONSTER, targetPosition, false);
-        Cell targetCell = board.getOpponentTable().getCellByAddress(targetCellAddress);
+        MonsterCell targetCell = board.getOpponentTable().getMonsterCell(targetPosition);
         if (targetCell == null || targetCell.getCard() == null) {
             view.printAttackMessage(DuelMenuMessage.NO_CARD_TO_ATTACK, 0, null);
             return;
         }
-
         if (targetCell.getState() == CardState.VERTICAL_UP) {
             attackAttackPositionCard(targetPosition, attackerCell, targetCell);
-        } else if (targetCell.getState() == CardState.HORIZONTAL_UP) {
+        } else if (targetCell.getState() == CardState.HORIZONTAL_UP || targetCell.getState() == CardState.HORIZONTAL_DOWN) {
             attackDefensePositionCard(targetPosition, attackerCell, targetCell);
         }
         attackerCell.setDidAttack(true);
         deselect(false);
-        view.showBoard(board);
     }
 
-    private void attackAttackPositionCard(int targetPosition, Cell attackerCell, Cell targetCell) {
+    private void attackAttackPositionCard(int targetPosition, MonsterCell attackerCell, MonsterCell targetCell) {
         Table attackerTable = board.getPlayerTable();
         Table targetTable = board.getOpponentTable();
         int attackerCardAttack = ((Monster) attackerCell.getCard()).getAttack();
@@ -564,6 +605,8 @@ public class DuelMenuController {
             targetCell.getCard().runActions(Event.YOU_DESTROYED, this);
             if (checkLifePoint(targetTable, attackerTable, damage)) {
                 targetTable.decreaseLifePoint(damage);
+            } else {
+                return;
             }
         } else if (damage == 0) {
             attackerTable.moveMonsterToGraveyard(selectedCardAddress.getPosition());
@@ -576,16 +619,20 @@ public class DuelMenuController {
             view.printAttackMessage(DuelMenuMessage.YOUR_ATTACK_POSITION_MONSTER_DESTROYED, damage, null);
             if (checkLifePoint(attackerTable, targetTable, damage)) {
                 attackerTable.decreaseLifePoint(damage);
+            } else {
+                return;
             }
         }
+        view.showBoard(board);
     }
 
-    private void attackDefensePositionCard(int targetPosition, Cell attackerCell, Cell targetCell) {
+    private void attackDefensePositionCard(int targetPosition, MonsterCell attackerCell, MonsterCell targetCell) {
         Table attackerTable = board.getPlayerTable();
         Table targetTable = board.getOpponentTable();
         String hiddenCardName = null;
         if (targetCell.getState() == CardState.HORIZONTAL_DOWN) {
             hiddenCardName = targetCell.getCard().getName();
+            flipSummon(targetCell, false);
         }
         int attackerCardAttack = ((Monster) attackerCell.getCard()).getAttack();
         int targetCardDefense = ((Monster) targetCell.getCard()).getDefence();
@@ -600,8 +647,11 @@ public class DuelMenuController {
             view.printAttackMessage(DuelMenuMessage.NO_CARD_DESTROYED_WITH_DAMAGE, Math.abs(damage), hiddenCardName);
             if (checkLifePoint(attackerTable, targetTable, damage)) {
                 attackerTable.decreaseLifePoint(Math.abs(damage));
+            } else {
+                return;
             }
         }
+        view.showBoard(board);
     }
 
 
@@ -623,11 +673,10 @@ public class DuelMenuController {
             view.printDirectAttackMessage(DuelMenuMessage.ALREADY_ATTACKED, 0);
             return;
         }
-        if (board.getOpponentTable().getMonsterCardsCount() == 0) {
+        if (board.getOpponentTable().getMonsterCardsCount() != 0) {
             view.printDirectAttackMessage(DuelMenuMessage.CANT_ATTACK_DIRECTLY, 0);
             return;
         }
-
         Table opponentTable = board.getOpponentTable();
         int damage = ((Monster) attackerCell.getCard()).getAttack();
         attackerCell.setDidAttack(true);
@@ -713,7 +762,7 @@ public class DuelMenuController {
         int player2Score = 0;
         for (Board board : boards) {
             if (board != null) {
-                if (player1.getUsername().equals(board.getWinnerTable().getOwner().getUsername())) {
+                if (playerOne.equals(board.getWinnerTable().getOwner())) {
                     player1Score++;
                 } else {
                     player2Score++;
@@ -723,10 +772,10 @@ public class DuelMenuController {
 
         boolean wonWholeMatch = player1Score == rounds / 2 + 1 || player2Score == rounds / 2 + 1;
         if (wonWholeMatch) {
-            int maxLifePoint = getMaxLifePoint(winnerTable);
-            winnerTable.getOwner().increaseMoney(rounds * 1000 + maxLifePoint);
+            int maxLifePoint = getMaxLifePoint(winnerTable.getOwner());
+            winnerTable.getOwner().increaseMoney(rounds * 1000L + maxLifePoint);
             winnerTable.getOwner().increaseScore(Math.max(player1Score, player2Score));
-            loserTable.getOwner().increaseMoney(rounds * 100);
+            loserTable.getOwner().increaseMoney(rounds * 100L);
             winnerTable.getOwner().increaseScore(Math.min(player1Score, player2Score));
         }
         view.printWinnerMessage(wonWholeMatch, winnerTable.getOwner().getUsername(), player1Score, player2Score);
@@ -735,16 +784,27 @@ public class DuelMenuController {
         }
     }
 
-    private int getMaxLifePoint(Table table) {
+    private int getMaxLifePoint(User user) {
         int maxLifePoint = 0;
         for (Board board : boards) {
-            if (table.getOwner().getUsername().equals(board.getWinnerTable().getOwner().getUsername())) {
-                if (board.getWinnerTable().getLifePoint() > maxLifePoint) {
-                    maxLifePoint = board.getWinnerTable().getLifePoint();
+            if (board != null) {
+                if (user.equals(board.getWinnerTable().getOwner())) {
+                    if (board.getWinnerTable().getLifePoint() > maxLifePoint) {
+                        maxLifePoint = board.getWinnerTable().getLifePoint();
+                    }
+                } else {
+                    if (board.getLoserTable().getLifePoint() > maxLifePoint) {
+                        maxLifePoint = board.getWinnerTable().getLifePoint();
+                    }
                 }
             }
         }
         return maxLifePoint;
+    }
+
+
+    public void surrender() {
+        win(board.getOpponentTable(), board.getPlayerTable());
     }
 
 

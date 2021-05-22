@@ -10,7 +10,6 @@ public class Board {
     private Table winnerTable;
     private Table loserTable;
     private int attackerMonsterPosition;
-    private int attackerMonsterPos;
     private boolean noDamageToAnyPlayer;
 
 
@@ -21,21 +20,6 @@ public class Board {
         this.opponentTable.initializeHand();
     }
 
-    public void setAttackerMonsterPos(int attackerMonsterPos) {
-        this.attackerMonsterPos = attackerMonsterPos;
-    }
-
-    public int getAttackerMonsterPos() {
-        return attackerMonsterPos;
-    }
-
-    public boolean isNoDamageToAnyPlayer() {
-        return noDamageToAnyPlayer;
-    }
-
-    public void setNoDamageToAnyPlayer(boolean noDamageToAnyPlayer) {
-        this.noDamageToAnyPlayer = noDamageToAnyPlayer;
-    }
 
     public Table getPlayerTable() {
         return this.playerTable;
@@ -70,6 +54,15 @@ public class Board {
 
     public void setAttackerMonster(int attackerMonsterPosition) {
         this.attackerMonsterPosition = attackerMonsterPosition;
+    }
+
+
+    public boolean isNoDamageToAnyPlayer() {
+        return noDamageToAnyPlayer;
+    }
+
+    public void setNoDamageToAnyPlayer(boolean noDamageToAnyPlayer) {
+        this.noDamageToAnyPlayer = noDamageToAnyPlayer;
     }
 
 

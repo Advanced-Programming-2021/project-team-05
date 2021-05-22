@@ -2,6 +2,9 @@ package model.board;
 
 import model.Deck;
 import model.User;
+import model.board.cell.Cell;
+import model.board.cell.MonsterCell;
+import model.board.cell.SpellTrapCell;
 import model.card.Card;
 import model.card.Monster;
 import model.card.Spell;
@@ -11,12 +14,12 @@ import java.util.ArrayList;
 
 
 public class Table {
-    private final MonsterCell[] monsterCells;
-    private final SpellTrapCell[] spellAndTrapCells;
     private final ArrayList<Card> hand;
     private final ArrayList<Card> graveyard;
+    private final MonsterCell[] monsterCells;
+    private final SpellTrapCell[] spellAndTrapCells;
     private final SpellTrapCell fieldZoneCell;
-    private User Owner;
+    private User owner;
     private int lifePoint;
     private Deck deck;
     private boolean canSummonOrSet;
@@ -48,7 +51,16 @@ public class Table {
             e.printStackTrace();
         }
         this.setCanSummonOrSet(true);
-        this.setLifePoint(7000);
+        this.setLifePoint(8000);
+    }
+
+
+    public final User getOwner() {
+        return this.owner;
+    }
+
+    public final void setOwner(User owner) {
+        this.owner = owner;
     }
 
 
@@ -69,20 +81,25 @@ public class Table {
     }
 
 
+    public final Deck getDeck() {
+        return this.deck;
+    }
+
+    public final void setDeck(Deck deck) {
+        this.deck = deck;
+    }
+
+    public final void removeCardFromDeck(Card card) {
+        this.deck.removeCardFromMainDeck(card);
+    }
+
+
     public ArrayList<Card> getHand() {
         return this.hand;
     }
 
     public Card getCardFromHand(int position) {
         return this.hand.get(position - 1);
-    }
-
-    public final User getOwner() {
-        return this.Owner;
-    }
-
-    public final void setOwner(User owner) {
-        this.Owner = owner;
     }
 
 
@@ -112,19 +129,6 @@ public class Table {
 
     public final SpellTrapCell getFieldSpellCell() {
         return this.fieldZoneCell;
-    }
-
-
-    public final Deck getDeck() {
-        return this.deck;
-    }
-
-    public final void setDeck(Deck deck) {
-        this.deck = deck;
-    }
-
-    public final void removeCardFromDeck(Card card) {
-        this.deck.removeCardFromMainDeck(card);
     }
 
 
@@ -233,7 +237,6 @@ public class Table {
                 return;
             }
         }
-
     }
 
     public final void removeSpellOrTrap(int position) {

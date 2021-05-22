@@ -1,5 +1,6 @@
-package model.board;
+package model.board.cell;
 
+import model.board.CardState;
 import model.card.Monster;
 
 public class MonsterCell extends Cell{

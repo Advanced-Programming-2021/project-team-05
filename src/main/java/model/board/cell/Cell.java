@@ -1,8 +1,10 @@
-package model.board;
+package model.board.cell;
 
+import model.board.CardState;
 import model.card.Card;
 
 public abstract class Cell {
+
     protected Card card;
     protected CardState state;
     protected boolean isNewlyAdded;

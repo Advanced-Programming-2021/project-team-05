@@ -8,6 +8,7 @@ import model.template.CardTemplate;
 import model.template.property.CardType;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
 
 public abstract class Card {
@@ -78,6 +79,16 @@ public abstract class Card {
         CardTemplate template = dataManager.getCardTemplateByName(this.getName());
         return template.detailedToString();
     }
+
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || this.getClass() != object.getClass()) return false;
+        Card card = (Card) object;
+        return this.getId().equals(card.getId());
+    }
+
 
     @Override
     public String toString() {

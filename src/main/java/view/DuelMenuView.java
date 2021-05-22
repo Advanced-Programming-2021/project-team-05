@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class DuelMenuView {
 
     private DuelMenuController controller;
@@ -40,6 +39,8 @@ public class DuelMenuView {
             String command = Utility.getNextLine();
             if (command.equals("cancel")) {
                 controller.cancel();
+            } else if (command.equals("surrender")) {
+                controller.surrender();
             } else if (command.equals("next phase")) {
                 nextPhase();
             } else if (command.equals("select -d")) {
@@ -56,7 +57,7 @@ public class DuelMenuView {
                 flipSummon();
             } else if (command.equals("attack direct")) {
                 directAttack();
-            } else if (command.startsWith("attack")) {
+            } else if (command.matches("^attack \\d$")) {
                 attack(command.split("\\s"));
             } else if (command.equals("activate effect")) {
                 activateEffect();
@@ -72,6 +73,8 @@ public class DuelMenuView {
                 System.out.println("menu navigation is not possible");
             } else if (command.equals("menu exit")) {
                 break;
+            } else if (command.equals("menu help")) {
+                showHelp();
             } else {
                 System.out.println("invalid command");
             }
@@ -112,7 +115,6 @@ public class DuelMenuView {
         CmdLineParser.Option<Integer> graveyardOption = parser.addIntegerOption('g', "graveyard");
         CmdLineParser.Option<Boolean> fieldOption = parser.addBooleanOption('f', "field");
         CmdLineParser.Option<Boolean> opponentOption = parser.addBooleanOption('o', "opponent");
-
         try {
             parser.parse(command);
         } catch (CmdLineParser.OptionException e) {
@@ -340,7 +342,7 @@ public class DuelMenuView {
 
 
     private void flipSummon() {
-        controller.flipSummon();
+        controller.checkFlipSummon();
     }
 
     public void printFlipSummonMessage(DuelMenuMessage message) {
@@ -397,14 +399,7 @@ public class DuelMenuView {
 
 
     private void attack(String[] command) {
-        int position;
-        try {
-            position = Integer.parseInt(command[2]);
-        } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-            System.out.println("invalid command");
-            return;
-        }
-
+        int position = Integer.parseInt(command[1]);
         controller.attack(position);
     }
 
@@ -613,5 +608,30 @@ public class DuelMenuView {
 
     public void printActionCanceled() {
         System.out.println("action canceled");
+    }
+
+
+    public void showHelp() {
+        System.out.println(
+                "commands:\r\n" +
+                        "\tnext phase\r\n" +
+                        "\tselect <card address>\r\n" +
+                        "\tselect -d\r\n" +
+                        "\tsummon\r\n" +
+                        "\tset\r\n" +
+                        "\tset --position attack/defense\r\n" +
+                        "\tflip-summon\r\n" +
+                        "\tattack <number>\r\n" +
+                        "\tattack direct\r\n" +
+                        "\tactivate effect\r\n" +
+                        "\tshow graveyard\r\n" +
+                        "\tsurrender\r\n" +
+                        "\tcancel\r\n" +
+                        "\tcard show --selected\r\n" +
+                        "\tcard show <card name>\r\n" +
+                        "\tmenu show-current\r\n" +
+                        "\tmenu exit\r\n" +
+                        "\tmenu help"
+        );
     }
 }

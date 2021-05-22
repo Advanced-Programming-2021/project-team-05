@@ -2,7 +2,7 @@ package utils;
 
 public enum CoinSide {
     HEADS("heads"),
-    TAIL("tails");
+    TAILS("tails");
 
 
     private final String name;
