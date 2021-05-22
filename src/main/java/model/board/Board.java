@@ -1,8 +1,6 @@
 package model.board;
 
 import model.User;
-import model.card.Card;
-import model.card.Monster;
 
 public class Board {
     private Table playerTable;
@@ -10,7 +8,7 @@ public class Board {
     private Table winnerTable;
     private Table loserTable;
     private int attackerMonsterPosition;
-    private boolean noDamageToAnyPlayer;
+    private boolean arePlayersImmune;
 
 
     public Board(User player, User opponent) {
@@ -57,12 +55,12 @@ public class Board {
     }
 
 
-    public boolean isNoDamageToAnyPlayer() {
-        return noDamageToAnyPlayer;
+    public boolean arePlayersImmune() {
+        return arePlayersImmune;
     }
 
-    public void setNoDamageToAnyPlayer(boolean noDamageToAnyPlayer) {
-        this.noDamageToAnyPlayer = noDamageToAnyPlayer;
+    public void setPlayersImmune(boolean arePlayersImmune) {
+        this.arePlayersImmune = arePlayersImmune;
     }
 
 

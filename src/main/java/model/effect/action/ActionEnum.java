@@ -5,7 +5,6 @@ public enum ActionEnum {
     RITUAL_SUMMON,
     DESTROY_OPPONENT_ATTACKER,
     NO_DAMAGE,
-    SUMMON_MONSTER_IN_DEFENSE_POS,
 
     DRAW_TWO_CARDS,
     RETURN_ONE_CARD_FROM_GRAVEYARD;
@@ -21,8 +20,6 @@ public enum ActionEnum {
                 return new DestroyOpponentAttackerAction();
             case NO_DAMAGE:
                 return new NoDamage();
-            case SUMMON_MONSTER_IN_DEFENSE_POS:
-                return new SummonMonsterInDefensePos();
             case DRAW_TWO_CARDS:
 //                return new DrawTwoCards();
             case RETURN_ONE_CARD_FROM_GRAVEYARD:

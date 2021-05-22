@@ -24,11 +24,6 @@
     "event": "YOU_DESTROYED",
     "action": "NO_DAMAGE"
   },
-  {
-    "cardName": "Terratiger, the Empowered Warrior",
-    "event": "YOU_NORMAL_SUMMONED",
-    "action": "SUMMON_MONSTER_IN_DEFENSE_POS"
-  },
 
   {
     "cardName": "Monster Reborn",

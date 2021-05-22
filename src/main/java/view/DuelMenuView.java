@@ -8,6 +8,7 @@ import model.board.Board;
 import model.board.CardAddress;
 import model.board.CardAddressZone;
 import model.board.Table;
+import model.card.Card;
 import model.template.CardTemplate;
 import utils.CoinSide;
 import utils.Utility;
@@ -588,6 +589,15 @@ public class DuelMenuView {
 
     public void showBoard(Board board) {
         System.out.println(board);
+    }
+
+
+    public void showHand(ArrayList<Card> hand) {
+        System.out.println("Hand");
+        for (int i = 0, handSize = hand.size(); i < handSize; i++) {
+            Card card = hand.get(i);
+            System.out.println((i + 1) + ". " + card);
+        }
     }
 
 

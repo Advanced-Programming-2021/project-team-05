@@ -9,6 +9,9 @@ public class DestroyOpponentAttackerAction implements Action {
     @Override
     public void run(DuelMenuController controller) {
         Table playerTable = controller.getBoard().getPlayerTable();
-        playerTable.moveMonsterToGraveyard(controller.getSelectedCardAddress().getPosition());
+        int position = controller.getSelectedCardAddress().getPosition();
+        if (playerTable.getMonster(position) != null) {
+            playerTable.moveMonsterToGraveyard(position);
+        }
     }
 }

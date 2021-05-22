@@ -34,7 +34,6 @@ public class DuelMenuController {
     private CardAddress selectedCardAddress;
 
     private CardAddress ritualSummonSpellAddress;
-    private boolean specialSummonDefensive;
 
 
     public DuelMenuController(User playerOne, User playerTwo, int rounds) {
@@ -87,11 +86,6 @@ public class DuelMenuController {
 
     public void setRitualSummonSpellAddress(CardAddress address) {
         this.ritualSummonSpellAddress = address;
-    }
-
-
-    public void setSpecialSummonDefensive(boolean specialSummonDefensive) {
-        this.specialSummonDefensive = specialSummonDefensive;
     }
 
 
@@ -150,10 +144,6 @@ public class DuelMenuController {
     public void goToNextPhase() {
         if (ritualSummonSpellAddress != null) {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
-            return;
-        }
-        if (specialSummonDefensive) {
-            view.printSummonMessage(DuelMenuMessage.SPECIAL_SUMMON_RIGHT_NOW);
             return;
         }
         deselect(false);
@@ -283,7 +273,23 @@ public class DuelMenuController {
             view.printSummonMessage(DuelMenuMessage.ACTION_NOT_ALLOWED);
             return;
         }
+        Table playerTable = board.getPlayerTable();
         Monster monster = (Monster) selectedCard;
+        if ("The Tricky".equals(monster.getName())) {
+            String message = "do you want to summon card normal or special?";
+            String summonType = view.getOneOfValues("normal", "special", message, "invalid input");
+            if (summonType == null) {
+                view.printActionCanceled();
+                return;
+            }
+            if ("special".equals(summonType)) {
+                if (playerTable.getHand().size() <= 1) {
+                    view.printSummonMessage(DuelMenuMessage.NOT_ENOUGH_TRIBUTE);
+                    return;
+                }
+                tributeSummonFromHand(1);
+            }
+        }
         if (ritualSummonSpellAddress != null) {
             if (monster.getType() != CardType.RITUAL) {
                 view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
@@ -292,16 +298,6 @@ public class DuelMenuController {
             tributeSummon(3, true);
             return;
         }
-        if (specialSummonDefensive) {
-            if (monster.getLevel() > 4) {
-                view.printSummonMessage(DuelMenuMessage.SPECIAL_SUMMON_RIGHT_NOW);
-                return;
-            }
-            specialSummonDefensive = false;
-            summon(monster, true);
-            return;
-        }
-        Table playerTable = board.getPlayerTable();
         if (!isSpecial && !playerTable.canSummonOrSet()) {
             view.printSummonMessage(DuelMenuMessage.ALREADY_SUMMONED_SET);
             return;
@@ -391,6 +387,32 @@ public class DuelMenuController {
         }
     }
 
+    private void tributeSummonFromHand(int tributesCount) {
+        Table playerTable = board.getPlayerTable();
+        view.showHand(playerTable.getHand());
+        String message = "enter card position to be tribute from hand:";
+        ArrayList<Integer> tributesPositions = view.getNumbers(tributesCount, message);
+        if (tributesPositions == null) {
+            view.printActionCanceled();
+            return;
+        }
+        ArrayList<Card> tributeCards = new ArrayList<>();
+        for (Integer position : tributesPositions) {
+            if (position < 1 || position > playerTable.getHand().size()) {
+                view.printTributeSummonMessage(DuelMenuMessage.INVALID_POSITION);
+                return;
+            }
+            tributeCards.add(playerTable.getCardFromHand(position));
+        }
+
+        for (Card tributeCard : tributeCards) {
+            playerTable.removeCardFromHand(tributeCard);
+            playerTable.addCardToGraveyard(tributeCard);
+        }
+
+        summon((Monster) selectedCard, true);
+    }
+
     public void summon(Monster monster, boolean isSpecial) {
         Table playerTable = board.getPlayerTable();
         playerTable.removeCardFromHand(selectedCardAddress.getPosition());
@@ -399,7 +421,6 @@ public class DuelMenuController {
             playerTable.setCanSummonOrSet(false);
         }
         view.printSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
-        monster.runActions(Event.YOU_NORMAL_SUMMONED, this);
         view.showBoard(board);
         deselect(false);
     }
@@ -423,10 +444,6 @@ public class DuelMenuController {
     public final void checkFlipSummon() {
         if (ritualSummonSpellAddress != null) {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
-            return;
-        }
-        if (specialSummonDefensive) {
-            view.printSummonMessage(DuelMenuMessage.SPECIAL_SUMMON_RIGHT_NOW);
             return;
         }
         if (selectedCard == null) {
@@ -465,10 +482,6 @@ public class DuelMenuController {
     public final void set() {
         if (ritualSummonSpellAddress != null) {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
-            return;
-        }
-        if (specialSummonDefensive) {
-            view.printSummonMessage(DuelMenuMessage.SPECIAL_SUMMON_RIGHT_NOW);
             return;
         }
         if (selectedCard == null) {
@@ -516,10 +529,6 @@ public class DuelMenuController {
     public final void changePosition(String position) {
         if (ritualSummonSpellAddress != null) {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
-            return;
-        }
-        if (specialSummonDefensive) {
-            view.printSummonMessage(DuelMenuMessage.SPECIAL_SUMMON_RIGHT_NOW);
             return;
         }
         CardState targetState;
@@ -611,10 +620,12 @@ public class DuelMenuController {
             targetTable.moveMonsterToGraveyard(targetPosition);
             view.printAttackMessage(DuelMenuMessage.OPPONENT_ATTACK_POSITION_MONSTER_DESTROYED, damage, null);
             targetCell.getCard().runActions(Event.YOU_DESTROYED, this);
-            if (checkLifePoint(targetTable, attackerTable, damage)) {
-                targetTable.decreaseLifePoint(damage);
-            } else {
-                return;
+            if (!board.arePlayersImmune()) {
+                if (checkLifePoint(targetTable, attackerTable, damage)) {
+                    targetTable.decreaseLifePoint(damage);
+                } else {
+                    return;
+                }
             }
         } else if (damage == 0) {
             attackerTable.moveMonsterToGraveyard(selectedCardAddress.getPosition());
@@ -625,10 +636,12 @@ public class DuelMenuController {
             damage = Math.abs(damage);
             attackerTable.moveMonsterToGraveyard(selectedCardAddress.getPosition());
             view.printAttackMessage(DuelMenuMessage.YOUR_ATTACK_POSITION_MONSTER_DESTROYED, damage, null);
-            if (checkLifePoint(attackerTable, targetTable, damage)) {
-                attackerTable.decreaseLifePoint(damage);
-            } else {
-                return;
+            if (!board.arePlayersImmune()) {
+                if (checkLifePoint(attackerTable, targetTable, damage)) {
+                    attackerTable.decreaseLifePoint(damage);
+                } else {
+                    return;
+                }
             }
         }
         view.showBoard(board);
@@ -653,10 +666,12 @@ public class DuelMenuController {
             view.printAttackMessage(DuelMenuMessage.NO_CARD_DESTROYED_AND_NO_DAMAGE, 0, hiddenCardName);
         } else {
             view.printAttackMessage(DuelMenuMessage.NO_CARD_DESTROYED_WITH_DAMAGE, Math.abs(damage), hiddenCardName);
-            if (checkLifePoint(attackerTable, targetTable, damage)) {
-                attackerTable.decreaseLifePoint(Math.abs(damage));
-            } else {
-                return;
+            if (!board.arePlayersImmune()) {
+                if (checkLifePoint(attackerTable, targetTable, damage)) {
+                    attackerTable.decreaseLifePoint(Math.abs(damage));
+                } else {
+                    return;
+                }
             }
         }
         view.showBoard(board);
@@ -710,10 +725,6 @@ public class DuelMenuController {
     public final void activeEffect() {
         if (ritualSummonSpellAddress != null) {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
-            return;
-        }
-        if (specialSummonDefensive) {
-            view.printSummonMessage(DuelMenuMessage.SPECIAL_SUMMON_RIGHT_NOW);
             return;
         }
         if (selectedCard == null) {

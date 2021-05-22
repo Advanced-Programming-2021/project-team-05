@@ -94,15 +94,6 @@ public class Table {
     }
 
 
-    public ArrayList<Card> getHand() {
-        return this.hand;
-    }
-
-    public Card getCardFromHand(int position) {
-        return this.hand.get(position - 1);
-    }
-
-
     public final Cell getCellByAddress(CardAddress cardAddress) {
         if (cardAddress.isForOpponent()) {
             return null;
@@ -131,6 +122,14 @@ public class Table {
         return this.fieldZoneCell;
     }
 
+
+    public ArrayList<Card> getHand() {
+        return this.hand;
+    }
+
+    public Card getCardFromHand(int position) {
+        return this.hand.get(position - 1);
+    }
 
     public final void addCardToHand(Card card) {
         this.hand.add(card);
