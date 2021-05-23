@@ -5,4 +5,6 @@ import control.controller.DuelMenuController;
 
 public interface Action {
     void run(DuelMenuController controller);
+
+    boolean canBeRun(DuelMenuController controller);
 }

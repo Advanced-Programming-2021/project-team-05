@@ -5,13 +5,16 @@ import model.board.Table;
 import view.DuelMenuView;
 
 public class DestroyAllOpponentsSpellAndTrapsAction implements Action{
-
+    @Override
     public void run(DuelMenuController controller) {
-        DuelMenuView view = controller.getView();
         Table targetTable = controller.getBoard().getOpponentTable();
-
         for (int i = 1; i <= 5; i++) {
             targetTable.moveSpellOrTrapToGraveyard(i);
         }
+    }
+
+    @Override
+    public boolean canBeRun(DuelMenuController controller) {
+        return true;
     }
 }

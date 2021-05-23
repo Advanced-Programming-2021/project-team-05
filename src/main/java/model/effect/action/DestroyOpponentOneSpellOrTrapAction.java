@@ -6,15 +6,14 @@ import view.DuelMenuView;
 
 import java.util.ArrayList;
 
-public class DestroyOneSpellOrTrapCardAction implements Action{
-
+public class DestroyOpponentOneSpellOrTrapAction implements Action{
+    @Override
     public void run(DuelMenuController controller) {
-        DuelMenuView view = controller.getView();
-        Table targetTable = controller.getBoard().getOpponentTable();
-        if (targetTable.getMonsterCardsCount() == 0) {
+        if (canBeRun(controller)) {
             return;
         }
-
+        DuelMenuView view = controller.getView();
+        Table targetTable = controller.getBoard().getOpponentTable();
         int number;
         String message = "enter spell or trap position to destroy:";
         while (true) {
@@ -33,5 +32,10 @@ public class DestroyOneSpellOrTrapCardAction implements Action{
             }
         }
         targetTable.moveSpellOrTrapToGraveyard(number);
+    }
+
+    @Override
+    public boolean canBeRun(DuelMenuController controller) {
+        return controller.getBoard().getOpponentTable().getSpellTrapCardsCount() > 0;
     }
 }

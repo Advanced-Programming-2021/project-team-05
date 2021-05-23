@@ -140,6 +140,12 @@ public class DuelMenuController {
         }
     }
 
+    public void quickChangeTurn() {
+        board.swapTables();
+        view.showQuickTurn(board.getPlayerTable().getOwner().getNickname());
+        view.showBoard(board);
+    }
+
 
     public void goToNextPhase() {
         if (ritualSummonSpellAddress != null) {
@@ -275,6 +281,14 @@ public class DuelMenuController {
         }
         Table playerTable = board.getPlayerTable();
         Monster monster = (Monster) selectedCard;
+        if (ritualSummonSpellAddress != null) {
+            if (monster.getType() != CardType.RITUAL) {
+                view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
+                return;
+            }
+            tributeSummon(3, true);
+            return;
+        }
         if ("The Tricky".equals(monster.getName())) {
             String message = "do you want to summon card normal or special?";
             String summonType = view.getOneOfValues("normal", "special", message, "invalid input");
@@ -289,14 +303,6 @@ public class DuelMenuController {
                 }
                 tributeSummonFromHand(1);
             }
-        }
-        if (ritualSummonSpellAddress != null) {
-            if (monster.getType() != CardType.RITUAL) {
-                view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
-                return;
-            }
-            tributeSummon(3, true);
-            return;
         }
         if (!isSpecial && !playerTable.canSummonOrSet()) {
             view.printSummonMessage(DuelMenuMessage.ALREADY_SUMMONED_SET);
@@ -471,8 +477,10 @@ public class DuelMenuController {
         targetCell.setDoesPositionChanged(true);
         if (print) {
             view.printFlipSummonMessage(DuelMenuMessage.FLIP_SUMMON_SUCCESSFUL);
+            selectedCard.runActions(Event.YOU_FLIP_SUMMONED_MANUALLY, this);
+        } else {
+            selectedCard.runActions(Event.YOU_FLIP_SUMMONED_BY_ATTACK, this);
         }
-        selectedCard.runActions(Event.YOU_FLIP_SUMMONED, this);
         if (print) {
             view.showBoard(board);
         }

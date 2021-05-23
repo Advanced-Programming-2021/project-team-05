@@ -246,6 +246,16 @@ public class Table {
         this.spellAndTrapCells[position - 1].reset();
     }
 
+    public final int getSpellTrapCardsCount() {
+        int count = 0;
+        for (Cell cell : this.spellAndTrapCells) {
+            if (cell.getCard() != null) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     public final boolean isSpellTrapZoneFull() {
         for (Cell cell : this.spellAndTrapCells) {
             if (cell.getCard() == null) {

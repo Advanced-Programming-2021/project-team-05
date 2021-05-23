@@ -6,34 +6,40 @@ import view.DuelMenuView;
 
 import java.util.ArrayList;
 
-
-public class DestroyOpponentOneCardAction implements Action {
-
+public class DestroyPlayerOneMonsterAction implements Action{
     @Override
     public void run(DuelMenuController controller) {
         DuelMenuView view = controller.getView();
         Table targetTable = controller.getBoard().getOpponentTable();
-        if (targetTable.getMonsterCardsCount() == 0) {
+        if (!canBeRun(controller)) {
             return;
         }
 
-        int number;
+        controller.quickChangeTurn();
+        int position;
         String message = "enter monster position to destroy:";
         while (true) {
             ArrayList<Integer> numbers = view.getNumbers(1, message);
             if (numbers == null) {
                 view.printActionCanceled();
+                controller.quickChangeTurn();
                 return;
             }
-            number = numbers.get(0);
-            if (number < 1 || number > 5) {
-                message = "number should be between 1 and 5";
-            } else if (targetTable.getMonster(number) == null) {
+            position = numbers.get(0);
+            if (position < 1 || position > 5) {
+                message = "position should be between 1 and 5";
+            } else if (targetTable.getMonster(position) == null) {
                 message = "no monster in this position";
             } else {
                 break;
             }
         }
-        targetTable.moveMonsterToGraveyard(number);
+        targetTable.moveMonsterToGraveyard(position);
+        controller.quickChangeTurn();
+    }
+
+    @Override
+    public boolean canBeRun(DuelMenuController controller) {
+        return controller.getBoard().getPlayerTable().getMonsterCardsCount() > 0;
     }
 }

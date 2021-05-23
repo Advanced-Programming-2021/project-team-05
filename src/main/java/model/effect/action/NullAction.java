@@ -6,4 +6,9 @@ public class NullAction implements Action {
     @Override
     public void run(DuelMenuController controller) {
     }
+
+    @Override
+    public boolean canBeRun(DuelMenuController controller) {
+        return true;
+    }
 }

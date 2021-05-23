@@ -1,35 +1,39 @@
 [
   {
-    "cardName": "Man-Eater Bug",
-    "event": "YOU_FLIP_SUMMONED",
-    "action": "DESTROY_OPPONENT_ONE_CARD"
+    "cardName": "Yomi Ship",
+    "event": "YOU_DESTROYED",
+    "action": "DESTROY_ATTACKER"
   },
+  {
+    "cardName": "Man-Eater Bug",
+    "event": "YOU_FLIP_SUMMONED_MANUALLY",
+    "action": "DESTROY_OPPONENT_ONE_MONSTER"
+  },
+  {
+    "cardName": "Man-Eater Bug",
+    "event": "YOU_FLIP_SUMMONED_BY_ATTACK",
+    "action": "DESTROY_PLAYER_ONE_MONSTER"
+  },
+  {
+    "cardName": "Exploder Dragon",
+    "event": "YOU_DESTROYED",
+    "action": "DESTROY_ATTACKER"
+  },
+  {
+    "cardName": "Exploder Dragon",
+    "event": "YOU_DESTROYED",
+    "action": "NO_DAMAGE"
+  },
+
   {
     "cardName": "Advanced Ritual Art",
     "event": "ACTIVATE_EFFECT",
     "action": "RITUAL_SUMMON"
   },
   {
-    "cardName": "Yomi Ship",
-    "event": "YOU_DESTROYED",
-    "action": "DESTROY_OPPONENT_ATTACKER"
-  },
-  {
-    "cardName": "Exploder Dragon",
-    "event": "YOU_DESTROYED",
-    "action": "DESTROY_OPPONENT_ATTACKER"
-  },
-
-  {
-    "cardName": "Terratiger, the Empowered Warrior",
-    "event": "YOU_NORMAL_SUMMONED",
-    "action": "SUMMON_MONSTER_IN_DEFENSE_POS"
-  },
-
-  {
     "cardName": "Monster Reborn",
     "event": "ACTIVATE_EFFECT",
-    "action": "RETURN_ONE_CARD_FROM_GRAVEYARD"
+    "action": "RETURN_ONE_MONSTER_FROM_GRAVEYARD"
   },
   {
     "cardName": "Raigeki",
@@ -37,17 +41,22 @@
     "action": "DESTROY_OPPONENT_ALL_MONSTERS"
   },
   {
-    "cardName": "Harpies Feather Duster",
+    "cardName": "Harpie's Feather Duster",
     "event": "ACTIVATE_EFFECT",
     "action": "DESTROY_OPPONENT_ALL_SPELL_AND_TRAPS"
   },
   {
     "cardName": "Dark Hole",
     "event": "ACTIVATE_EFFECT",
-    "action": "DESTROY_ALL_MONSTERS_ON_TABLE"
+    "action": "DESTROY_OPPONENT_ALL_MONSTERS"
   },
   {
-    "cardName": "Mystical Space Typhoon",
+    "cardName": "Dark Hole",
+    "event": "ACTIVATE_EFFECT",
+    "action": "DESTROY_PLAYER_ALL_MONSTERS"
+  },
+  {
+    "cardName": "Mystical space typhoon",
     "event": "ACTIVATE_EFFECT",
     "action": "DESTROY_OPPONENT_ONE_SPELL_OR_TRAP"
   },

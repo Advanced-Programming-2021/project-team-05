@@ -572,6 +572,14 @@ public class DuelMenuView {
     }
 
 
+    public void showCards(ArrayList<Card> cards) {
+        for (int i = 0, cardsSize = cards.size(); i < cardsSize; i++) {
+            Card card = cards.get(i);
+            System.out.println((i + 1) + ". " + card);
+        }
+    }
+
+
     private void showCurrentMenu() {
         System.out.println("Duel Menu");
     }
@@ -584,6 +592,10 @@ public class DuelMenuView {
 
     public void showTurn(String playerNickname) {
         System.out.println("its " + playerNickname + "'s turn");
+    }
+
+    public void showQuickTurn(String playerNickname) {
+        System.out.println("now it will be " + playerNickname + "'s turn");
     }
 
 

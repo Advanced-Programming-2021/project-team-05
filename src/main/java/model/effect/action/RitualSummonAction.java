@@ -6,7 +6,6 @@ import model.board.Table;
 import model.card.Card;
 import model.card.Monster;
 import model.template.property.CardType;
-import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 
@@ -14,6 +13,12 @@ public class RitualSummonAction implements Action {
 
     @Override
     public void run(DuelMenuController controller) {
+        if (canBeRun(controller)) {
+            controller.setRitualSummonSpellAddress(controller.getSelectedCardAddress());
+        }
+    }
+
+    public boolean canBeRun(DuelMenuController controller) {
         Table table = controller.getBoard().getPlayerTable();
         ArrayList<Integer> ritualMonsterLevels = new ArrayList<>();
         for (Card card : table.getHand()) {
@@ -21,19 +26,18 @@ public class RitualSummonAction implements Action {
                 ritualMonsterLevels.add(((Monster) card).getLevel());
             }
         }
-
         if (ritualMonsterLevels.size() == 0) {
             controller.getView().printRitualSummonMessage(DuelMenuMessage.NO_WAY_TO_RITUAL_SUMMON);
-            return;
+            return false;
         }
-        if (!canRitualSummon(table, ritualMonsterLevels)) {
+        if (!doesMonstersMatchRitualLevels(table, ritualMonsterLevels)) {
             controller.getView().printRitualSummonMessage(DuelMenuMessage.NO_WAY_TO_RITUAL_SUMMON);
-            return;
+            return false;
         }
-        controller.setRitualSummonSpellAddress(controller.getSelectedCardAddress());
+        return true;
     }
 
-    private boolean canRitualSummon(Table table, ArrayList<Integer> ritualMonsterLevels) {
+    private boolean doesMonstersMatchRitualLevels(Table table, ArrayList<Integer> ritualMonsterLevels) {
         for (int i = 1; i <= 5; i++) {
             Monster monster1 = table.getMonster(i);
             if (monster1 == null) {
