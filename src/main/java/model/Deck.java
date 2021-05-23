@@ -120,6 +120,14 @@ public class Deck implements Cloneable {
         return this.sideDeckCardIds.size();
     }
 
+    public ArrayList<String> getMainDeckCardIds() {
+        return mainDeckCardIds;
+    }
+
+    public ArrayList<String> getSideDeckCardIds() {
+        return sideDeckCardIds;
+    }
+
     public final void shuffleSideDeck() {
         Collections.shuffle(this.sideDeckCardIds);
     }

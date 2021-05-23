@@ -44,7 +44,7 @@ public class DeckMenuView {
                 showAllDecks();
             } else if (command.equals("deck show --cards")) {
                 showAllCards();
-            } else if (command.startsWith("deck show")) {
+            } else if (command.startsWith("deck show \\S+")) {
                 showDeck(command.split("\\s"));
             } else if (command.matches("^card show \\S+$")) {
                 showCard(command.split("\\s"));
@@ -63,7 +63,7 @@ public class DeckMenuView {
     }
 
 
-    private void createDeck(String[] command) {
+    public void createDeck(String[] command) {
         String deckName = command[2];
         controller.createDeck(deckName);
     }
@@ -82,7 +82,7 @@ public class DeckMenuView {
     }
 
 
-    private void deleteDeck(String[] command) {
+    public void deleteDeck(String[] command) {
         String deckName = command[2];
         controller.deleteDeck(deckName);
     }
@@ -101,7 +101,7 @@ public class DeckMenuView {
     }
 
 
-    private void activateDeck(String[] command) {
+    public void activateDeck(String[] command) {
         String deckName = command[2];
         controller.activateDeck(deckName);
     }
@@ -120,7 +120,7 @@ public class DeckMenuView {
     }
 
 
-    private void addOrRemoveCard(String[] command, boolean addCard) {
+    public void addOrRemoveCard(String[] command, boolean addCard) {
         CmdLineParser parser = new CmdLineParser();
         Option<String> deckNameOption = parser.addStringOption('d', "deck");
         Option<String> cardNameOption = parser.addStringOption('c', "card");
@@ -197,7 +197,7 @@ public class DeckMenuView {
     }
 
 
-    private void showAllDecks() {
+    public void showAllDecks() {
         User user = controller.getUser();
         ArrayList<Deck> allDecks = user.getDecks();
 
@@ -220,25 +220,25 @@ public class DeckMenuView {
     }
 
 
-    private void showDeck(String[] command) {
+    public void showDeck(String[] command) {
         CmdLineParser parser = new CmdLineParser();
         Option<String> deckNameOption = parser.addStringOption('d', "deck-name");
         Option<Boolean> isSideOption = parser.addBooleanOption('s', "side");
         try {
             parser.parse(command);
         } catch (CmdLineParser.OptionException e) {
-            System.out.println("invalid command");
+            System.out.println("invalid command 1");
             return;
         }
 
         String deckName = parser.getOptionValue(deckNameOption);
         Boolean isSide = parser.getOptionValue(isSideOption, false);
         if (deckName == null) {
-            System.out.println("invalid command");
+            System.out.println("invalid command 2");
             return;
         }
         if ((isSide && command.length != 5) || (!isSide && command.length != 4)) {
-            System.out.println("invalid command");
+            System.out.println("invalid command 3");
             return;
         }
 
@@ -252,7 +252,7 @@ public class DeckMenuView {
     }
 
 
-    private void showAllCards() {
+    public void showAllCards() {
         User user = controller.getUser();
         ArrayList<Card> cards = user.getPurchasedCards();
         cards.sort(Comparator.comparing(Card::getName));
@@ -264,7 +264,13 @@ public class DeckMenuView {
 
 
     public void showCard(String[] command) {
-        String cardName = command[2].replace('_', ' ');
+        String cardName = "";
+        try {
+            cardName = command[2].replace('_', ' ');
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("invalid command");
+            return;
+        }
         DataManager dataManager = DataManager.getInstance();
         CardTemplate template = dataManager.getCardTemplateByName(cardName);
         if (template == null) {
