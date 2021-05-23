@@ -17,16 +17,13 @@ public class MainMenuController {
         this.user = user;
     }
 
-
     public void setView(MainMenuView view) {
         this.view = view;
     }
 
-
     public User getUser() {
         return this.user;
     }
-
 
     public final void startDuelWithUser(String opponentUsername, int rounds) {
         DataManager dataManager = DataManager.getInstance();
