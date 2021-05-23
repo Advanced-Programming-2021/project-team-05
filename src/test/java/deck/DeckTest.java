@@ -65,6 +65,8 @@ public class DeckTest {
 
         String deckName = "creatDeckTestDeck";
 
+        Assertions.assertEquals(controller.getUser().getUsername(), "creatDeck");
+
         controller.createDeck(deckName);
         assertOutputIsEqual("deck created successfully!");
 
@@ -141,13 +143,10 @@ public class DeckTest {
         String cardName = "Suijin";
 
         manager.loadData();
-        MonsterTemplate template = (MonsterTemplate) manager.getCardTemplateByName(cardName);
 
         Deck testDeck = new Deck(deckName);
-        Card testCard = new Monster(template);
         user.addDeck(testDeck);
         manager.addDeck(testDeck);
-        manager.addCard(testCard);
 
         controller.addCard("testName", "testName", true);
         assertOutputIsEqual("deck with name testName does not exist");
@@ -155,47 +154,76 @@ public class DeckTest {
         controller.addCard(deckName, "testName", true);
         assertOutputIsEqual("card with name testName does not exist");
 
+        MonsterTemplate template = (MonsterTemplate) manager.getCardTemplateByName(cardName);
+        Card testCard1 = new Monster(template);
+        Card testCard2 = new Monster(template);
+        Card testCard3 = new Monster(template);
+        Card testCard4 = new Monster(template);
+
+        manager.addCard(testCard1);
+        manager.addCard(testCard2);
+        manager.addCard(testCard3);
+        manager.addCard(testCard4);
+
+        user.purchaseCard(testCard1);
+        user.purchaseCard(testCard2);
+        user.purchaseCard(testCard3);
+        user.purchaseCard(testCard4);
+
+        testDeck.addCardToMainDeck(testCard1);
+        testDeck.addCardToMainDeck(testCard2);
+        testDeck.addCardToSideDeck(testCard3);
+
+        controller.addCard(deckName, cardName, false);
+        assertOutputIsEqual("there are already three cards with name " + cardName + " in deck " + deckName);
+
         ArrayList<CardTemplate> templates = manager.getCardTemplates();
         Assertions.assertEquals(76, templates.size());
 
-        for (int i = 0; i < templates.size(); i++) {
-            CardTemplate template1 = templates.get(i);
-            if (template1 instanceof MonsterTemplate) {
-                manager.addCard(new Monster((MonsterTemplate) template1));
-            } else if (template1 instanceof SpellTemplate) {
-                manager.addCard(new Spell((SpellTemplate) template1));
+        for (CardTemplate cardTemplate : templates) {
+            if (cardTemplate instanceof MonsterTemplate) {
+                manager.addCard(new Monster((MonsterTemplate) cardTemplate));
+            } else if (cardTemplate instanceof SpellTemplate) {
+                manager.addCard(new Spell((SpellTemplate) cardTemplate));
             } else {
-                manager.addCard(new Trap((TrapTemplate) template1));
+                manager.addCard(new Trap((TrapTemplate) cardTemplate));
             }
         }
 
         ArrayList<Card> cards = manager.getCards();
-        Assertions.assertEquals(77, cards.size());
+        Assertions.assertEquals(80, cards.size());
 
-//        testDeck.addCardToMainDeck(testCard);
-//        testDeck.addCardToMainDeck(testCard);
-//        testDeck.addCardToMainDeck(testCard);
-//
-//        testDeck.addCardToSideDeck(testCard);
-//        testDeck.addCardToSideDeck(testCard);
-//        testDeck.addCardToSideDeck(testCard);
-//
-//        controller.addCard(deckName, cardName, true);
-//        assertOutputIsEqual("there are already three cards with name " + cardName + " in deck " + deckName);
-//
-//        controller.addCard(deckName, cardName, false);
-//        assertOutputIsEqual("there are already three cards with name " + cardName + " in deck " + deckName);
+        testDeck.getMainDeckCardIds().clear();
 
-//        for (int i = 0; i < 60; i++) {
-//            testDeck.addCardToSideDeck(cards.get(i));
-//            testDeck.addCardToSideDeck(cards.get(i));
-//        }
-//
-//        controller.addCard(deckName, cardName, true);
-//        assertOutputIsEqual("side deck is full");
-//
-//        controller.addCard(deckName, cardName, false);
-//        assertOutputIsEqual("main deck is full");
+        Card cardToAddToMainDeck = cards.get(19);
+        user.purchaseCard(cardToAddToMainDeck);
+        controller.addCard(deckName, cardToAddToMainDeck.getName(), false);
+        assertOutputIsEqual("card added to deck successfully!");
+
+        for (int i = 20; i < 80; i++) {
+            Card card = cards.get(i);
+            user.purchaseCard(card);
+            testDeck.addCardToMainDeck(cards.get(i));
+        }
+
+        controller.addCard(deckName, cardName, false);
+        assertOutputIsEqual("main deck is full");
+
+        testDeck.getSideDeckCardIds().clear();
+
+        Card cardToAddToSideDeck = cards.get(18);
+        user.purchaseCard(cardToAddToSideDeck);
+        controller.addCard(deckName, cardToAddToSideDeck.getName(), true);
+        assertOutputIsEqual("card added to deck successfully!");
+
+        for (int i = 20; i < 65; i++) {
+            Card card = cards.get(i);
+            user.purchaseCard(card);
+            testDeck.addCardToSideDeck(cards.get(i));
+        }
+
+        controller.addCard(deckName, cardName, true);
+        assertOutputIsEqual("side deck is full");
     }
 
 
