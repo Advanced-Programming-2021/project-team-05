@@ -6,6 +6,7 @@ import model.board.Table;
 import model.card.Card;
 import model.card.Monster;
 import model.template.property.CardType;
+import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 
