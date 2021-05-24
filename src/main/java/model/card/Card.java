@@ -65,6 +65,17 @@ public abstract class Card {
     }
 
 
+    public boolean canRunActions(Event event, DuelMenuController controller) {
+        for (Effect effect : effects) {
+            if (event.equals(effect.getEvent())) {
+                if (!effect.getActionEnum().getAction().canBeRun(controller)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public void runActions(Event event, DuelMenuController controller) {
         for (Effect effect : effects) {
             if (event.equals(effect.getEvent())) {

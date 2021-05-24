@@ -45,6 +45,19 @@ public class Deck implements Cloneable {
     }
 
 
+    public ArrayList<String> getMainDeckCardIds() {
+        return mainDeckCardIds;
+    }
+
+    public final ArrayList<Card> getMainDeck() {
+        DataManager dataManager = DataManager.getInstance();
+        ArrayList<Card> mainDeck = new ArrayList<>();
+        for (String id : this.mainDeckCardIds) {
+            mainDeck.add(dataManager.getCardById(id));
+        }
+        return mainDeck;
+    }
+
     public final void addCardToMainDeck(Card card) {
         this.mainDeckCardIds.add(card.getId());
     }
@@ -88,6 +101,19 @@ public class Deck implements Cloneable {
     }
 
 
+    public ArrayList<String> getSideDeckCardIds() {
+        return sideDeckCardIds;
+    }
+
+    public final ArrayList<Card> getSideDeck() {
+        DataManager dataManager = DataManager.getInstance();
+        ArrayList<Card> sideDeck = new ArrayList<>();
+        for (String id : this.sideDeckCardIds) {
+            sideDeck.add(dataManager.getCardById(id));
+        }
+        return sideDeck;
+    }
+
     public final void addCardToSideDeck(Card card) {
         this.sideDeckCardIds.add(card.getId());
     }
@@ -116,20 +142,20 @@ public class Deck implements Cloneable {
         return this.getSideDeckSize() >= 20;
     }
 
-    private int getSideDeckSize() {
+    public int getSideDeckSize() {
         return this.sideDeckCardIds.size();
-    }
-
-    public ArrayList<String> getMainDeckCardIds() {
-        return mainDeckCardIds;
-    }
-
-    public ArrayList<String> getSideDeckCardIds() {
-        return sideDeckCardIds;
     }
 
     public final void shuffleSideDeck() {
         Collections.shuffle(this.sideDeckCardIds);
+    }
+
+
+    public final void swapCards(int mainCardPosition, int sideCardPosition) {
+        String mainCardId = this.mainDeckCardIds.get(mainCardPosition - 1);
+        String sideCardId = this.sideDeckCardIds.get(sideCardPosition - 1);
+        this.mainDeckCardIds.set(mainCardPosition - 1, sideCardId);
+        this.sideDeckCardIds.set(sideCardPosition - 1, mainCardId);
     }
 
 

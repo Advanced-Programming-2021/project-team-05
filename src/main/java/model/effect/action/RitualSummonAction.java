@@ -14,6 +14,7 @@ public class RitualSummonAction implements Action {
     @Override
     public void run(DuelMenuController controller) {
         if (canBeRun(controller)) {
+            controller.setRitualSummonSpell(controller.getSelectedCard());
             controller.setRitualSummonSpellAddress(controller.getSelectedCardAddress());
         }
     }

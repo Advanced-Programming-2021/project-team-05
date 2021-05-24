@@ -572,7 +572,8 @@ public class DuelMenuView {
     }
 
 
-    public void showCards(ArrayList<Card> cards) {
+    public void showCards(ArrayList<Card> cards, String title) {
+        System.out.println(title);
         for (int i = 0, cardsSize = cards.size(); i < cardsSize; i++) {
             Card card = cards.get(i);
             System.out.println((i + 1) + ". " + card);

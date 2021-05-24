@@ -22,7 +22,7 @@ public class ReturnOneMonsterFromGraveyardAction implements Action {
         ArrayList<Card> allCards = new ArrayList<>();
         allCards.addAll(playerGraveyardMonsters);
         allCards.addAll(opponentGraveyardMonsters);
-        controller.getView().showCards(allCards);
+        controller.getView().showCards(allCards, "Graveyards Cards");
 
         int position;
         Table targetTable;

@@ -246,6 +246,17 @@ public class Table {
         this.spellAndTrapCells[position - 1].reset();
     }
 
+    public final int getSpellOrTrapPosition(Card card) {
+        for (int i = 1; i < 5; i++) {
+            SpellTrapCell spellAndTrapCell = this.getSpellOrTrapCell(i);
+            Card spellTrapCard = spellAndTrapCell.getCard();
+            if (card.equals(spellTrapCard)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public final int getSpellTrapCardsCount() {
         int count = 0;
         for (Cell cell : this.spellAndTrapCells) {
@@ -421,4 +432,4 @@ public class Table {
             return tableString.toString();
         }
     }
-    }
+}

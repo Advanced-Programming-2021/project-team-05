@@ -13,9 +13,7 @@ public class Board {
 
     public Board(User player, User opponent) {
         this.playerTable = new Table(player);
-        this.playerTable.initializeHand();
         this.opponentTable = new Table(opponent);
-        this.opponentTable.initializeHand();
     }
 
 

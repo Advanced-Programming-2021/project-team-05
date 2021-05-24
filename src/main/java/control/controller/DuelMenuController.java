@@ -33,6 +33,7 @@ public class DuelMenuController {
     private Card selectedCard;
     private CardAddress selectedCardAddress;
 
+    private Card ritualSummonSpell;
     private CardAddress ritualSummonSpellAddress;
 
 
@@ -84,6 +85,10 @@ public class DuelMenuController {
     }
 
 
+    public void setRitualSummonSpell(Card ritualSummonSpell) {
+        this.ritualSummonSpell = ritualSummonSpell;
+    }
+
     public void setRitualSummonSpellAddress(CardAddress address) {
         this.ritualSummonSpellAddress = address;
     }
@@ -93,8 +98,15 @@ public class DuelMenuController {
         currentRound++;
         initializeBoard();
         phase = Phase.DRAW;
-        board.getPlayerTable().drawCard();
         boards[currentRound - 1] = board;
+        view.showTurn(board.getPlayerTable().getOwner().getNickname());
+        if (currentRound != 1) {
+            rearrangeDeck();
+        } else {
+            board.getPlayerTable().initializeHand();
+            board.getOpponentTable().initializeHand();
+        }
+        board.getPlayerTable().drawCard();
     }
 
     private void initializeBoard() {
@@ -116,6 +128,63 @@ public class DuelMenuController {
             opponent = previousBoard.getWinnerTable().getOwner();
         }
         board = new Board(player, opponent);
+    }
+
+
+    private void rearrangeDeck() {
+        for (int i = 0; i < 2; i++) {
+            Table targetTable = board.getPlayerTable();
+            if (targetTable.getDeck().getSideDeckSize() == 0) {
+                board.swapTables();
+                view.showTurn(board.getPlayerTable().getOwner().getNickname());
+                continue;
+            }
+            ArrayList<Card> mainDeck = targetTable.getDeck().getMainDeck();
+            ArrayList<Card> sideDeck = targetTable.getDeck().getSideDeck();
+            while (true) {
+                view.showCards(mainDeck, "Main Deck");
+                view.showCards(sideDeck, "Side Deck");
+                String message = "do you want to change your main deck? (yes/no)";
+                String response = view.getOneOfValues("yes", "no", message, "invalid input");
+                if ("no".equals(response)) {
+                    break;
+                }
+
+                int mainCardPosition = getCardPosition(mainDeck, "enter card number in main deck:");
+                if (mainCardPosition == -1) {
+                    continue;
+                }
+                int sideCardPosition = getCardPosition(sideDeck, "enter card number in side deck:");
+                if (sideCardPosition == -1) {
+                    continue;
+                }
+
+                targetTable.getDeck().swapCards(mainCardPosition, sideCardPosition);
+                Card mainCard = mainDeck.get(mainCardPosition - 1);
+                Card sideCard = sideDeck.get(sideCardPosition - 1);
+                mainDeck.set(mainCardPosition - 1, sideCard);
+                mainDeck.set(sideCardPosition - 1, mainCard);
+            }
+            board.swapTables();
+            view.showTurn(board.getPlayerTable().getOwner().getNickname());
+        }
+    }
+
+    private int getCardPosition(ArrayList<Card> cards, String message) {
+        int cardPosition;
+        while (true) {
+            ArrayList<Integer> positions = view.getNumbers(1, message);
+            if (positions == null) {
+                return -1;
+            }
+            cardPosition = positions.get(0);
+            if (cardPosition < 1 || cardPosition > cards.size()) {
+                message = "position should be between 1 and " + cards.size();
+                continue;
+            }
+            break;
+        }
+        return cardPosition;
     }
 
 
@@ -433,11 +502,8 @@ public class DuelMenuController {
 
     private void ritualSummon(Monster monster, CardState state) {
         Table playerTable = board.getPlayerTable();
-        if (ritualSummonSpellAddress.getZone() == CardAddressZone.HAND) {
-            playerTable.removeCardFromHand(ritualSummonSpellAddress.getPosition());
-        } else if (ritualSummonSpellAddress.getZone() == CardAddressZone.SPELL) {
-            playerTable.moveSpellOrTrapToGraveyard(ritualSummonSpellAddress.getPosition());
-        }
+        playerTable.removeCardFromHand(ritualSummonSpellAddress.getPosition());
+        playerTable.addCardToGraveyard(ritualSummonSpell);
         playerTable.removeCardFromHand(monster);
         playerTable.addMonster(monster, state);
         view.printTributeSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
@@ -753,6 +819,22 @@ public class DuelMenuController {
                 view.printActivateEffectMessage(DuelMenuMessage.SPELL_ZONE_FULL);
                 return;
             }
+            if (selectedCard.canRunActions(Event.ACTIVATE_EFFECT, this)) {
+                view.printActivateEffectMessage(DuelMenuMessage.PREPARATIONS_NOT_DONE_YET);
+                return;
+            }
+            if (selectedCard.getType() != CardType.RITUAL) {
+                table.removeCardFromHand(selectedCard);
+                if (selectedCard.getType() == CardType.FIELD) {
+                    table.setFieldSpell((Spell) selectedCard, CardState.VERTICAL_UP);
+                    table.addSpellOrTrap(selectedCard, CardState.VERTICAL_UP);
+                    selectedCardAddress = new CardAddress(CardAddressZone.FIELD, 1, false);
+                } else {
+                    table.addSpellOrTrap(selectedCard, CardState.VERTICAL_UP);
+                    int position = table.getSpellOrTrapPosition(selectedCard);
+                    selectedCardAddress = new CardAddress(CardAddressZone.SPELL, position, false);
+                }
+            }
         } else {
             SpellTrapCell cell;
             if (selectedCardAddress.getZone() == CardAddressZone.SPELL) {
@@ -764,8 +846,23 @@ public class DuelMenuController {
                 view.printActivateEffectMessage(DuelMenuMessage.CARD_ALREADY_ACTIVATED);
                 return;
             }
+            if (selectedCard.canRunActions(Event.ACTIVATE_EFFECT, this)) {
+                view.printActivateEffectMessage(DuelMenuMessage.PREPARATIONS_NOT_DONE_YET);
+                return;
+            }
         }
+        SpellTrapCell cell;
+        if (selectedCard.getType() == CardType.FIELD) {
+            cell = table.getFieldSpellCell();
+        } else {
+            cell = table.getSpellOrTrapCell(selectedCardAddress.getPosition());
+        }
+        cell.setEffectActivated(true);
+        view.printActivateEffectMessage(DuelMenuMessage.SPELL_ACTIVATED);
         selectedCard.runActions(Event.ACTIVATE_EFFECT, this);
+        if (selectedCard.getType() == CardType.NORMAL) {
+            table.removeSpellOrTrap(selectedCardAddress.getPosition());
+        }
         view.showBoard(board);
     }
 
