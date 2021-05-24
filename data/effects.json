@@ -61,6 +61,11 @@
     "action": "DESTROY_OPPONENT_ONE_SPELL_OR_TRAP"
   },
   {
+    "cardName": "Terraforming",
+    "event": "ACTIVATE_EFFECT",
+    "action": "ADD_ONE_FIELD_CARD_FROM_DECK_TO_HAND"
+  },
+  {
     "cardName": "Pot of Greed",
     "event": "ACTIVATE_EFFECT",
     "action": "DRAW_TWO_CARDS"
