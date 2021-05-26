@@ -40,7 +40,7 @@ public class AddOneFiledSpellFromDeckToHandAction implements Action {
             }
         }
 
-        view.showCards(fieldSpellCards);
+        view.showCards(fieldSpellCards, "Field Spells:");
 
         while (true) {
             ArrayList<Integer> numbers = view.getNumbers(1, message);

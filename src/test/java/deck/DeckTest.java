@@ -454,13 +454,13 @@ public class DeckTest {
         DataManager manager = DataManager.getInstance();
 
         view.showDeck("deck show mmd --deck-name".split("\\s"));
-        assertOutputIsEqual("invalid command 1");
+        assertOutputIsEqual("invalid command");
 
         view.showDeck("deck show mmd --side".split("\\s"));
-        assertOutputIsEqual("invalid command 2");
+        assertOutputIsEqual("invalid command");
 
         view.showDeck("deck show --deck-name <deck name> --side".split("\\s"));
-        assertOutputIsEqual("invalid command 3");
+        assertOutputIsEqual("invalid command");
 
         view.showDeck("deck show --deck-name mmd --side".split("\\s"));
         assertOutputIsEqual("no deck found");

@@ -254,8 +254,10 @@ public class MainMenuTest {
 
         String myName = "myName";
         String opName = "opponentsName";
-        User myUser = new User(myName, "myPassword", "myNickname");
-        User opponentsUser = new User(opName, "opponentsPass", "opponentsNick");
+        String myNick = "myNickname";
+        String opNick = "opponentsNickname";
+        User myUser = new User(myName, "myPassword", myNick);
+        User opponentsUser = new User(opName, "opponentsPass", opNick);
 
         manager.addUser(myUser);
         manager.addUser(opponentsUser);
@@ -308,8 +310,15 @@ public class MainMenuTest {
         controller.startDuelWithUser(opName, 1);
         String output = outContent.toString().trim();
         outContent.reset();
-        Assertions.assertTrue(output.equals("coin side was tails and " + opName + " starts duel") ||
-                        output.equals("coin side was heads and " + myName + " starts duel"));
+
+        if (output.contains("tails")) {
+            Assertions.assertEquals("coin side was tails and " + opName + " starts duel\r\n" +
+                    "its " + opNick + "'s turn", output);
+        } else {
+            Assertions.assertEquals("coin side was heads and " + myName + " starts duel\r\n" +
+                    "its " + myNick + "'s turn", output);
+        }
+
         view.run();
 
         assertOutputIsEqual("user logged out successfully!");

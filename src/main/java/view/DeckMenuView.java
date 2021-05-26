@@ -44,7 +44,7 @@ public class DeckMenuView {
                 showAllDecks();
             } else if (command.equals("deck show --cards")) {
                 showAllCards();
-            } else if (command.startsWith("deck show \\S+")) {
+            } else if (command.matches("^deck show \\S+$")) {
                 showDeck(command.split("\\s"));
             } else if (command.matches("^card show \\S+$")) {
                 showCard(command.split("\\s"));
@@ -227,18 +227,18 @@ public class DeckMenuView {
         try {
             parser.parse(command);
         } catch (CmdLineParser.OptionException e) {
-            System.out.println("invalid command 1");
+            System.out.println("invalid command");
             return;
         }
 
         String deckName = parser.getOptionValue(deckNameOption);
         Boolean isSide = parser.getOptionValue(isSideOption, false);
         if (deckName == null) {
-            System.out.println("invalid command 2");
+            System.out.println("invalid command");
             return;
         }
         if ((isSide && command.length != 5) || (!isSide && command.length != 4)) {
-            System.out.println("invalid command 3");
+            System.out.println("invalid command");
             return;
         }
 
