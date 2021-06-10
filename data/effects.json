@@ -63,7 +63,7 @@
   {
     "cardName": "Terraforming",
     "event": "ACTIVATE_EFFECT",
-    "action": "ADD_ONE_FIELD_CARD_FROM_DECK_TO_HAND"
+    "action": "ADD_FIELD_CARD_FROM_DECK_TO_HAND"
   },
   {
     "cardName": "Pot of Greed",

@@ -143,6 +143,10 @@ public class Table {
         this.hand.remove(position - 1);
     }
 
+    public final boolean isHandFull() {
+        return hand.size() >= 6;
+    }
+
     public final void initializeHand() {
         this.getDeck().shuffleMainDeck();
         for (int i = 0; i < 5; i++) {
@@ -291,11 +295,11 @@ public class Table {
     }
 
 
-    public boolean canSummonOrSet() {
+    public final boolean canSummonOrSet() {
         return this.canSummonOrSet;
     }
 
-    public void setCanSummonOrSet(boolean canSummonOrSet) {
+    public final void setCanSummonOrSet(boolean canSummonOrSet) {
         this.canSummonOrSet = canSummonOrSet;
     }
 
@@ -358,7 +362,7 @@ public class Table {
         return handString;
     }
 
-    public String graveyardToString() {
+    public final String graveyardToString() {
         if (this.graveyard.size() == 0) {
             return "graveyard empty";
         }
@@ -374,7 +378,7 @@ public class Table {
     }
 
 
-    public String toString(boolean isReversed) {
+    public final String toString(boolean isReversed) {
         StringBuilder tableString = new StringBuilder();
         String fieldZone = this.getFieldSpell() == null ? "E" : "O";
         int graveyardSize = this.getGraveyard().size();

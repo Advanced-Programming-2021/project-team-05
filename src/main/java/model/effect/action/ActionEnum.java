@@ -7,7 +7,7 @@ public enum ActionEnum {
     DESTROY_OPPONENT_ALL_MONSTERS,
     DESTROY_PLAYER_ALL_MONSTERS,
     DESTROY_OPPONENT_ALL_SPELL_AND_TRAPS,
-    ADD_ONE_FIELD_CARD_FROM_DECK_TO_HAND,
+    ADD_FIELD_CARD_FROM_DECK_TO_HAND,
     DESTROY_ATTACKER,
     NO_DAMAGE,
     DRAW_TWO_CARDS,
@@ -39,8 +39,8 @@ public enum ActionEnum {
                 return new DestroyAllPlayerMonstersAction();
             case DESTROY_OPPONENT_ONE_SPELL_OR_TRAP:
                 return new DestroyOpponentOneSpellOrTrapAction();
-            case ADD_ONE_FIELD_CARD_FROM_DECK_TO_HAND:
-                return new AddOneFiledSpellFromDeckToHandAction();
+            case ADD_FIELD_CARD_FROM_DECK_TO_HAND:
+                return new AddFieldSpellFromDeckToHandAction();
             default:
                 return new NullAction();
         }
