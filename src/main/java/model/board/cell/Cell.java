@@ -11,11 +11,13 @@ public abstract class Cell {
 
 
     public Cell(Card card, CardState cardState) {
-        this.reset();
+        this.clear();
         this.setCard(card);
         this.setState(cardState);
     }
 
+
+    public abstract void clear();
 
     public abstract void reset();
 

@@ -32,9 +32,16 @@ public class MonsterCell extends Cell{
 
 
     @Override
-    public void reset() {
+    public void clear() {
         this.setCard(null);
         this.setState(null);
+        this.setDoesPositionChanged(false);
+        this.setDidAttack(false);
+        this.setNewlyAdded(false);
+    }
+
+    @Override
+    public void reset() {
         this.setDoesPositionChanged(false);
         this.setDidAttack(false);
         this.setNewlyAdded(false);

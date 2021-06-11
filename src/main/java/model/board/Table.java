@@ -192,7 +192,7 @@ public class Table {
         for (int i = 0; i < 5; i++) {
             Cell cell = this.monsterCells[i];
             if (cell.getCard() == null) {
-                cell.reset();
+                cell.clear();
                 cell.setCard(monster);
                 cell.setState(state);
                 cell.setNewlyAdded(true);
@@ -202,7 +202,7 @@ public class Table {
     }
 
     public final void removeMonster(int position) {
-        this.monsterCells[position - 1].reset();
+        this.monsterCells[position - 1].clear();
     }
 
     public final int getMonsterCardsCount() {
@@ -237,7 +237,7 @@ public class Table {
         for (int i = 0; i < 5; i++) {
             Cell cell = this.spellAndTrapCells[i];
             if (cell.getCard() == null) {
-                cell.reset();
+                cell.clear();
                 cell.setCard(card);
                 cell.setState(state);
                 cell.setNewlyAdded(true);
@@ -247,7 +247,7 @@ public class Table {
     }
 
     public final void removeSpellOrTrap(int position) {
-        this.spellAndTrapCells[position - 1].reset();
+        this.spellAndTrapCells[position - 1].clear();
     }
 
     public final int getSpellOrTrapPosition(Card card) {
@@ -291,7 +291,7 @@ public class Table {
     }
 
     public final void removeFieldSpell() {
-        this.fieldZoneCell.reset();
+        this.fieldZoneCell.clear();
     }
 
 

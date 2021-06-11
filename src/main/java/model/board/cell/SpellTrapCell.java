@@ -22,10 +22,15 @@ public class SpellTrapCell extends Cell {
 
 
     @Override
-    public void reset() {
+    public void clear() {
         this.setCard(null);
         this.setState(null);
         this.setNewlyAdded(false);
         this.setEffectActivated(false);
+    }
+
+    @Override
+    public void reset() {
+        this.setNewlyAdded(false);
     }
 }

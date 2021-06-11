@@ -7,5 +7,6 @@ public class Main {
         DataManager.getInstance().loadData();
         LoginMenuView loginMenuView = new LoginMenuView(new LoginMenuController());
         loginMenuView.run();
+        DataManager.getInstance().saveData();
     }
 }

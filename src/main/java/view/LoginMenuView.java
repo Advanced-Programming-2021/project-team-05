@@ -131,12 +131,13 @@ public class LoginMenuView {
 
 
     public void showHelp() {
-        System.out.println(
+        System.out.print(
                 "commands:\r\n" +
                         "\tuser create --username <username> --nickname <nickname> --password <password>\r\n" +
                         "\tuser login --username <username> --password <password>\r\n" +
                         "\tmenu show-current\r\n" +
-                        "\tmenu help"
+                        "\tmenu exit\r\n" +
+                        "\tmenu help\r\n"
         );
     }
 }

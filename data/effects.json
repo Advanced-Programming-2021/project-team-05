@@ -51,11 +51,6 @@
     "action": "DESTROY_OPPONENT_ALL_MONSTERS"
   },
   {
-    "cardName": "Dark Hole",
-    "event": "ACTIVATE_EFFECT",
-    "action": "DESTROY_PLAYER_ALL_MONSTERS"
-  },
-  {
     "cardName": "Mystical space typhoon",
     "event": "ACTIVATE_EFFECT",
     "action": "DESTROY_OPPONENT_ONE_SPELL_OR_TRAP"

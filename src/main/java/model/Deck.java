@@ -210,6 +210,7 @@ public class Deck implements Cloneable {
             deckString.append(spellOrTrap).append("\r\n");
         }
 
+        deckString.delete(deckString.length() - 2, deckString.length());
         return deckString.toString();
     }
 

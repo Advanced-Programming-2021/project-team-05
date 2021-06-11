@@ -44,7 +44,7 @@ public class DeckMenuView {
                 showAllDecks();
             } else if (command.equals("deck show --cards")) {
                 showAllCards();
-            } else if (command.matches("^deck show \\S+$")) {
+            } else if (command.startsWith("deck show")) {
                 showDeck(command.split("\\s"));
             } else if (command.matches("^card show \\S+$")) {
                 showCard(command.split("\\s"));

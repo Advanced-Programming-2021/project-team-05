@@ -195,17 +195,10 @@ public class DuelMenuController {
         tables[1] = board.getOpponentTable();
         for (Table table : tables) {
             for (int i = 1; i <= 5; i++) {
-                MonsterCell monsterCell = table.getMonsterCell(i);
-                monsterCell.setDidAttack(false);
-                monsterCell.setDoesPositionChanged(false);
-                monsterCell.setNewlyAdded(false);
-
-                SpellTrapCell spellTrapCell = table.getSpellOrTrapCell(i);
-                spellTrapCell.setNewlyAdded(false);
-
-                SpellTrapCell fieldSpellCell = table.getFieldSpellCell();
-                fieldSpellCell.setNewlyAdded(false);
+                table.getMonsterCell(i).reset();
+                table.getSpellOrTrapCell(i).reset();
             }
+            table.getFieldSpellCell().reset();
         }
     }
 
@@ -718,6 +711,7 @@ public class DuelMenuController {
                 }
             }
         }
+        board.setPlayersImmune(false);
         view.showBoard(board);
     }
 
@@ -748,6 +742,7 @@ public class DuelMenuController {
                 }
             }
         }
+        board.setPlayersImmune(false);
         view.showBoard(board);
     }
 
