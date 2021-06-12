@@ -446,7 +446,7 @@ public class DuelMenuView {
 
 
     private void activateEffect() {
-        controller.activeEffect();
+        controller.checkActivateEffect();
     }
 
     public void printActivateEffectMessage(DuelMenuMessage message) {
@@ -469,8 +469,8 @@ public class DuelMenuView {
             case PREPARATIONS_NOT_DONE_YET:
                 System.out.println("preparations of this spell are not done yet");
                 break;
-            case SPELL_ACTIVATED:
-                System.out.println("spell activated!");
+            case SPELL_TRAP_ACTIVATED:
+                System.out.println("spell/trap activated!");
                 break;
         }
     }

@@ -8,7 +8,11 @@ public enum Event {
     YOU_FLIP_SUMMONED_MANUALLY,
     YOU_FLIP_SUMMONED_BY_ATTACK,
     YOU_DESTROYED,
-    ACTIVATE_EFFECT;
+    DECLARE_ATTACK,
+    MONSTER_SUMMONED,
+    MONSTER_WITH_1000_ATTACK_SUMMONED,
+    ACTIVATE_EFFECT,
+    QUICK_ACTIVATE;
 
 
     public void trigger(DuelMenuController controller) {

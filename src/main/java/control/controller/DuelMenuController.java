@@ -10,7 +10,9 @@ import model.card.Card;
 import model.card.Monster;
 import model.card.Spell;
 import model.card.Trap;
+import model.effect.Effect;
 import model.effect.Event;
+import model.effect.action.ActionEnum;
 import model.template.property.CardType;
 import utils.CoinSide;
 import utils.Utility;
@@ -36,6 +38,15 @@ public class DuelMenuController {
     private Card ritualSummonSpell;
     private CardAddress ritualSummonSpellAddress;
 
+    private boolean preventAttack;
+
+    {
+        selectedCard = null;
+        selectedCardAddress = null;
+        ritualSummonSpell = null;
+        ritualSummonSpellAddress = null;
+    }
+
 
     public DuelMenuController(User playerOne, User playerTwo, int rounds) {
         this.playerOne = playerOne;
@@ -43,6 +54,7 @@ public class DuelMenuController {
         this.currentRound = 0;
         this.rounds = rounds;
         this.boards = new Board[rounds];
+        this.setPreventAttack(false);
     }
 
 
@@ -91,6 +103,11 @@ public class DuelMenuController {
 
     public void setRitualSummonSpellAddress(CardAddress address) {
         this.ritualSummonSpellAddress = address;
+    }
+
+
+    public void setPreventAttack(boolean preventAttack) {
+        this.preventAttack = preventAttack;
     }
 
 
@@ -484,12 +501,15 @@ public class DuelMenuController {
     public void summon(Monster monster, boolean isSpecial) {
         Table playerTable = board.getPlayerTable();
         playerTable.removeCardFromHand(selectedCardAddress.getPosition());
+        selectedCardAddress.setZone(CardAddressZone.MONSTER);
+        selectedCardAddress.setPosition(playerTable.getFirstEmptyMonsterCellPosition());
         playerTable.addMonster(monster, CardState.VERTICAL_UP);
         if (!isSpecial) {
             playerTable.setCanSummonOrSet(false);
         }
         view.printSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
         view.showBoard(board);
+        checkQuickActivation(Event.MONSTER_SUMMONED);
         deselect(false);
     }
 
@@ -499,8 +519,11 @@ public class DuelMenuController {
         playerTable.addCardToGraveyard(ritualSummonSpell);
         playerTable.removeCardFromHand(monster);
         playerTable.addMonster(monster, state);
+        selectedCardAddress.setZone(CardAddressZone.MONSTER);
+        selectedCardAddress.setPosition(playerTable.getFirstEmptyMonsterCellPosition());
         view.printTributeSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
         view.showBoard(board);
+        checkQuickActivation(Event.MONSTER_SUMMONED);
         deselect(false);
         ritualSummonSpellAddress = null;
     }
@@ -668,12 +691,16 @@ public class DuelMenuController {
             view.printAttackMessage(DuelMenuMessage.NO_CARD_TO_ATTACK, 0, null);
             return;
         }
-        if (targetCell.getState() == CardState.VERTICAL_UP) {
-            attackAttackPositionCard(targetPosition, attackerCell, targetCell);
-        } else if (targetCell.getState() == CardState.HORIZONTAL_UP || targetCell.getState() == CardState.HORIZONTAL_DOWN) {
-            attackDefensePositionCard(targetPosition, attackerCell, targetCell);
-        }
         attackerCell.setDidAttack(true);
+        checkQuickActivation(Event.DECLARE_ATTACK);
+        if (!preventAttack) {
+            if (targetCell.getState() == CardState.VERTICAL_UP) {
+                attackAttackPositionCard(targetPosition, attackerCell, targetCell);
+            } else if (targetCell.getState() == CardState.HORIZONTAL_UP || targetCell.getState() == CardState.HORIZONTAL_DOWN) {
+                attackDefensePositionCard(targetPosition, attackerCell, targetCell);
+            }
+        }
+        setPreventAttack(false);
         deselect(false);
     }
 
@@ -781,7 +808,7 @@ public class DuelMenuController {
     }
 
 
-    private boolean checkLifePoint(Table table, Table otherTable, int damage) {
+    public boolean checkLifePoint(Table table, Table otherTable, int damage) {
         if (damage >= table.getLifePoint()) {
             table.setLifePoint(0);
             win(otherTable, table);
@@ -791,7 +818,7 @@ public class DuelMenuController {
     }
 
 
-    public final void activeEffect() {
+    public final void checkActivateEffect() {
         if (ritualSummonSpellAddress != null) {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
             return;
@@ -814,7 +841,7 @@ public class DuelMenuController {
                 view.printActivateEffectMessage(DuelMenuMessage.SPELL_ZONE_FULL);
                 return;
             }
-            if (selectedCard.canRunActions(Event.ACTIVATE_EFFECT, this)) {
+            if (selectedCard.canRunActions(Event.ACTIVATE_EFFECT, this) || !selectedCard.canBeActivated()) {
                 view.printActivateEffectMessage(DuelMenuMessage.PREPARATIONS_NOT_DONE_YET);
                 return;
             }
@@ -841,7 +868,7 @@ public class DuelMenuController {
                 view.printActivateEffectMessage(DuelMenuMessage.CARD_ALREADY_ACTIVATED);
                 return;
             }
-            if (selectedCard.canRunActions(Event.ACTIVATE_EFFECT, this)) {
+            if (selectedCard.canRunActions(Event.ACTIVATE_EFFECT, this) || !selectedCard.canBeActivated()) {
                 view.printActivateEffectMessage(DuelMenuMessage.PREPARATIONS_NOT_DONE_YET);
                 return;
             }
@@ -852,11 +879,64 @@ public class DuelMenuController {
         } else {
             cell = table.getSpellOrTrapCell(selectedCardAddress.getPosition());
         }
+        activateSpellTrap(table, cell, selectedCard, selectedCardAddress.getPosition(), false);
+    }
+
+    private void checkQuickActivation(Event event) {
+        ArrayList<SpellTrapCell> cells = new ArrayList<>();
+        ArrayList<Card> cards = new ArrayList<>();
+        ArrayList<Integer> positions = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            SpellTrapCell cell = board.getOpponentTable().getSpellOrTrapCell(i);
+            for (Effect effect : cell.getCard().getEffects()) {
+                if (effect.getEvent() == event && effect.getActionEnum() == ActionEnum.QUICK_ACTIVE) {
+                    cells.add(cell);
+                    cards.add(cell.getCard());
+                    positions.add(i);
+                }
+            }
+        }
+        if (cells.size() == 0) {
+            return;
+        }
+        String askActivateMessage = "do you want to activate your trap or spell?";
+        String answer = view.getOneOfValues("yes", "no", askActivateMessage, "invalid input");
+        if ("no".equals(answer)) {
+            return;
+        }
+        quickChangeTurn();
+        view.showCards(cards, "Card(s):");
+        String getNumberMessage = "enter card number:";
+        int index;
+        while (true) {
+            ArrayList<Integer> numbers = view.getNumbers(1, getNumberMessage);
+            if (numbers == null) {
+                view.printActionCanceled();
+                quickChangeTurn();
+                return;
+            }
+            index = numbers.get(0);
+            if (index < 1 || index > cards.size()) {
+                getNumberMessage = "invalid number";
+            } else {
+                break;
+            }
+        }
+        index--;
+        activateSpellTrap(board.getPlayerTable(), cells.get(index), cards.get(index), positions.get(index), true);
+        quickChangeTurn();
+    }
+
+    private void activateSpellTrap(Table table, SpellTrapCell cell, Card card, int position, boolean isQuick) {
         cell.setEffectActivated(true);
-        view.printActivateEffectMessage(DuelMenuMessage.SPELL_ACTIVATED);
-        selectedCard.runActions(Event.ACTIVATE_EFFECT, this);
-        if (selectedCard.getType() == CardType.NORMAL) {
-            table.removeSpellOrTrap(selectedCardAddress.getPosition());
+        view.printActivateEffectMessage(DuelMenuMessage.SPELL_TRAP_ACTIVATED);
+        if (isQuick) {
+            card.runActions(Event.QUICK_ACTIVATE, this);
+        } else {
+            card.runActions(Event.ACTIVATE_EFFECT, this);
+        }
+        if (selectedCard.getType() == CardType.NORMAL || card.getType() == CardType.QUICK_PLAY) {
+            table.removeSpellOrTrap(position);
         }
         view.showBoard(board);
     }

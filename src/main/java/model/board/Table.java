@@ -189,15 +189,12 @@ public class Table {
     }
 
     public final void addMonster(Monster monster, CardState state) {
-        for (int i = 0; i < 5; i++) {
-            Cell cell = this.monsterCells[i];
-            if (cell.getCard() == null) {
-                cell.clear();
-                cell.setCard(monster);
-                cell.setState(state);
-                cell.setNewlyAdded(true);
-                return;
-            }
+        Cell cell = this.monsterCells[this.getFirstEmptyMonsterCellPosition()];
+        if (cell.getCard() == null) {
+            cell.clear();
+            cell.setCard(monster);
+            cell.setState(state);
+            cell.setNewlyAdded(true);
         }
     }
 
@@ -222,6 +219,16 @@ public class Table {
             }
         }
         return true;
+    }
+
+    public final int getFirstEmptyMonsterCellPosition() {
+        for (int i = 0; i < 5; i++) {
+            Cell cell = this.monsterCells[i];
+            if (cell.getCard() == null) {
+                return i + 1;
+            }
+        }
+        return -1;
     }
 
 

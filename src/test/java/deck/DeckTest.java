@@ -175,10 +175,10 @@ public class DeckTest {
         testDeck.addCardToSideDeck(testCard3);
 
         controller.addCard(deckName, cardName, false);
-        assertOutputIsEqual("there are already three cards with name " + cardName + " in deck " + deckName);
+        assertOutputIsEqual("you can't add more cards with name " + cardName + " in deck " + deckName);
 
         ArrayList<CardTemplate> templates = manager.getCardTemplates();
-        Assertions.assertEquals(76, templates.size());
+        Assertions.assertEquals(69, templates.size());
 
         for (CardTemplate cardTemplate : templates) {
             if (cardTemplate instanceof MonsterTemplate) {
@@ -191,7 +191,7 @@ public class DeckTest {
         }
 
         ArrayList<Card> cards = manager.getCards();
-        Assertions.assertEquals(80, cards.size());
+        Assertions.assertEquals(73, cards.size());
 
         testDeck.getMainDeckCardIds().clear();
 
@@ -200,7 +200,7 @@ public class DeckTest {
         controller.addCard(deckName, cardToAddToMainDeck.getName(), false);
         assertOutputIsEqual("card added to deck successfully!");
 
-        for (int i = 20; i < 80; i++) {
+        for (int i = 13; i < 73; i++) {
             Card card = cards.get(i);
             user.purchaseCard(card);
             testDeck.addCardToMainDeck(cards.get(i));
@@ -211,7 +211,7 @@ public class DeckTest {
 
         testDeck.getSideDeckCardIds().clear();
 
-        Card cardToAddToSideDeck = cards.get(18);
+        Card cardToAddToSideDeck = cards.get(11);
         user.purchaseCard(cardToAddToSideDeck);
         controller.addCard(deckName, cardToAddToSideDeck.getName(), true);
         assertOutputIsEqual("card added to deck successfully!");
@@ -505,7 +505,7 @@ public class DeckTest {
 
         view.showAllCards();
         assertOutputIsEqual("Alexandrite Dragon: Many of the czars' lost jewels can be found in the scales of this priceless dragon. Its creator remains a mystery, along with how they acquired the imperial treasures. But whosoever finds this dragon has hit the jackpot... whether they know it or not.\r\n" +
-                "Call of The Haunted: Activate this card by targeting 1 monster in your GY; Special Summon that target in Attack Position. When this card leaves the field, destroy that monster. When that monster is destroyed, destroy this card.\r\n" +
+                "Change of Heart: Target 1 monster your opponent controls; take control of it until the End Phase.\r\n" +
                 "Command Knight: All Warrior-Type monsters you control gain 400 ATK. If you control another monster, monsters your opponent controls cannot target this card for an attack.\r\n" +
                 "Haniwa: An earthen figure that protects the tomb of an ancient ruler.\r\n" +
                 "Wattkid: A creature that electrocutes opponents with bolts of lightning.");

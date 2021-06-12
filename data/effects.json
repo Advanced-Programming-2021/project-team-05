@@ -4,6 +4,7 @@
     "event": "YOU_DESTROYED",
     "action": "DESTROY_ATTACKER"
   },
+
   {
     "cardName": "Man-Eater Bug",
     "event": "YOU_FLIP_SUMMONED_MANUALLY",
@@ -14,6 +15,7 @@
     "event": "YOU_FLIP_SUMMONED_BY_ATTACK",
     "action": "DESTROY_PLAYER_ONE_MONSTER"
   },
+
   {
     "cardName": "Exploder Dragon",
     "event": "YOU_DESTROYED",
@@ -25,16 +27,19 @@
     "action": "NO_DAMAGE"
   },
 
+
   {
     "cardName": "Advanced Ritual Art",
     "event": "ACTIVATE_EFFECT",
     "action": "RITUAL_SUMMON"
   },
+
   {
     "cardName": "Monster Reborn",
     "event": "ACTIVATE_EFFECT",
     "action": "RETURN_ONE_MONSTER_FROM_GRAVEYARD"
   },
+
   {
     "cardName": "Raigeki",
     "event": "ACTIVATE_EFFECT",
@@ -45,24 +50,114 @@
     "event": "ACTIVATE_EFFECT",
     "action": "DESTROY_OPPONENT_ALL_SPELL_AND_TRAPS"
   },
+
   {
     "cardName": "Dark Hole",
     "event": "ACTIVATE_EFFECT",
     "action": "DESTROY_OPPONENT_ALL_MONSTERS"
   },
   {
+    "cardName": "Dark Hole",
+    "event": "ACTIVATE_EFFECT",
+    "action": "DESTROY_PLAYER_ALL_MONSTERS"
+  },
+
+  {
     "cardName": "Mystical space typhoon",
     "event": "ACTIVATE_EFFECT",
     "action": "DESTROY_OPPONENT_ONE_SPELL_OR_TRAP"
   },
+
   {
     "cardName": "Terraforming",
     "event": "ACTIVATE_EFFECT",
     "action": "ADD_FIELD_CARD_FROM_DECK_TO_HAND"
   },
+
   {
     "cardName": "Pot of Greed",
     "event": "ACTIVATE_EFFECT",
     "action": "DRAW_TWO_CARDS"
+  },
+
+
+  {
+    "cardName": "Magic Cylinder",
+    "event": "QUICK_ACTIVATE",
+    "action":"PREVENT_ATTACK"
+  },
+  {
+    "cardName": "Magic Cylinder",
+    "event": "QUICK_ACTIVATE",
+    "action":"REDUCE_LP_BY_ATTACKER_ATTACK"
+  },
+  {
+    "cardName": "Magic Cylinder",
+    "event": "QUICK_ACTIVATE",
+    "action":"DESTROY_ATTACKER"
+  },
+  {
+    "cardName": "Magic Cylinder",
+    "event": "DECLARE_ATTACK",
+    "action":"QUICK_ACTIVE"
+  },
+
+  {
+    "cardName": "Mirror Force",
+    "event": "QUICK_ACTIVATE",
+    "action":"PREVENT_ATTACK"
+  },
+  {
+    "cardName": "Mirror Force",
+    "event": "QUICK_ACTIVATE",
+    "action":"DESTROY_OPPONENT_ALL_ATTACKING_MONSTERS"
+  },
+  {
+    "cardName": "Mirror Force",
+    "event": "DECLARE_ATTACK",
+    "action":"QUICK_ACTIVE"
+  },
+
+  {
+    "cardName": "Negate Attack",
+    "event": "QUICK_ACTIVATE",
+    "action":"PREVENT_ATTACK"
+  },
+  {
+    "cardName": "Negate Attack",
+    "event": "QUICK_ACTIVATE",
+    "action":"END_BATTLE_PHASE"
+  },
+  {
+    "cardName": "Negate Attack",
+    "event": "DECLARE_ATTACK",
+    "action":"QUICK_ACTIVE"
+  },
+
+  {
+    "cardName": "Torrential Tribute",
+    "event": "QUICK_ACTIVATE",
+    "action": "DESTROY_OPPONENT_ALL_MONSTERS"
+  },
+  {
+    "cardName": "Torrential Tribute",
+    "event": "QUICK_ACTIVATE",
+    "action": "DESTROY_PLAYER_ALL_MONSTERS"
+  },
+  {
+    "cardName": "Torrential Tribute",
+    "event": "MONSTER_SUMMONED",
+    "action":"QUICK_ACTIVE"
+  },
+
+  {
+    "cardName": "Trap Hole",
+    "event": "QUICK_ACTIVATE",
+    "action": "DESTROY_SUMMONED_MONSTER"
+  },
+  {
+    "cardName": "Trap Hole",
+    "event": "MONSTER_WITH_1000_ATTACK_SUMMONED",
+    "action":"QUICK_ACTIVE"
   }
 ]

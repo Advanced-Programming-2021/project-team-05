@@ -6,13 +6,19 @@ public enum ActionEnum {
     DESTROY_OPPONENT_ONE_SPELL_OR_TRAP,
     DESTROY_OPPONENT_ALL_MONSTERS,
     DESTROY_PLAYER_ALL_MONSTERS,
+    DESTROY_OPPONENT_ALL_ATTACKING_MONSTERS,
     DESTROY_OPPONENT_ALL_SPELL_AND_TRAPS,
     ADD_FIELD_CARD_FROM_DECK_TO_HAND,
     DESTROY_ATTACKER,
+    DESTROY_SUMMONED_MONSTER,
     NO_DAMAGE,
     DRAW_TWO_CARDS,
     RETURN_ONE_MONSTER_FROM_GRAVEYARD,
-    RITUAL_SUMMON;
+    RITUAL_SUMMON,
+    PREVENT_ATTACK,
+    REDUCE_LP_BY_ATTACKER_ATTACK,
+    END_BATTLE_PHASE,
+    QUICK_ACTIVE;
 
 
     public Action getAction() {
@@ -25,6 +31,8 @@ public enum ActionEnum {
                 return new RitualSummonAction();
             case DESTROY_ATTACKER:
                 return new DestroyAttackerAction();
+            case DESTROY_SUMMONED_MONSTER:
+                return new DestroySummonedMonsterAction();
             case NO_DAMAGE:
                 return new NoDamageAction();
             case DRAW_TWO_CARDS:
@@ -33,6 +41,8 @@ public enum ActionEnum {
                 return new ReturnOneMonsterFromGraveyardAction();
             case DESTROY_OPPONENT_ALL_MONSTERS:
                 return new DestroyAllOpponentMonstersAction();
+            case DESTROY_OPPONENT_ALL_ATTACKING_MONSTERS:
+                return new DestroyAllOpponentAttackingMonstersAction();
             case DESTROY_OPPONENT_ALL_SPELL_AND_TRAPS:
                 return new DestroyAllOpponentsSpellAndTrapsAction();
             case DESTROY_PLAYER_ALL_MONSTERS:
@@ -41,6 +51,12 @@ public enum ActionEnum {
                 return new DestroyOpponentOneSpellOrTrapAction();
             case ADD_FIELD_CARD_FROM_DECK_TO_HAND:
                 return new AddFieldSpellFromDeckToHandAction();
+            case PREVENT_ATTACK:
+                return new PreventAttackAction();
+            case REDUCE_LP_BY_ATTACKER_ATTACK:
+                return new ReduceLPByAttackerAttackAction();
+            case END_BATTLE_PHASE:
+                return new EndBattlePhaseAction();
             default:
                 return new NullAction();
         }

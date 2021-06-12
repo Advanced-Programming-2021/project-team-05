@@ -167,7 +167,7 @@ public class DeckMenuView {
                 System.out.println("side deck is full");
                 break;
             case DECK_IS_FULL:
-                System.out.println("there are already three cards with name " + cardName + " in deck " + deckName);
+                System.out.println("you can't add more cards with name " + cardName + " in deck " + deckName);
                 break;
             case CARD_ADDED:
                 System.out.println("card added to deck successfully!");
