@@ -76,6 +76,19 @@ public class DataManager {
         return this.ai;
     }
 
+    public void initializeAIDeck() {
+        Deck aiDeck = new Deck("AI Deck");
+        ai.setActiveDeck(aiDeck);
+        for (CardTemplate cardTemplate : this.getCardTemplates()) {
+            if (cardTemplate instanceof MonsterTemplate) {
+                MonsterTemplate monsterTemplate = (MonsterTemplate) cardTemplate;
+                if (monsterTemplate.getLevel() <= 4 && monsterTemplate.getEffects().size() == 0 && monsterTemplate.getType() != CardType.RITUAL) {
+                    aiDeck.addCardToMainDeck(new Monster(monsterTemplate));
+                }
+            }
+        }
+    }
+
 
     public ArrayList<User> getUsers() {
         return this.users;
@@ -309,6 +322,7 @@ public class DataManager {
         loadCards();
         loadDecks();
         loadEffects();
+        initializeAIDeck();
     }
 
 
