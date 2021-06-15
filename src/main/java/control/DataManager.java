@@ -35,6 +35,7 @@ import java.util.Comparator;
 
 public class DataManager {
 
+    private static final String AI_JSON_PATH = "data\\ai.json";
     private static final String USERS_JSON_PATH = "data\\users.json";
     private static final String CARDS_JSON_PATH = "data\\cards.json";
     private static final String DECKS_JSON_PATH = "data\\decks.json";
@@ -44,14 +45,13 @@ public class DataManager {
 
     private static DataManager dataManager;
 
-    private final User ai;
+    private User ai;
     private ArrayList<User> users;
     private ArrayList<Card> cards;
     private final ArrayList<CardTemplate> templates;
     private ArrayList<Deck> decks;
 
     {
-        ai = new User("AI", "", "");
         users = new ArrayList<>();
         cards = new ArrayList<>();
         templates = new ArrayList<>();
@@ -77,13 +77,18 @@ public class DataManager {
     }
 
     public void initializeAIDeck() {
+        ai = new User("AI", "", "");
         Deck aiDeck = new Deck("AI Deck");
+        this.addDeck(aiDeck);
+        ai.addDeck(aiDeck);
         ai.setActiveDeck(aiDeck);
         for (CardTemplate cardTemplate : this.getCardTemplates()) {
             if (cardTemplate instanceof MonsterTemplate) {
                 MonsterTemplate monsterTemplate = (MonsterTemplate) cardTemplate;
                 if (monsterTemplate.getLevel() <= 4 && monsterTemplate.getEffects().size() == 0 && monsterTemplate.getType() != CardType.RITUAL) {
-                    aiDeck.addCardToMainDeck(new Monster(monsterTemplate));
+                    Monster monster = new Monster(monsterTemplate);
+                    this.addCard(monster);
+                    aiDeck.addCardToMainDeck(monster);
                 }
             }
         }
@@ -203,6 +208,16 @@ public class DataManager {
     }
 
 
+    private void loadAi() {
+        try {
+            Gson gson = new Gson();
+            JsonReader userReader = new JsonReader(new FileReader(AI_JSON_PATH));
+            this.ai = gson.fromJson(userReader, User.class);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void loadUsers() {
         try {
             Gson gson = new Gson();
@@ -316,15 +331,27 @@ public class DataManager {
 
     public void loadData() {
         templates.clear();
+        loadAi();
         loadUsers();
         loadMonsterTemplatesFromCSV();
         loadSpellTrapTemplatesFromCSV();
         loadCards();
         loadDecks();
         loadEffects();
-        initializeAIDeck();
     }
 
+
+    private void saveAi() {
+        try {
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            FileWriter userWriter = new FileWriter(AI_JSON_PATH);
+            gson.toJson(this.ai, userWriter);
+            userWriter.flush();
+            userWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void saveUsers() {
         try {
