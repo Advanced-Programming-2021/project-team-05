@@ -549,7 +549,7 @@ public class DuelMenuView {
 
 
     private void showSelectedCard() {
-        System.out.println(controller.selectedCardToString());
+        System.out.println(controller.getSelectedCardString());
     }
 
 

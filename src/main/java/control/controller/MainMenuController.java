@@ -17,6 +17,7 @@ public class MainMenuController {
         this.user = user;
     }
 
+
     public void setView(MainMenuView view) {
         this.view = view;
     }
@@ -24,6 +25,7 @@ public class MainMenuController {
     public User getUser() {
         return this.user;
     }
+
 
     public final void startDuelWithUser(String opponentUsername, int rounds) {
         DataManager dataManager = DataManager.getInstance();
@@ -73,9 +75,12 @@ public class MainMenuController {
         }
         if (rounds != 1 && rounds != 3) {
             view.printStartDuelMessage(MainMenuMessage.INVALID_ROUND, null);
-            // ToDo: After completing this function, return should be done here
+            return;
         }
 
-        // ToDo: start duel with ai
+        DuelMenuController duelMenuController = new DuelMenuController(user, DataManager.getInstance().getAi(), rounds);
+        DuelMenuView duelMenuView = new DuelMenuView(duelMenuController);
+        duelMenuController.startNextRound();
+        duelMenuView.run();
     }
 }

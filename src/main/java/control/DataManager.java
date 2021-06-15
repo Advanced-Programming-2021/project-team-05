@@ -44,12 +44,14 @@ public class DataManager {
 
     private static DataManager dataManager;
 
+    private final User ai;
     private ArrayList<User> users;
     private ArrayList<Card> cards;
     private final ArrayList<CardTemplate> templates;
     private ArrayList<Deck> decks;
 
     {
+        ai = new User("AI", "", "");
         users = new ArrayList<>();
         cards = new ArrayList<>();
         templates = new ArrayList<>();
@@ -67,6 +69,11 @@ public class DataManager {
         }
 
         return dataManager;
+    }
+
+
+    public User getAi() {
+        return this.ai;
     }
 
 

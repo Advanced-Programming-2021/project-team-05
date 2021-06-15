@@ -1,5 +1,6 @@
 package control.controller;
 
+import control.DataManager;
 import control.message.DuelMenuMessage;
 import model.User;
 import model.board.*;
@@ -19,6 +20,7 @@ import utils.Utility;
 import view.DuelMenuView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class DuelMenuController {
 
@@ -64,6 +66,11 @@ public class DuelMenuController {
 
     public void setView(DuelMenuView view) {
         this.view = view;
+    }
+
+
+    public boolean isAi(User user) {
+        return DataManager.getInstance().getAi().equals(user);
     }
 
 
@@ -124,6 +131,9 @@ public class DuelMenuController {
             board.getOpponentTable().initializeHand();
         }
         board.getPlayerTable().drawCard();
+        if (currentRound == 1 && isAi(board.getPlayerTable().getOwner())) {
+            handleAI();
+        }
     }
 
     private void initializeBoard() {
@@ -151,6 +161,9 @@ public class DuelMenuController {
     private void rearrangeDeck() {
         for (int i = 0; i < 2; i++) {
             Table targetTable = board.getPlayerTable();
+            if (isAi(targetTable.getOwner())) {
+                continue;
+            }
             if (targetTable.getDeck().getSideDeckSize() == 0) {
                 board.swapTables();
                 view.showTurn(board.getPlayerTable().getOwner().getNickname());
@@ -207,15 +220,10 @@ public class DuelMenuController {
 
     private void changeTurn() {
         board.swapTables();
-        Table[] tables = new Table[2];
-        tables[0] = board.getPlayerTable();
-        tables[1] = board.getOpponentTable();
-        for (Table table : tables) {
-            for (int i = 1; i <= 5; i++) {
-                table.getMonsterCell(i).reset();
-                table.getSpellOrTrapCell(i).reset();
-            }
-            table.getFieldSpellCell().reset();
+        board.getPlayerTable().resetCells();
+        board.getOpponentTable().resetCells();
+        if (isAi(board.getPlayerTable().getOwner())) {
+            handleAI();
         }
     }
 
@@ -1007,7 +1015,7 @@ public class DuelMenuController {
     }
 
 
-    public final String selectedCardToString() {
+    public final String getSelectedCardString() {
         if (selectedCard == null) {
             return "no card is selected yet";
         }
@@ -1019,5 +1027,80 @@ public class DuelMenuController {
             }
         }
         return selectedCard.detailedToString();
+    }
+
+
+    public final void handleAI() {
+        Table aiTable = board.getPlayerTable();
+        Table opponentTable = board.getOpponentTable();
+
+        goToNextPhase();
+        goToNextPhase();
+
+        handleAIMainPhase1(aiTable);
+
+        HandleAiBattlePhase(aiTable, opponentTable);
+
+        goToNextPhase();
+        goToNextPhase();
+    }
+
+    private void handleAIMainPhase1(Table aiTable) {
+        while (aiTable.getHand().size() > 0 && !aiTable.isMonsterZoneFull()) {
+            Monster monster = (Monster) aiTable.getCardFromHand(0);
+            selectedCard = monster;
+            selectedCardAddress = new CardAddress(CardAddressZone.HAND, 1, false);
+            if (monster.getDefence() - monster.getAttack() > -100) {
+                set();
+            } else {
+                checkSummon(false);
+            }
+        }
+        goToNextPhase();
+    }
+
+    private void HandleAiBattlePhase(Table aiTable, Table opponentTable) {
+        for (int i = 1; i <= 5; i++) {
+            MonsterCell monsterCell = aiTable.getMonsterCell(i);
+            Card card = monsterCell.getCard();
+            if (card == null) {
+                continue;
+            }
+            CardState cardState = monsterCell.getState();
+            if (cardState != CardState.VERTICAL_UP) {
+                continue;
+            }
+            Monster monster = (Monster) card;
+            boolean opponentHasMonster = false;
+            for (int j = 1; j <= 5; j++) {
+                MonsterCell targetCell = opponentTable.getMonsterCell(i);
+                Card targetCard = targetCell.getCard();
+                if (targetCard == null) {
+                    continue;
+                }
+                opponentHasMonster = true;
+                Monster targetMonster = (Monster) targetCard;
+                CardState targetCardState = targetCell.getState();
+                boolean attack;
+                if (targetCardState == CardState.VERTICAL_UP) {
+                    attack = monster.getAttack() >= targetMonster.getAttack();
+                } else if (targetCardState == CardState.HORIZONTAL_UP) {
+                    attack = monster.getAttack() > targetMonster.getDefence();
+                } else {
+                    attack = new Random().nextBoolean();
+                }
+                if (attack) {
+                    selectedCard = monster;
+                    selectedCardAddress = new CardAddress(CardAddressZone.MONSTER, i, false);
+                    attack(j);
+                }
+            }
+            if (!opponentHasMonster) {
+                selectedCard = monster;
+                selectedCardAddress = new CardAddress(CardAddressZone.MONSTER, i, false);
+                directAttack();
+            }
+        }
+        goToNextPhase();
     }
 }
