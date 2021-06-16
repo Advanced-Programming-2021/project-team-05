@@ -140,7 +140,7 @@ public class DeckTest {
         DataManager manager = DataManager.getInstance();
 
         String deckName = "removeCardTestDeck";
-        String cardName = "Suijin";
+        String cardName = "Wattkid";
 
         manager.loadData();
 
@@ -178,7 +178,7 @@ public class DeckTest {
         assertOutputIsEqual("you can't add more cards with name " + cardName + " in deck " + deckName);
 
         ArrayList<CardTemplate> templates = manager.getCardTemplates();
-        Assertions.assertEquals(69, templates.size());
+        Assertions.assertEquals(59, templates.size());
 
         for (CardTemplate cardTemplate : templates) {
             if (cardTemplate instanceof MonsterTemplate) {
@@ -191,22 +191,24 @@ public class DeckTest {
         }
 
         ArrayList<Card> cards = manager.getCards();
-        Assertions.assertEquals(73, cards.size());
+        Assertions.assertEquals(117, cards.size());
 
         testDeck.getMainDeckCardIds().clear();
 
-        Card cardToAddToMainDeck = cards.get(19);
+        Card cardToAddToMainDeck = cards.get(1);
         user.purchaseCard(cardToAddToMainDeck);
         controller.addCard(deckName, cardToAddToMainDeck.getName(), false);
         assertOutputIsEqual("card added to deck successfully!");
 
-        for (int i = 13; i < 73; i++) {
+        for (int i = 20; i < 100; i++) {
             Card card = cards.get(i);
             user.purchaseCard(card);
             testDeck.addCardToMainDeck(cards.get(i));
         }
 
-        controller.addCard(deckName, cardName, false);
+        cardToAddToMainDeck = cards.get(3);
+        user.purchaseCard(cardToAddToMainDeck);
+        controller.addCard(deckName, cardToAddToMainDeck.getName(), false);
         assertOutputIsEqual("main deck is full");
 
         testDeck.getSideDeckCardIds().clear();
@@ -222,7 +224,9 @@ public class DeckTest {
             testDeck.addCardToSideDeck(cards.get(i));
         }
 
-        controller.addCard(deckName, cardName, true);
+        cardToAddToMainDeck = cards.get(4);
+        user.purchaseCard(cardToAddToMainDeck);
+        controller.addCard(deckName, cardToAddToMainDeck.getName(), true);
         assertOutputIsEqual("side deck is full");
 
         view.printAddCardMessage(DeckMenuMessage.ERROR, "", "");
@@ -238,7 +242,7 @@ public class DeckTest {
         DataManager manager = DataManager.getInstance();
 
         String deckName = "removeCardTestDeck";
-        String cardName = "Suijin";
+        String cardName = "Wattkid";
 
         manager.loadData();
         MonsterTemplate template = (MonsterTemplate) manager.getCardTemplateByName(cardName);
@@ -504,11 +508,11 @@ public class DeckTest {
         user.purchaseCard(cards.get(50));
 
         view.showAllCards();
-        assertOutputIsEqual("Alexandrite Dragon: Many of the czars' lost jewels can be found in the scales of this priceless dragon. Its creator remains a mystery, along with how they acquired the imperial treasures. But whosoever finds this dragon has hit the jackpot... whether they know it or not.\r\n" +
-                "Change of Heart: Target 1 monster your opponent controls; take control of it until the End Phase.\r\n" +
-                "Command Knight: All Warrior-Type monsters you control gain 400 ATK. If you control another monster, monsters your opponent controls cannot target this card for an attack.\r\n" +
-                "Haniwa: An earthen figure that protects the tomb of an ancient ruler.\r\n" +
-                "Wattkid: A creature that electrocutes opponents with bolts of lightning.");
+        assertOutputIsEqual("Battle warrior: A warrior that fights with his bare hands!!!\r\n" +
+                "Bitron: A new species found in electronic space. There's not much information on it.\r\n" +
+                "Feral Imp: A playful little fiend that lurks in the dark, waiting to attack an unwary enemy.\r\n" +
+                "Silver Fang: A snow wolf that's beautiful to the eye, but absolutely vicious in battle.\r\n" +
+                "Warrior Dai Grepher: The warrior who can manipulate dragons. Nobody knows his mysterious past.");
     }
 
 
@@ -518,7 +522,8 @@ public class DeckTest {
         DeckMenuController controller = new DeckMenuController(user);
         DeckMenuView view = new DeckMenuView(controller);
 
-        String input = "deck create zareaBidecki\n" +
+        String input = "deck creae zareaBidecki\n" +
+                "deck create zareaBidecki\n" +
                 "deck delete zareaBidecki\n" +
                 "deck create zareaBidecki\n" +
                 "deck set-activate zareaBidecki\n" +
@@ -534,6 +539,7 @@ public class DeckTest {
                 "deck show AAA\n" +
                 "menu exit\n";
         String output = "separate card name words with '_'. example: Battle_OX\r\n" +
+                "invalid command\r\n" +
                 "deck created successfully!\r\n" +
                 "deck deleted successfully!\r\n" +
                 "deck created successfully!\r\n" +
