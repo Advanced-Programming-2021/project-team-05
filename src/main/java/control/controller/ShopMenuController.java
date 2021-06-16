@@ -61,4 +61,10 @@ public class ShopMenuController {
         user.decreaseMoney(cardTemplate.getPrice());
         view.printBuyCardMessage(ShopMenuMessage.CARD_SUCCESSFULLY_PURCHASED);
     }
+
+
+    public void increaseMoney(long amount) {
+        user.increaseMoney(amount);
+        view.showMoneyIncreased();
+    }
 }

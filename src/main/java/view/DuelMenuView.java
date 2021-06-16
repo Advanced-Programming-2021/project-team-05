@@ -76,6 +76,10 @@ public class DuelMenuView {
                 break;
             } else if (command.equals("menu help")) {
                 showHelp();
+            } else if (command.matches("^increase --LP \\S+$")) {
+                increaseLP(command.split("\\s"));
+            } else if (command.matches("^duel set-winner \\S+$")) {
+                setWinner(command.split("\\s"));
             } else {
                 System.out.println("invalid command");
             }
@@ -656,5 +660,40 @@ public class DuelMenuView {
                         "\tmenu exit\r\n" +
                         "\tmenu help"
         );
+    }
+
+
+    private void increaseLP(String[] command) {
+        int amount;
+        try {
+            amount = Integer.parseInt(command[2]);
+        } catch (NumberFormatException e) {
+            System.out.println("invalid command");
+            return;
+        }
+        controller.increaseLP(amount);
+    }
+
+    public void showLPIncreased() {
+        System.out.println("LP increased!");
+    }
+
+
+    private void setWinner(String[] command) {
+        String nickname = command[2];
+        controller.setWinner(nickname);
+    }
+
+    public void showSetWinnerMessage(DuelMenuMessage message) {
+        switch (message) {
+            case INVALID_NICKNAME:
+                System.out.println("invalid nickname");
+                break;
+            case WINNER_SET:
+                System.out.println("winner set successfully!");
+                break;
+            default:
+                System.out.println("unexpected error");
+        }
     }
 }

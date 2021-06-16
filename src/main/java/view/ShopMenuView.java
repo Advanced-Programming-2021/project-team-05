@@ -39,6 +39,8 @@ public class ShopMenuView {
                 break;
             } else if (command.equals("menu help")) {
                 showHelp();
+            } else if (command.matches("^increase --money \\S+$")) {
+                increaseMoney(command.split("\\s"));
             } else {
                 System.out.println("invalid command");
             }
@@ -96,14 +98,30 @@ public class ShopMenuView {
 
 
     public void showHelp() {
-        System.out.println(
+        System.out.print(
                 "commands:\r\n" +
                         "\tshop buy <card name>\r\n" +
                         "\tshop show --all\r\n" +
                         "\tcard show <card name>\r\n" +
                         "\tmenu show-current\r\n" +
                         "\tmenu exit\r\n" +
-                        "\tmenu help"
+                        "\tmenu help\r\n"
         );
+    }
+
+
+    private void increaseMoney(String[] command) {
+        long amount;
+        try {
+            amount = Long.parseLong(command[2]);
+        } catch (NumberFormatException e) {
+            System.out.println("invalid command");
+            return;
+        }
+        controller.increaseMoney(amount);
+    }
+
+    public void showMoneyIncreased() {
+        System.out.println("money increased!");
     }
 }
