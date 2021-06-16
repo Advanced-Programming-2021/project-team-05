@@ -522,7 +522,8 @@ public class DeckTest {
         DeckMenuController controller = new DeckMenuController(user);
         DeckMenuView view = new DeckMenuView(controller);
 
-        String input = "deck create zareaBidecki\n" +
+        String input = "deck creae zareaBidecki\n" +
+                "deck create zareaBidecki\n" +
                 "deck delete zareaBidecki\n" +
                 "deck create zareaBidecki\n" +
                 "deck set-activate zareaBidecki\n" +
@@ -538,6 +539,7 @@ public class DeckTest {
                 "deck show AAA\n" +
                 "menu exit\n";
         String output = "separate card name words with '_'. example: Battle_OX\r\n" +
+                "invalid command\r\n" +
                 "deck created successfully!\r\n" +
                 "deck deleted successfully!\r\n" +
                 "deck created successfully!\r\n" +
