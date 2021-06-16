@@ -18,6 +18,8 @@ public enum ActionEnum {
     PREVENT_ATTACK,
     REDUCE_LP_BY_ATTACKER_ATTACK,
     END_BATTLE_PHASE,
+    YAMI_ENABLE,
+    YAMI_DISABLE,
     QUICK_ACTIVE;
 
 
@@ -57,6 +59,10 @@ public enum ActionEnum {
                 return new ReduceLPByAttackerAttackAction();
             case END_BATTLE_PHASE:
                 return new EndBattlePhaseAction();
+            case YAMI_ENABLE:
+                return new YamiEnableAction();
+            case YAMI_DISABLE:
+                return new YamiActionDisabled();
             default:
                 return new NullAction();
         }

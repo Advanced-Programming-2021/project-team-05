@@ -84,6 +84,7 @@ public class MainMenuTest {
         commands.add("menu exit");
 
         commands.add("menu enter Import/Export Menu");
+        outputs.add("separate card name words with '_'. example: Battle_OX");
         commands.add("menu show-current");
         outputs.add("Import/Export Menu");
         commands.add("menu exit");

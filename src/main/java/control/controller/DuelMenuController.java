@@ -118,6 +118,14 @@ public class DuelMenuController {
     }
 
 
+    private void reset() {
+        deselect(false);
+        setRitualSummonSpell(null);
+        setRitualSummonSpellAddress(null);
+        setPreventAttack(false);
+    }
+
+
     public void startNextRound() {
         currentRound++;
         initializeBoard();
@@ -131,7 +139,7 @@ public class DuelMenuController {
             board.getOpponentTable().initializeHand();
         }
         board.getPlayerTable().drawCard();
-        if (currentRound == 1 && isAi(board.getPlayerTable().getOwner())) {
+        if (isAi(board.getPlayerTable().getOwner())) {
             handleAI();
         }
     }
@@ -990,6 +998,7 @@ public class DuelMenuController {
         }
         view.printWinnerMessage(wonWholeMatch, winnerTable.getOwner().getUsername(), player1Score, player2Score);
         if (!wonWholeMatch) {
+            this.reset();
             startNextRound();
         }
     }
@@ -1105,5 +1114,29 @@ public class DuelMenuController {
             }
         }
         goToNextPhase();
+    }
+
+
+    public void increaseLP(int amount) {
+        board.getPlayerTable().increaseLifePoint(amount);
+        view.showLPIncreased();
+    }
+
+
+    public void setWinner(String nickname) {
+        Table winnerTable;
+        Table loserTable;
+        if (nickname.equals(board.getPlayerTable().getOwner().getNickname())) {
+            winnerTable = board.getPlayerTable();
+            loserTable = board.getOpponentTable();
+        } else if (nickname.equals(board.getOpponentTable().getOwner().getNickname())) {
+            winnerTable = board.getOpponentTable();
+            loserTable = board.getPlayerTable();
+        } else {
+            view.showSetWinnerMessage(DuelMenuMessage.INVALID_NICKNAME);
+            return;
+        }
+        view.showSetWinnerMessage(DuelMenuMessage.WINNER_SET);
+        win(winnerTable, loserTable);
     }
 }

@@ -156,6 +156,15 @@
     "action": "DESTROY_SUMMONED_MONSTER"
   },
   {
+    "cardName": "Yami",
+    "event": "FIELD",
+    "action": "YAMI_ENABLE"
+  },{
+    "cardName": "Yami",
+    "event": "FIELD",
+    "action": "YAMI_DISABLE"
+  },
+  {
     "cardName": "Trap Hole",
     "event": "MONSTER_WITH_1000_ATTACK_SUMMONED",
     "action":"QUICK_ACTIVE"

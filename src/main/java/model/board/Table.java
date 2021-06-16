@@ -189,7 +189,7 @@ public class Table {
     }
 
     public final void addMonster(Monster monster, CardState state) {
-        Cell cell = this.monsterCells[this.getFirstEmptyMonsterCellPosition()];
+        Cell cell = this.monsterCells[this.getFirstEmptyMonsterCellPosition() - 1];
         if (cell.getCard() == null) {
             cell.clear();
             cell.setCard(monster);
