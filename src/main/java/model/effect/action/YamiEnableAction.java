@@ -41,10 +41,9 @@ public class YamiEnableAction implements Action {
 
         }
 
-
     }
 
-    public boolean cardIsSpelled(Monster card){
+    public boolean cardIsSpelled(Monster card) {
         for (Monster card1 :
                 Board.spelledCards) {
             if (card == card1)

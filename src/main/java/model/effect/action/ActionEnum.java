@@ -20,6 +20,7 @@ public enum ActionEnum {
     END_BATTLE_PHASE,
     YAMI_ENABLE,
     YAMI_DISABLE,
+    YAMI_DISABLE_ONE_CARD,
     QUICK_ACTIVE;
 
 
