@@ -87,8 +87,10 @@ public class DataManager {
                 MonsterTemplate monsterTemplate = (MonsterTemplate) cardTemplate;
                 if (monsterTemplate.getLevel() <= 4 && monsterTemplate.getEffects().size() == 0 && monsterTemplate.getType() != CardType.RITUAL) {
                     Monster monster = new Monster(monsterTemplate);
-                    this.addCard(monster);
-                    aiDeck.addCardToMainDeck(monster);
+                    for (int i = 0; i < 3; i++) {
+                        this.addCard(monster);
+                        aiDeck.addCardToMainDeck(monster);
+                    }
                 }
             }
         }

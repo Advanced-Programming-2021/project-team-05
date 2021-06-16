@@ -27,7 +27,7 @@ public class User {
         this.setPassword(password);
         this.setNickname(nickname);
         this.setScore(0);
-        this.setMoney(100000);
+        this.setMoney(200000);
     }
 
 
