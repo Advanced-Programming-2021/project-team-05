@@ -896,6 +896,9 @@ public class DuelMenuController {
         ArrayList<Integer> positions = new ArrayList<>();
         for (int i = 1; i <= 5; i++) {
             SpellTrapCell cell = board.getOpponentTable().getSpellOrTrapCell(i);
+            if (cell.getCard() == null) {
+                continue;
+            }
             for (Effect effect : cell.getCard().getEffects()) {
                 if (effect.getEvent() == event && effect.getActionEnum() == ActionEnum.QUICK_ACTIVE) {
                     cells.add(cell);
@@ -1046,8 +1049,8 @@ public class DuelMenuController {
     }
 
     private void handleAIMainPhase1(Table aiTable) {
-        while (aiTable.getHand().size() > 0 && !aiTable.isMonsterZoneFull()) {
-            Monster monster = (Monster) aiTable.getCardFromHand(0);
+        while (aiTable.getHand().size() > 0 && !aiTable.isMonsterZoneFull() && aiTable.canSummonOrSet()) {
+            Monster monster = (Monster) aiTable.getCardFromHand(1);
             selectedCard = monster;
             selectedCardAddress = new CardAddress(CardAddressZone.HAND, 1, false);
             if (monster.getDefence() - monster.getAttack() > -100) {

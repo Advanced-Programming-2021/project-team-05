@@ -360,6 +360,27 @@ public class MainMenuTest {
 
         controller.startDuelWithAi(2);
         assertOutputIsEqual("number of rounds is not supported");
+
+        InputStream stdIn = TestUtility.giveInput("menu exit\nuser logout\nmenu exit");
+        Utility.initializeScanner();
+
+        controller.startDuelWithAi(1);
+        String output = outContent.toString().trim();
+        outContent.reset();
+
+        if (output.contains("tails")) {
+            Assertions.assertTrue(output.startsWith("coin side was tails and AI starts duel\r\n" +
+                    "its AI's turn"));
+            Assertions.assertTrue(output.endsWith("its myNickname's turn"));
+        } else {
+            Assertions.assertEquals("coin side was heads and " + myName + " starts duel\r\n" +
+                    "its myNickname's turn", output);
+        }
+
+        view.run();
+
+        assertOutputIsEqual("user logged out successfully!");
+        System.setIn(stdIn);
     }
 
 
