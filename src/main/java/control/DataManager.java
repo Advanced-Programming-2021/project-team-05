@@ -7,6 +7,7 @@ import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
+import com.opencsv.ICSVWriter;
 import model.Deck;
 import model.User;
 import model.card.Card;
@@ -42,13 +43,13 @@ public class DataManager {
     private static final String EFFECTS_JSON_PATH = "data\\effects.json";
     private static final String MONSTER_CSV_PATH = "data\\Monster.csv";
     private static final String SPELL_TRAP_CSV_PATH = "data\\SpellTrap.csv";
+    private static final String IMPORT_EXPORT_DIR = "import_export";
 
     private static DataManager dataManager;
-
+    private final ArrayList<CardTemplate> templates;
     private User ai;
     private ArrayList<User> users;
     private ArrayList<Card> cards;
-    private final ArrayList<CardTemplate> templates;
     private ArrayList<Deck> decks;
 
     {
@@ -213,9 +214,10 @@ public class DataManager {
     private void loadAi() {
         try {
             Gson gson = new Gson();
-            JsonReader userReader = new JsonReader(new FileReader(AI_JSON_PATH));
-            this.ai = gson.fromJson(userReader, User.class);
-        } catch (FileNotFoundException e) {
+            JsonReader aiReader = new JsonReader(new FileReader(AI_JSON_PATH));
+            this.ai = gson.fromJson(aiReader, User.class);
+            aiReader.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -227,7 +229,8 @@ public class DataManager {
             Type userType = new TypeToken<ArrayList<User>>() {
             }.getType();
             this.users = gson.fromJson(userReader, userType);
-        } catch (FileNotFoundException e) {
+            userReader.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -253,6 +256,7 @@ public class DataManager {
 
                 this.templates.add(new MonsterTemplate(name, type, description, price, monsterType, attribute, level, attack, defense));
             }
+            csvReader.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -282,6 +286,7 @@ public class DataManager {
                     throw new Exception("card type wasn't Spell or Trap");
                 }
             }
+            csvReader.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -295,7 +300,8 @@ public class DataManager {
             Type cardType = new TypeToken<ArrayList<Card>>() {
             }.getType();
             this.cards = cardGson.fromJson(cardReader, cardType);
-        } catch (FileNotFoundException e) {
+            cardReader.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -307,7 +313,8 @@ public class DataManager {
             Type deckType = new TypeToken<ArrayList<Deck>>() {
             }.getType();
             this.decks = gson.fromJson(deckReader, deckType);
-        } catch (FileNotFoundException e) {
+            deckReader.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -326,7 +333,8 @@ public class DataManager {
                 Effect effect = new Effect(event, action);
                 this.getCardTemplateByName(cardName).addEffect(effect);
             }
-        } catch (FileNotFoundException e) {
+            effectReader.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -401,7 +409,7 @@ public class DataManager {
     }
 
 
-    public void addTemplateToCSV(CardTemplate template) {
+    public void addTemplateToCSV(CardTemplate template) throws NullPointerException {
         String[] line;
         String path;
         if (template instanceof MonsterTemplate) {
@@ -413,7 +421,7 @@ public class DataManager {
         }
 
         try {
-            CSVWriter writer = new CSVWriter(new FileWriter(path, true));
+            CSVWriter writer = new CSVWriter(new FileWriter(path, true), ',', CSVWriter.NO_QUOTE_CHARACTER, ICSVWriter.DEFAULT_ESCAPE_CHARACTER, ICSVWriter.DEFAULT_LINE_END);
             writer.writeNext(line);
             writer.close();
         } catch (IOException e) {
@@ -421,7 +429,10 @@ public class DataManager {
         }
     }
 
-    private String[] getCSVLineMonster(CardTemplate template) {
+    private String[] getCSVLineMonster(CardTemplate template) throws NullPointerException {
+        if (template.getEffects() == null) {
+            throw new NullPointerException();
+        }
         String[] line = new String[9];
         line[0] = template.getName();
         line[1] = String.valueOf(((MonsterTemplate) template).getLevel());
@@ -435,7 +446,10 @@ public class DataManager {
         return line;
     }
 
-    private String[] getCSVLineSpellTrap(CardTemplate template) {
+    private String[] getCSVLineSpellTrap(CardTemplate template) throws NullPointerException {
+        if (template.getEffects() == null) {
+            throw new NullPointerException();
+        }
         String[] line = new String[6];
         line[0] = template.getName();
         line[2] = template.getType().getName();
@@ -450,5 +464,43 @@ public class DataManager {
             line[4] = ((TrapTemplate) template).getStatus().getName();
         }
         return line;
+    }
+
+
+    public boolean importCard(String cardName, Type type) {
+        try {
+            String path = IMPORT_EXPORT_DIR + "\\" + cardName.replaceAll("\\s", "_") + ".json";
+            Gson gson = new Gson();
+            JsonReader reader = new JsonReader(new FileReader(path));
+            CardTemplate template = gson.fromJson(reader, type);
+            reader.close();
+            this.addTemplateToCSV(template);
+            this.templates.add(template);
+        } catch (NullPointerException | IOException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public void exportCard(CardTemplate cardTemplate) {
+        try {
+            Type type;
+            if (cardTemplate instanceof MonsterTemplate) {
+                type = MonsterTemplate.class;
+            } else if (cardTemplate instanceof SpellTemplate) {
+                type = SpellTemplate.class;
+            } else {
+                type = TrapTemplate.class;
+            }
+
+            String path = IMPORT_EXPORT_DIR + "\\" + cardTemplate.getName().replaceAll("\\s", "_") + ".json";
+            Gson gson = new Gson();
+            FileWriter writer = new FileWriter(path);
+            gson.toJson(cardTemplate, type, writer);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

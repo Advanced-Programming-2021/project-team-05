@@ -7,15 +7,17 @@ import utils.Utility;
 
 public class ImportExportMenuView {
 
-    private final ImportExportController importExportController;
+    private final ImportExportController controller;
 
 
     public ImportExportMenuView(ImportExportController controller) {
-        this.importExportController = controller;
+        this.controller = controller;
+        controller.setView(this);
     }
 
 
     protected void run() {
+        System.out.println("separate card name words with '_'. example: Battle_OX");
         while (true) {
             String command = Utility.getNextLine();
             if (command.matches("^import card \\S+$")) {
@@ -28,6 +30,8 @@ public class ImportExportMenuView {
                 System.out.println("menu navigation is not possible");
             } else if (command.equals("menu exit")) {
                 break;
+            } else if (command.equals("menu help")) {
+                showHelp();
             } else {
                 System.out.println("invalid command");
             }
@@ -40,40 +44,42 @@ public class ImportExportMenuView {
             System.out.println("invalid command");
             return;
         }
-        String cardName;
-        try {
-            cardName = command[2].replace('_', ' ');
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("invalid command");
-            return;
-        }
+        String cardName = command[2].replace('_', ' ');
 
         if (importCard) {
-            ImportExportMessage message = importExportController.importCard(cardName);
-            printImportCardMessage(message);
+            System.out.println("please enter card type: (monster/spell/trap)");
+            String typeString;
+            while (true) {
+                typeString = Utility.getNextLine();
+                if (!typeString.equals("monster") && !typeString.equals("spell") && !typeString.equals("trap")) {
+                    System.out.println("invalid type");
+                    continue;
+                }
+                break;
+            }
+            controller.importCard(cardName, typeString);
         } else {
-            ImportExportMessage message = importExportController.exportCard(cardName);
-            printExportCardMessage(message);
+            controller.exportCard(cardName);
         }
     }
 
-    private void printImportCardMessage(ImportExportMessage message) {
+    public void printImportExportCardMessage(ImportExportMessage message) {
         switch (message) {
             case INVALID_CARD_NAME:
                 System.out.println("card name is invalid");
+                break;
+            case CARD_EXISTS:
+                System.out.println("card with entered name exists");
+                break;
+            case INVALID_FILE:
+                System.out.println("unable to import card");
+                break;
             case IMPORT_SUCCESSFUL:
                 System.out.println("card imported successfully!");
-            default:
-                System.out.println("unexpected error");
-        }
-    }
-
-    private void printExportCardMessage(ImportExportMessage message) {
-        switch (message) {
-            case INVALID_CARD_NAME:
-                System.out.println("card name is invalid");
+                break;
             case EXPORT_SUCCESSFUL:
                 System.out.println("card exported successfully!");
+                break;
             default:
                 System.out.println("unexpected error");
         }
@@ -82,5 +88,17 @@ public class ImportExportMenuView {
 
     private void showCurrentMenu() {
         System.out.println("Import/Export Menu");
+    }
+
+
+    public void showHelp() {
+        System.out.print(
+                "commands:\r\n" +
+                        "\timport card <card name>\r\n" +
+                        "\texport card <card name>\r\n" +
+                        "\tmenu show-current\r\n" +
+                        "\tmenu exit\r\n" +
+                        "\tmenu help\r\n"
+        );
     }
 }

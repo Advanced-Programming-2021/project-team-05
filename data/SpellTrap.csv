@@ -29,3 +29,4 @@ Magnum Shield,Spell,Equip,"Equip only to a Warrior-Type monster. Apply this effe
 ● Attack Position: It gains ATK equal to its original DEF.
 ● Defense Position: It gains DEF equal to its original ATK.",Unlimited,4300
 Advanced Ritual Art,Spell,Ritual,This card can be used to Ritual Summon any 1 Ritual Monster. You must also send Normal Monsters from your Deck to the Graveyard whose total Levels equal the Level of that Ritual Monster.,Unlimited,3000
+New Spell,Spell,Normal,Draw 2 cards.,Limited,2500
