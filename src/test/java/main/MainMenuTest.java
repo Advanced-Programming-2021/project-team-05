@@ -364,28 +364,33 @@ public class MainMenuTest {
         controller.startDuelWithAi(2);
         assertOutputIsEqual("number of rounds is not supported");
 
-        InputStream stdIn = TestUtility.giveInput("menu exit\nuser logout\nmenu exit");
-        Utility.initializeScanner();
+        boolean throwCoin = true;
 
-        controller.startDuelWithAi(1);
-        String output = outContent.toString().trim();
-        outContent.reset();
+        while (throwCoin) {
+            InputStream stdIn = TestUtility.giveInput("menu exit\nuser logout\nmenu exit");
+            Utility.initializeScanner();
 
-        if (output.contains("tails")) {
-            Assertions.assertTrue(output.startsWith("coin side was tails and AI starts duel\r\n" +
-                    "phase: draw phase\r\n" +
-                    "its AI's turn"));
-            Assertions.assertTrue(output.endsWith("its myNickname's turn"));
-        } else {
-            Assertions.assertEquals("coin side was heads and " + myName + " starts duel\r\n" +
-                    "phase: draw phase\r\n" +
-                    "its myNickname's turn", output);
+            controller.startDuelWithAi(1);
+            String output = outContent.toString().trim();
+            outContent.reset();
+
+            if (output.contains("tails")) {
+                throwCoin = false;
+                Assertions.assertTrue(output.startsWith("coin side was tails and AI starts duel\r\n" +
+                        "phase: draw phase\r\n" +
+                        "its AI's turn"));
+                Assertions.assertTrue(output.endsWith("its myNickname's turn"));
+            } else {
+                Assertions.assertEquals("coin side was heads and " + myName + " starts duel\r\n" +
+                        "phase: draw phase\r\n" +
+                        "its myNickname's turn", output);
+            }
+
+            view.run();
+
+            assertOutputIsEqual("user logged out successfully!");
+            System.setIn(stdIn);
         }
-
-        view.run();
-
-        assertOutputIsEqual("user logged out successfully!");
-        System.setIn(stdIn);
     }
 
 
