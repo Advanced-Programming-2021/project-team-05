@@ -1,6 +1,10 @@
 package model.board;
 
 import model.User;
+import model.card.Card;
+import model.card.Monster;
+
+import java.util.ArrayList;
 
 public class Board {
     private Table playerTable;
@@ -8,6 +12,8 @@ public class Board {
     private Table winnerTable;
     private Table loserTable;
     private boolean arePlayersImmune;
+
+    public static ArrayList<Monster> spelledCards = new ArrayList<>();
 
 
     public Board(User player, User opponent) {

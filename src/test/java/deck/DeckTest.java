@@ -180,6 +180,9 @@ public class DeckTest {
         ArrayList<CardTemplate> templates = manager.getCardTemplates();
         Assertions.assertEquals(59, templates.size());
 
+        ArrayList<Card> cards = manager.getCards();
+        int cardsSize = cards.size();
+
         for (CardTemplate cardTemplate : templates) {
             if (cardTemplate instanceof MonsterTemplate) {
                 manager.addCard(new Monster((MonsterTemplate) cardTemplate));
@@ -190,8 +193,7 @@ public class DeckTest {
             }
         }
 
-        ArrayList<Card> cards = manager.getCards();
-        Assertions.assertEquals(117, cards.size());
+        Assertions.assertEquals(59 + cardsSize, cards.size());
 
         testDeck.getMainDeckCardIds().clear();
 
