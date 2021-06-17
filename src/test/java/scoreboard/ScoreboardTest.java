@@ -30,6 +30,10 @@ public class ScoreboardTest {
         System.setOut(new PrintStream(outContent));
     }
 
+    @BeforeAll
+    public static void clearData() {
+        DataManager.getInstance().getUsers().clear();
+    }
 
     @BeforeEach
     public void resetUpStreams() {

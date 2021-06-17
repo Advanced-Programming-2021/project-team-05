@@ -178,7 +178,7 @@ public class DeckTest {
         assertOutputIsEqual("you can't add more cards with name " + cardName + " in deck " + deckName);
 
         ArrayList<CardTemplate> templates = manager.getCardTemplates();
-        Assertions.assertEquals(59, templates.size());
+        Assertions.assertEquals(47, templates.size());
 
         ArrayList<Card> cards = manager.getCards();
         int cardsSize = cards.size();
@@ -193,7 +193,7 @@ public class DeckTest {
             }
         }
 
-        Assertions.assertEquals(59 + cardsSize, cards.size());
+        Assertions.assertEquals( 47 + cardsSize, cards.size());
 
         testDeck.getMainDeckCardIds().clear();
 
