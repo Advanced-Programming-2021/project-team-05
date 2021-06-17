@@ -6,25 +6,23 @@ import model.board.Table;
 import model.card.Monster;
 import model.template.property.MonsterType;
 
-public class YamiDisableOneCard implements Action {
+public class UmiirukaDisableOneCard implements Action {
     @Override
     public void run(DuelMenuController controller) {
+
         Table targetTable = controller.getBoard().getOpponentTable();
         Table ownTable = controller.getBoard().getPlayerTable();
         for (Monster monster :
                 Board.spelledCards) {
             if (isDestroyed(monster, targetTable) && isDestroyed(monster, ownTable)) {
-                if (monster.getMonsterType().equals(MonsterType.FIEND) || monster.getMonsterType().equals(MonsterType.SPELL_CASTER)) {
-                    monster.setAttack(monster.getAttack() - 200);
-                    monster.setDefence(monster.getDefence() - 200);
-                }
-                if (monster.getMonsterType().equals(MonsterType.FAIRY)) {
-                    monster.setAttack(monster.getAttack() + 200);
-                    monster.setDefence(monster.getDefence() + 200);
-                }
+                monster.setAttack(monster.getAttack() - 500);
+                monster.setDefence(monster.getDefence() + 400);
                 Board.spelledCards.remove(monster);
+
             }
+
         }
+
     }
 
     public boolean isDestroyed(Monster monster, Table table) {
@@ -38,6 +36,6 @@ public class YamiDisableOneCard implements Action {
 
     @Override
     public boolean canBeRun(DuelMenuController controller) {
-        return true;
+        return false;
     }
 }

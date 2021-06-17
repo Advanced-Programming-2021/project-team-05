@@ -20,9 +20,12 @@ public enum ActionEnum {
     END_BATTLE_PHASE,
     YAMI_ENABLE,
     FOREST_ENABLE,
+    UMIIRUKA_ENABLE,
     YAMI_DISABLE,
     FOREST_DISABLE,
+    UMIIRUKA_DISABLE,
     YAMI_DISABLE_ONE_CARD,
+    UMIIRUKA_DISABLE_ONE_CARD,
     FOREST_DISABLE_ONE_CARD,
 
     QUICK_ACTIVE;
@@ -76,6 +79,12 @@ public enum ActionEnum {
                 return new ForestDisableAction();
             case FOREST_DISABLE_ONE_CARD:
                 return new ForestDisableOneCard();
+            case UMIIRUKA_ENABLE:
+                return new UmiirukaEnableAction();
+            case UMIIRUKA_DISABLE:
+                return new UmiirukaDisableAction();
+            case UMIIRUKA_DISABLE_ONE_CARD:
+                return new UmiirukaDisableOneCard();
             default:
                 return new NullAction();
         }
