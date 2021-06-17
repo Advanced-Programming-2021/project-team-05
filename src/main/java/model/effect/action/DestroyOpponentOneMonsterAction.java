@@ -34,7 +34,7 @@ public class DestroyOpponentOneMonsterAction implements Action {
                 break;
             }
         }
-        targetTable.moveMonsterToGraveyard(position);
+        controller.moveMonsterToGraveyard(targetTable, position);
     }
 
     @Override

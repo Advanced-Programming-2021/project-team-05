@@ -9,7 +9,7 @@ public class DestroySummonedMonsterAction implements Action {
     public void run(DuelMenuController controller) {
         if (canBeRun(controller)) {
             Table targetTable = controller.getBoard().getOpponentTable();
-            targetTable.removeMonster(controller.getSelectedCardAddress().getPosition());
+            controller.moveMonsterToGraveyard(targetTable, controller.getSelectedCardAddress().getPosition());
         }
     }
 

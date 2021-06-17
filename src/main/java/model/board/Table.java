@@ -24,7 +24,6 @@ public class Table {
     private Deck deck;
     private boolean canSummonOrSet;
 
-
     {
         hand = new ArrayList<>();
         graveyard = new ArrayList<>();
@@ -229,6 +228,15 @@ public class Table {
             }
         }
         return -1;
+    }
+
+    public final boolean hasMonster(Monster monster) {
+        for (int i = 1; i <= 5; i++) {
+            if (monster.equals(this.getMonster(i))) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

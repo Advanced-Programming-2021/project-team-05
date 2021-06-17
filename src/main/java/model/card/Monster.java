@@ -58,6 +58,14 @@ public class Monster extends Card {
         this.attack = attack;
     }
 
+    public final void increaseAttack(int amount) {
+        this.attack += amount;
+    }
+
+    public final void decreaseAttack(int amount) {
+        this.attack -= amount;
+    }
+
 
     public final int getDefence() {
         return this.defense;
@@ -65,5 +73,13 @@ public class Monster extends Card {
 
     public final void setDefence(int defence) {
         this.defense = defence;
+    }
+
+    public final void increaseDefense(int amount) {
+        this.defense += amount;
+    }
+
+    public final void decreaseDefense(int amount) {
+        this.defense -= amount;
     }
 }

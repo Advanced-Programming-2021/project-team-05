@@ -1,8 +1,10 @@
 package model.board;
 
 import model.User;
+import model.board.cell.SpellTrapCell;
 import model.card.Card;
 import model.card.Monster;
+import model.card.Spell;
 
 import java.util.ArrayList;
 
@@ -13,7 +15,11 @@ public class Board {
     private Table loserTable;
     private boolean arePlayersImmune;
 
-    public static ArrayList<Monster> spelledCards = new ArrayList<>();
+    public ArrayList<Monster> spelledMonsters;
+
+    {
+        spelledMonsters = new ArrayList<>();
+    }
 
 
     public Board(User player, User opponent) {
@@ -55,6 +61,43 @@ public class Board {
 
     public void setPlayersImmune(boolean arePlayersImmune) {
         this.arePlayersImmune = arePlayersImmune;
+    }
+
+
+    public final Spell getFieldSpell() {
+        if (playerTable.getFieldSpell() != null) {
+            return playerTable.getFieldSpell();
+        }
+        return opponentTable.getFieldSpell();
+    }
+
+    public final void setFieldSpell(Spell spell, CardState state) {
+        opponentTable.getFieldSpellCell().clear();
+        playerTable.setFieldSpell(spell, state);
+    }
+
+
+    public final ArrayList<Monster> getSpelledMonsters() {
+        return spelledMonsters;
+    }
+
+    public final void addSpelledMonster(Monster monster) {
+        if (!spelledMonsters.contains(monster)) {
+            spelledMonsters.add(monster);
+        }
+    }
+
+    public final void removeSpelledMonster(Monster monster) {
+        spelledMonsters.remove(monster);
+    }
+
+    public final boolean isMonsterSpelled(Monster monster) {
+        for (Monster spelledMonster : spelledMonsters) {
+            if (monster.equals(spelledMonster)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

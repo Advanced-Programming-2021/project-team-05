@@ -11,7 +11,7 @@ public class DestroyAllOpponentAttackingMonstersAction implements Action {
         Table targetTable = controller.getBoard().getOpponentTable();
         for (int i = 1; i <= 5; i++) {
             if (targetTable.getMonsterCell(i).getState() == CardState.VERTICAL_UP) {
-                targetTable.removeMonster(i);
+                controller.moveMonsterToGraveyard(targetTable, i);
             }
         }
     }

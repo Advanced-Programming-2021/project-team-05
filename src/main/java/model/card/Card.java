@@ -76,15 +76,6 @@ public abstract class Card {
         return true;
     }
 
-    public boolean canBeActivated() {
-        for (Effect effect : effects) {
-            if (effect.getEvent() == Event.ACTIVATE_EFFECT) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void runActions(Event event, DuelMenuController controller) {
         for (Effect effect : effects) {
             if (event.equals(effect.getEvent())) {

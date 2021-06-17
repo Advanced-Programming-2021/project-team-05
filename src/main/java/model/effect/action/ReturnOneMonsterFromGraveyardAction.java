@@ -48,7 +48,7 @@ public class ReturnOneMonsterFromGraveyardAction implements Action {
         }
         Card targetCard = targetTable.getGraveyard().get(position - 1);
         targetTable.getGraveyard().remove(position - 1);
-        targetTable.addMonster((Monster) targetCard, CardState.VERTICAL_UP);
+        controller.addMonsterToTable((Monster) targetCard, targetTable, CardState.VERTICAL_UP);
     }
 
     @Override

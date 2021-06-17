@@ -73,6 +73,7 @@ public class DuelMenuView {
             } else if (command.startsWith("menu enter")) {
                 System.out.println("menu navigation is not possible");
             } else if (command.equals("menu exit")) {
+                controller.exit();
                 break;
             } else if (command.equals("menu help")) {
                 showHelp();

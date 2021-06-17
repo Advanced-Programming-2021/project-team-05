@@ -9,7 +9,7 @@ public class DestroyAllOpponentMonstersAction implements Action {
     public void run(DuelMenuController controller) {
         Table targetTable = controller.getBoard().getOpponentTable();
         for (int i = 1; i <= 5; i++) {
-            targetTable.moveMonsterToGraveyard(i);
+            controller.moveMonsterToGraveyard(targetTable, i);
         }
     }
 

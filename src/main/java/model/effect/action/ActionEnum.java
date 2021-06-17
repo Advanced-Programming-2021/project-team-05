@@ -19,15 +19,14 @@ public enum ActionEnum {
     REDUCE_LP_BY_ATTACKER_ATTACK,
     END_BATTLE_PHASE,
     YAMI_ENABLE,
-    FOREST_ENABLE,
-    UMIIRUKA_ENABLE,
     YAMI_DISABLE,
+    YAMI_CHECK,
+    FOREST_ENABLE,
     FOREST_DISABLE,
+    FOREST_CHECK,
+    UMIIRUKA_ENABLE,
     UMIIRUKA_DISABLE,
-    YAMI_DISABLE_ONE_CARD,
-    UMIIRUKA_DISABLE_ONE_CARD,
-    FOREST_DISABLE_ONE_CARD,
-
+    UMIIRUKA_CHECK,
     QUICK_ACTIVE;
 
 
@@ -70,21 +69,21 @@ public enum ActionEnum {
             case YAMI_ENABLE:
                 return new YamiEnableAction();
             case YAMI_DISABLE:
-                return new YamiActionDisabled();
-            case YAMI_DISABLE_ONE_CARD:
-                return new YamiDisableOneCard();
+                return new YamiDisableAction();
+            case YAMI_CHECK:
+                return new YamiCheckAction();
             case FOREST_ENABLE:
                 return new ForestEnableAction();
             case FOREST_DISABLE:
                 return new ForestDisableAction();
-            case FOREST_DISABLE_ONE_CARD:
-                return new ForestDisableOneCard();
+            case FOREST_CHECK:
+                return new ForestCheckAction();
             case UMIIRUKA_ENABLE:
                 return new UmiirukaEnableAction();
             case UMIIRUKA_DISABLE:
                 return new UmiirukaDisableAction();
-            case UMIIRUKA_DISABLE_ONE_CARD:
-                return new UmiirukaDisableOneCard();
+            case UMIIRUKA_CHECK:
+                return new UmiirukaCheckAction();
             default:
                 return new NullAction();
         }

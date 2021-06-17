@@ -140,9 +140,24 @@
     "action": "DESTROY_SUMMONED_MONSTER"
   },
   {
+    "cardName": "Trap Hole",
+    "event": "MONSTER_WITH_1000_ATTACK_SUMMONED",
+    "action": "QUICK_ACTIVE"
+  },
+  {
     "cardName": "Yami",
     "event": "ACTIVATE_EFFECT",
     "action": "YAMI_ENABLE"
+  },
+  {
+    "cardName": "Yami",
+    "event": "DISABLE_FIELD_SPELL",
+    "action": "YAMI_DISABLE"
+  },
+  {
+    "cardName": "Yami",
+    "event": "CHECK_FIELD_SPELL",
+    "action": "YAMI_CHECK"
   },
   {
     "cardName": "Forest",
@@ -150,43 +165,28 @@
     "action": "FOREST_ENABLE"
   },
   {
+    "cardName": "Forest",
+    "event": "DISABLE_FIELD_SPELL",
+    "action": "FOREST_DISABLE"
+  },
+  {
+    "cardName": "Forest",
+    "event": "CHECK_FIELD_SPELL",
+    "action": "FOREST_CHECK"
+  },
+  {
     "cardName": "Umiiruka",
     "event": "ACTIVATE_EFFECT",
     "action": "UMIIRUKA_ENABLE"
   },
   {
-    "cardName": "Yami",
-    "event": "ACTIVATE_EFFECT",
-    "action": "YAMI_DISABLE"
-  },
-  {
     "cardName": "Umiiruka",
-    "event": "ACTIVATE_EFFECT",
+    "event": "DISABLE_FIELD_SPELL",
     "action": "UMIIRUKA_DISABLE"
   },
   {
-    "cardName": "Forest",
-    "event": "ACTIVATE_EFFECT",
-    "action": "FOREST_DISABLE"
-  },
-  {
-    "cardName": "Yami",
-    "event": "ACTIVATE_EFFECT",
-    "action": "YAMI_DISABLE_ONE_CARD"
-  },
-  {
     "cardName": "Umiiruka",
-    "event": "ACTIVATE_EFFECT",
-    "action": "UMIIRUKA_DISABLE_ONE_CARD"
-  },
-  {
-    "cardName": "Forest",
-    "event": "ACTIVATE_EFFECT",
-    "action": "FOREST_DISABLE_ONE_CARD"
-  },
-  {
-    "cardName": "Trap Hole",
-    "event": "MONSTER_WITH_1000_ATTACK_SUMMONED",
-    "action": "QUICK_ACTIVE"
+    "event": "CHECK_FIELD_SPELL",
+    "action": "UMIIRUKA_CHECK"
   }
 ]

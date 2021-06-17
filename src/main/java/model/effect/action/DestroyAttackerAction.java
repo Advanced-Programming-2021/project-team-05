@@ -10,7 +10,7 @@ public class DestroyAttackerAction implements Action {
         if (canBeRun(controller)) {
             Table playerTable = controller.getBoard().getPlayerTable();
             int position = controller.getSelectedCardAddress().getPosition();
-            playerTable.moveMonsterToGraveyard(position);
+            controller.moveMonsterToGraveyard(playerTable, position);
         }
     }
 

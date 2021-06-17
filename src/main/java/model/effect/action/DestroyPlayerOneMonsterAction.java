@@ -34,7 +34,7 @@ public class DestroyPlayerOneMonsterAction implements Action{
                 break;
             }
         }
-        targetTable.moveMonsterToGraveyard(position);
+        controller.moveMonsterToGraveyard(targetTable, position);
         controller.quickChangeTurn();
     }
 
