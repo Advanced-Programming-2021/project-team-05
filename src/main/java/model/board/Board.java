@@ -7,7 +7,6 @@ public class Board {
     private Table opponentTable;
     private Table winnerTable;
     private Table loserTable;
-    private int attackerMonsterPosition;
     private boolean arePlayersImmune;
 
 
@@ -44,15 +43,6 @@ public class Board {
     }
 
 
-    public int getAttackerMonster() {
-        return attackerMonsterPosition;
-    }
-
-    public void setAttackerMonster(int attackerMonsterPosition) {
-        this.attackerMonsterPosition = attackerMonsterPosition;
-    }
-
-
     public boolean arePlayersImmune() {
         return arePlayersImmune;
     }
@@ -71,8 +61,10 @@ public class Board {
 
     @Override
     public String toString() {
-        return opponentTable.toString(true) + "\n" +
-                "-------------------------" + "\n" +
-                playerTable.toString(false);
+        return "=========================" + "\r\n" +
+                opponentTable.toString(true) + "\r\n" +
+                "-------------------------" + "\r\n" +
+                playerTable.toString(false) + "\r\n" +
+                "=========================";
     }
 }

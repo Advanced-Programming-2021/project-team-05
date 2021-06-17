@@ -302,7 +302,8 @@ public class Table {
     }
 
 
-    public final void resetCells() {
+    public final void reset() {
+        this.setCanSummonOrSet(true);
         for (int i = 1; i <= 5; i++) {
             this.getMonsterCell(i).reset();
             this.getSpellOrTrapCell(i).reset();
