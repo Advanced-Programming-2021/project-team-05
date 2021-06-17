@@ -157,12 +157,33 @@
   },
   {
     "cardName": "Yami",
-    "event": "FIELD",
+    "event": "ACTIVATE_EFFECT",
     "action": "YAMI_ENABLE"
-  },{
+  },
+  {
+    "cardName": "Forest",
+    "event": "ACTIVATE_EFFECT",
+    "action": "FOREST_ENABLE"
+  },
+  {
     "cardName": "Yami",
-    "event": "FIELD",
+    "event": "ACTIVATE_EFFECT",
     "action": "YAMI_DISABLE"
+  },
+  {
+    "cardName": "Forest",
+    "event": "ACTIVATE_EFFECT",
+    "action": "FOREST_DISABLE"
+  },
+  {
+    "cardName": "Yami",
+    "event": "ACTIVATE_EFFECT",
+    "action": "YAMI_DISABLE_ONE_CARD"
+  },
+  {
+    "cardName": "Forest",
+    "event": "ACTIVATE_EFFECT",
+    "action": "FOREST_DISABLE_ONE_CARD"
   },
   {
     "cardName": "Trap Hole",

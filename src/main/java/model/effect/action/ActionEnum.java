@@ -19,8 +19,12 @@ public enum ActionEnum {
     REDUCE_LP_BY_ATTACKER_ATTACK,
     END_BATTLE_PHASE,
     YAMI_ENABLE,
+    FOREST_ENABLE,
     YAMI_DISABLE,
+    FOREST_DISABLE,
     YAMI_DISABLE_ONE_CARD,
+    FOREST_DISABLE_ONE_CARD,
+
     QUICK_ACTIVE;
 
 
@@ -64,6 +68,14 @@ public enum ActionEnum {
                 return new YamiEnableAction();
             case YAMI_DISABLE:
                 return new YamiActionDisabled();
+            case YAMI_DISABLE_ONE_CARD:
+                return new YamiDisableOneCard();
+            case FOREST_ENABLE:
+                return new ForestEnableAction();
+            case FOREST_DISABLE:
+                return new ForestDisableAction();
+            case FOREST_DISABLE_ONE_CARD:
+                return new ForestDisableOneCard();
             default:
                 return new NullAction();
         }
