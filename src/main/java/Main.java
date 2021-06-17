@@ -69,10 +69,10 @@ public class Main {
         manager.addDeck(deckOne);
         manager.addDeck(deckTwo);
 
-        for (int i = 0; i < 59; i++) {
+        for (int i = 0; i < 47; i++) {
             deckOne.addCardToMainDeck(cards.get(i));
         }
-        for (int i = 59; i < 118; i++) {
+        for (int i = 47; i < 94; i++) {
             deckTwo.addCardToMainDeck(cards.get(i));
         }
 
