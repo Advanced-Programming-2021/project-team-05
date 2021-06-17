@@ -364,9 +364,10 @@ public class MainMenuTest {
         controller.startDuelWithAi(2);
         assertOutputIsEqual("number of rounds is not supported");
 
-        boolean throwCoin = true;
+        boolean tails = true;
+        boolean heads = true;
 
-        while (throwCoin) {
+        while (tails || heads) {
             InputStream stdIn = TestUtility.giveInput("menu exit\nuser logout\nmenu exit");
             Utility.initializeScanner();
 
@@ -375,12 +376,13 @@ public class MainMenuTest {
             outContent.reset();
 
             if (output.contains("tails")) {
-                throwCoin = false;
+                tails = false;
                 Assertions.assertTrue(output.startsWith("coin side was tails and AI starts duel\r\n" +
                         "phase: draw phase\r\n" +
                         "its AI's turn"));
                 Assertions.assertTrue(output.endsWith("its myNickname's turn"));
             } else {
+                heads = false;
                 Assertions.assertEquals("coin side was heads and " + myName + " starts duel\r\n" +
                         "phase: draw phase\r\n" +
                         "its myNickname's turn", output);
