@@ -110,7 +110,7 @@ public class ShopMenuView {
     }
 
 
-    private void increaseMoney(String[] command) {
+    public void increaseMoney(String[] command) {
         long amount;
         try {
             amount = Long.parseLong(command[2]);

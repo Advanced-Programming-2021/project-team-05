@@ -314,9 +314,11 @@ public class MainMenuTest {
 
         if (output.contains("tails")) {
             Assertions.assertEquals("coin side was tails and " + opName + " starts duel\r\n" +
+                    "phase: draw phase\r\n" +
                     "its " + opNick + "'s turn", output);
         } else {
             Assertions.assertEquals("coin side was heads and " + myName + " starts duel\r\n" +
+                    "phase: draw phase\r\n" +
                     "its " + myNick + "'s turn", output);
         }
 
@@ -371,10 +373,12 @@ public class MainMenuTest {
 
         if (output.contains("tails")) {
             Assertions.assertTrue(output.startsWith("coin side was tails and AI starts duel\r\n" +
+                    "phase: draw phase\r\n" +
                     "its AI's turn"));
             Assertions.assertTrue(output.endsWith("its myNickname's turn"));
         } else {
             Assertions.assertEquals("coin side was heads and " + myName + " starts duel\r\n" +
+                    "phase: draw phase\r\n" +
                     "its myNickname's turn", output);
         }
 

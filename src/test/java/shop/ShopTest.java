@@ -95,6 +95,29 @@ public class ShopTest {
 
 
     @Test
+    public void increaseMoneyTest() {
+        DataManager manager = DataManager.getInstance();
+        manager.loadData();
+
+        User testUser = new User("testUser", "testPass", "testNick");
+        testUser.setMoney(1000);
+        ShopMenuController controller = new ShopMenuController(testUser);
+        ShopMenuView view = new ShopMenuView(controller);
+
+        controller.increaseMoney(10000);
+        Assertions.assertEquals(11000, testUser.getMoney());
+
+        view.increaseMoney("test test 1000".split(" "));
+        Assertions.assertEquals(12000, testUser.getMoney());
+
+        view.increaseMoney("test test 10a0".split(" "));
+        assertOutputIsEqual("money increased!\r\n" +
+                "money increased!\r\n" +
+                "invalid command");
+    }
+
+
+    @Test
     public void runTest() {
         User testUser = new User("name", "pass", "nick");
         testUser.setMoney(1300);
@@ -147,6 +170,9 @@ public class ShopTest {
                         "\tmenu show-current\r\n" +
                         "\tmenu exit\r\n" +
                         "\tmenu help");
+
+        commands.add("increase --money 1000");
+        outputs.add("money increased!");
 
         commands.add("menu exit");
 
