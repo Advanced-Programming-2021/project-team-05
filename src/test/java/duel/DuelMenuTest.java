@@ -46,6 +46,13 @@ public class DuelMenuTest {
         outContent.reset();
     }
 
+    private void compareOutputs(String output1, String output2) {
+        String output = outContent.toString().trim();
+        Assertions.assertTrue(output.equals(output1) || output.equals(output2));
+        System.setIn(stdIn);
+        outContent.reset();
+    }
+
     @BeforeAll
     public static void setUpStreams() {
         System.setOut(new PrintStream(outContent));
@@ -55,6 +62,8 @@ public class DuelMenuTest {
     public static void generateData() {
         DataManager manager = DataManager.getInstance();
         manager.loadData();
+
+        manager.getUsers().clear();
 
         User userOne = new User("myUser", "myPass", "myNick");
         User userTwo = new User("opsUser", "opsPass", "opNick");
@@ -92,10 +101,10 @@ public class DuelMenuTest {
         manager.addDeck(deckOne);
         manager.addDeck(deckTwo);
 
-        for (int i = 0; i < 59; i++) {
+        for (int i = 0; i < 47; i++) {
             deckOne.addCardToMainDeck(cards.get(i));
         }
-        for (int i = 59; i < 118; i++) {
+        for (int i = 47; i < 94; i++) {
             deckTwo.addCardToMainDeck(cards.get(i));
         }
 
@@ -112,11 +121,41 @@ public class DuelMenuTest {
     }
 
 
+    @Test
+    public void runTest() {
+        DataManager manager = DataManager.getInstance();
+        User userOne = manager.getUserByUsername("myUser");
+        Assertions.assertNotNull(userOne);
 
+        MainMenuController controller = new MainMenuController(userOne);
+        MainMenuView view = new MainMenuView(controller);
+
+        String input = "duel --new --second-player opsUser --rounds 1\n" +
+                "menu exit\nuser logout\nmenu exit";
+
+        String output1 = "coin side was tails and opsUser starts duel\r\n" +
+                "phase: draw phase\r\n" +
+                "its opNick's turn\r\n" +
+                "user logged out successfully!";
+
+        String output2 = "coin side was heads and myUser starts duel\r\n" +
+                "phase: draw phase\r\n" +
+                "its myNick's turn\r\n" +
+                "user logged out successfully!";
+
+        enterInput(input);
+        view.run();
+        compareOutputs(output1, output2);
+    }
 
 
     @AfterAll
     public static void restoreStreams() {
         System.setOut(originalOut);
+    }
+
+    @AfterAll
+    public static void killScanner() {
+        Utility.killScanner();
     }
 }

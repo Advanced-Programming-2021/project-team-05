@@ -11,6 +11,10 @@ public class Utility {
         scanner = new Scanner(System.in);
     }
 
+    public static void killScanner() {
+        scanner = null;
+    }
+
 
     public static String getNextLine() {
         return scanner.nextLine();

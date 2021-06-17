@@ -1,5 +1,6 @@
 package login;
 
+import control.DataManager;
 import control.controller.LoginMenuController;
 import control.message.LoginMenuMessage;
 import org.junit.jupiter.api.*;
@@ -18,6 +19,11 @@ public class LoginMenuTest {
     @BeforeAll
     public static void setUpStreams() {
         System.setOut(new PrintStream(outContent));
+    }
+
+    @BeforeAll
+    public static void clearData() {
+        DataManager.getInstance().getUsers().clear();
     }
 
     @AfterAll
