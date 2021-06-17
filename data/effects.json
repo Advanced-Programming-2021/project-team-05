@@ -150,7 +150,7 @@
     "action": "FOREST_ENABLE"
   },
   {
-    "cardName": "UMIIRUKA",
+    "cardName": "Umiiruka",
     "event": "ACTIVATE_EFFECT",
     "action": "UMIIRUKA_ENABLE"
   },
@@ -160,7 +160,7 @@
     "action": "YAMI_DISABLE"
   },
   {
-    "cardName": "UMIIRUKA",
+    "cardName": "Umiiruka",
     "event": "ACTIVATE_EFFECT",
     "action": "UMIIRUKA_DISABLE"
   },
@@ -175,7 +175,7 @@
     "action": "YAMI_DISABLE_ONE_CARD"
   },
   {
-    "cardName": "UMIIRUKA",
+    "cardName": "Umiiruka",
     "event": "ACTIVATE_EFFECT",
     "action": "UMIIRUKA_DISABLE_ONE_CARD"
   },

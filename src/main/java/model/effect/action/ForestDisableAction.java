@@ -17,7 +17,6 @@ public class ForestDisableAction implements Action{
             }
 
         }
-
         Board.spelledCards.clear();
 
     }
