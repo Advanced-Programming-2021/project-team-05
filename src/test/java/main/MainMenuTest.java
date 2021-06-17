@@ -372,7 +372,9 @@ public class MainMenuTest {
         outContent.reset();
 
         if (output.contains("tails")) {
-            Assertions.assertTrue(output.startsWith("coin side was tails and AI starts duel\r\n" + "phase: draw phase\r\n"));
+            Assertions.assertTrue(output.startsWith("coin side was tails and AI starts duel\r\n" +
+                    "phase: draw phase\r\n" +
+                    "its AI's turn"));
             Assertions.assertTrue(output.endsWith("its myNickname's turn"));
         } else {
             Assertions.assertEquals("coin side was heads and " + myName + " starts duel\r\n" +
