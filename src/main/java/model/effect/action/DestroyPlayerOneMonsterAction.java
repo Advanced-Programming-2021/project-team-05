@@ -15,14 +15,14 @@ public class DestroyPlayerOneMonsterAction implements Action{
             return;
         }
 
-        controller.quickChangeTurn();
+        controller.quickChangeTurn(true);
         int position;
         String message = "enter monster position to destroy:";
         while (true) {
             ArrayList<Integer> numbers = view.getNumbers(1, message);
             if (numbers == null) {
                 view.printActionCanceled();
-                controller.quickChangeTurn();
+                controller.quickChangeTurn(true);
                 return;
             }
             position = numbers.get(0);
@@ -35,7 +35,7 @@ public class DestroyPlayerOneMonsterAction implements Action{
             }
         }
         controller.moveMonsterToGraveyard(targetTable, position);
-        controller.quickChangeTurn();
+        controller.quickChangeTurn(true);
     }
 
     @Override

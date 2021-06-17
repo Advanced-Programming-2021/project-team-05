@@ -444,6 +444,12 @@ public class DuelMenuView {
             case OPPONENT_DEFENSE_POSITION_MONSTER_DESTROYED:
                 System.out.println("the defense position monster is destroyed");
                 break;
+            case NO_CARD_DESTROYED_AND_NO_DAMAGE:
+                System.out.println("no card is destroyed");
+                break;
+            case NO_CARD_DESTROYED_WITH_DAMAGE:
+                System.out.println("no card is destroyed and you received " + damage + " battle damage");
+                break;
             default:
                 System.out.println("unexpected error");
         }

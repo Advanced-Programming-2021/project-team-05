@@ -20,6 +20,9 @@ public class UmiirukaEnableAction implements Action {
             }
             for (int j = 1; j <= 5; j++) {
                 Monster monster = table.getMonster(j);
+                if (monster == null) {
+                    continue;
+                }
                 if (!board.isMonsterSpelled(monster)) {
                     if (monster.getMonsterType() == MonsterType.AQUA) {
                         monster.increaseAttack(500);

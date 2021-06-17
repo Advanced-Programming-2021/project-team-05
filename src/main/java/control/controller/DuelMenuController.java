@@ -247,10 +247,12 @@ public class DuelMenuController {
         }
     }
 
-    public void quickChangeTurn() {
+    public void quickChangeTurn(boolean showBoard) {
         board.swapTables();
         view.showQuickTurn(board.getPlayerTable().getOwner().getNickname());
-        view.showBoard(board);
+        if (showBoard) {
+            view.showBoard(board);
+        }
     }
 
 
@@ -723,6 +725,10 @@ public class DuelMenuController {
             view.printAttackMessage(DuelMenuMessage.NO_CARD_TO_ATTACK, 0, null);
             return;
         }
+        if (attackerCell.getState() != CardState.VERTICAL_UP) {
+            view.printAttackMessage(DuelMenuMessage.CANT_ATTACK, 0, null);
+            return;
+        }
         attackerCell.setDidAttack(true);
         checkQuickActivation(Event.DECLARE_ATTACK);
         if (!preventAttack) {
@@ -743,9 +749,9 @@ public class DuelMenuController {
         int targetCardAttack = ((Monster) targetCell.getCard()).getAttack();
         int damage = attackerCardAttack - targetCardAttack;
         if (damage > 0) {
-            moveMonsterToGraveyard(targetTable, targetPosition);
-            view.printAttackMessage(DuelMenuMessage.OPPONENT_ATTACK_POSITION_MONSTER_DESTROYED, damage, null);
             targetCell.getCard().runActions(Event.YOU_DESTROYED, this);
+            view.printAttackMessage(DuelMenuMessage.OPPONENT_ATTACK_POSITION_MONSTER_DESTROYED, damage, null);
+            moveMonsterToGraveyard(targetTable, targetPosition);
             if (!board.arePlayersImmune()) {
                 if (checkLifePoint(targetTable, attackerTable, damage)) {
                     targetTable.decreaseLifePoint(damage);
@@ -754,10 +760,10 @@ public class DuelMenuController {
                 }
             }
         } else if (damage == 0) {
+            targetCell.getCard().runActions(Event.YOU_DESTROYED, this);
+            view.printAttackMessage(DuelMenuMessage.BOTH_ATTACK_POSITION_MONSTERS_DESTROYED, 0, null);
             moveMonsterToGraveyard(attackerTable, selectedCardAddress.getPosition());
             moveMonsterToGraveyard(targetTable, targetPosition);
-            view.printAttackMessage(DuelMenuMessage.BOTH_ATTACK_POSITION_MONSTERS_DESTROYED, 0, null);
-            targetCell.getCard().runActions(Event.YOU_DESTROYED, this);
         } else {
             damage = Math.abs(damage);
             moveMonsterToGraveyard(attackerTable, selectedCardAddress.getPosition());
@@ -786,9 +792,9 @@ public class DuelMenuController {
         int targetCardDefense = ((Monster) targetCell.getCard()).getDefence();
         int damage = attackerCardAttack - targetCardDefense;
         if (damage > 0) {
-            moveMonsterToGraveyard(targetTable, targetPosition);
             view.printAttackMessage(DuelMenuMessage.OPPONENT_DEFENSE_POSITION_MONSTER_DESTROYED, 0, hiddenCardName);
             targetCell.getCard().runActions(Event.YOU_DESTROYED, this);
+            moveMonsterToGraveyard(targetTable, targetPosition);
         } else if (damage == 0) {
             view.printAttackMessage(DuelMenuMessage.NO_CARD_DESTROYED_AND_NO_DAMAGE, 0, hiddenCardName);
         } else {
@@ -874,7 +880,11 @@ public class DuelMenuController {
                 return;
             }
             if (!selectedCard.canRunActions(Event.ACTIVATE_EFFECT, this)) {
-                view.printActivateEffectMessage(DuelMenuMessage.PREPARATIONS_NOT_DONE_YET);
+                if (selectedCard.getType() == CardType.RITUAL) {
+                    view.printRitualSummonMessage(DuelMenuMessage.NO_WAY_TO_RITUAL_SUMMON);
+                } else {
+                    view.printActivateEffectMessage(DuelMenuMessage.PREPARATIONS_NOT_DONE_YET);
+                }
                 return;
             }
             if (selectedCard.getType() != CardType.RITUAL) {
@@ -903,7 +913,7 @@ public class DuelMenuController {
                 view.printActivateEffectMessage(DuelMenuMessage.CARD_ALREADY_ACTIVATED);
                 return;
             }
-            if (selectedCard.canRunActions(Event.ACTIVATE_EFFECT, this)) {
+            if (!selectedCard.canRunActions(Event.ACTIVATE_EFFECT, this)) {
                 view.printActivateEffectMessage(DuelMenuMessage.PREPARATIONS_NOT_DONE_YET);
                 return;
             }
@@ -954,12 +964,13 @@ public class DuelMenuController {
         if (cells.size() == 0) {
             return;
         }
+        quickChangeTurn(false);
         String askActivateMessage = "do you want to activate your trap or spell?";
         String answer = view.getOneOfValues("yes", "no", askActivateMessage, "invalid input");
         if ("no".equals(answer)) {
+            quickChangeTurn(false);
             return;
         }
-        quickChangeTurn();
         view.showCards(cards, "Card(s):");
         String getNumberMessage = "enter card number:";
         int index;
@@ -967,7 +978,7 @@ public class DuelMenuController {
             ArrayList<Integer> numbers = view.getNumbers(1, getNumberMessage);
             if (numbers == null) {
                 view.printActionCanceled();
-                quickChangeTurn();
+                quickChangeTurn(true);
                 return;
             }
             index = numbers.get(0);
@@ -979,7 +990,7 @@ public class DuelMenuController {
         }
         index--;
         activateSpellTrap(board.getPlayerTable(), cells.get(index), cards.get(index), positions.get(index), true);
-        quickChangeTurn();
+        quickChangeTurn(true);
     }
 
 
