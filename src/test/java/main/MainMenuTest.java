@@ -305,27 +305,36 @@ public class MainMenuTest {
         controller.startDuelWithUser(opName, 2);
         assertOutputIsEqual("number of rounds is not supported");
 
-        InputStream stdIn = TestUtility.giveInput("menu exit\nuser logout\nmenu exit");
-        Utility.initializeScanner();
+        boolean tails = true;
+        boolean heads = true;
 
-        controller.startDuelWithUser(opName, 1);
-        String output = outContent.toString().trim();
-        outContent.reset();
+        while (tails || heads) {
+            InputStream stdIn = TestUtility.giveInput("menu exit\nuser logout\nmenu exit");
+            Utility.initializeScanner();
 
-        if (output.contains("tails")) {
-            Assertions.assertEquals("coin side was tails and " + opName + " starts duel\r\n" +
-                    "phase: draw phase\r\n" +
-                    "its " + opNick + "'s turn", output);
-        } else {
-            Assertions.assertEquals("coin side was heads and " + myName + " starts duel\r\n" +
-                    "phase: draw phase\r\n" +
-                    "its " + myNick + "'s turn", output);
+            controller.startDuelWithUser(opName, 1);
+            String output = outContent.toString().trim();
+            outContent.reset();
+
+            if (output.contains("tails")) {
+                tails = false;
+                Assertions.assertEquals("coin side was tails and " + opName + " starts duel\r\n" +
+                        "phase: draw phase\r\n" +
+                        "its " + opNick + "'s turn\r\n" +
+                        "you drew \"Wattkid\" from your deck", output);
+            } else {
+                heads = false;
+                Assertions.assertEquals("coin side was heads and " + myName + " starts duel\r\n" +
+                        "phase: draw phase\r\n" +
+                        "its " + myNick + "'s turn\r\n" +
+                        "you drew \"Wattkid\" from your deck", output);
+            }
+
+            view.run();
+
+            assertOutputIsEqual("user logged out successfully!");
+            System.setIn(stdIn);
         }
-
-        view.run();
-
-        assertOutputIsEqual("user logged out successfully!");
-        System.setIn(stdIn);
     }
 
 
@@ -380,12 +389,16 @@ public class MainMenuTest {
                 Assertions.assertTrue(output.startsWith("coin side was tails and AI starts duel\r\n" +
                         "phase: draw phase\r\n" +
                         "its AI's turn"));
-                Assertions.assertTrue(output.endsWith("its myNickname's turn"));
+                Assertions.assertTrue(output.endsWith("phase: end phase\r\n" +
+                        "its myNickname's turn\r\n" +
+                        "phase: draw phase\r\n" +
+                        "you drew \"Wattkid\" from your deck"));
             } else {
                 heads = false;
                 Assertions.assertEquals("coin side was heads and " + myName + " starts duel\r\n" +
                         "phase: draw phase\r\n" +
-                        "its myNickname's turn", output);
+                        "its myNickname's turn\r\n" +
+                        "you drew \"Wattkid\" from your deck", output);
             }
 
             view.run();
