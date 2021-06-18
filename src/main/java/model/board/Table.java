@@ -154,9 +154,10 @@ public class Table {
     }
 
 
-    public final void drawCard() {
+    public final Card drawCard() {
         Card card = deck.drawCard();
         this.addCardToHand(card);
+        return card;
     }
 
 
@@ -301,6 +302,7 @@ public class Table {
     }
 
     public final void setFieldSpell(Spell spell, CardState state) {
+        this.fieldZoneCell.clear();
         this.fieldZoneCell.setCard(spell);
         this.fieldZoneCell.setState(state);
     }

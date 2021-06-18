@@ -1,7 +1,7 @@
 [
   {
     "cardName": "Yomi Ship",
-    "event": "YOU_DESTROYED",
+    "event": "YOU_DESTROYED_BY_ATTACK",
     "action": "DESTROY_ATTACKER_IN_PLAYER_TABLE"
   },
   {
@@ -16,12 +16,22 @@
   },
   {
     "cardName": "Exploder Dragon",
-    "event": "YOU_DESTROYED",
+    "event": "YOU_DESTROYED_BY_ATTACK",
     "action": "DESTROY_ATTACKER_IN_PLAYER_TABLE"
   },
   {
     "cardName": "Exploder Dragon",
-    "event": "YOU_DESTROYED",
+    "event": "YOU_DESTROYED_BY_ATTACK",
+    "action": "NO_DAMAGE"
+  },
+  {
+    "cardName": "Exploder Dragon",
+    "event": "YOU_DESTROYED_WHILE_ATTACKING",
+    "action": "DESTROY_ATTACKED_CARD"
+  },
+  {
+    "cardName": "Exploder Dragon",
+    "event": "YOU_DESTROYED_WHILE_ATTACKING",
     "action": "NO_DAMAGE"
   },
   {

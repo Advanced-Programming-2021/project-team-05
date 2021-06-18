@@ -17,7 +17,6 @@ public class ReduceLPByAttackerAttackAction implements Action {
         if (controller.checkLifePoint(targetTable, attackerTable, damage)) {
             targetTable.decreaseLifePoint(damage);
         }
-        controller.getBoard().getOpponentTable().decreaseLifePoint(damage);
     }
 
     @Override

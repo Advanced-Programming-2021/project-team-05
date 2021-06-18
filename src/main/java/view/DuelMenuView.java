@@ -630,6 +630,11 @@ public class DuelMenuView {
     }
 
 
+    public void showDrawMessage(Card card) {
+        System.out.println("you drew " + card.getName() + " from your deck");
+    }
+
+
     public void printWinnerMessage(boolean isWholeMatch, String winnerUsername, int score1, int score2) {
         if (isWholeMatch) {
             System.out.println(winnerUsername + " won the game with score: " + score1 + "-" + score2);

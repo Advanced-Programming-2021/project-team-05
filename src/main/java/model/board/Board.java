@@ -72,6 +72,12 @@ public class Board {
     }
 
     public final void setFieldSpell(Spell spell, CardState state) {
+        if (playerTable.getFieldSpell() != null) {
+            playerTable.addCardToGraveyard(playerTable.getFieldSpell());
+        }
+        if (opponentTable.getFieldSpell() != null) {
+            opponentTable.addCardToGraveyard(opponentTable.getFieldSpell());
+        }
         opponentTable.getFieldSpellCell().clear();
         playerTable.setFieldSpell(spell, state);
     }

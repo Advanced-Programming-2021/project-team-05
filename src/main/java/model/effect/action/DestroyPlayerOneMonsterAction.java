@@ -15,7 +15,7 @@ public class DestroyPlayerOneMonsterAction implements Action{
             return;
         }
 
-        controller.quickChangeTurn(true);
+        controller.quickChangeTurn(false);
         int position;
         String message = "enter monster position to destroy:";
         while (true) {
@@ -35,7 +35,7 @@ public class DestroyPlayerOneMonsterAction implements Action{
             }
         }
         controller.moveMonsterToGraveyard(targetTable, position);
-        controller.quickChangeTurn(true);
+        controller.quickChangeTurn(false);
     }
 
     @Override
