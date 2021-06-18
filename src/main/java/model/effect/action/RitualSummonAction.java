@@ -46,8 +46,10 @@ public class RitualSummonAction implements Action {
                     if (monster3 == null) {
                         continue;
                     }
-                    if (ritualMonsterLevels.contains(monster1.getLevel() + monster2.getLevel() + monster3.getLevel())) {
-                        return true;
+                    for (Integer ritualMonsterLevel : ritualMonsterLevels) {
+                        if (monster1.getLevel() + monster2.getLevel() + monster3.getLevel() >= ritualMonsterLevel) {
+                            return true;
+                        }
                     }
                 }
             }

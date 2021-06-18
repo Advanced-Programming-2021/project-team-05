@@ -480,7 +480,7 @@ public class DuelMenuController {
             for (Monster tributeMonster : tributeCards) {
                 levelsSum += tributeMonster.getLevel();
             }
-            if (levelsSum != ((Monster) selectedCard).getLevel()) {
+            if (levelsSum < ((Monster) selectedCard).getLevel()) {
                 view.printRitualSummonMessage(DuelMenuMessage.DONT_MATCH_WITH_RITUAL_MONSTER);
                 return;
             }
