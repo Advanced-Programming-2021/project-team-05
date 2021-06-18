@@ -402,6 +402,10 @@ public class DuelMenuController {
             tributeSummon(3, true);
             return;
         }
+        if (monster.getType() == CardType.RITUAL) {
+            view.printSummonMessage(DuelMenuMessage.CANT_SUMMON);
+            return;
+        }
         if ("The Tricky".equals(monster.getName())) {
             String message = "do you want to summon card normal or special?";
             String summonType = view.getOneOfValues("normal", "special", message, "invalid input");
@@ -417,6 +421,13 @@ public class DuelMenuController {
                 tributeSummonFromHand(1);
                 return;
             }
+        } else if ("Gate Guardian".equals(monster.getName())) {
+            if (playerTable.getMonsterCardsCount() <= 2) {
+                view.printSummonMessage(DuelMenuMessage.NOT_ENOUGH_TRIBUTE);
+                return;
+            }
+            tributeSummon(3, true);
+            return;
         }
         if (!isSpecial && !playerTable.canSummonOrSet()) {
             view.printSummonMessage(DuelMenuMessage.ALREADY_SUMMONED_SET);
@@ -440,12 +451,6 @@ public class DuelMenuController {
                 return;
             }
             tributeSummon(2, false);
-        } else if ("Gate Guardian".equals(monster.getName())) {
-            if (playerTable.getMonsterCardsCount() <= 2) {
-                view.printSummonMessage(DuelMenuMessage.NOT_ENOUGH_TRIBUTE);
-                return;
-            }
-            tributeSummon(3, true);
         }
     }
 
@@ -633,6 +638,10 @@ public class DuelMenuController {
         }
         Table playerTable = board.getPlayerTable();
         if (selectedCard instanceof Monster) {
+            if (selectedCard.getType() == CardType.RITUAL) {
+                view.printSetMessage(DuelMenuMessage.CANT_SET);
+                return;
+            }
             if (playerTable.isMonsterZoneFull()) {
                 view.printSetMessage(DuelMenuMessage.MONSTER_ZONE_IS_FULL);
                 return;
@@ -647,12 +656,21 @@ public class DuelMenuController {
             view.printSetMessage(DuelMenuMessage.SET_SUCCESSFUL);
             view.showBoard(board);
         } else if (selectedCard instanceof Spell || selectedCard instanceof Trap) {
-            if (playerTable.isSpellTrapZoneFull()) {
-                view.printSetMessage(DuelMenuMessage.SPELL_ZONE_FULL);
-                return;
+            if (selectedCard.getType() == CardType.FIELD) {
+                removeCardFromHand(playerTable, selectedCardAddress.getPosition());
+                Spell fieldSpell = board.getFieldSpell();
+                if (fieldSpell != null) {
+                    fieldSpell.runActions(Event.DISABLE_FIELD_SPELL, this);
+                }
+                board.setFieldSpell((Spell) selectedCard, CardState.VERTICAL_UP);
+            } else {
+                if (playerTable.isSpellTrapZoneFull()) {
+                    view.printSetMessage(DuelMenuMessage.SPELL_ZONE_FULL);
+                    return;
+                }
+                removeCardFromHand(playerTable, selectedCardAddress.getPosition());
+                playerTable.addSpellOrTrap(selectedCard, CardState.VERTICAL_DOWN);
             }
-            removeCardFromHand(playerTable, selectedCardAddress.getPosition());
-            playerTable.addSpellOrTrap(selectedCard, CardState.VERTICAL_DOWN);
             deselect(false);
             view.printSetMessage(DuelMenuMessage.SET_SUCCESSFUL);
             view.showBoard(board);

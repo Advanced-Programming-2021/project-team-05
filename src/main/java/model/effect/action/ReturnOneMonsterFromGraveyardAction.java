@@ -43,7 +43,6 @@ public class ReturnOneMonsterFromGraveyardAction implements Action {
                 cardTable = board.getPlayerTable();
             } else {
                 cardTable = board.getOpponentTable();
-                position -= playerGraveyardMonsters.size();
             }
             break;
         }

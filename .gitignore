@@ -110,3 +110,6 @@ fabric.properties
 
 # import_export contents
 /import_export/*.json
+
+#codeStyles
+.idea/codeStyles

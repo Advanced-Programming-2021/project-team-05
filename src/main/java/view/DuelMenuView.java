@@ -246,7 +246,7 @@ public class DuelMenuView {
                 System.out.println("invalid position");
                 break;
             case NO_MONSTER_ON_ADDRESS:
-                System.out.println("no monsters one address(es)");
+                System.out.println("there is no monsters in one of addresses");
                 break;
             case SUMMON_SUCCESSFUL:
                 System.out.println("summoned successfully!");
