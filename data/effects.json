@@ -2,7 +2,7 @@
   {
     "cardName": "Yomi Ship",
     "event": "YOU_DESTROYED",
-    "action": "DESTROY_ATTACKER"
+    "action": "DESTROY_ATTACKER_IN_PLAYER_TABLE"
   },
   {
     "cardName": "Man-Eater Bug",
@@ -17,7 +17,7 @@
   {
     "cardName": "Exploder Dragon",
     "event": "YOU_DESTROYED",
-    "action": "DESTROY_ATTACKER"
+    "action": "DESTROY_ATTACKER_IN_PLAYER_TABLE"
   },
   {
     "cardName": "Exploder Dragon",
@@ -82,7 +82,7 @@
   {
     "cardName": "Magic Cylinder",
     "event": "QUICK_ACTIVATE",
-    "action": "DESTROY_ATTACKER"
+    "action": "DESTROY_ATTACKER_IN_OPPONENT_TABLE"
   },
   {
     "cardName": "Magic Cylinder",

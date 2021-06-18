@@ -9,7 +9,8 @@ public enum ActionEnum {
     DESTROY_OPPONENT_ALL_ATTACKING_MONSTERS,
     DESTROY_OPPONENT_ALL_SPELL_AND_TRAPS,
     ADD_FIELD_CARD_FROM_DECK_TO_HAND,
-    DESTROY_ATTACKER,
+    DESTROY_ATTACKER_IN_PLAYER_TABLE,
+    DESTROY_ATTACKER_IN_OPPONENT_TABLE,
     DESTROY_SUMMONED_MONSTER,
     NO_DAMAGE,
     DRAW_TWO_CARDS,
@@ -38,8 +39,10 @@ public enum ActionEnum {
                 return new DestroyPlayerOneMonsterAction();
             case RITUAL_SUMMON:
                 return new RitualSummonAction();
-            case DESTROY_ATTACKER:
-                return new DestroyAttackerAction();
+            case DESTROY_ATTACKER_IN_PLAYER_TABLE:
+                return new DestroyAttackerInPlayerTableAction();
+            case DESTROY_ATTACKER_IN_OPPONENT_TABLE:
+                return new DestroyAttackerInOpponentTableAction();
             case DESTROY_SUMMONED_MONSTER:
                 return new DestroySummonedMonsterAction();
             case NO_DAMAGE:

@@ -9,7 +9,7 @@ public class EndBattlePhaseAction implements Action {
         if (!canBeRun(controller)) {
             return;
         }
-        controller.goToNextPhase();
+        controller.goToNextPhase(false);
     }
 
     @Override

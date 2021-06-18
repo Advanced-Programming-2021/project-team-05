@@ -89,7 +89,7 @@ public class DuelMenuView {
 
 
     private void nextPhase() {
-        controller.goToNextPhase();
+        controller.goToNextPhase(true);
     }
 
 

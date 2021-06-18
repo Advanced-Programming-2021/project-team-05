@@ -256,19 +256,21 @@ public class DuelMenuController {
     }
 
 
-    public void goToNextPhase() {
+    public void goToNextPhase(boolean showBoard) {
         if (ritualSummonSpellAddress != null) {
             view.printRitualSummonMessage(DuelMenuMessage.RITUAL_SUMMON_RIGHT_NOW);
             return;
         }
         deselect(false);
         phase = phase.getNextPhase();
-        view.showPhase(phase.getName());
         if (phase == Phase.DRAW) {
             changeTurn();
         } else if (phase == Phase.MAIN_1 || phase == Phase.MAIN_2) {
-            view.showBoard(board);
+            view.showPhase(phase.getName());
+            if (showBoard) view.showBoard(board);
+            return;
         }
+        view.showPhase(phase.getName());
     }
 
 
@@ -939,7 +941,9 @@ public class DuelMenuController {
         if (type != CardType.CONTINUOUS && type != CardType.FIELD && type != CardType.EQUIP) {
             table.removeSpellOrTrap(position);
         }
-        view.showBoard(board);
+        if (!isQuick) {
+            view.showBoard(board);
+        }
     }
 
     private void checkQuickActivation(Event event) {
@@ -1115,15 +1119,15 @@ public class DuelMenuController {
         Table aiTable = board.getPlayerTable();
         Table opponentTable = board.getOpponentTable();
 
-        goToNextPhase();
-        goToNextPhase();
+        goToNextPhase(true);
+        goToNextPhase(true);
 
         handleAIMainPhase1(aiTable);
 
         HandleAiBattlePhase(aiTable, opponentTable);
 
-        goToNextPhase();
-        goToNextPhase();
+        goToNextPhase(true);
+        goToNextPhase(true);
     }
 
     private void handleAIMainPhase1(Table aiTable) {
@@ -1137,12 +1141,12 @@ public class DuelMenuController {
                 checkSummon(false);
             }
         }
-        goToNextPhase();
+        goToNextPhase(true);
     }
 
     private void HandleAiBattlePhase(Table aiTable, Table opponentTable) {
         if (currentTurn == 1) {
-            goToNextPhase();
+            goToNextPhase(true);
             return;
         }
         for (int i = 1; i <= 5; i++) {
@@ -1186,7 +1190,7 @@ public class DuelMenuController {
                 directAttack();
             }
         }
-        goToNextPhase();
+        goToNextPhase(true);
     }
 
 
