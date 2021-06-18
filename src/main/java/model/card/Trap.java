@@ -21,4 +21,13 @@ public class Trap extends Card {
     public void setStatus(SpellTrapStatus status) {
         this.status = status;
     }
+
+
+    @Override
+    public String detailedToString() {
+        return "Name: " + this.getName() + "\n" +
+                "Trap\n" +
+                "Type: " + this.getType().getName() + "\n" +
+                "Description: " + this.getDescription();
+    }
 }

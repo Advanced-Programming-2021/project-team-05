@@ -11,6 +11,7 @@ import model.card.Monster;
 import java.util.ArrayList;
 
 public class ReturnOneMonsterFromGraveyardAction implements Action {
+
     @Override
     public void run(DuelMenuController controller) {
         if (!canBeRun(controller)) {
@@ -25,7 +26,7 @@ public class ReturnOneMonsterFromGraveyardAction implements Action {
         controller.getView().showCards(allCards, "Graveyards Cards");
 
         int position;
-        Table targetTable;
+        Table cardTable;
         String message = "enter card position to return it from graveyard:";
         while (true) {
             ArrayList<Integer> positions = controller.getView().getNumbers(1, message);
@@ -39,16 +40,16 @@ public class ReturnOneMonsterFromGraveyardAction implements Action {
                 continue;
             }
             if (position < playerGraveyardMonsters.size()) {
-                targetTable = board.getPlayerTable();
+                cardTable = board.getPlayerTable();
             } else {
-                targetTable = board.getOpponentTable();
+                cardTable = board.getOpponentTable();
                 position -= playerGraveyardMonsters.size();
             }
             break;
         }
-        Card targetCard = targetTable.getGraveyard().get(position - 1);
-        targetTable.getGraveyard().remove(position - 1);
-        controller.addMonsterToTable((Monster) targetCard, targetTable, CardState.VERTICAL_UP);
+        Card targetCard = allCards.get(position - 1);
+        cardTable.removeCardFromGraveyard(targetCard);
+        controller.addMonsterToTable((Monster) targetCard, board.getPlayerTable(), CardState.VERTICAL_UP);
     }
 
     @Override

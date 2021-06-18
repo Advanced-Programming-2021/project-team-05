@@ -169,6 +169,10 @@ public class Table {
         this.graveyard.add(card);
     }
 
+    public final void removeCardFromGraveyard(Card card) {
+        this.graveyard.remove(card);
+    }
+
     public final void moveMonsterToGraveyard(int position) {
         this.addCardToGraveyard(this.getMonster(position));
         this.removeMonster(position);

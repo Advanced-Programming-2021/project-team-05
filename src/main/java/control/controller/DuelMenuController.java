@@ -450,7 +450,7 @@ public class DuelMenuController {
     }
 
     public final void tributeSummon(int tributesCount, boolean isSpecial) {
-        String message = "enter " + tributesCount + "number(s) for tribute positions";
+        String message = "enter " + tributesCount + " number(s) for tribute positions";
         ArrayList<Integer> tributesPositions = view.getNumbers(tributesCount, message);
         if (tributesPositions == null) {
             view.printActionCanceled();

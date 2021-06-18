@@ -82,4 +82,15 @@ public class Monster extends Card {
     public final void decreaseDefense(int amount) {
         this.defense -= amount;
     }
+
+
+    @Override
+    public String detailedToString() {
+        return "Name: " + this.getName() + "\n" +
+                "Level: " + this.getLevel() + "\n" +
+                "Type: " + this.getType().getName() + "\n" +
+                "Attack: " + this.getAttack() + "\n" +
+                "Defense: " + this.getDefence() + "\n" +
+                "Description: " + this.getDescription();
+    }
 }
