@@ -133,19 +133,24 @@ public class DuelMenuTest {
         String input = "duel --new --second-player opsUser --rounds 1\n" +
                 "menu exit\nuser logout\nmenu exit";
 
-        String output1 = "coin side was tails and opsUser starts duel\r\n" +
-                "phase: draw phase\r\n" +
-                "its opNick's turn\r\n" +
-                "user logged out successfully!";
-
-        String output2 = "coin side was heads and myUser starts duel\r\n" +
-                "phase: draw phase\r\n" +
-                "its myNick's turn\r\n" +
-                "user logged out successfully!";
-
         enterInput(input);
         view.run();
-        compareOutputs(output1, output2);
+
+        String output = outContent.toString();
+        outContent.reset();
+
+        Assertions.assertTrue(
+                output.startsWith("coin side was tails and opsUser starts duel\r\n" +
+                "phase: draw phase\r\n" +
+                "its opNick's turn\r\n" +
+                        "you drew \"") ||
+                output.startsWith("coin side was heads and myUser starts duel\r\n" +
+                        "phase: draw phase\r\n" +
+                        "its myNick's turn\r\n" +
+                        "you drew \""));
+
+        Assertions.assertTrue(output.endsWith("\" from your deck\r\n" +
+                "user logged out successfully!\r\n"));
     }
 
 
