@@ -12,8 +12,8 @@ public class UmiirukaDisableAction implements Action {
         for (Monster monster : board.getSpelledMonsters()) {
             monster.decreaseAttack(500);
             monster.increaseDefense(400);
-            board.removeSpelledMonster(monster);
         }
+        board.clearSpelledMonsters();
     }
 
     @Override

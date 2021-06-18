@@ -20,8 +20,8 @@ public class YamiDisableAction implements Action {
                 monster.increaseAttack(200);
                 monster.increaseDefense(200);
             }
-            board.removeSpelledMonster(monster);
         }
+        board.clearSpelledMonsters();
     }
 
     @Override

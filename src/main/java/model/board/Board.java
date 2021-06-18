@@ -106,6 +106,10 @@ public class Board {
         return false;
     }
 
+    public final void clearSpelledMonsters() {
+        this.spelledMonsters.clear();
+    }
+
 
     public final void swapTables() {
         Table temp = this.playerTable;

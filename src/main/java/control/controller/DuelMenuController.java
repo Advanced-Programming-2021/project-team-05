@@ -148,7 +148,7 @@ public class DuelMenuController {
             board.getPlayerTable().initializeHand();
             board.getOpponentTable().initializeHand();
         }
-        board.getPlayerTable().drawCard();
+        view.showDrawMessage(board.getPlayerTable().drawCard());
         if (isAi(board.getPlayerTable().getOwner())) {
             handleAI();
         }
@@ -763,34 +763,32 @@ public class DuelMenuController {
         int targetCardAttack = ((Monster) targetCell.getCard()).getAttack();
         int damage = attackerCardAttack - targetCardAttack;
         if (damage > 0) {
+            targetCell.getCard().runActions(Event.YOU_DESTROYED_BY_ATTACK, this);
+            moveMonsterToGraveyard(targetTable, targetPosition);
+            if (board.arePlayersImmune()) {
+                damage = 0;
+            }
             view.printAttackMessage(DuelMenuMessage.OPPONENT_ATTACK_POSITION_MONSTER_DESTROYED, damage, null);
-            targetCell.getCard().runActions(Event.YOU_DESTROYED_BY_ATTACK, this);
-            moveMonsterToGraveyard(targetTable, targetPosition);
-            if (!board.arePlayersImmune()) {
-                if (checkLifePoint(targetTable, attackerTable, damage)) {
-                    targetTable.decreaseLifePoint(damage);
-                } else {
-                    return;
-                }
-            }
+            if (checkLifePoint(targetTable, attackerTable, damage)) {
+                targetTable.decreaseLifePoint(damage);
+            } else return;
         } else if (damage == 0) {
-            view.printAttackMessage(DuelMenuMessage.BOTH_ATTACK_POSITION_MONSTERS_DESTROYED, 0, null);
             targetCell.getCard().runActions(Event.YOU_DESTROYED_BY_ATTACK, this);
             attackerCell.getCard().runActions(Event.YOU_DESTROYED_WHILE_ATTACKING, this);
             moveMonsterToGraveyard(attackerTable, selectedCardAddress.getPosition());
             moveMonsterToGraveyard(targetTable, targetPosition);
+            view.printAttackMessage(DuelMenuMessage.BOTH_ATTACK_POSITION_MONSTERS_DESTROYED, 0, null);
         } else {
-            view.printAttackMessage(DuelMenuMessage.YOUR_ATTACK_POSITION_MONSTER_DESTROYED, damage, null);
             attackerCell.getCard().runActions(Event.YOU_DESTROYED_WHILE_ATTACKING, this);
-            damage = Math.abs(damage);
             moveMonsterToGraveyard(attackerTable, selectedCardAddress.getPosition());
-            if (!board.arePlayersImmune()) {
-                if (checkLifePoint(attackerTable, targetTable, damage)) {
-                    attackerTable.decreaseLifePoint(damage);
-                } else {
-                    return;
-                }
+            damage = Math.abs(damage);
+            if (board.arePlayersImmune()) {
+                damage = 0;
             }
+            view.printAttackMessage(DuelMenuMessage.YOUR_ATTACK_POSITION_MONSTER_DESTROYED, damage, null);
+            if (checkLifePoint(attackerTable, targetTable, damage)) {
+                attackerTable.decreaseLifePoint(damage);
+            } else return;
         }
         board.setPlayersImmune(false);
         view.showBoard(board);
@@ -814,14 +812,13 @@ public class DuelMenuController {
         } else if (damage == 0) {
             view.printAttackMessage(DuelMenuMessage.NO_CARD_DESTROYED_AND_NO_DAMAGE, 0, hiddenCardName);
         } else {
-            view.printAttackMessage(DuelMenuMessage.NO_CARD_DESTROYED_WITH_DAMAGE, Math.abs(damage), hiddenCardName);
-            if (!board.arePlayersImmune()) {
-                if (checkLifePoint(attackerTable, targetTable, damage)) {
-                    attackerTable.decreaseLifePoint(Math.abs(damage));
-                } else {
-                    return;
-                }
+            if (board.arePlayersImmune()) {
+                damage = 0;
             }
+            view.printAttackMessage(DuelMenuMessage.NO_CARD_DESTROYED_WITH_DAMAGE, Math.abs(damage), hiddenCardName);
+            if (checkLifePoint(attackerTable, targetTable, damage)) {
+                attackerTable.decreaseLifePoint(Math.abs(damage));
+            } else return;
         }
         board.setPlayersImmune(false);
         view.showBoard(board);

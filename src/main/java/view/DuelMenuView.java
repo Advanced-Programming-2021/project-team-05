@@ -43,7 +43,7 @@ public class DuelMenuView {
             } else if (command.equals("surrender")) {
                 controller.surrender();
             } else if (command.equals("next phase")) {
-                nextPhase();
+                controller.goToNextPhase(true);
             } else if (command.equals("select -d")) {
                 deselect();
             } else if (command.startsWith("select")) {
@@ -85,11 +85,6 @@ public class DuelMenuView {
                 System.out.println("invalid command");
             }
         }
-    }
-
-
-    private void nextPhase() {
-        controller.goToNextPhase(true);
     }
 
 
@@ -631,7 +626,7 @@ public class DuelMenuView {
 
 
     public void showDrawMessage(Card card) {
-        System.out.println("you drew " + card.getName() + " from your deck");
+        System.out.println("you drew \"" + card.getName() + "\" from your deck");
     }
 
 

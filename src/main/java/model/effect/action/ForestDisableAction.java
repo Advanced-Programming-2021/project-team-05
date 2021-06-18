@@ -12,8 +12,8 @@ public class ForestDisableAction implements Action {
         for (Monster monster : board.getSpelledMonsters()) {
             monster.decreaseAttack(200);
             monster.decreaseDefense(200);
-            board.removeSpelledMonster(monster);
         }
+        board.clearSpelledMonsters();
     }
 
     @Override
