@@ -50,7 +50,7 @@ public class AddFieldSpellFromDeckToHandAction implements Action {
             }
         }
 
-        ownTable.addCardToHand(fieldSpells.get(position));
+        ownTable.addCardToHand(fieldSpells.get(position - 1));
         deck.shuffleMainDeck();
     }
 

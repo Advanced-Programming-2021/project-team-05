@@ -21,11 +21,11 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        startDuel();
-//        DataManager.getInstance().loadData();
-//        LoginMenuView loginMenuView = new LoginMenuView(new LoginMenuController());
-//        loginMenuView.run();
-//        DataManager.getInstance().saveData();
+//        startDuel();
+        DataManager.getInstance().loadData();
+        LoginMenuView loginMenuView = new LoginMenuView(new LoginMenuController());
+        loginMenuView.run();
+        DataManager.getInstance().saveData();
     }
 
     public static void startDuel() {

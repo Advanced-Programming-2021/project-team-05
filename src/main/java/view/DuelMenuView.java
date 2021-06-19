@@ -466,6 +466,9 @@ public class DuelMenuView {
             case CANT_ACTIVATE_EFFECT:
                 System.out.println("you can’t activate an effect on this turn");
                 break;
+            case ACTION_NOT_ALLOWED:
+                System.out.println("you can’t do this action in this phase");
+                break;
             case CARD_ALREADY_ACTIVATED:
                 System.out.println("you have already activated this card");
                 break;
@@ -478,6 +481,8 @@ public class DuelMenuView {
             case SPELL_TRAP_ACTIVATED:
                 System.out.println("spell/trap activated!");
                 break;
+            default:
+                System.out.println("unexpected error");
         }
     }
 
