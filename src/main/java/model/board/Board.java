@@ -64,6 +64,16 @@ public class Board {
     }
 
 
+    public final SpellTrapCell getFieldSpellCell() {
+        if (playerTable.getFieldSpell() != null) {
+            return playerTable.getFieldSpellCell();
+        }
+        if (opponentTable.getFieldSpell() != null) {
+            return opponentTable.getFieldSpellCell();
+        }
+        return null;
+    }
+
     public final Spell getFieldSpell() {
         if (playerTable.getFieldSpell() != null) {
             return playerTable.getFieldSpell();

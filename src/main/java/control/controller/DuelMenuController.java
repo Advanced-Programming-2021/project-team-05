@@ -536,9 +536,6 @@ public class DuelMenuController {
             Card tributeCard = tributeCards.get(i);
             removeCardFromHand(playerTable, position);
             playerTable.addCardToGraveyard(tributeCard);
-            if (position < selectedCardAddress.getPosition()) {
-                selectedCardAddress.setPosition(selectedCardAddress.getPosition() - 1);
-            }
         }
 
         summon((Monster) selectedCard, true);
@@ -550,15 +547,15 @@ public class DuelMenuController {
         selectedCardAddress.setZone(CardAddressZone.MONSTER);
         selectedCardAddress.setPosition(playerTable.getFirstEmptyMonsterCellPosition());
         addMonsterToTable(monster, playerTable, CardState.VERTICAL_UP);
+        view.printSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
         if (!isSpecial) {
             playerTable.setCanSummonOrSet(false);
             if (((Monster) selectedCard).getAttack() >= 1000) {
                 checkQuickActivation(Event.MONSTER_WITH_1000_ATTACK_SUMMONED);
             }
         }
-        view.printSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
-        view.showBoard(board);
         checkQuickActivation(Event.MONSTER_SUMMONED);
+        view.showBoard(board);
         deselect(false);
     }
 
@@ -600,22 +597,18 @@ public class DuelMenuController {
             view.printFlipSummonMessage(DuelMenuMessage.CANT_FLIP_SUMMON);
             return;
         }
-        flipSummon(targetCell, true);
+        flipSummon(targetCell);
     }
 
-    private void flipSummon(MonsterCell targetCell, boolean print) {
+    private void flipSummon(MonsterCell targetCell) {
         targetCell.setState(CardState.VERTICAL_UP);
         targetCell.setDoesPositionChanged(true);
+        view.printFlipSummonMessage(DuelMenuMessage.FLIP_SUMMON_SUCCESSFUL);
         if (((Monster) selectedCard).getAttack() >= 1000) {
             checkQuickActivation(Event.MONSTER_WITH_1000_ATTACK_SUMMONED);
         }
-        if (print) {
-            view.printFlipSummonMessage(DuelMenuMessage.FLIP_SUMMON_SUCCESSFUL);
-            selectedCard.runActions(Event.YOU_FLIP_SUMMONED_MANUALLY, this);
-            view.showBoard(board);
-        } else {
-            selectedCard.runActions(Event.YOU_FLIP_SUMMONED_BY_ATTACK, this);
-        }
+        selectedCard.runActions(Event.YOU_FLIP_SUMMONED_MANUALLY, this);
+        view.showBoard(board);
     }
 
 
@@ -768,6 +761,8 @@ public class DuelMenuController {
             } else if (targetCell.getState() == CardState.HORIZONTAL_UP || targetCell.getState() == CardState.HORIZONTAL_DOWN) {
                 attackDefensePositionCard(targetPosition, attackerCell, targetCell);
             }
+        } else {
+            view.printAttackMessage(DuelMenuMessage.ATTACK_PREVENTED, 0, null);
         }
         this.attackedCardPosition = null;
         setPreventAttack(false);
@@ -869,12 +864,19 @@ public class DuelMenuController {
         Table opponentTable = board.getOpponentTable();
         int damage = ((Monster) attackerCell.getCard()).getAttack();
         attackerCell.setDidAttack(true);
+        checkQuickActivation(Event.DECLARE_ATTACK);
         deselect(false);
-        view.printDirectAttackMessage(DuelMenuMessage.DIRECT_ATTACK_SUCCESSFUL, damage);
-        if (checkLifePoint(opponentTable, board.getPlayerTable(), damage)) {
-            opponentTable.decreaseLifePoint(damage);
+        if (preventAttack) {
+            view.printDirectAttackMessage(DuelMenuMessage.ATTACK_PREVENTED, 0);
             view.showBoard(board);
+        } else {
+            view.printDirectAttackMessage(DuelMenuMessage.DIRECT_ATTACK_SUCCESSFUL, damage);
+            if (checkLifePoint(opponentTable, board.getPlayerTable(), damage)) {
+                opponentTable.decreaseLifePoint(damage);
+                view.showBoard(board);
+            }
         }
+        setPreventAttack(false);
     }
 
 
@@ -1130,17 +1132,17 @@ public class DuelMenuController {
 
     public final void moveMonsterToGraveyard(Table table, int position) {
         table.moveMonsterToGraveyard(position);
-        Spell fieldSpell = board.getFieldSpell();
-        if (fieldSpell != null) {
-            fieldSpell.runActions(Event.CHECK_FIELD_SPELL, this);
+        SpellTrapCell fieldSpellCell = board.getFieldSpellCell();
+        if (fieldSpellCell != null && fieldSpellCell.isEffectActivated()) {
+            fieldSpellCell.getCard().runActions(Event.CHECK_FIELD_SPELL, this);
         }
     }
 
     public final void addMonsterToTable(Monster monster, Table table, CardState cardState) {
         table.addMonster(monster, cardState);
-        Spell fieldSpell = board.getFieldSpell();
-        if (fieldSpell != null) {
-            fieldSpell.runActions(Event.ACTIVATE_EFFECT, this);
+        SpellTrapCell fieldSpellCell = board.getFieldSpellCell();
+        if (fieldSpellCell != null && fieldSpellCell.isEffectActivated()) {
+            fieldSpellCell.getCard().runActions(Event.CHECK_FIELD_SPELL, this);
         }
     }
 

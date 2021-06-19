@@ -23,11 +23,11 @@ public class ReturnOneMonsterFromGraveyardAction implements Action {
         ArrayList<Card> allCards = new ArrayList<>();
         allCards.addAll(playerGraveyardMonsters);
         allCards.addAll(opponentGraveyardMonsters);
-        controller.getView().showCards(allCards, "Graveyards Cards");
+        controller.getView().showCards(allCards, "Graveyards Monsters");
 
         int position;
         Table cardTable;
-        String message = "enter card position to return it from graveyard:";
+        String message = "enter monster position to return it from graveyard:";
         while (true) {
             ArrayList<Integer> positions = controller.getView().getNumbers(1, message);
             if (positions == null) {

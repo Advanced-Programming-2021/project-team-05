@@ -50,5 +50,6 @@ public enum DuelMenuMessage {
     ACTION_CANCELED,
     NOTHING_TO_CANCEL,
     INVALID_NICKNAME,
+    ATTACK_PREVENTED,
     WINNER_SET
 }

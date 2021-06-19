@@ -390,6 +390,9 @@ public class DuelMenuView {
             case CANT_ATTACK_DIRECTLY:
                 System.out.println("you can’t attack the opponent directly");
                 break;
+            case ATTACK_PREVENTED:
+                System.out.println("attack prevented");
+                return;
             case DIRECT_ATTACK_SUCCESSFUL:
                 System.out.println("you opponent receives " + damage + " battle damage");
                 break;
@@ -426,6 +429,9 @@ public class DuelMenuView {
                 break;
             case NO_CARD_TO_ATTACK:
                 System.out.println("there is no card to attack here");
+                break;
+            case ATTACK_PREVENTED:
+                System.out.println("attack prevented");
                 break;
             case OPPONENT_ATTACK_POSITION_MONSTER_DESTROYED:
                 System.out.println("your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");

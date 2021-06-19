@@ -10,11 +10,6 @@
     "action": "DESTROY_OPPONENT_ONE_MONSTER"
   },
   {
-    "cardName": "Man-Eater Bug",
-    "event": "YOU_FLIP_SUMMONED_BY_ATTACK",
-    "action": "DESTROY_PLAYER_ONE_MONSTER"
-  },
-  {
     "cardName": "Exploder Dragon",
     "event": "YOU_DESTROYED_BY_ATTACK",
     "action": "DESTROY_ATTACKER_IN_PLAYER_TABLE"

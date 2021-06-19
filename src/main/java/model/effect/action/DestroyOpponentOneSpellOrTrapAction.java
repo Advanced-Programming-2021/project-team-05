@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class DestroyOpponentOneSpellOrTrapAction implements Action{
     @Override
     public void run(DuelMenuController controller) {
-        if (canBeRun(controller)) {
+        if (!canBeRun(controller)) {
             return;
         }
         DuelMenuView view = controller.getView();

@@ -9,7 +9,7 @@ public class DestroyAllOpponentsSpellAndTrapsAction implements Action{
     public void run(DuelMenuController controller) {
         Table targetTable = controller.getBoard().getOpponentTable();
         for (int i = 1; i <= 5; i++) {
-            if (targetTable.getSpellOrTrapCell(i) != null) {
+            if (targetTable.getSpellOrTrap(i) != null) {
                 targetTable.moveSpellOrTrapToGraveyard(i);
             }
         }
