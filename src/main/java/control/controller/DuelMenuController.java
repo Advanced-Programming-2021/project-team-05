@@ -138,16 +138,17 @@ public class DuelMenuController {
     public final void startNextRound() {
         currentRound++;
         initializeBoard();
-        phase = Phase.DRAW;
-        view.showPhase(phase.getName());
-        boards[currentRound - 1] = board;
         view.showTurn(board.getPlayerTable().getOwner().getNickname());
         if (currentRound != 1) {
             rearrangeDeck();
-        } else {
-            board.getPlayerTable().initializeHand();
-            board.getOpponentTable().initializeHand();
         }
+        phase = Phase.DRAW;
+        view.showPhase(phase.getName());
+        boards[currentRound - 1] = board;
+
+        board.getPlayerTable().initializeHand();
+        board.getOpponentTable().initializeHand();
+
         view.showDrawMessage(board.getPlayerTable().drawCard());
         if (isAi(board.getPlayerTable().getOwner())) {
             handleAI();
@@ -211,7 +212,7 @@ public class DuelMenuController {
                 Card mainCard = mainDeck.get(mainCardPosition - 1);
                 Card sideCard = sideDeck.get(sideCardPosition - 1);
                 mainDeck.set(mainCardPosition - 1, sideCard);
-                mainDeck.set(sideCardPosition - 1, mainCard);
+                sideDeck.set(sideCardPosition - 1, mainCard);
             }
             board.swapTables();
             view.showTurn(board.getPlayerTable().getOwner().getNickname());
@@ -609,6 +610,7 @@ public class DuelMenuController {
         }
         selectedCard.runActions(Event.YOU_FLIP_SUMMONED_MANUALLY, this);
         view.showBoard(board);
+        deselect(false);
     }
 
 
@@ -646,6 +648,7 @@ public class DuelMenuController {
             removeCardFromHand(playerTable, selectedCardAddress.getPosition());
             addMonsterToTable((Monster) selectedCard, playerTable, CardState.HORIZONTAL_DOWN);
             playerTable.setCanSummonOrSet(false);
+            deselect(false);
             view.printSetMessage(DuelMenuMessage.SET_SUCCESSFUL);
             view.showBoard(board);
         } else if (selectedCard instanceof Spell || selectedCard instanceof Trap) {
@@ -716,6 +719,7 @@ public class DuelMenuController {
         }
         targetCell.setState(targetState);
         targetCell.setDoesPositionChanged(true);
+        deselect(false);
         view.printChangePositionMessage(DuelMenuMessage.POSITION_CHANGED);
         view.showBoard(board);
     }
@@ -865,7 +869,6 @@ public class DuelMenuController {
         int damage = ((Monster) attackerCell.getCard()).getAttack();
         attackerCell.setDidAttack(true);
         checkQuickActivation(Event.DECLARE_ATTACK);
-        deselect(false);
         if (preventAttack) {
             view.printDirectAttackMessage(DuelMenuMessage.ATTACK_PREVENTED, 0);
             view.showBoard(board);
@@ -876,14 +879,15 @@ public class DuelMenuController {
                 view.showBoard(board);
             }
         }
+        deselect(false);
         setPreventAttack(false);
     }
 
 
-    public final boolean checkLifePoint(Table table, Table otherTable, int damage) {
-        if (damage >= table.getLifePoint()) {
-            table.setLifePoint(0);
-            win(otherTable, table);
+    public final boolean checkLifePoint(Table attackedTable, Table otherTable, int damage) {
+        if (damage >= attackedTable.getLifePoint()) {
+            attackedTable.setLifePoint(0);
+            win(otherTable, attackedTable);
             return false;
         }
         return true;
@@ -1025,6 +1029,7 @@ public class DuelMenuController {
             table.moveSpellOrTrapToGraveyard(position);
         }
         if (!isQuick) {
+            deselect(false);
             view.showBoard(board);
         }
     }
@@ -1036,7 +1041,6 @@ public class DuelMenuController {
             view.printCancelMessage(DuelMenuMessage.ACTION_CANCELED);
             return;
         }
-
         view.printCancelMessage(DuelMenuMessage.NOTHING_TO_CANCEL);
     }
 
