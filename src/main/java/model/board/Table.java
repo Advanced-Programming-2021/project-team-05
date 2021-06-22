@@ -88,10 +88,6 @@ public class Table {
         this.deck = deck;
     }
 
-    public final void removeCardFromDeck(Card card) {
-        this.deck.removeCardFromMainDeck(card);
-    }
-
 
     public final Cell getCellByAddress(CardAddress cardAddress) {
         if (cardAddress.isForOpponent()) {
@@ -132,10 +128,6 @@ public class Table {
 
     public final void addCardToHand(Card card) {
         this.hand.add(card);
-    }
-
-    public final void removeCardFromHand(Card card) {
-        this.hand.remove(card);
     }
 
     public final void removeCardFromHand(int position) {
@@ -235,13 +227,13 @@ public class Table {
         return -1;
     }
 
-    public final boolean hasMonster(Monster monster) {
+    public final boolean isMonsterZoneEmpty(Monster monster) {
         for (int i = 1; i <= 5; i++) {
             if (monster.equals(this.getMonster(i))) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
 
@@ -309,10 +301,6 @@ public class Table {
         this.fieldZoneCell.clear();
         this.fieldZoneCell.setCard(spell);
         this.fieldZoneCell.setState(state);
-    }
-
-    public final void removeFieldSpell() {
-        this.fieldZoneCell.clear();
     }
 
 

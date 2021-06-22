@@ -13,16 +13,11 @@ public class ForestEnableAction implements Action {
         Board board = controller.getBoard();
         Table table;
         for (int i = 1; i <= 2; i++) {
-            if (i == 1) {
-                table = controller.getBoard().getOpponentTable();
-            } else {
-                table = controller.getBoard().getPlayerTable();
-            }
+            if (i == 1) table = controller.getBoard().getOpponentTable();
+            else table = controller.getBoard().getPlayerTable();
             for (int j = 1; j <= 5; j++) {
                 Monster monster = table.getMonster(j);
-                if (monster == null) {
-                    continue;
-                }
+                if (monster == null) continue;
                 if (!board.isMonsterSpelled(monster)) {
                     MonsterType type = monster.getMonsterType();
                     if (type == MonsterType.INSECT || type == MonsterType.BEAST || type == MonsterType.BEAST_WARRIOR) {

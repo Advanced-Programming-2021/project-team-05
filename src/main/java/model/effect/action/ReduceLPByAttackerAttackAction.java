@@ -8,15 +8,11 @@ public class ReduceLPByAttackerAttackAction implements Action {
 
     @Override
     public void run(DuelMenuController controller) {
-        if (!canBeRun(controller)) {
-            return;
-        }
+        if (!canBeRun(controller)) return;
         int damage = ((Monster) controller.getSelectedCard()).getAttack();
         Table attackerTable = controller.getBoard().getPlayerTable();
         Table targetTable = controller.getBoard().getOpponentTable();
-        if (controller.checkLifePoint(targetTable, attackerTable, damage)) {
-            targetTable.decreaseLifePoint(damage);
-        }
+        if (controller.checkLifePoint(targetTable, attackerTable, damage)) targetTable.decreaseLifePoint(damage);
     }
 
     @Override

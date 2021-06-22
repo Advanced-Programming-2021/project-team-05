@@ -8,7 +8,6 @@ import model.template.CardTemplate;
 import model.template.property.CardType;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.UUID;
 
 public abstract class Card {

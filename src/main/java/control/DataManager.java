@@ -26,7 +26,6 @@ import model.template.property.MonsterAttribute;
 import model.template.property.MonsterType;
 import model.template.property.SpellTrapStatus;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;

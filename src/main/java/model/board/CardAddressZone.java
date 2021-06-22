@@ -5,6 +5,5 @@ public enum CardAddressZone {
     SPELL,
     FIELD,
     HAND,
-    GRAVEYARD,
-    DECK
+    GRAVEYARD
 }

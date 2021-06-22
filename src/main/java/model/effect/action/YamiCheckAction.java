@@ -3,7 +3,6 @@ package model.effect.action;
 import control.controller.DuelMenuController;
 import model.board.Board;
 import model.board.Table;
-import model.card.Monster;
 import model.template.property.MonsterType;
 
 public class YamiCheckAction implements Action {
@@ -14,7 +13,7 @@ public class YamiCheckAction implements Action {
         Table playerTable = controller.getBoard().getPlayerTable();
         Table opponentTable = controller.getBoard().getOpponentTable();
         board.getSpelledMonsters().removeIf(monster -> {
-            if (!playerTable.hasMonster(monster) && !opponentTable.hasMonster(monster)) {
+            if (playerTable.isMonsterZoneEmpty(monster) && opponentTable.isMonsterZoneEmpty(monster)) {
                 MonsterType type = monster.getMonsterType();
                 if (type == MonsterType.FIEND || type == MonsterType.SPELL_CASTER) {
                     monster.decreaseAttack(200);

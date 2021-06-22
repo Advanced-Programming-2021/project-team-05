@@ -1,7 +1,6 @@
 package model.effect.action;
 
 import control.controller.DuelMenuController;
-import control.message.DuelMenuMessage;
 import model.board.Board;
 import model.board.CardState;
 import model.board.Table;
@@ -14,9 +13,7 @@ public class ReturnOneMonsterFromGraveyardAction implements Action {
 
     @Override
     public void run(DuelMenuController controller) {
-        if (!canBeRun(controller)) {
-            return;
-        }
+        if (!canBeRun(controller)) return;
         Board board = controller.getBoard();
         ArrayList<Card> playerGraveyardMonsters = getMonstersFromCards(board.getPlayerTable().getGraveyard());
         ArrayList<Card> opponentGraveyardMonsters = getMonstersFromCards(board.getOpponentTable().getGraveyard());
@@ -39,11 +36,8 @@ public class ReturnOneMonsterFromGraveyardAction implements Action {
                 message = "position should be between 1 and " + allCards.size();
                 continue;
             }
-            if (position < playerGraveyardMonsters.size()) {
-                cardTable = board.getPlayerTable();
-            } else {
-                cardTable = board.getOpponentTable();
-            }
+            if (position < playerGraveyardMonsters.size()) cardTable = board.getPlayerTable();
+            else cardTable = board.getOpponentTable();
             break;
         }
         Card targetCard = allCards.get(position - 1);
@@ -54,30 +48,18 @@ public class ReturnOneMonsterFromGraveyardAction implements Action {
     @Override
     public boolean canBeRun(DuelMenuController controller) {
         int monstersCountInGraveyards = 0;
-        for (Card card : controller.getBoard().getPlayerTable().getGraveyard()) {
-            if (card instanceof Monster) {
-                monstersCountInGraveyards++;
-            }
-        }
-        for (Card card : controller.getBoard().getOpponentTable().getGraveyard()) {
-            if (card instanceof Monster) {
-                monstersCountInGraveyards++;
-            }
-        }
-        if (monstersCountInGraveyards == 0) {
-            return false;
-        }
+        for (Card card : controller.getBoard().getPlayerTable().getGraveyard())
+            if (card instanceof Monster) monstersCountInGraveyards++;
+        for (Card card : controller.getBoard().getOpponentTable().getGraveyard())
+            if (card instanceof Monster) monstersCountInGraveyards++;
+        if (monstersCountInGraveyards == 0) return false;
         return !controller.getBoard().getPlayerTable().isMonsterZoneFull();
     }
 
 
     private ArrayList<Card> getMonstersFromCards(ArrayList<Card> cards) {
         ArrayList<Card> monsters = new ArrayList<>();
-        for (Card card : cards) {
-            if (card instanceof Monster) {
-                monsters.add(card);
-            }
-        }
+        for (Card card : cards) if (card instanceof Monster) monsters.add(card);
         return monsters;
     }
 }

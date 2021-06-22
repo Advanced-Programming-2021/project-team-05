@@ -264,7 +264,7 @@ public class DeckMenuView {
 
 
     public void showCard(String[] command) {
-        String cardName = "";
+        String cardName;
         try {
             cardName = command[2].replace('_', ' ');
         } catch (IndexOutOfBoundsException e) {

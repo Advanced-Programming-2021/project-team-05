@@ -13,16 +13,11 @@ public class UmiirukaEnableAction implements Action {
         Board board = controller.getBoard();
         Table table;
         for (int i = 1; i <= 2; i++) {
-            if (i == 1) {
-                table = controller.getBoard().getOpponentTable();
-            } else {
-                table = controller.getBoard().getPlayerTable();
-            }
+            if (i == 1) table = controller.getBoard().getOpponentTable();
+            else table = controller.getBoard().getPlayerTable();
             for (int j = 1; j <= 5; j++) {
                 Monster monster = table.getMonster(j);
-                if (monster == null) {
-                    continue;
-                }
+                if (monster == null) continue;
                 if (!board.isMonsterSpelled(monster)) {
                     if (monster.getMonsterType() == MonsterType.AQUA) {
                         monster.increaseAttack(500);

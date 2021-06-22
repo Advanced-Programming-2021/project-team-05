@@ -13,16 +13,11 @@ public class YamiEnableAction implements Action {
         Board board = controller.getBoard();
         Table table;
         for (int i = 1; i <= 2; i++) {
-            if (i == 1) {
-                table = board.getOpponentTable();
-            } else {
-                table = board.getPlayerTable();
-            }
+            if (i == 1) table = board.getOpponentTable();
+            else table = board.getPlayerTable();
             for (int j = 1; j <= 5; j++) {
                 Monster monster = table.getMonster(j);
-                if (monster == null) {
-                    continue;
-                }
+                if (monster == null) continue;
                 if (!board.isMonsterSpelled(monster)) {
                     MonsterType type = monster.getMonsterType();
                     if (type == MonsterType.FIEND || type == MonsterType.SPELL_CASTER) {

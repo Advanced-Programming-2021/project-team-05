@@ -88,6 +88,7 @@ public class Board {
         if (opponentTable.getFieldSpell() != null) {
             opponentTable.addCardToGraveyard(opponentTable.getFieldSpell());
         }
+        playerTable.getFieldSpellCell().clear();
         opponentTable.getFieldSpellCell().clear();
         playerTable.setFieldSpell(spell, state);
     }
@@ -101,10 +102,6 @@ public class Board {
         if (!spelledMonsters.contains(monster)) {
             spelledMonsters.add(monster);
         }
-    }
-
-    public final void removeSpelledMonster(Monster monster) {
-        spelledMonsters.remove(monster);
     }
 
     public final boolean isMonsterSpelled(Monster monster) {

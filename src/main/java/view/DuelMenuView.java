@@ -20,13 +20,13 @@ import java.util.Map;
 public class DuelMenuView {
 
     private DuelMenuController controller;
-    private boolean endMatch;
+    private boolean endDuel;
 
 
     public DuelMenuView(DuelMenuController controller) {
         this.setController(controller);
         controller.setView(this);
-        this.endMatch = false;
+        this.setEndDuel(false);
     }
 
 
@@ -34,56 +34,36 @@ public class DuelMenuView {
         this.controller = controller;
     }
 
+    public void setEndDuel(boolean endDuel) {
+        this.endDuel = endDuel;
+    }
+
 
     public void run() {
-        while (!endMatch) {
+        while (!endDuel) {
             String command = Utility.getNextLine();
-            if (command.equals("cancel")) {
-                controller.cancel();
-            } else if (command.equals("surrender")) {
-                controller.surrender();
-            } else if (command.equals("next phase")) {
-                controller.goToNextPhase(true);
-            } else if (command.equals("select -d")) {
-                deselect();
-            } else if (command.startsWith("select")) {
-                select(command.split("\\s"));
-            } else if (command.equals("summon")) {
-                summon();
-            } else if (command.equals("set")) {
-                set();
-            } else if (command.startsWith("set")) {
-                changePosition(command.split("\\s"));
-            } else if (command.equals("flip-summon")) {
-                flipSummon();
-            } else if (command.equals("attack direct")) {
-                directAttack();
-            } else if (command.matches("^attack \\d$")) {
-                attack(command.split("\\s"));
-            } else if (command.equals("activate effect")) {
-                activateEffect();
-            } else if (command.startsWith("show graveyard")) {
-                showGraveyard(command.split("\\s"));
-            } else if (command.equals("card show --selected") || command.equals("card show -s")) {
-                showSelectedCard();
-            } else if (command.matches("^card show \\S+$")) {
-                showCard(command.split("\\s"));
-            } else if (command.equals("menu show-current")) {
-                showCurrentMenu();
-            } else if (command.startsWith("menu enter")) {
-                System.out.println("menu navigation is not possible");
-            } else if (command.equals("menu exit")) {
-                controller.exit();
-                break;
-            } else if (command.equals("menu help")) {
-                showHelp();
-            } else if (command.matches("^increase --LP \\S+$")) {
-                increaseLP(command.split("\\s"));
-            } else if (command.matches("^duel set-winner \\S+$")) {
-                setWinner(command.split("\\s"));
-            } else {
-                System.out.println("invalid command");
-            }
+            if (command.equals("cancel")) controller.cancel();
+            else if (command.equals("surrender")) controller.surrender();
+            else if (command.equals("next phase")) controller.goToNextPhase(true);
+            else if (command.equals("select -d")) deselect();
+            else if (command.startsWith("select")) select(command.split("\\s"));
+            else if (command.equals("summon")) summon();
+            else if (command.equals("set")) set();
+            else if (command.startsWith("set")) changePosition(command.split("\\s"));
+            else if (command.equals("flip-summon")) flipSummon();
+            else if (command.equals("attack direct")) directAttack();
+            else if (command.matches("^attack \\d$")) attack(command.split("\\s"));
+            else if (command.equals("activate effect")) activateEffect();
+            else if (command.startsWith("show graveyard")) showGraveyard(command.split("\\s"));
+            else if (command.equals("card show --selected") || command.equals("card show -s")) showSelectedCard();
+            else if (command.matches("^card show \\S+$")) showCard(command.split("\\s"));
+            else if (command.equals("menu show-current")) showCurrentMenu();
+            else if (command.startsWith("menu enter")) System.out.println("menu navigation is not possible");
+            else if (command.equals("menu help")) showHelp();
+            else if (command.matches("^increase --LP \\S+$")) increaseLP(command.split("\\s"));
+            else if (command.matches("^duel set-winner \\S+$")) setWinner(command.split("\\s"));
+            else if (command.equals("menu exit")) controller.exit();
+            else System.out.println("invalid command");
         }
     }
 
@@ -94,9 +74,7 @@ public class DuelMenuView {
         for (int i = 1; i <= numbersCount; i++) {
             try {
                 String input = Utility.getNextLine();
-                if ("cancel".equals(input)) {
-                    return null;
-                }
+                if ("cancel".equals(input)) return null;
                 int number = Integer.parseInt(input);
                 numbers.add(number);
             } catch (NumberFormatException e) {
@@ -146,12 +124,8 @@ public class DuelMenuView {
         System.out.println(message);
         while (true) {
             String state = Utility.getNextLine();
-            if ("cancel".equals(state)) {
-                return null;
-            }
-            if (state.equals(firstValue) || state.equals(secondValue)) {
-                return state;
-            }
+            if ("cancel".equals(state)) return null;
+            if (state.equals(firstValue) || state.equals(secondValue)) return state;
             System.out.println(invalidMessage);
         }
     }
@@ -408,9 +382,7 @@ public class DuelMenuView {
     }
 
     public void printAttackMessage(DuelMenuMessage message, int damage, String hiddenCardName) {
-        if (hiddenCardName != null) {
-            System.out.print("opponent’s monster card was " + hiddenCardName + " and ");
-        }
+        if (hiddenCardName != null) System.out.print("opponent’s monster card was " + hiddenCardName + " and ");
         switch (message) {
             case INVALID_POSITION:
                 System.out.println("invalid position");
@@ -558,9 +530,7 @@ public class DuelMenuView {
         while (true) {
             System.out.println("enter \"back\" to return to game");
             String input = Utility.getNextLine();
-            if (input.equals("back")) {
-                break;
-            }
+            if (input.equals("back")) break;
         }
     }
 
@@ -581,11 +551,8 @@ public class DuelMenuView {
 
         DataManager dataManager = DataManager.getInstance();
         CardTemplate template = dataManager.getCardTemplateByName(cardName);
-        if (template == null) {
-            System.out.println("invalid card name");
-        } else {
-            System.out.println(template.detailedToString());
-        }
+        if (template == null) System.out.println("invalid card name");
+        else System.out.println(template.detailedToString());
     }
 
 
@@ -642,12 +609,8 @@ public class DuelMenuView {
 
 
     public void printWinnerMessage(boolean isWholeMatch, String winnerUsername, int score1, int score2) {
-        if (isWholeMatch) {
-            System.out.println(winnerUsername + " won the game with score: " + score1 + "-" + score2);
-            endMatch = true;
-        } else {
-            System.out.println(winnerUsername + " won the whole match with score: " + score1 + "-" + score2);
-        }
+        if (isWholeMatch) System.out.println(winnerUsername + " won the game with score: " + score1 + "-" + score2);
+        else System.out.println(winnerUsername + " won the whole match with score: " + score1 + "-" + score2);
     }
 
 

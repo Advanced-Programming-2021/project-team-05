@@ -101,10 +101,6 @@ public class User {
         this.purchasedCardIds.add(card.getId());
     }
 
-    public void removeCard(Card card) {
-        this.purchasedCardIds.remove(card.getId());
-    }
-
     public ArrayList<Card> getPurchasedCardsByName(String name) {
         DataManager dataManager = DataManager.getInstance();
         ArrayList<Card> cards = new ArrayList<>();

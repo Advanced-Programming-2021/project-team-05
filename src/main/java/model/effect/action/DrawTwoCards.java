@@ -9,9 +9,7 @@ public class DrawTwoCards implements Action {
 
     @Override
     public void run(DuelMenuController controller) {
-        if (!canBeRun(controller)) {
-            return;
-        }
+        if (!canBeRun(controller)) return;
         Table table = controller.getBoard().getPlayerTable();
         controller.getView().showDrawMessage(table.drawCard());
         controller.getView().showDrawMessage(table.drawCard());
@@ -19,16 +17,11 @@ public class DrawTwoCards implements Action {
 
     @Override
     public boolean canBeRun(DuelMenuController controller) {
-        int maxSize;
         CardAddress address = controller.getSelectedCardAddress();
-        if (address == null) {
-            return false;
-        }
-        if (controller.getSelectedCardAddress().getZone() == CardAddressZone.HAND) {
-            maxSize = 5;
-        } else {
-            maxSize = 4;
-        }
+        if (address == null) return false;
+        int maxSize;
+        if (controller.getSelectedCardAddress().getZone() == CardAddressZone.HAND) maxSize = 5;
+        else maxSize = 4;
         return controller.getBoard().getPlayerTable().getHand().size() <= maxSize;
     }
 }

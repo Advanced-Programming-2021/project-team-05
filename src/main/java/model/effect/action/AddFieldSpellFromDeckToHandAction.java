@@ -14,9 +14,7 @@ public class AddFieldSpellFromDeckToHandAction implements Action {
 
     @Override
     public void run(DuelMenuController controller) {
-        if (!canBeRun(controller)) {
-            return;
-        }
+        if (!canBeRun(controller)) return;
 
         DataManager dataManager = DataManager.getInstance();
         DuelMenuView view = controller.getView();
@@ -43,11 +41,9 @@ public class AddFieldSpellFromDeckToHandAction implements Action {
                 return;
             }
             position = numbers.get(0);
-            if (position > fieldSpellsCount || position < 1) {
+            if (position > fieldSpellsCount || position < 1)
                 message = "position should be between 1 and " + fieldSpellsCount;
-            } else {
-                break;
-            }
+            else break;
         }
 
         ownTable.addCardToHand(fieldSpells.get(position - 1));
@@ -61,9 +57,7 @@ public class AddFieldSpellFromDeckToHandAction implements Action {
         int fieldSpellsCount = 0;
         for (String id : table.getDeck().getMainDeckCardIds()) {
             Card card = dataManager.getCardById(id);
-            if (card.getType().equals(CardType.FIELD)) {
-                fieldSpellsCount++;
-            }
+            if (card.getType().equals(CardType.FIELD)) fieldSpellsCount++;
         }
         return fieldSpellsCount > 0 && !table.isHandFull();
     }

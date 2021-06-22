@@ -3,7 +3,6 @@ package model.effect.action;
 import control.controller.DuelMenuController;
 import model.board.Board;
 import model.board.Table;
-import model.card.Monster;
 
 public class UmiirukaCheckAction implements Action {
 
@@ -13,7 +12,7 @@ public class UmiirukaCheckAction implements Action {
         Table playerTable = controller.getBoard().getPlayerTable();
         Table opponentTable = controller.getBoard().getOpponentTable();
         board.getSpelledMonsters().removeIf(monster -> {
-            if (!playerTable.hasMonster(monster) && !opponentTable.hasMonster(monster)) {
+            if (playerTable.isMonsterZoneEmpty(monster) && opponentTable.isMonsterZoneEmpty(monster)) {
                 monster.decreaseAttack(500);
                 monster.increaseDefense(400);
                 return true;

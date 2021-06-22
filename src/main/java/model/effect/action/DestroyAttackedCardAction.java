@@ -17,9 +17,7 @@ public class DestroyAttackedCardAction implements Action {
     @Override
     public boolean canBeRun(DuelMenuController controller) {
         Integer attackedCardPosition = controller.getAttackedCardPosition();
-        if (attackedCardPosition == null) {
-            return false;
-        }
+        if (attackedCardPosition == null) return false;
         Table opponentTable = controller.getBoard().getOpponentTable();
         return opponentTable.getMonster(attackedCardPosition) != null;
     }
