@@ -89,16 +89,6 @@ public class DuelMenuTest {
         userTwo.setActiveDeck(deckTwo);
     }
 
-    @AfterAll
-    public static void restoreStreams() {
-        System.setOut(originalOut);
-    }
-
-    @AfterAll
-    public static void killScanner() {
-        Utility.killScanner();
-    }
-
     private void assertOutputIsEqual(String expectedOutput) {
         Assertions.assertEquals(expectedOutput, outContent.toString().trim());
         outContent.reset();
@@ -227,5 +217,15 @@ public class DuelMenuTest {
 
         Assertions.assertEquals(myUserMoneyBeforeDuel + 300, myUser.getMoney());
         Assertions.assertEquals(myUserScoreBeforeDuel, myUser.getScore());
+    }
+
+    @AfterAll
+    public static void restoreStreams() {
+        System.setOut(originalOut);
+    }
+
+    @AfterAll
+    public static void killScanner() {
+        Utility.killScanner();
     }
 }
