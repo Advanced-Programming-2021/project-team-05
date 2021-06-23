@@ -140,11 +140,11 @@ public class DuelMenuTest {
         outContent.reset();
 
         Assertions.assertTrue(
-                output.startsWith("coin side was tails and opsUser starts duel\r\n" +
+                output.startsWith("coin side was tails and opNick starts duel\r\n" +
                         "its opNick's turn\r\n" +
                         "phase: draw phase\r\n" +
                         "you drew \"") ||
-                        output.startsWith("coin side was heads and myUser starts duel\r\n" +
+                        output.startsWith("coin side was heads and myNick starts duel\r\n" +
                                 "its myNick's turn\r\n" +
                                 "phase: draw phase\r\n" +
                                 "you drew \""));

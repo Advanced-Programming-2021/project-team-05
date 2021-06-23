@@ -318,13 +318,13 @@ public class MainMenuTest {
 
             if (output.contains("tails")) {
                 tails = false;
-                Assertions.assertEquals("coin side was tails and " + opName + " starts duel\r\n" +
+                Assertions.assertEquals("coin side was tails and " + opNick + " starts duel\r\n" +
                         "its " + opNick + "'s turn\r\n" +
                         "phase: draw phase\r\n" +
                         "you drew \"Wattkid\" from your deck", output);
             } else {
                 heads = false;
-                Assertions.assertEquals("coin side was heads and " + myName + " starts duel\r\n" +
+                Assertions.assertEquals("coin side was heads and " + myNick + " starts duel\r\n" +
                         "its " + myNick + "'s turn\r\n" +
                         "phase: draw phase\r\n" +
                         "you drew \"Wattkid\" from your deck", output);
@@ -395,7 +395,7 @@ public class MainMenuTest {
                         "you drew \"Wattkid\" from your deck"));
             } else {
                 heads = false;
-                Assertions.assertEquals("coin side was heads and " + myName + " starts duel\r\n" +
+                Assertions.assertEquals("coin side was heads and myNickname starts duel\r\n" +
                         "its myNickname's turn\r\n" +
                         "phase: draw phase\r\n" +
                         "you drew \"Wattkid\" from your deck", output);
