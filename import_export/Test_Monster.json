@@ -1,0 +1,12 @@
+{
+  "monsterType": "AQUA",
+  "attribute": "WATER",
+  "level": 4,
+  "attack": 2000,
+  "defence": 4000,
+  "name": "Test Monster",
+  "type": "EFFECT",
+  "description": "Nothing",
+  "price": 5000,
+  "effects": []
+}

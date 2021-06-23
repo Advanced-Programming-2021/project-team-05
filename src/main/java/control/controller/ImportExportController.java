@@ -20,7 +20,7 @@ public class ImportExportController {
     }
 
 
-    public void importCard(String cardName, String typeString) {
+    public void importCard(String cardName, String typeString, boolean addToCSV) {
         DataManager dataManager = DataManager.getInstance();
         if (dataManager.getCardTemplateByName(cardName) != null) {
             view.printImportExportCardMessage(ImportExportMessage.CARD_EXISTS);
@@ -31,10 +31,13 @@ public class ImportExportController {
             type = MonsterTemplate.class;
         } else if ("spell".equals(typeString)) {
             type = SpellTemplate.class;
-        } else {
+        } else if ("trap".equals(typeString)) {
             type = TrapTemplate.class;
+        } else {
+            view.printImportExportCardMessage(ImportExportMessage.INVALID_CARD_TYPE);
+            return;
         }
-        if (dataManager.importCard(cardName, type)) {
+        if (dataManager.importCard(cardName, type, addToCSV)) {
             view.printImportExportCardMessage(ImportExportMessage.IMPORT_SUCCESSFUL);
         } else {
             view.printImportExportCardMessage(ImportExportMessage.INVALID_FILE);
@@ -46,7 +49,7 @@ public class ImportExportController {
         DataManager dataManager = DataManager.getInstance();
         CardTemplate cardTemplate = dataManager.getCardTemplateByName(cardName);
         if (cardTemplate == null) {
-            view.printImportExportCardMessage(ImportExportMessage.INVALID_CARD_NAME);
+            view.printImportExportCardMessage(ImportExportMessage.NO_CARD_EXISTS);
             return;
         }
         dataManager.exportCard(cardTemplate);

@@ -609,8 +609,8 @@ public class DuelMenuView {
 
 
     public void printWinnerMessage(boolean isWholeMatch, String winnerUsername, int score1, int score2) {
-        if (isWholeMatch) System.out.println(winnerUsername + " won the game with score: " + score1 + "-" + score2);
-        else System.out.println(winnerUsername + " won the whole match with score: " + score1 + "-" + score2);
+        if (isWholeMatch) System.out.println(winnerUsername + " won the whole match with score: " + score1 + "-" + score2);
+        else System.out.println(winnerUsername + " won the game with score: " + score1 + "-" + score2);
     }
 
 

@@ -1,0 +1,8 @@
+{
+  "status": "UNLIMITED",
+  "name": "Test Trap",
+  "type": "NORMAL",
+  "description": "Nothing",
+  "price": 6000,
+  "effects": []
+}

@@ -8,9 +8,9 @@ public class MonsterTemplate extends CardTemplate {
 
     private final MonsterType monsterType;
     private final MonsterAttribute attribute;
-    private final int level;
-    private final int attack;
-    private final int defence;
+    private final Integer level;
+    private final Integer attack;
+    private final Integer defence;
 
 
     public MonsterTemplate(String name, CardType type, String description, int price, MonsterType monsterType, MonsterAttribute attribute, int level, int attack, int defense) {

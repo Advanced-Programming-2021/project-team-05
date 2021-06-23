@@ -1,0 +1,11 @@
+{
+  "monsterType": "AQUA",
+  "attribute": "WATER",
+  "attack": 2000,
+  "defence": 4000,
+  "name": "Invalid Monster",
+  "type": "EFFECT",
+  "description": "Nothing",
+  "price": 5000,
+  "effects": []
+}

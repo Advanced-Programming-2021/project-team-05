@@ -11,7 +11,7 @@ public abstract class CardTemplate {
     protected String name;
     protected CardType type;
     protected String description;
-    protected int price;
+    protected Integer price;
     protected ArrayList<Effect> effects;
 
     {

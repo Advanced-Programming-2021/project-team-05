@@ -110,6 +110,10 @@ fabric.properties
 
 # import_export contents
 /import_export/*.json
+!import_export/Test_Monster.json
+!import_export/Test_Spell.json
+!import_export/Test_Trap.json
+!import_export/Invalid_Monster.json
 
 #codeStyles
 .idea/codeStyles

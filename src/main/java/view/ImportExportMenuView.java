@@ -16,7 +16,7 @@ public class ImportExportMenuView {
     }
 
 
-    protected void run() {
+    public void run() {
         System.out.println("separate card name words with '_'. example: Battle_OX");
         while (true) {
             String command = Utility.getNextLine();
@@ -40,12 +40,7 @@ public class ImportExportMenuView {
 
 
     private void importOrExportCard(String[] command, boolean importCard) {
-        if (command.length != 3) {
-            System.out.println("invalid command");
-            return;
-        }
         String cardName = command[2].replace('_', ' ');
-
         if (importCard) {
             System.out.println("please enter card type: (monster/spell/trap)");
             String typeString;
@@ -57,7 +52,7 @@ public class ImportExportMenuView {
                 }
                 break;
             }
-            controller.importCard(cardName, typeString);
+            controller.importCard(cardName, typeString, true);
         } else {
             controller.exportCard(cardName);
         }
@@ -65,8 +60,11 @@ public class ImportExportMenuView {
 
     public void printImportExportCardMessage(ImportExportMessage message) {
         switch (message) {
-            case INVALID_CARD_NAME:
-                System.out.println("card name is invalid");
+            case NO_CARD_EXISTS:
+                System.out.println("no card with this name exists");
+                break;
+            case INVALID_CARD_TYPE:
+                System.out.println("card type is invalid");
                 break;
             case CARD_EXISTS:
                 System.out.println("card with entered name exists");
@@ -86,7 +84,7 @@ public class ImportExportMenuView {
     }
 
 
-    private void showCurrentMenu() {
+    public void showCurrentMenu() {
         System.out.println("Import/Export Menu");
     }
 

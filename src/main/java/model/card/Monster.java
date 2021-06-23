@@ -8,9 +8,9 @@ public class Monster extends Card {
 
     private MonsterType monsterType;
     private MonsterAttribute attribute;
-    private int level;
-    private int attack;
-    private int defense;
+    private Integer level;
+    private Integer attack;
+    private Integer defense;
 
 
     public Monster(MonsterTemplate template) {

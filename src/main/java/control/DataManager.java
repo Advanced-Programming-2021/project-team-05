@@ -26,22 +26,24 @@ import model.template.property.MonsterAttribute;
 import model.template.property.MonsterType;
 import model.template.property.SpellTrapStatus;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 
 public class DataManager {
 
-    private static final String AI_JSON_PATH = "data\\ai.json";
-    private static final String USERS_JSON_PATH = "data\\users.json";
-    private static final String CARDS_JSON_PATH = "data\\cards.json";
-    private static final String DECKS_JSON_PATH = "data\\decks.json";
-    private static final String EFFECTS_JSON_PATH = "data\\effects.json";
-    private static final String MONSTER_CSV_PATH = "data\\Monster.csv";
-    private static final String SPELL_TRAP_CSV_PATH = "data\\SpellTrap.csv";
+    private static final String AI_JSON_PATH = "data" + File.separator + "ai.json";
+    private static final String USERS_JSON_PATH = "data" + File.separator + "users.json";
+    private static final String CARDS_JSON_PATH = "data" + File.separator + "cards.json";
+    private static final String DECKS_JSON_PATH = "data" + File.separator + "decks.json";
+    private static final String EFFECTS_JSON_PATH = "data" + File.separator + "effects.json";
+    private static final String MONSTER_CSV_PATH = "data" + File.separator + "Monster.csv";
+    private static final String SPELL_TRAP_CSV_PATH = "data" + File.separator + "SpellTrap.csv";
     private static final String IMPORT_EXPORT_DIR = "import_export";
 
     private static DataManager dataManager;
@@ -408,7 +410,7 @@ public class DataManager {
     }
 
 
-    public void addTemplateToCSV(CardTemplate template) throws NullPointerException {
+    public void checkTemplate(CardTemplate template, boolean add) throws NullPointerException {
         String[] line;
         String path;
         if (template instanceof MonsterTemplate) {
@@ -419,12 +421,14 @@ public class DataManager {
             line = getCSVLineSpellTrap(template);
         }
 
-        try {
-            CSVWriter writer = new CSVWriter(new FileWriter(path, true), ',', CSVWriter.NO_QUOTE_CHARACTER, ICSVWriter.DEFAULT_ESCAPE_CHARACTER, ICSVWriter.DEFAULT_LINE_END);
-            writer.writeNext(line);
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (add) {
+            try {
+                CSVWriter writer = new CSVWriter(new FileWriter(path, true), ',', CSVWriter.NO_QUOTE_CHARACTER, ICSVWriter.DEFAULT_ESCAPE_CHARACTER, ICSVWriter.DEFAULT_LINE_END);
+                writer.writeNext(line);
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -466,14 +470,14 @@ public class DataManager {
     }
 
 
-    public boolean importCard(String cardName, Type type) {
+    public boolean importCard(String cardName, Type type, boolean addToCSV) {
         try {
             String path = IMPORT_EXPORT_DIR + "\\" + cardName.replaceAll("\\s", "_") + ".json";
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().serializeNulls().create();
             JsonReader reader = new JsonReader(new FileReader(path));
             CardTemplate template = gson.fromJson(reader, type);
             reader.close();
-            this.addTemplateToCSV(template);
+            this.checkTemplate(template, addToCSV);
             this.templates.add(template);
         } catch (NullPointerException | IOException e) {
             return false;

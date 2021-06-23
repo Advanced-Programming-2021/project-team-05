@@ -1,0 +1,8 @@
+{
+  "status": "LIMITED",
+  "name": "Test Spell",
+  "type": "NORMAL",
+  "description": "Nothing",
+  "price": 2000,
+  "effects": []
+}

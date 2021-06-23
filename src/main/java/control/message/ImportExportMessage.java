@@ -5,5 +5,7 @@ public enum ImportExportMessage {
     EXPORT_SUCCESSFUL,
     CARD_EXISTS,
     INVALID_FILE,
-    INVALID_CARD_NAME
+    INVALID_CARD_TYPE,
+    NO_CARD_EXISTS,
+    ERROR
 }
