@@ -60,7 +60,7 @@ public class DuelMenuView {
             else if (command.equals("menu show-current")) showCurrentMenu();
             else if (command.startsWith("menu enter")) System.out.println("menu navigation is not possible");
             else if (command.equals("menu help")) showHelp();
-            else if (command.matches("^increase --LP \\d+$")) increaseLP(command.split("\\s"));
+            else if (command.matches("^increase (--LP|-l) \\d+$")) increaseLP(command.split("\\s"));
             else if (command.matches("^duel set-winner \\S+$")) setWinner(command.split("\\s"));
             else if (command.equals("menu exit")) controller.exit();
             else System.out.println("invalid command");
