@@ -68,7 +68,7 @@ public class UtilityTest {
 
     @Test
     public void joinArrayTest() {
-        String output = "";
+        String output;
 
         String[] arrayInput1 = {"a", "b", "c"};
         String output1 = "azbzc";

@@ -1,12 +1,10 @@
 package scoreboard;
 
 import control.DataManager;
-import control.controller.MainMenuController;
 import model.User;
 import org.junit.jupiter.api.*;
 import utils.TestUtility;
 import utils.Utility;
-import view.MainMenuView;
 import view.ScoreboardMenuView;
 
 import java.io.ByteArrayOutputStream;
@@ -18,13 +16,6 @@ public class ScoreboardTest {
     private static final PrintStream originalOut = System.out;
     private static final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
-
-    private void assertOutputIsEqual(String expectedOutput) {
-        Assertions.assertEquals(expectedOutput, outContent.toString().trim());
-        outContent.reset();
-    }
-
-
     @BeforeAll
     public static void setUpStreams() {
         System.setOut(new PrintStream(outContent));
@@ -35,11 +26,20 @@ public class ScoreboardTest {
         DataManager.getInstance().getUsers().clear();
     }
 
+    @AfterAll
+    public static void restoreStreams() {
+        System.setOut(originalOut);
+    }
+
+    private void assertOutputIsEqual(String expectedOutput) {
+        Assertions.assertEquals(expectedOutput, outContent.toString().trim());
+        outContent.reset();
+    }
+
     @BeforeEach
     public void resetUpStreams() {
         outContent.reset();
     }
-
 
     @Test
     public void showScoreboardTest() {
@@ -93,10 +93,10 @@ public class ScoreboardTest {
 
         commands.add("menu help");
         outputs.add("commands:\r\n" +
-                        "\tscoreboard show\r\n" +
-                        "\tmenu show-current\r\n" +
-                        "\tmenu exit\r\n" +
-                        "\tmenu help");
+                "\tscoreboard show\r\n" +
+                "\tmenu show-current\r\n" +
+                "\tmenu exit\r\n" +
+                "\tmenu help");
 
         commands.add("menu exit");
 
@@ -116,11 +116,5 @@ public class ScoreboardTest {
 
         assertOutputIsEqual(outputsStringBuilder.toString().trim());
         System.setIn(stdIn);
-    }
-
-
-    @AfterAll
-    public static void restoreStreams() {
-        System.setOut(originalOut);
     }
 }

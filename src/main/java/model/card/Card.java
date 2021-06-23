@@ -12,11 +12,11 @@ import java.util.UUID;
 
 public abstract class Card {
 
+    protected final ArrayList<Effect> effects;
     protected String id;
     protected String name;
     protected CardType type;
     protected String description;
-    protected ArrayList<Effect> effects;
 
 
     protected Card(String name, CardType type, String description, ArrayList<Effect> effects) {
@@ -64,6 +64,7 @@ public abstract class Card {
     }
 
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean canRunActions(Event event, DuelMenuController controller) {
         for (Effect effect : effects) {
             if (event.equals(effect.getEvent())) {

@@ -8,11 +8,11 @@ import java.util.ArrayList;
 
 public abstract class CardTemplate {
 
+    protected final ArrayList<Effect> effects;
     protected String name;
     protected CardType type;
     protected String description;
     protected Integer price;
-    protected ArrayList<Effect> effects;
 
     {
         effects = new ArrayList<>();

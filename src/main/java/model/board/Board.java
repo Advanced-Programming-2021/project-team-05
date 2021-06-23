@@ -2,20 +2,18 @@ package model.board;
 
 import model.User;
 import model.board.cell.SpellTrapCell;
-import model.card.Card;
 import model.card.Monster;
 import model.card.Spell;
 
 import java.util.ArrayList;
 
 public class Board {
+    public final ArrayList<Monster> spelledMonsters;
     private Table playerTable;
     private Table opponentTable;
     private Table winnerTable;
     private Table loserTable;
     private boolean arePlayersImmune;
-
-    public ArrayList<Monster> spelledMonsters;
 
     {
         spelledMonsters = new ArrayList<>();
@@ -104,13 +102,9 @@ public class Board {
         }
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public final boolean isMonsterSpelled(Monster monster) {
-        for (Monster spelledMonster : spelledMonsters) {
-            if (monster.equals(spelledMonster)) {
-                return true;
-            }
-        }
-        return false;
+        return spelledMonsters.contains(monster);
     }
 
     public final void clearSpelledMonsters() {

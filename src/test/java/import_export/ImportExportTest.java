@@ -11,7 +11,6 @@ import model.template.property.CardType;
 import model.template.property.MonsterAttribute;
 import model.template.property.MonsterType;
 import model.template.property.SpellTrapStatus;
-import org.junit.internal.runners.statements.Fail;
 import org.junit.jupiter.api.*;
 import utils.TestUtility;
 import utils.Utility;

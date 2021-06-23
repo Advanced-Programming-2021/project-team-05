@@ -2,7 +2,6 @@ package model.effect.action;
 
 import control.controller.DuelMenuController;
 import model.board.Table;
-import view.DuelMenuView;
 
 public class DestroyAllOpponentMonstersAction implements Action {
 

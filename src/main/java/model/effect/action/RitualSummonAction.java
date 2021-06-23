@@ -1,7 +1,6 @@
 package model.effect.action;
 
 import control.controller.DuelMenuController;
-import control.message.DuelMenuMessage;
 import model.board.Table;
 import model.card.Card;
 import model.card.Monster;

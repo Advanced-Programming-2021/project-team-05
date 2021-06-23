@@ -32,7 +32,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 
 public class DataManager {
@@ -76,26 +75,6 @@ public class DataManager {
 
     public User getAi() {
         return this.ai;
-    }
-
-    public void initializeAIDeck() {
-        ai = new User("AI", "", "");
-        Deck aiDeck = new Deck("AI Deck");
-        this.addDeck(aiDeck);
-        ai.addDeck(aiDeck);
-        ai.setActiveDeck(aiDeck);
-        for (CardTemplate cardTemplate : this.getCardTemplates()) {
-            if (cardTemplate instanceof MonsterTemplate) {
-                MonsterTemplate monsterTemplate = (MonsterTemplate) cardTemplate;
-                if (monsterTemplate.getLevel() <= 4 && monsterTemplate.getEffects().size() == 0 && monsterTemplate.getType() != CardType.RITUAL) {
-                    Monster monster = new Monster(monsterTemplate);
-                    for (int i = 0; i < 3; i++) {
-                        this.addCard(monster);
-                        aiDeck.addCardToMainDeck(monster);
-                    }
-                }
-            }
-        }
     }
 
 
@@ -349,19 +328,6 @@ public class DataManager {
         loadCards();
         loadDecks();
         loadEffects();
-    }
-
-
-    private void saveAi() {
-        try {
-            Gson gson = new GsonBuilder().serializeNulls().create();
-            FileWriter userWriter = new FileWriter(AI_JSON_PATH);
-            gson.toJson(this.ai, userWriter);
-            userWriter.flush();
-            userWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void saveUsers() {
