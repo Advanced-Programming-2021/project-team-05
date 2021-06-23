@@ -233,6 +233,14 @@ public class ShopTest {
         view.showCard(new String[]{"card", "show", "Battle OX"});
         String exceptedOutput = dataManager.getCardTemplateByName("Battle OX").detailedToString();
         assertOutputIsEqual(exceptedOutput);
+
+        view.showCard(new String[]{"card", "show", "Raigeki"});
+        exceptedOutput = dataManager.getCardTemplateByName("Raigeki").detailedToString();
+        assertOutputIsEqual(exceptedOutput);
+
+        view.showCard(new String[]{"card", "show", "Trap Hole"});
+        exceptedOutput = dataManager.getCardTemplateByName("Trap Hole").detailedToString();
+        assertOutputIsEqual(exceptedOutput);
     }
 
 

@@ -11,6 +11,7 @@ import model.template.property.CardType;
 import model.template.property.MonsterAttribute;
 import model.template.property.MonsterType;
 import model.template.property.SpellTrapStatus;
+import org.junit.internal.runners.statements.Fail;
 import org.junit.jupiter.api.*;
 import utils.TestUtility;
 import utils.Utility;
@@ -48,7 +49,7 @@ public class ImportExportTest {
         DataManager dataManager = DataManager.getInstance();
         dataManager.loadData();
         ImportExportController controller = new ImportExportController();
-        ImportExportMenuView view = new ImportExportMenuView(controller);
+        new ImportExportMenuView(controller);
 
         controller.importCard("Test Monster", "monster", false);
 
@@ -73,7 +74,7 @@ public class ImportExportTest {
         DataManager dataManager = DataManager.getInstance();
         dataManager.loadData();
         ImportExportController controller = new ImportExportController();
-        ImportExportMenuView view = new ImportExportMenuView(controller);
+        new ImportExportMenuView(controller);
 
         controller.importCard("Test Spell", "spell", false);
 
@@ -94,7 +95,7 @@ public class ImportExportTest {
         DataManager dataManager = DataManager.getInstance();
         dataManager.loadData();
         ImportExportController controller = new ImportExportController();
-        ImportExportMenuView view = new ImportExportMenuView(controller);
+        new ImportExportMenuView(controller);
 
         controller.importCard("Test Trap", "trap", false);
 
@@ -115,7 +116,7 @@ public class ImportExportTest {
         DataManager dataManager = DataManager.getInstance();
         dataManager.loadData();
         ImportExportController controller = new ImportExportController();
-        ImportExportMenuView view = new ImportExportMenuView(controller);
+        new ImportExportMenuView(controller);
 
         controller.importCard("Battle OX", "monster", false);
         Assertions.assertEquals("card with entered name exists\r\n", outContent.toString());
@@ -145,22 +146,18 @@ public class ImportExportTest {
         Assertions.assertEquals("card exported successfully!\r\n", outContent.toString());
         outContent.reset();
 
-        File yomiShip = new File("import_export" + File.separator + "Yomi_Ship.json");
-        yomiShip.delete();
-
         controller.exportCard("Raigeki");
         Assertions.assertEquals("card exported successfully!\r\n", outContent.toString());
         outContent.reset();
-
-        File raigeki = new File("import_export" + File.separator + "Raigeki.json");
-        raigeki.delete();
 
         controller.exportCard("Magic Cylinder");
         Assertions.assertEquals("card exported successfully!\r\n", outContent.toString());
         outContent.reset();
 
+        File raigeki = new File("import_export" + File.separator + "Raigeki.json");
+        File yomiShip = new File("import_export" + File.separator + "Yomi_Ship.json");
         File magicCylinder = new File("import_export" + File.separator + "Magic_Cylinder.json");
-        magicCylinder.delete();
+        Assertions.assertTrue(raigeki.delete() && yomiShip.delete() && magicCylinder.delete());
     }
 
     @Test
