@@ -162,7 +162,6 @@ public class DuelMenuTest {
         Assertions.assertTrue(output.endsWith("user logged out successfully!\r\n"));
     }
 
-
     @Test
     public void surrenderTest() {
         DataManager manager = DataManager.getInstance();
@@ -203,7 +202,6 @@ public class DuelMenuTest {
         }
     }
 
-
     @Test
     public void surrenderAgainstAITest() {
         DataManager manager = DataManager.getInstance();
@@ -231,7 +229,6 @@ public class DuelMenuTest {
         Assertions.assertEquals(myUserScoreBeforeDuel, myUser.getScore());
     }
 
-
     @Test
     public void setWinnerTest() {
         DataManager manager = DataManager.getInstance();
@@ -256,7 +253,7 @@ public class DuelMenuTest {
             assertOutputIsEqual("winner set successfully!\r\n" +
                     "myUser won the whole match with score: 1-0");
 
-            controller.setWinner("opsNick");
+            controller.setWinner("opNick");
             assertOutputIsEqual("invalid nickname");
 
             controller = new DuelMenuController(userOne, userTwo, 1);
@@ -264,19 +261,9 @@ public class DuelMenuTest {
             controller.startNextRound();
             outContent.reset();
 
-            controller.setWinner("opNick");
+            controller.setWinner("opsNick");
             assertOutputIsEqual("winner set successfully!\r\n" +
                     "opsUser won the whole match with score: 0-1");
         }
-    }
-
-    @AfterAll
-    public static void restoreStreams() {
-        System.setOut(originalOut);
-    }
-
-    @AfterAll
-    public static void killScanner() {
-        Utility.killScanner();
     }
 }
