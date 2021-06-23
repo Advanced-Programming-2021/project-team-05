@@ -40,7 +40,7 @@ public class DuelMenuTest {
         manager.getUsers().clear();
 
         User userOne = new User("myUser", "myPass", "myNick");
-        User userTwo = new User("opsUser", "opsPass", "opNick");
+        User userTwo = new User("opsUser", "opsPass", "opsNick");
 
         manager.addUser(userOne);
         manager.addUser(userTwo);
@@ -87,6 +87,16 @@ public class DuelMenuTest {
 
         userOne.setActiveDeck(deckOne);
         userTwo.setActiveDeck(deckTwo);
+    }
+
+    @AfterAll
+    public static void restoreStreams() {
+        System.setOut(originalOut);
+    }
+
+    @AfterAll
+    public static void killScanner() {
+        Utility.killScanner();
     }
 
     private void assertOutputIsEqual(String expectedOutput) {
@@ -139,17 +149,16 @@ public class DuelMenuTest {
         outContent.reset();
 
         Assertions.assertTrue(
-                output.startsWith("coin side was tails and opsUser starts duel\r\n" +
-                        "its opNick's turn\r\n" +
+                output.startsWith("coin side was tails and opsNick starts duel\r\n" +
+                        "its opsNick's turn\r\n" +
                         "phase: draw phase\r\n" +
                         "you drew \"") ||
-                        output.startsWith("coin side was heads and myUser starts duel\r\n" +
+                        output.startsWith("coin side was heads and myNick starts duel\r\n" +
                                 "its myNick's turn\r\n" +
                                 "phase: draw phase\r\n" +
                                 "you drew \""));
         Assertions.assertTrue(output.endsWith("user logged out successfully!\r\n"));
     }
-
 
     @Test
     public void surrenderTest() {
@@ -178,7 +187,7 @@ public class DuelMenuTest {
         String output = outContent.toString();
         outContent.reset();
 
-        if (output.startsWith("coin side was tails and opsUser")) {
+        if (output.startsWith("coin side was tails and opsNick")) {
             Assertions.assertEquals(myUserMoneyBeforeDuel + 11000, myUser.getMoney());
             Assertions.assertEquals(myUserScoreBeforeDuel + 2, myUser.getScore());
             Assertions.assertEquals(opsUserMoneyBeforeDuel + 300, opsUser.getMoney());
@@ -190,7 +199,6 @@ public class DuelMenuTest {
             Assertions.assertEquals(myUserScoreBeforeDuel, myUser.getScore());
         }
     }
-
 
     @Test
     public void surrenderAgainstAITest() {
@@ -217,15 +225,5 @@ public class DuelMenuTest {
 
         Assertions.assertEquals(myUserMoneyBeforeDuel + 300, myUser.getMoney());
         Assertions.assertEquals(myUserScoreBeforeDuel, myUser.getScore());
-    }
-
-    @AfterAll
-    public static void restoreStreams() {
-        System.setOut(originalOut);
-    }
-
-    @AfterAll
-    public static void killScanner() {
-        Utility.killScanner();
     }
 }

@@ -565,8 +565,8 @@ public class DuelMenuView {
     }
 
 
-    public void showFlipCoinResult(String starterUsername, CoinSide coinSide) {
-        System.out.println("coin side was " + coinSide.getName() + " and " + starterUsername + " starts duel");
+    public void showFlipCoinResult(String starterNickname, CoinSide coinSide) {
+        System.out.println("coin side was " + coinSide.getName() + " and " + starterNickname + " starts duel");
     }
 
 
