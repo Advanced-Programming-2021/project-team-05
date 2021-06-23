@@ -5,6 +5,8 @@ import control.controller.DuelMenuController;
 import control.controller.MainMenuController;
 import model.Deck;
 import model.User;
+import model.board.CardAddress;
+import model.board.CardAddressZone;
 import model.card.Card;
 import model.card.Monster;
 import model.card.Spell;
@@ -28,6 +30,7 @@ public class DuelMenuTest {
     private static final PrintStream originalOut = System.out;
     private static final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private static InputStream stdIn;
+    private static CardAddress address;
 
     @BeforeAll
     public static void setUpStreams() {
@@ -265,5 +268,42 @@ public class DuelMenuTest {
             assertOutputIsEqual("winner set successfully!\r\n" +
                     "opsUser won the whole match with score: 0-1");
         }
+    }
+
+    @Test
+    public void getSelectedCardString() {
+        DataManager manager = DataManager.getInstance();
+
+        User userOne = manager.getUserByUsername("myUser");
+        User userTwo = manager.getUserByUsername("opsUser");
+
+        DuelMenuController controller;
+        DuelMenuView view;
+
+        boolean heads = false;
+
+        while (true) {
+            controller = new DuelMenuController(userOne, userTwo, 1);
+            view = new DuelMenuView(controller);
+            controller.startNextRound();
+
+            ArrayList<Card> handCards;
+            if (outContent.toString().contains("heads")) {
+                heads = true;
+                handCards = controller.getBoard().getPlayerTable().getHand();
+                address = new CardAddress(CardAddressZone.HAND, 1, false);
+                controller.selectCard(address);
+                Assertions.assertEquals(controller.getSelectedCardString(),
+                        handCards.get(0).detailedToString());
+            } else {
+                controller.selectCard(new CardAddress(CardAddressZone.HAND, 1, true));
+                Assertions.assertEquals(controller.getSelectedCardString(), "no card is selected yet");
+                if (heads) break;
+            }
+            outContent.reset();
+        }
+        outContent.reset();
+        controller.quickChangeTurn(false);
+        assertOutputIsEqual("now it will be myNick's turn");
     }
 }
