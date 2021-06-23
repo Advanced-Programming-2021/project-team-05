@@ -1,6 +1,7 @@
 package duel;
 
 import control.DataManager;
+import control.controller.DuelMenuController;
 import control.controller.MainMenuController;
 import model.Deck;
 import model.User;
@@ -14,6 +15,7 @@ import model.template.SpellTemplate;
 import model.template.TrapTemplate;
 import org.junit.jupiter.api.*;
 import utils.Utility;
+import view.DuelMenuView;
 import view.MainMenuView;
 
 import java.io.ByteArrayInputStream;
@@ -160,6 +162,7 @@ public class DuelMenuTest {
         Assertions.assertTrue(output.endsWith("user logged out successfully!\r\n"));
     }
 
+
     @Test
     public void surrenderTest() {
         DataManager manager = DataManager.getInstance();
@@ -200,6 +203,7 @@ public class DuelMenuTest {
         }
     }
 
+
     @Test
     public void surrenderAgainstAITest() {
         DataManager manager = DataManager.getInstance();
@@ -225,5 +229,54 @@ public class DuelMenuTest {
 
         Assertions.assertEquals(myUserMoneyBeforeDuel + 300, myUser.getMoney());
         Assertions.assertEquals(myUserScoreBeforeDuel, myUser.getScore());
+    }
+
+
+    @Test
+    public void setWinnerTest() {
+        DataManager manager = DataManager.getInstance();
+
+        User userOne = manager.getUserByUsername("myUser");
+        User userTwo = manager.getUserByUsername("opsUser");
+
+        Assertions.assertNotNull(userOne);
+        Assertions.assertNotNull(userTwo);
+
+        boolean heads = true, tails = true;
+
+        while (heads || tails) {
+            DuelMenuController controller = new DuelMenuController(userOne, userTwo, 1);
+            DuelMenuView view = new DuelMenuView(controller);
+            controller.startNextRound();
+            if (outContent.toString().contains("heads")) heads = false;
+            if (outContent.toString().contains("tails")) tails = false;
+            outContent.reset();
+
+            controller.setWinner("myNick");
+            assertOutputIsEqual("winner set successfully!\r\n" +
+                    "myUser won the whole match with score: 1-0");
+
+            controller.setWinner("opsNick");
+            assertOutputIsEqual("invalid nickname");
+
+            controller = new DuelMenuController(userOne, userTwo, 1);
+            view = new DuelMenuView(controller);
+            controller.startNextRound();
+            outContent.reset();
+
+            controller.setWinner("opNick");
+            assertOutputIsEqual("winner set successfully!\r\n" +
+                    "opsUser won the whole match with score: 0-1");
+        }
+    }
+
+    @AfterAll
+    public static void restoreStreams() {
+        System.setOut(originalOut);
+    }
+
+    @AfterAll
+    public static void killScanner() {
+        Utility.killScanner();
     }
 }
