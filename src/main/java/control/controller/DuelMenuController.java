@@ -159,7 +159,7 @@ public class DuelMenuController {
                 player = playerTwo;
                 opponent = playerOne;
             }
-            view.showFlipCoinResult(player.getUsername(), coinSide);
+            view.showFlipCoinResult(player.getNickname(), coinSide);
         } else {
             Board previousBoard = boards[currentRound - 2];
             player = previousBoard.getLoserTable().getOwner();
@@ -1134,6 +1134,7 @@ public class DuelMenuController {
     public final void increaseLP(int amount) {
         board.getPlayerTable().increaseLifePoint(amount);
         view.showLPIncreased();
+        view.showBoard(board);
     }
 
 

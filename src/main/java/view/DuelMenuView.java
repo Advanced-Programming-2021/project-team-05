@@ -60,7 +60,7 @@ public class DuelMenuView {
             else if (command.equals("menu show-current")) showCurrentMenu();
             else if (command.startsWith("menu enter")) System.out.println("menu navigation is not possible");
             else if (command.equals("menu help")) showHelp();
-            else if (command.matches("^increase --LP \\S+$")) increaseLP(command.split("\\s"));
+            else if (command.matches("^increase (--LP|-l) \\d+$")) increaseLP(command.split("\\s"));
             else if (command.matches("^duel set-winner \\S+$")) setWinner(command.split("\\s"));
             else if (command.equals("menu exit")) controller.exit();
             else System.out.println("invalid command");
@@ -86,7 +86,7 @@ public class DuelMenuView {
     }
 
 
-    private CardAddress getAddress(String[] command) {
+    public CardAddress getAddress(String[] command) {
         CmdLineParser parser = new CmdLineParser();
         CmdLineParser.Option<Integer> monsterOption = parser.addIntegerOption('m', "monster");
         CmdLineParser.Option<Integer> spellOption = parser.addIntegerOption('s', "spell");
@@ -477,7 +477,7 @@ public class DuelMenuView {
                 System.out.println("selected monsters levels don’t match with ritual monster");
                 break;
             case SUMMON_SUCCESSFUL:
-                System.out.println("summoned successfully");
+                System.out.println("summoned successfully!");
                 break;
             default:
                 System.out.println("unexpected error");
@@ -542,12 +542,7 @@ public class DuelMenuView {
 
     private void showCard(String[] command) {
         String cardName;
-        try {
-            cardName = command[2];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("invalid command");
-            return;
-        }
+        cardName = command[2];
 
         DataManager dataManager = DataManager.getInstance();
         CardTemplate template = dataManager.getCardTemplateByName(cardName);
@@ -565,7 +560,7 @@ public class DuelMenuView {
     }
 
 
-    private void showCurrentMenu() {
+    public void showCurrentMenu() {
         System.out.println("Duel Menu");
     }
 
@@ -590,11 +585,7 @@ public class DuelMenuView {
 
 
     public void showHand(ArrayList<Card> hand) {
-        System.out.println("Hand");
-        for (int i = 0, handSize = hand.size(); i < handSize; i++) {
-            Card card = hand.get(i);
-            System.out.println((i + 1) + ". " + card);
-        }
+        showCards(hand, "Hand");
     }
 
 
@@ -609,7 +600,8 @@ public class DuelMenuView {
 
 
     public void printWinnerMessage(boolean isWholeMatch, String winnerUsername, int score1, int score2) {
-        if (isWholeMatch) System.out.println(winnerUsername + " won the whole match with score: " + score1 + "-" + score2);
+        if (isWholeMatch)
+            System.out.println(winnerUsername + " won the whole match with score: " + score1 + "-" + score2);
         else System.out.println(winnerUsername + " won the game with score: " + score1 + "-" + score2);
     }
 
