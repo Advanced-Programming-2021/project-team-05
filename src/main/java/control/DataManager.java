@@ -330,6 +330,7 @@ public class DataManager {
         loadEffects();
     }
 
+
     private void saveUsers() {
         try {
             Gson gson = new GsonBuilder().serializeNulls().create();
