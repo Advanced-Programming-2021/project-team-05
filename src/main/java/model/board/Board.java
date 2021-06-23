@@ -121,10 +121,10 @@ public class Board {
 
     @Override
     public String toString() {
-        return "=========================" + "\r\n" +
-                opponentTable.toString(true) + "\r\n" +
-                "-------------------------" + "\r\n" +
-                playerTable.toString(false) + "\r\n" +
+        return "=========================" + "\n" +
+                opponentTable.toString(true) + "\n" +
+                "-------------------------" + "\n" +
+                playerTable.toString(false) + "\n" +
                 "=========================";
     }
 }

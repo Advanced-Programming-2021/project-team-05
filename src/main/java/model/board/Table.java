@@ -227,13 +227,13 @@ public class Table {
         return -1;
     }
 
-    public final boolean isMonsterZoneEmpty(Monster monster) {
+    public final boolean hasMonster(Monster monster) {
         for (int i = 1; i <= 5; i++) {
             if (monster.equals(this.getMonster(i))) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
 
@@ -263,7 +263,7 @@ public class Table {
     }
 
     public final int getSpellOrTrapPosition(Card card) {
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i <= 5; i++) {
             SpellTrapCell spellAndTrapCell = this.getSpellOrTrapCell(i);
             Card spellTrapCard = spellAndTrapCell.getCard();
             if (card.equals(spellTrapCard)) {
