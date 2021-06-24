@@ -20,7 +20,6 @@ import org.junit.jupiter.api.*;
 import utils.TestUtility;
 import utils.Utility;
 import view.DuelMenuView;
-import view.ImportExportMenuView;
 import view.MainMenuView;
 
 import java.io.ByteArrayInputStream;
@@ -32,8 +31,6 @@ import java.util.ArrayList;
 public class DuelMenuTest {
     private static final PrintStream originalOut = System.out;
     private static final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private static InputStream stdIn;
-    private static CardAddress address;
 
     @BeforeAll
     public static void setUpStreams() {
@@ -112,22 +109,9 @@ public class DuelMenuTest {
     }
 
     private void enterInput(String input) {
-        stdIn = System.in;
+        InputStream stdIn = System.in;
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Utility.initializeScanner();
-    }
-
-    private void compareOutput(String output) {
-        assertOutputIsEqual(output.trim());
-        System.setIn(stdIn);
-        outContent.reset();
-    }
-
-    private void compareOutputs(String output1, String output2) {
-        String output = outContent.toString().trim();
-        Assertions.assertTrue(output.equals(output1) || output.equals(output2));
-        System.setIn(stdIn);
-        outContent.reset();
     }
 
     @BeforeEach
@@ -264,37 +248,44 @@ public class DuelMenuTest {
         User myUser = manager.getUserByUsername("myUser");
         User opsUser = manager.getUserByUsername("opsUser");
         Assertions.assertNotNull(myUser);
+        Assertions.assertNotNull(opsUser);
 
-        MainMenuController controller = new MainMenuController(myUser);
-        MainMenuView view = new MainMenuView(controller);
+        boolean tails = true, heads = true;
 
-        String input = "duel --new --second-player opsUser --rounds 3\n" +
-                "surrender\n" +
-                "surrender\n" +
-                "user logout\n" +
-                "menu exit";
+        while (tails || heads) {
+            MainMenuController controller = new MainMenuController(myUser);
+            MainMenuView view = new MainMenuView(controller);
 
-        long myUserMoneyBeforeDuel = myUser.getMoney();
-        long myUserScoreBeforeDuel = myUser.getScore();
-        long opsUserMoneyBeforeDuel = opsUser.getMoney();
-        long opsUserScoreBeforeDuel = opsUser.getScore();
+            String input = "duel --new --second-player opsUser --rounds 3\n" +
+                    "surrender\n" +
+                    "surrender\n" +
+                    "user logout\n" +
+                    "menu exit";
 
-        enterInput(input);
-        view.run();
+            long myUserMoneyBeforeDuel = myUser.getMoney();
+            long myUserScoreBeforeDuel = myUser.getScore();
+            long opsUserMoneyBeforeDuel = opsUser.getMoney();
+            long opsUserScoreBeforeDuel = opsUser.getScore();
 
-        String output = outContent.toString();
-        outContent.reset();
+            enterInput(input);
+            view.run();
 
-        if (output.startsWith("coin side was tails and opsNick")) {
-            Assertions.assertEquals(myUserMoneyBeforeDuel + 11000, myUser.getMoney());
-            Assertions.assertEquals(myUserScoreBeforeDuel + 2, myUser.getScore());
-            Assertions.assertEquals(opsUserMoneyBeforeDuel + 300, opsUser.getMoney());
-            Assertions.assertEquals(opsUserScoreBeforeDuel, opsUser.getScore());
-        } else {
-            Assertions.assertEquals(opsUserMoneyBeforeDuel + 11000, opsUser.getMoney());
-            Assertions.assertEquals(opsUserScoreBeforeDuel + 2, opsUser.getScore());
-            Assertions.assertEquals(myUserMoneyBeforeDuel + 300, myUser.getMoney());
-            Assertions.assertEquals(myUserScoreBeforeDuel, myUser.getScore());
+            String output = outContent.toString();
+            outContent.reset();
+
+            if (output.startsWith("coin side was tails and opsNick")) {
+                tails = false;
+                Assertions.assertEquals(myUserMoneyBeforeDuel + 11000, myUser.getMoney());
+                Assertions.assertEquals(myUserScoreBeforeDuel + 2, myUser.getScore());
+                Assertions.assertEquals(opsUserMoneyBeforeDuel + 300, opsUser.getMoney());
+                Assertions.assertEquals(opsUserScoreBeforeDuel, opsUser.getScore());
+            } else {
+                heads = false;
+                Assertions.assertEquals(opsUserMoneyBeforeDuel + 11000, opsUser.getMoney());
+                Assertions.assertEquals(opsUserScoreBeforeDuel + 2, opsUser.getScore());
+                Assertions.assertEquals(myUserMoneyBeforeDuel + 300, myUser.getMoney());
+                Assertions.assertEquals(myUserScoreBeforeDuel, myUser.getScore());
+            }
         }
     }
 
@@ -384,7 +375,7 @@ public class DuelMenuTest {
             if (outContent.toString().contains("heads")) {
                 heads = true;
                 handCards = controller.getBoard().getPlayerTable().getHand();
-                address = new CardAddress(CardAddressZone.HAND, 1, false);
+                CardAddress address = new CardAddress(CardAddressZone.HAND, 1, false);
                 controller.selectCard(address);
                 Assertions.assertEquals(controller.getSelectedCardString(),
                         handCards.get(0).detailedToString());
