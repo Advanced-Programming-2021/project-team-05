@@ -158,88 +158,95 @@ public class DuelMenuTest {
         User opsUser = dataManager.getUserByUsername("opsUser");
         Assertions.assertNotNull(myUser);
 
-        DuelMenuController controller = new DuelMenuController(myUser, opsUser, 1);
-        DuelMenuView view = new DuelMenuView(controller);
-        controller.startNextRound();
-        outContent.reset();
-        ArrayList<String> commands = new ArrayList<>();
-        ArrayList<String> outputs = new ArrayList<>();
+        boolean heads = true, tails = true;
 
-        commands.add("cancel");
-        outputs.add("there is nothing to cancel");
+        while (heads || tails) {
+            DuelMenuController controller = new DuelMenuController(myUser, opsUser, 1);
+            DuelMenuView view = new DuelMenuView(controller);
+            outContent.reset();
+            controller.startNextRound();
+            if (outContent.toString().contains("heads")) heads = false;
+            else tails = false;
+            outContent.reset();
+            ArrayList<String> commands = new ArrayList<>();
+            ArrayList<String> outputs = new ArrayList<>();
 
-        commands.add("next phase");
-        outputs.add("phase: standby phase");
+            commands.add("cancel");
+            outputs.add("there is nothing to cancel");
 
-        commands.add("select -d");
-        outputs.add("no card is selected yet");
+            commands.add("next phase");
+            outputs.add("phase: standby phase");
 
-        commands.add("select -m 1");
-        outputs.add("invalid selection");
+            commands.add("select -d");
+            outputs.add("no card is selected yet");
 
-        commands.add("select --graveyard 1");
-        outputs.add("invalid selection");
+            commands.add("select -m 1");
+            outputs.add("invalid selection");
 
-        commands.add("summon");
-        outputs.add("no card is selected yet");
+            commands.add("select --graveyard 1");
+            outputs.add("invalid selection");
 
-        commands.add("set");
-        outputs.add("no card is selected yet");
+            commands.add("summon");
+            outputs.add("no card is selected yet");
 
-        commands.add("set -p attack");
-        outputs.add("no card is selected yet");
+            commands.add("set");
+            outputs.add("no card is selected yet");
 
-        commands.add("flip-summon");
-        outputs.add("no card is selected yet");
+            commands.add("set -p attack");
+            outputs.add("no card is selected yet");
 
-        commands.add("attack direct");
-        outputs.add("no card is selected yet");
+            commands.add("flip-summon");
+            outputs.add("no card is selected yet");
 
-        commands.add("attack 1");
-        outputs.add("no card is selected yet");
+            commands.add("attack direct");
+            outputs.add("no card is selected yet");
 
-        commands.add("activate effect");
-        outputs.add("no card is selected yet");
+            commands.add("attack 1");
+            outputs.add("no card is selected yet");
 
-        commands.add("show graveyard");
-        outputs.add("graveyard empty");
-        outputs.add("enter \"back\" to return to game");
-        commands.add("back");
+            commands.add("activate effect");
+            outputs.add("no card is selected yet");
 
-        commands.add("show graveyard -o");
-        outputs.add("graveyard empty");
-        outputs.add("enter \"back\" to return to game");
-        commands.add("back");
+            commands.add("show graveyard");
+            outputs.add("graveyard empty");
+            outputs.add("enter \"back\" to return to game");
+            commands.add("back");
 
-        commands.add("card show --selected");
-        outputs.add("no card is selected yet");
+            commands.add("show graveyard -o");
+            outputs.add("graveyard empty");
+            outputs.add("enter \"back\" to return to game");
+            commands.add("back");
 
-        commands.add("increase -l he2");
-        outputs.add("invalid command");
+            commands.add("card show --selected");
+            outputs.add("no card is selected yet");
 
-        commands.add("set-winner hello");
-        outputs.add("invalid command");
+            commands.add("increase -l he2");
+            outputs.add("invalid command");
 
-        commands.add("menu exit");
+            commands.add("set-winner hello");
+            outputs.add("invalid command");
 
-        StringBuilder commandsStringBuilder = new StringBuilder();
-        for (String command : commands) {
-            commandsStringBuilder.append(command).append("\n");
+            commands.add("menu exit");
+
+            StringBuilder commandsStringBuilder = new StringBuilder();
+            for (String command : commands) {
+                commandsStringBuilder.append(command).append("\n");
+            }
+
+            StringBuilder outputsStringBuilder = new StringBuilder();
+            for (String output : outputs) {
+                outputsStringBuilder.append(output).append("\r\n");
+            }
+
+            InputStream stdIn = TestUtility.giveInput(commandsStringBuilder.toString());
+            Utility.initializeScanner();
+            view.run();
+
+            Assertions.assertEquals(outputsStringBuilder.toString(), outContent.toString());
+            outContent.reset();
+
+            System.setIn(stdIn);
         }
-
-        StringBuilder outputsStringBuilder = new StringBuilder();
-        for (String output : outputs) {
-            outputsStringBuilder.append(output).append("\r\n");
-        }
-
-        InputStream stdIn = TestUtility.giveInput(commandsStringBuilder.toString());
-        Utility.initializeScanner();
-        view.run();
-
-        Assertions.assertEquals(outputsStringBuilder.toString(), outContent.toString());
-        outContent.reset();
-
-        System.setIn(stdIn);
     }
 
     @Test
@@ -295,25 +302,32 @@ public class DuelMenuTest {
         User myUser = manager.getUserByUsername("myUser");
         Assertions.assertNotNull(myUser);
 
-        MainMenuController controller = new MainMenuController(myUser);
-        MainMenuView view = new MainMenuView(controller);
+        boolean heads = true, tails = true;
 
-        String input = "duel --new --ai --rounds 3\n" +
-                "surrender\n" +
-                "surrender\n" +
-                "user logout\n" +
-                "menu exit";
+        while (heads || tails) {
+            MainMenuController controller = new MainMenuController(myUser);
+            MainMenuView view = new MainMenuView(controller);
 
-        long myUserMoneyBeforeDuel = myUser.getMoney();
-        long myUserScoreBeforeDuel = myUser.getScore();
+            String input = "duel --new --ai --rounds 3\n" +
+                    "surrender\n" +
+                    "surrender\n" +
+                    "user logout\n" +
+                    "menu exit";
 
-        enterInput(input);
-        view.run();
+            long myUserMoneyBeforeDuel = myUser.getMoney();
+            long myUserScoreBeforeDuel = myUser.getScore();
 
-        outContent.reset();
+            enterInput(input);
+            view.run();
 
-        Assertions.assertEquals(myUserMoneyBeforeDuel + 300, myUser.getMoney());
-        Assertions.assertEquals(myUserScoreBeforeDuel, myUser.getScore());
+            if (outContent.toString().contains("tails")) tails = false;
+            else heads  = false;
+
+            outContent.reset();
+
+            Assertions.assertEquals(myUserMoneyBeforeDuel + 300, myUser.getMoney());
+            Assertions.assertEquals(myUserScoreBeforeDuel, myUser.getScore());
+        }
     }
 
     @Test
