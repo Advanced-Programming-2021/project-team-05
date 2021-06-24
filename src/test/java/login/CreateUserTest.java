@@ -18,7 +18,7 @@ public class CreateUserTest {
     private void assertUserCreatedSuccessfully(String expectedUsername, String expectedPassword, String expectedNickname) {
         assertOutputIsEqual("user created successfully!");
 
-        DataManager dataManager = DataManager. getInstance();
+        DataManager dataManager = DataManager.getInstance();
         User user = dataManager.getUserByUsername(expectedUsername);
         Assertions.assertNotNull(user);
 

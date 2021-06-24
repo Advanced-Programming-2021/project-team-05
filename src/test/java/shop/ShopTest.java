@@ -164,12 +164,12 @@ public class ShopTest {
 
         commands.add("menu help");
         outputs.add("commands:\r\n" +
-                        "\tshop buy <card name>\r\n" +
-                        "\tshop show --all\r\n" +
-                        "\tcard show <card name>\r\n" +
-                        "\tmenu show-current\r\n" +
-                        "\tmenu exit\r\n" +
-                        "\tmenu help");
+                "\tshop buy <card name>\r\n" +
+                "\tshop show --all\r\n" +
+                "\tcard show <card name>\r\n" +
+                "\tmenu show-current\r\n" +
+                "\tmenu exit\r\n" +
+                "\tmenu help");
 
         commands.add("increase --money 1000");
         outputs.add("money increased!");

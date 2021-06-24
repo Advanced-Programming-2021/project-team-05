@@ -2,7 +2,6 @@ package duel;
 
 import control.DataManager;
 import control.controller.DuelMenuController;
-import control.controller.ImportExportController;
 import control.controller.MainMenuController;
 import model.Deck;
 import model.User;
@@ -321,7 +320,7 @@ public class DuelMenuTest {
             view.run();
 
             if (outContent.toString().contains("tails")) tails = false;
-            else heads  = false;
+            else heads = false;
 
             outContent.reset();
 

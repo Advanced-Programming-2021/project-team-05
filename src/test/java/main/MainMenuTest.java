@@ -91,12 +91,12 @@ public class MainMenuTest {
 
         commands.add("menu help");
         outputs.add("commands:\r\n" +
-                        "\tduel --new --second-player <player2 username> --rounds <1/3>\r\n" +
-                        "\tduel --new --ai --rounds <1/3>\r\n" +
-                        "\tuser logout\r\n" +
-                        "\tmenu show-current\r\n" +
-                        "\tmenu enter <menu name>\r\n" +
-                        "\tmenu help");
+                "\tduel --new --second-player <player2 username> --rounds <1/3>\r\n" +
+                "\tduel --new --ai --rounds <1/3>\r\n" +
+                "\tuser logout\r\n" +
+                "\tmenu show-current\r\n" +
+                "\tmenu enter <menu name>\r\n" +
+                "\tmenu help");
 
         commands.add("user logout");
         outputs.add("user logged out successfully!");

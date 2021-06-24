@@ -193,7 +193,7 @@ public class DeckTest {
             }
         }
 
-        Assertions.assertEquals( 47 + cardsSize, cards.size());
+        Assertions.assertEquals(47 + cardsSize, cards.size());
 
         testDeck.getMainDeckCardIds().clear();
 
