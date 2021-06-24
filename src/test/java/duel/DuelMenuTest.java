@@ -2,6 +2,7 @@ package duel;
 
 import control.DataManager;
 import control.controller.DuelMenuController;
+import control.controller.ImportExportController;
 import control.controller.MainMenuController;
 import model.Deck;
 import model.User;
@@ -16,8 +17,10 @@ import model.template.MonsterTemplate;
 import model.template.SpellTemplate;
 import model.template.TrapTemplate;
 import org.junit.jupiter.api.*;
+import utils.TestUtility;
 import utils.Utility;
 import view.DuelMenuView;
+import view.ImportExportMenuView;
 import view.MainMenuView;
 
 import java.io.ByteArrayInputStream;
@@ -52,7 +55,6 @@ public class DuelMenuTest {
 
         ArrayList<CardTemplate> templates = manager.getCardTemplates();
         ArrayList<Card> cards = manager.getCards();
-//        cards.clear();
 
         for (CardTemplate cardTemplate : templates) {
             if (cardTemplate instanceof MonsterTemplate) {
@@ -163,6 +165,97 @@ public class DuelMenuTest {
                                 "phase: draw phase\r\n" +
                                 "you drew \""));
         Assertions.assertTrue(output.endsWith("user logged out successfully!\r\n"));
+    }
+
+    @Test
+    public void commandsTest() {
+        DataManager dataManager = DataManager.getInstance();
+        User myUser = dataManager.getUserByUsername("myUser");
+        User opsUser = dataManager.getUserByUsername("opsUser");
+        Assertions.assertNotNull(myUser);
+
+        DuelMenuController controller = new DuelMenuController(myUser, opsUser, 1);
+        DuelMenuView view = new DuelMenuView(controller);
+        controller.startNextRound();
+        outContent.reset();
+        ArrayList<String> commands = new ArrayList<>();
+        ArrayList<String> outputs = new ArrayList<>();
+
+        commands.add("cancel");
+        outputs.add("there is nothing to cancel");
+
+        commands.add("next phase");
+        outputs.add("phase: standby phase");
+
+        commands.add("select -d");
+        outputs.add("no card is selected yet");
+
+        commands.add("select -m 1");
+        outputs.add("invalid selection");
+
+        commands.add("select --graveyard 1");
+        outputs.add("invalid selection");
+
+        commands.add("summon");
+        outputs.add("no card is selected yet");
+
+        commands.add("set");
+        outputs.add("no card is selected yet");
+
+        commands.add("set -p attack");
+        outputs.add("no card is selected yet");
+
+        commands.add("flip-summon");
+        outputs.add("no card is selected yet");
+
+        commands.add("attack direct");
+        outputs.add("no card is selected yet");
+
+        commands.add("attack 1");
+        outputs.add("no card is selected yet");
+
+        commands.add("activate effect");
+        outputs.add("no card is selected yet");
+
+        commands.add("show graveyard");
+        outputs.add("graveyard empty");
+        outputs.add("enter \"back\" to return to game");
+        commands.add("back");
+
+        commands.add("show graveyard -o");
+        outputs.add("graveyard empty");
+        outputs.add("enter \"back\" to return to game");
+        commands.add("back");
+
+        commands.add("card show --selected");
+        outputs.add("no card is selected yet");
+
+        commands.add("increase -l he2");
+        outputs.add("invalid command");
+
+        commands.add("set-winner hello");
+        outputs.add("invalid command");
+
+        commands.add("menu exit");
+
+        StringBuilder commandsStringBuilder = new StringBuilder();
+        for (String command : commands) {
+            commandsStringBuilder.append(command).append("\n");
+        }
+
+        StringBuilder outputsStringBuilder = new StringBuilder();
+        for (String output : outputs) {
+            outputsStringBuilder.append(output).append("\r\n");
+        }
+
+        InputStream stdIn = TestUtility.giveInput(commandsStringBuilder.toString());
+        Utility.initializeScanner();
+        view.run();
+
+        Assertions.assertEquals(outputsStringBuilder.toString(), outContent.toString());
+        outContent.reset();
+
+        System.setIn(stdIn);
     }
 
     @Test
