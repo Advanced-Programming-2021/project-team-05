@@ -1,0 +1,79 @@
+* {
+    -fx-font-family: "Merienda";
+}
+
+.default-button {
+    -fx-pref-width: 200px;
+    -fx-pref-height: 70px;
+
+    -fx-font-size: 24px;
+    -fx-font-family: "Merienda";
+    -fx-font-weight: bold;
+    -fx-text-fill: orange;
+
+    -fx-background-color: linear-gradient(to right, black, rgba(0, 0, 0, 0.5));
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8), 10, 0, 0, 10);
+
+    -fx-cursor: hand;
+
+}
+
+.default-button:hover {
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+
+.default-button:pressed {
+    -fx-scale-x: 0.99;
+    -fx-scale-y: 0.99;
+}
+
+.default-button:focused {
+    -fx-background-color: linear-gradient(to right, #050505ee, rgba(28, 28, 28, 0.5));
+}
+
+
+.title-label {
+    -fx-font-size: 35;
+
+    -fx-background-color: linear-gradient(to top right, #5a4106, #ffd800);
+    -fx-background-radius: 10px;
+    -fx-padding: 18px 40px;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0, 0, 8);
+}
+
+.title-label:hover {
+    -fx-scale-x: 1.01;
+    -fx-scale-y: 1.01;
+    -fx-background-color: linear-gradient(to top right, #805c09, #ffd800);
+}
+
+
+.default-input {
+    -fx-pref-height: 50px;
+    -fx-pref-width: 350px;
+
+    -fx-prompt-text-fill: #888888;
+    -fx-font-size: 16px;
+    -fx-background-color: #cccccc;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 5);
+}
+
+.default-input:hover {
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.default-input:focused {
+    -fx-background-color: #eeeeee;
+}
+
+
+.default-input-label {
+    -fx-font-size: 20;
+
+    -fx-text-fill: goldenrod;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0, 0, 8);
+}

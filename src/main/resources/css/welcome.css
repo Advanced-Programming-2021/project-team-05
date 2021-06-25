@@ -1,0 +1,9 @@
+#root {
+    -fx-background-color: linear-gradient(to right, #320d5b, #320d5bee);
+}
+
+#logo-pane {
+    -fx-background-image: url("../images/logo.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+}
