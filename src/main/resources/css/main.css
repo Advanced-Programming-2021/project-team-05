@@ -11,9 +11,9 @@
     -fx-font-weight: bold;
     -fx-text-fill: orange;
 
-    -fx-background-color: linear-gradient(to right, black, rgba(0, 0, 0, 0.5));
+    -fx-background-color: linear-gradient(to right, #640c0cee, #b83939dd);
     -fx-background-radius: 8px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8), 10, 0, 0, 10);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 1), 10, 0, 0, 10);
 
     -fx-cursor: hand;
 
@@ -34,36 +34,43 @@
 }
 
 
+.button-wide {
+    -fx-pref-width: 450px;
+}
+
+
 .title-label {
     -fx-font-size: 35;
 
-    -fx-background-color: linear-gradient(to top right, #5a4106, #ffd800);
+    -fx-background-color: linear-gradient(to top right, #5a1306dd, #ff3300cc);
     -fx-background-radius: 10px;
     -fx-padding: 18px 40px;
     -fx-text-fill: black;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0, 0, 8);
+    -fx-effect: dropshadow(three-pass-box, rgba(40, 0, 0, 0.8), 5, 0, -5, 5);
 }
 
 .title-label:hover {
     -fx-scale-x: 1.01;
     -fx-scale-y: 1.01;
-    -fx-background-color: linear-gradient(to top right, #805c09, #ffd800);
+    -fx-background-color: linear-gradient(to top right, #5a1306, #ff3300);
 }
 
 
 .default-input {
     -fx-pref-height: 50px;
     -fx-pref-width: 350px;
+    -fx-background-radius: 10px;
 
     -fx-prompt-text-fill: #888888;
     -fx-font-size: 16px;
-    -fx-background-color: #cccccc;
+    -fx-background-color: #ccccccee;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 5);
 }
 
 .default-input:hover {
-    -fx-scale-x: 1.02;
-    -fx-scale-y: 1.02;
+    -fx-scale-x: 1.01;
+    -fx-scale-y: 1.01;
+    -fx-background-color: #cccccc;
 }
 
 .default-input:focused {
@@ -73,7 +80,16 @@
 
 .default-input-label {
     -fx-font-size: 20;
+    -fx-padding: 10px;
+    -fx-background-radius: 20px;
 
-    -fx-text-fill: goldenrod;
+    -fx-text-fill: black;
+    -fx-background-color: linear-gradient(to top right, #640707ee, #a00707dd);
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0, 0, 8);
+}
+
+.default-input-label:hover {
+    -fx-scale-x: 1.01;
+    -fx-scale-y: 1.01;
+    -fx-background-color: linear-gradient(to top right, #640707, #a00707);
 }

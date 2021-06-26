@@ -1,0 +1,88 @@
+#root {
+    -fx-background-image: url("../images/background.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+
+.table-view {
+    -fx-pref-width: 500px;
+    -fx-background-color: blue;
+}
+
+
+.table-view .table-column {
+    -fx-alignment: CENTER;
+}
+
+.table-view .column-header-background .filler {
+    -fx-background-color: brown;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #051932;
+    -fx-padding: 5px 0;
+}
+
+.table-view .column-header {
+    -fx-background-color: red;
+}
+
+
+.table-view .corner {
+    -fx-background-color: gold;
+}
+
+
+.table-view .table-cell {
+    -fx-border-color: #020c26;
+}
+
+
+.table-row-cell {
+    -fx-text-background-color: black;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 0;
+}
+
+#current-user-row {
+    -fx-background-color: pink;
+}
+
+.table-row-cell:hover,
+.table-row-cell:odd:hover,
+.table-row-cell:even:hover{
+    -fx-background-color: #543210;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: green;
+}
+
+.table-row-cell:even {
+    -fx-background-color: lightblue;
+}
+
+.table-row-cell:selected {
+   -fx-background-color: whitesmoke;
+   -fx-text-background-color:  #6622CC;
+}
+
+
+.table-view .increment-button ,
+.table-view .decrement-button {
+    -fx-background-color: #1fc3ae;
+}
+
+.table-view .scroll-bar:horizontal .track,
+.table-view .scroll-bar:vertical .track {
+    -fx-background-color: #851116;
+    -fx-border-color: derive(#6622CC, 80%);
+}
+
+.table-view .scroll-bar:horizontal .thumb,
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color: derive(#6622CC, 90%);
+}

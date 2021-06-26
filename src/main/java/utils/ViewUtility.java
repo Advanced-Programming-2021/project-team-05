@@ -1,9 +1,12 @@
 package utils;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import model.ScoreboardItem;
 
 import java.util.Optional;
 
@@ -41,5 +44,54 @@ public class ViewUtility {
         dialogPane.getStyleClass().add("game-alert");
         dialogPane.getStylesheets().add(ViewUtility.class.getResource("/css/alert.css").toExternalForm());
         return alert;
+    }
+
+
+    public static void addScoreboardToScene(Scene scene, String userNickname) {
+        // TODO: 2021-06-26 delete this
+        ObservableList<ScoreboardItem> scoreboardItems = FXCollections.observableArrayList();
+        for (int i = 0; i < 20; i++) {
+            scoreboardItems.add(new ScoreboardItem(String.valueOf(i + 1), "test" + i, String.valueOf(20 - i)));
+        }
+
+        TableColumn<ScoreboardItem, String> rankColumn = new TableColumn<>("Rank");
+        rankColumn.setCellValueFactory(new PropertyValueFactory<>("rank"));
+        rankColumn.setId("rank-column");
+        rankColumn.setPrefWidth(100);
+        rankColumn.setResizable(false);
+        rankColumn.setSortable(false);
+
+        TableColumn<ScoreboardItem, String> nicknameColumn = new TableColumn<>("Nickname");
+        nicknameColumn.setCellValueFactory(new PropertyValueFactory<>("nickname"));
+        nicknameColumn.setId("username-column");
+        nicknameColumn.setPrefWidth(230);
+        nicknameColumn.setResizable(false);
+        nicknameColumn.setSortable(false);
+
+        TableColumn<ScoreboardItem, String> scoreColumn = new TableColumn<>("Score");
+        scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
+        scoreColumn.setId("score-column");
+        scoreColumn.setPrefWidth(150);
+        scoreColumn.setResizable(false);
+        scoreColumn.setSortable(false);
+
+        TableView<ScoreboardItem> tableView = new TableView<>();
+        tableView.setId("scoreboard-table");
+        tableView.getColumns().addAll(rankColumn, nicknameColumn, scoreColumn);
+        // TODO: 2021-06-26 delete next line, uncomment other line
+        tableView.setItems(scoreboardItems);
+//        tableView.setItems(DataManager.getInstance().getScoreboardItems());
+        tableView.setEditable(true);
+        tableView.setRowFactory(tv -> new TableRow<ScoreboardItem>() {
+            @Override
+            public void updateItem(ScoreboardItem item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null) return;
+                if (userNickname.equals(item.getNickname())) setId("current-user-row");
+            }
+        });
+
+        HBox scoreboardContainer = (HBox) scene.lookup("#scoreboard-container");
+        scoreboardContainer.getChildren().add(tableView);
     }
 }

@@ -8,7 +8,10 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 import com.opencsv.ICSVWriter;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.Deck;
+import model.ScoreboardItem;
 import model.User;
 import model.card.Card;
 import model.card.Monster;
@@ -165,20 +168,17 @@ public class DataManager {
     }
 
 
-    public String getScoreboard() {
+    public ObservableList<ScoreboardItem> getScoreboardItems() {
         sortUsers();
-        StringBuilder scoreboardString = new StringBuilder();
+        ObservableList<ScoreboardItem> scoreboardItems = FXCollections.observableArrayList();
         for (int i = 0, rank = 1, size = this.users.size(); i < size; i++) {
             User user = this.users.get(i);
-            scoreboardString.append(rank).append(". ")
-                    .append(user.getNickname()).append(": ")
-                    .append(user.getScore()).append("\r\n");
-            if (i < size - 1 && user.getScore() != this.users.get(i + 1).getScore()) {
-                rank = i + 2;
-            }
+            String rankString = String.valueOf(rank);
+            String scoreString = String.valueOf(user.getScore());
+            scoreboardItems.add(new ScoreboardItem(rankString, user.getNickname(), scoreString));
+            if (i < size - 1 && user.getScore() != this.users.get(i + 1).getScore()) rank = i + 2;
         }
-        scoreboardString.delete(scoreboardString.length() - 2, scoreboardString.length());
-        return scoreboardString.toString();
+        return scoreboardItems;
     }
 
 

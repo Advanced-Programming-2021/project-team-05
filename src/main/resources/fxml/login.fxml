@@ -21,6 +21,7 @@
   <rowConstraints>
     <RowConstraints minHeight="50.0" prefHeight="90.0" vgrow="NEVER" />
     <RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="NEVER" />
       <RowConstraints minHeight="0.0" prefHeight="0.0" valignment="CENTER" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="0.0" valignment="CENTER" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
@@ -32,19 +33,19 @@
             <Label styleClass="title-label" text="Login Menu" />
          </children>
       </HBox>
-      <Label styleClass="default-input-label" text="username:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2">
-         <children>
-            <TextField promptText="username" styleClass="default-input" />
-         </children>
-      </HBox>
-      <Label styleClass="default-input-label" text="password:" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label styleClass="default-input-label" text="Username" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <children>
-            <PasswordField promptText="password" styleClass="default-input" />
+            <TextField promptText="enter username" styleClass="default-input" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4">
+      <Label styleClass="default-input-label" text="Password" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4">
+         <children>
+            <PasswordField promptText="enter password" styleClass="default-input" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="5">
          <children>
             <Button mnemonicParsing="false" styleClass="default-button" text="Login" />
          </children>
