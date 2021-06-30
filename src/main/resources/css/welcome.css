@@ -1,11 +1,3 @@
-#root {
-    -fx-background-image: url("../images/background.jpg");
-    -fx-background-size: cover;
-    -fx-background-position: center;
-    -fx-background-repeat: no-repeat;
-}
-
-
 #logo-pane {
     -fx-background-image: url("../images/logo.png");
     -fx-background-size: contain;

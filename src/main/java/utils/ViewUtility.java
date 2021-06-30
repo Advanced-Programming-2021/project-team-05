@@ -5,8 +5,11 @@ import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import model.ScoreboardItem;
+import model.User;
 
 import java.util.Optional;
 
@@ -63,7 +66,7 @@ public class ViewUtility {
 
         TableColumn<ScoreboardItem, String> nicknameColumn = new TableColumn<>("Nickname");
         nicknameColumn.setCellValueFactory(new PropertyValueFactory<>("nickname"));
-        nicknameColumn.setId("username-column");
+        nicknameColumn.setId("nickname-column");
         nicknameColumn.setPrefWidth(230);
         nicknameColumn.setResizable(false);
         nicknameColumn.setSortable(false);
@@ -88,10 +91,26 @@ public class ViewUtility {
                 super.updateItem(item, empty);
                 if (item == null) return;
                 if (userNickname.equals(item.getNickname())) setId("current-user-row");
+                else setId(null);
             }
         });
 
         HBox scoreboardContainer = (HBox) scene.lookup("#scoreboard-container");
         scoreboardContainer.getChildren().add(tableView);
+    }
+
+
+    public static void setProfileValues(Scene scene, User user) {
+        Label usernameLabel = (Label) scene.lookup("#username-label");
+        usernameLabel.setText("Username: " + user.getUsername());
+
+        Label nicknameLabel = (Label) scene.lookup("#nickname-label");
+        nicknameLabel.setText("Nickname: " + user.getNickname());
+
+        String imagePath = "/images/profile-pics/" + user.getProfilePictureName();
+        ImageView imageView = new ImageView(new Image(ViewUtility.class.getResource(imagePath).toExternalForm()));
+        imageView.setId("profile-pic");
+        HBox profilePicContainer = (HBox) scene.lookup("#profile-pic-container");
+        profilePicContainer.getChildren().add(imageView);
     }
 }

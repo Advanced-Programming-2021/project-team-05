@@ -38,17 +38,41 @@
             <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Start Duel">
                <styleClass>
                   <String fx:value="default-button" />
-                  <String fx:value="button-wide" />
+                  <String fx:value="button-large" />
                </styleClass>
             </Button>
          </children>
       </HBox>
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Profile" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Shop" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Deck" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Login" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Scoreboard" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Logout" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Profile" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <styleClass>
+            <String fx:value="default-button" />
+            <String fx:value="button-small" />
+         </styleClass></Button>
+      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Shop" GridPane.columnIndex="2" GridPane.rowIndex="4">
+         <styleClass>
+            <String fx:value="default-button" />
+            <String fx:value="button-small" />
+         </styleClass></Button>
+        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Deck" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <styleClass>
+            <String fx:value="default-button" />
+            <String fx:value="button-small" />
+         </styleClass></Button>
+      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Login" GridPane.columnIndex="2" GridPane.rowIndex="5">
+         <styleClass>
+            <String fx:value="default-button" />
+            <String fx:value="button-small" />
+         </styleClass></Button>
+        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Scoreboard" GridPane.columnIndex="1" GridPane.rowIndex="6">
+         <styleClass>
+            <String fx:value="default-button" />
+            <String fx:value="button-small" />
+         </styleClass></Button>
+      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Logout" GridPane.columnIndex="2" GridPane.rowIndex="6">
+         <styleClass>
+            <String fx:value="default-button" />
+            <String fx:value="button-small" />
+         </styleClass></Button>
     </children>
     <stylesheets>
         <URL value="@../css/main-menu.css" />

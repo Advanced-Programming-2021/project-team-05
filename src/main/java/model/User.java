@@ -4,6 +4,7 @@ import control.DataManager;
 import model.card.Card;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class User {
 
@@ -15,6 +16,7 @@ public class User {
     private String activeDeckId;
     private int score;
     private long money;
+    private String profilePictureName;
 
     {
         purchasedCardIds = new ArrayList<>();
@@ -28,6 +30,7 @@ public class User {
         this.setNickname(nickname);
         this.setScore(0);
         this.setMoney(200000);
+        this.setProfilePictureName("profile-pic" + (new Random().nextInt(37) + 1) + ".png");
     }
 
 
@@ -149,6 +152,15 @@ public class User {
 
     public void setActiveDeck(Deck activeDeck) {
         this.activeDeckId = activeDeck.getId();
+    }
+
+
+    public String getProfilePictureName() {
+        return this.profilePictureName;
+    }
+
+    public void setProfilePictureName(String profilePictureName) {
+        this.profilePictureName = profilePictureName;
     }
 
 

@@ -178,6 +178,9 @@ public class DataManager {
             scoreboardItems.add(new ScoreboardItem(rankString, user.getNickname(), scoreString));
             if (i < size - 1 && user.getScore() != this.users.get(i + 1).getScore()) rank = i + 2;
         }
+        for (int i = scoreboardItems.size(); i < 20; i++) {
+            scoreboardItems.add(new ScoreboardItem("-", "-", "-"));
+        }
         return scoreboardItems;
     }
 

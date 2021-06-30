@@ -1,11 +1,3 @@
-#root {
-    -fx-background-image: url("../images/background.jpg");
-    -fx-background-size: cover;
-    -fx-background-position: center;
-    -fx-background-repeat: no-repeat;
-}
-
-
 .table-view {
     -fx-pref-width: 500px;
     -fx-background-color: blue;
@@ -53,7 +45,8 @@
 
 .table-row-cell:hover,
 .table-row-cell:odd:hover,
-.table-row-cell:even:hover{
+.table-row-cell:even:hover,
+#current-user-row:hover {
     -fx-background-color: #543210;
 }
 
@@ -66,12 +59,12 @@
 }
 
 .table-row-cell:selected {
-   -fx-background-color: whitesmoke;
-   -fx-text-background-color:  #6622CC;
+    -fx-background-color: whitesmoke;
+    -fx-text-background-color: #6622CC;
 }
 
 
-.table-view .increment-button ,
+.table-view .increment-button,
 .table-view .decrement-button {
     -fx-background-color: #1fc3ae;
 }

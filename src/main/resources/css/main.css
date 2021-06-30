@@ -2,8 +2,15 @@
     -fx-font-family: "Merienda";
 }
 
+#root {
+    -fx-background-image: url("../images/background.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
 .default-button {
-    -fx-pref-width: 200px;
+    -fx-pref-width: 250px;
     -fx-pref-height: 70px;
 
     -fx-font-size: 24px;
@@ -16,7 +23,6 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 1), 10, 0, 0, 10);
 
     -fx-cursor: hand;
-
 }
 
 .default-button:hover {
@@ -34,12 +40,19 @@
 }
 
 
-.button-wide {
+.button-small {
+    -fx-pref-width: 200px;
+}
+
+.button-large {
     -fx-pref-width: 450px;
+    -fx-pref-height: 80px;
 }
 
 
 .title-label {
+    -fx-min-width: 300px;
+    -fx-alignment: center;
     -fx-font-size: 35;
 
     -fx-background-color: linear-gradient(to top right, #5a1306dd, #ff3300cc);
