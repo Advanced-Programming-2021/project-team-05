@@ -18,7 +18,7 @@
     -fx-font-weight: bold;
     -fx-text-fill: orange;
 
-    -fx-background-color: linear-gradient(to right, #640c0cee, #b83939dd);
+    -fx-background-color: linear-gradient(to right, #AC0D0D, #bd2000);
     -fx-background-radius: 8px;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 1), 10, 0, 0, 10);
 
@@ -36,7 +36,7 @@
 }
 
 .default-button:focused {
-    -fx-background-color: linear-gradient(to right, #050505ee, rgba(28, 28, 28, 0.5));
+    -fx-background-color: linear-gradient(to right, #050505ee, rgb(114, 20, 126));
 }
 
 

@@ -16,10 +16,10 @@ public class RunTest extends Application {
         Font.loadFont(getClass().getResourceAsStream("/font/Merienda-Regular.ttf"), 20);
         Font.loadFont(getClass().getResourceAsStream("/font/Merienda-Bold.ttf"), 20);
 
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/change-nickname.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/welcome.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.setTitle("Yo-Gi-Oh!");
+        stage.setTitle("Yo-Gi-Oh");
         stage.setResizable(false);
         stage.show();
     }

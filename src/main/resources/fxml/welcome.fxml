@@ -26,9 +26,9 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
+        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="10" GridPane.rowSpan="3">
             <children>
-                <Pane id="logo-pane" prefHeight="258.0" prefWidth="443.0" />
+                <Pane id="logo-pane" prefHeight="70.0" prefWidth="202.0" />
             </children>
         </HBox>
         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="4" />
