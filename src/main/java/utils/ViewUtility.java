@@ -61,6 +61,27 @@ public class ViewUtility {
     }
 
 
+    public static void showPromptAlert(String title, String message, String label, String okText, PromptListener listener) {
+        TextInputDialog textInputDialog = new TextInputDialog();
+        textInputDialog.setTitle(title);
+        textInputDialog.setHeaderText(message);
+        textInputDialog.setContentText(label);
+        textInputDialog.getDialogPane().getStyleClass().add("game-alert");
+        textInputDialog.getDialogPane().getStylesheets().add(ViewUtility.class.getResource("/css/alert.css").toExternalForm());
+
+        textInputDialog.getDialogPane().getButtonTypes().clear();
+        ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.NO);
+        ButtonType confirmButtonType = new ButtonType(okText, ButtonBar.ButtonData.OK_DONE);
+        textInputDialog.getDialogPane().getButtonTypes().add(cancelButtonType);
+        textInputDialog.getDialogPane().getButtonTypes().add(confirmButtonType);
+
+        Optional<String> result = textInputDialog.showAndWait();
+        String input = result.orElse(null);
+        if (input != null) listener.onOk(input);
+        else listener.onCancel();
+    }
+
+
     public static void showCard(String cardName) {
         try {
             Stage stage = new Stage();
