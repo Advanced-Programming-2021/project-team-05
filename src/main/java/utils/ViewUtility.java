@@ -4,6 +4,7 @@ import control.DataManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Deck;
 import model.ScoreboardItem;
 import model.User;
 import model.template.CardTemplate;
@@ -159,15 +161,15 @@ public class ViewUtility {
     }
 
 
-    public static void initializeShop(Scene shop, User user) {
-        Label moneyLabel = (Label) shop.lookup("#money-label");
+    public static void initializeShop(Scene shopScene, User user) {
+        Label moneyLabel = (Label) shopScene.lookup("#money-label");
         moneyLabel.setText("Money: " + user.getMoney());
-        addCards(shop, user);
+        addCards(shopScene, user);
     }
 
-    private static void addCards(Scene shop, User user) {
+    private static void addCards(Scene shopScene, User user) {
         DataManager dataManager = DataManager.getInstance();
-        FlowPane cardsContainer = (FlowPane) shop.lookup("#cards-container");
+        FlowPane cardsContainer = (FlowPane) shopScene.lookup("#cards-container");
         for (CardTemplate template : dataManager.getCardTemplates()) {
             String imageAddress = "/images/cards/" + template.getName().replaceAll(" ", "_") + ".jpg";
             ImageView cardImage = new ImageView(new Image(ViewUtility.class.getResource(imageAddress).toExternalForm()));
@@ -188,5 +190,48 @@ public class ViewUtility {
             container.setPrefHeight(364);
             cardsContainer.getChildren().add(container);
         }
+    }
+
+
+    public static void initializeDeck(Scene deckScene, User user) {
+        FlowPane decksContainer = (FlowPane) deckScene.lookup("#decks-container");
+        decksContainer.setAlignment(Pos.TOP_CENTER);
+        decksContainer.getChildren().clear();
+        for (Deck deck : user.getDecks()) {
+            TextArea deckDescription = new TextArea(deck.toString());
+            deckDescription.setEditable(false);
+            deckDescription.setPrefHeight(150);
+            deckDescription.getStyleClass().add("deck-description");
+
+            Button editButton = new Button("Edit");
+            editButton.getStyleClass().addAll("default-button", "edit-button");
+
+            Button deleteButton = new Button("Delete");
+            deleteButton.getStyleClass().addAll("default-button", "delete-button");
+
+            HBox buttonContainer = new HBox(5, editButton, deleteButton);
+            buttonContainer.setPrefWidth(300);
+
+            Button activateButton = new Button("Activate Deck");
+            activateButton.getStyleClass().addAll("default-button", "activate-button");
+            if (deck.equals(user.getActiveDeck())) activateButton.setDisable(true);
+
+            VBox container = new VBox(7, deckDescription, buttonContainer, activateButton);
+            if (deck.equals(user.getActiveDeck())) container.setId("active-deck-container");
+            container.setPrefWidth(250);
+            container.setPrefHeight(290);
+            decksContainer.getChildren().add(container);
+        }
+        VBox addBox = new VBox();
+        addBox.setPrefWidth(250);
+        addBox.setPrefHeight(287);
+        addBox.setAlignment(Pos.TOP_CENTER);
+
+        Button addButton = new Button("+");
+        addButton.setId("add-button");
+        addButton.setPrefWidth(250);
+        addButton.setPrefHeight(287);
+        addBox.getChildren().add(addButton);
+        decksContainer.getChildren().add(addBox);
     }
 }

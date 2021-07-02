@@ -58,7 +58,7 @@
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Login" GridPane.columnIndex="2" GridPane.rowIndex="5">
+      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Create Card" GridPane.columnIndex="2" GridPane.rowIndex="5">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />

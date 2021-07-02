@@ -222,10 +222,10 @@ public class Deck implements Cloneable {
 
     @Override
     public final String toString() {
-        return this.getName() + ": " +
-                "main deck " + this.getMainDeckSize() +
-                ", side deck " + this.getSideDeckSize() +
-                ", " + (this.isValid() ? "valid" : "invalid");
+        return this.getName() + "\n" +
+                "Main Deck Size: " + this.getMainDeckSize() + "\n" +
+                "Side Deck Size: " + this.getSideDeckSize() + "\n" +
+                "Deck is " + (this.isValid() ? "" : "Not ") + "Valid";
     }
 
 

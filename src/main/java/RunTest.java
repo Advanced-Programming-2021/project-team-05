@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import model.Deck;
 import model.User;
 import utils.ViewUtility;
 
@@ -19,15 +20,13 @@ public class RunTest extends Application {
         initializeFonts();
         DataManager.getInstance().loadData();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/shop.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/deck.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Yo-Gi-Oh!");
         stage.setResizable(false);
         stage.show();
-
-        User ai = DataManager.getInstance().getAi();
-        ViewUtility.initializeShop(scene, ai);
+        ViewUtility.initializeDeck(scene, DataManager.getInstance().getAi());
     }
 
 
