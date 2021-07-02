@@ -35,19 +35,19 @@
             <Label styleClass="title-label" text="Register" />
          </children>
       </HBox>
-      <Label styleClass="default-input-label" text="Username" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label styleClass="default-label" text="Username" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <children>
             <TextField promptText="enter username" styleClass="default-input" />
          </children>
       </HBox>
-      <Label styleClass="default-input-label" text="Nickname" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Label styleClass="default-label" text="Nickname" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4">
          <children>
             <TextField promptText="enter nickname" styleClass="default-input" />
          </children>
       </HBox>
-      <Label styleClass="default-input-label" text="Password" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <Label styleClass="default-label" text="Password" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="5">
          <children>
             <PasswordField promptText="enter password" styleClass="default-input" />

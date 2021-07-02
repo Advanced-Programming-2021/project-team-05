@@ -34,9 +34,9 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2">
          <children>
-            <Label id="nickname-label" styleClass="default-input-label" text="Nickname: test" />
+            <Label id="nickname-label" styleClass="default-label" text="Nickname: test" />
          </children></HBox>
-      <Label styleClass="default-input-label" text="New Nickname" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label styleClass="default-label" text="New Nickname" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <children>
             <PasswordField promptText="enter new nickname" styleClass="default-input" />

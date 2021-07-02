@@ -1,16 +1,25 @@
 package utils;
 
+import control.DataManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import model.ScoreboardItem;
 import model.User;
+import model.template.CardTemplate;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public class ViewUtility {
@@ -47,6 +56,41 @@ public class ViewUtility {
         dialogPane.getStyleClass().add("game-alert");
         dialogPane.getStylesheets().add(ViewUtility.class.getResource("/css/alert.css").toExternalForm());
         return alert;
+    }
+
+
+    public static void showCard(String cardName) {
+        try {
+            Stage stage = new Stage();
+            stage.setResizable(false);
+            stage.setTitle(cardName);
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            Parent root = FXMLLoader.load(ViewUtility.class.getResource("/fxml/card.fxml"));
+            Scene scene = new Scene(root);
+            VBox container = (VBox) scene.lookup("#container");
+
+            String address = "/images/cards/" + cardName.replace(" ", "_") + ".jpg";
+            ImageView cardImage = new ImageView(new Image(ViewUtility.class.getResource(address).toExternalForm()));
+            cardImage.setFitWidth(334);
+            cardImage.setFitHeight(500);
+            container.getChildren().add(0, cardImage);
+
+            String description = DataManager.getInstance().getCardTemplateByName(cardName).detailedToString();
+            TextArea descriptionArea = new TextArea(description);
+            descriptionArea.setId("description-area");
+            descriptionArea.setEditable(false);
+            descriptionArea.setWrapText(true);
+            descriptionArea.setMinHeight(150);
+            descriptionArea.setMaxHeight(150);
+            container.getChildren().add(1, descriptionArea);
+
+            scene.lookup("#back-button").setOnMouseClicked(e -> stage.close());
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -112,5 +156,37 @@ public class ViewUtility {
         imageView.setId("profile-pic");
         HBox profilePicContainer = (HBox) scene.lookup("#profile-pic-container");
         profilePicContainer.getChildren().add(imageView);
+    }
+
+
+    public static void initializeShop(Scene shop, User user) {
+        Label moneyLabel = (Label) shop.lookup("#money-label");
+        moneyLabel.setText("Money: " + user.getMoney());
+        addCards(shop, user);
+    }
+
+    private static void addCards(Scene shop, User user) {
+        DataManager dataManager = DataManager.getInstance();
+        FlowPane cardsContainer = (FlowPane) shop.lookup("#cards-container");
+        for (CardTemplate template : dataManager.getCardTemplates()) {
+            String imageAddress = "/images/cards/" + template.getName().replaceAll(" ", "_") + ".jpg";
+            ImageView cardImage = new ImageView(new Image(ViewUtility.class.getResource(imageAddress).toExternalForm()));
+            cardImage.getStyleClass().add("shop-image");
+            cardImage.setFitWidth(184);
+            cardImage.setFitHeight(300);
+            cardImage.setOnMouseClicked(e -> ViewUtility.showCard(template.getName()));
+
+            Label countLabel = new Label("Purchased: " + user.getPurchasedCardsByName(template.getName()).size());
+            countLabel.getStyleClass().addAll("default-label", "number-label");
+
+            Button buyButton = new Button("Buy (" + template.getPrice() + ")");
+            buyButton.getStyleClass().addAll("default-button", "buy-button");
+            if (user.getMoney() < template.getPrice()) buyButton.setDisable(true);
+
+            VBox container = new VBox(2, cardImage, countLabel, buyButton);
+            container.setPrefWidth(184);
+            container.setPrefHeight(364);
+            cardsContainer.getChildren().add(container);
+        }
     }
 }

@@ -35,8 +35,8 @@
       <HBox id="profile-pic-container" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-spacing: 10px;" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <children>
-            <Label id="username-label" styleClass="default-input-label" text="Username: test" />
-            <Label id="nickname-label" styleClass="default-input-label" text="Nickname: test" />
+            <Label id="username-label" styleClass="default-label" text="Username: test" />
+            <Label id="nickname-label" styleClass="default-label" text="Nickname: test" />
          </children>
       </VBox>
     </children>
