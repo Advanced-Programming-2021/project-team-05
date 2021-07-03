@@ -31,11 +31,11 @@
             </children>
         </HBox>
         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button"
-                text="Login" GridPane.columnIndex="1" GridPane.rowIndex="4" onMouseClicked="#logIn"/>
+                text="Login" GridPane.columnIndex="1" GridPane.rowIndex="4" onMouseClicked="#setLoginScene"/>
         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button"
-                text="Register" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                text="Register" GridPane.columnIndex="1" GridPane.rowIndex="5"  onMouseClicked="#setSignupScene"/>
         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button"
-                text="Exit" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                onMouseClicked="#exit"  text="Exit" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
     </children>
     <stylesheets>
         <URL value="@../css/welcome.css"/>

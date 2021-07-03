@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="view.LoginMenuView">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -38,29 +38,29 @@
       <Label styleClass="default-label" text="Username" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <children>
-            <TextField promptText="enter username" styleClass="default-input" />
+            <TextField id="username-field" promptText="enter username" styleClass="default-input" />
          </children>
       </HBox>
       <Label styleClass="default-label" text="Nickname" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4">
          <children>
-            <TextField promptText="enter nickname" styleClass="default-input" />
+            <TextField  id="nickname-field" promptText="enter nickname" styleClass="default-input" />
          </children>
       </HBox>
       <Label styleClass="default-label" text="Password" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="5">
          <children>
-            <PasswordField promptText="enter password" styleClass="default-input" />
+            <PasswordField id="password-field" promptText="enter password" styleClass="default-input" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-spacing: 50;" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="6">
          <children>
-            <Button mnemonicParsing="false" text="Register">
+            <Button mnemonicParsing="false" text="Register" onMouseClicked="#signUp">
                <styleClass>
                   <String fx:value="default-button" />
                   <String fx:value="button-small" />
                </styleClass></Button>
-            <Button mnemonicParsing="false" text="Back">
+            <Button mnemonicParsing="false" text="Back"  onMouseClicked="#setWelcomeScene">
                <styleClass>
                   <String fx:value="default-button" />
                   <String fx:value="button-small" />

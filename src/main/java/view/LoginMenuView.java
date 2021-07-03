@@ -4,6 +4,7 @@ import com.sanityinc.jargs.CmdLineParser;
 import control.controller.LoginMenuController;
 import control.controller.MainMenuController;
 import control.message.LoginMenuMessage;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,8 +14,10 @@ import javafx.scene.control.TextField;
 import model.User;
 import sun.applet.Main;
 import utils.Utility;
+import utils.ViewUtility;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class LoginMenuView {
@@ -31,6 +34,7 @@ public class LoginMenuView {
 
 
     public void setWelcomeScene() throws IOException {
+
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/welcome.fxml"));
         Scene welcomeScene = new Scene(root);
         welcomeScene.getStylesheets().add("css/welcome.css");
@@ -47,9 +51,9 @@ public class LoginMenuView {
     }
 
     public void setSignupScene() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/signup.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/register.fxml"));
         Scene signupScene = new Scene(root);
-        signupScene.getStylesheets().add("css/signup.css");
+        signupScene.getStylesheets().add("css/register.css");
         scene = signupScene;
         MainView.stage.setScene(signupScene);
     }
@@ -60,18 +64,25 @@ public class LoginMenuView {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        Label errorLabel = (Label) scene.lookup("#login-error");
-        errorLabel.setText("");
-
         if (username.length() == 0 || password.length() == 0) {
-            System.out.println("response: fill in all fields");
-            errorLabel.setText("please fill in all fields!");
             return;
         }
         controller.loginUser(username, password);
 
-        System.out.println("logging in...");
 
+    }
+
+    public void signUp() {
+        TextField usernameField = (TextField) scene.lookup("#username-field");
+        TextField passwordField = (TextField) scene.lookup("#password-field");
+        TextField nicknameField = (TextField) scene.lookup("#nickname-field");
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+        String nickname = nicknameField.getText();
+;
+        boolean areFieldsValid = true;
+
+        controller.createUser(username ,password , nickname);
     }
 
     public void run() {
@@ -126,13 +137,13 @@ public class LoginMenuView {
     public void printCreateUserMessage(LoginMenuMessage message, String username, String nickname) {
         switch (message) {
             case USERNAME_EXISTS:
-                System.out.println("user with username " + username + " already exists");
+                ViewUtility.showInformationAlert("","username exist","user with username " + username + " already exists");
                 break;
             case NICKNAME_EXISTS:
-                System.out.println("user with nickname " + nickname + " already exists");
+                ViewUtility.showInformationAlert("","nickname exist","user with nickname " + nickname + " already exists");
                 break;
             case USER_CREATED:
-                System.out.println("user created successfully!");
+                ViewUtility.showInformationAlert("","successful","user created successfully!");
                 break;
             default:
                 System.out.println("unexpected error");
@@ -169,13 +180,14 @@ public class LoginMenuView {
     public void printLoginUserMessage(LoginMenuMessage message) {
         switch (message) {
             case NO_MATCH:
-                System.out.println("username and password didn't match");
+                ViewUtility.showInformationAlert("","incorrect user or pass","username and password dont match!");
                 break;
             case LOGGED_IN:
-                System.out.println("user logged in successfully!");
+                ViewUtility.showInformationAlert("","successful","logged in successfully!");
                 break;
             default:
-                System.out.println("unexpected error");
+                ViewUtility.showInformationAlert("","error","unexpected error");
+
         }
     }
 
@@ -184,5 +196,8 @@ public class LoginMenuView {
         System.out.println("Login Menu");
     }
 
+    public void exit() {
+        Platform.exit();
+    }
 
 }
