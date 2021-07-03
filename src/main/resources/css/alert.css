@@ -1,3 +1,8 @@
+* {
+    -fx-font-family: "Merienda";
+}
+
+
 .game-alert {
     -fx-background-color: linear-gradient(to right, #042854, #051932);
     -fx-text-fill: yellow;
@@ -19,9 +24,14 @@
     -fx-font-weight: bold;
 }
 
+
 .game-alert > .content {
     -fx-pref-height: 80px;
     -fx-padding: 15 15;
+}
+
+.game-alert .content > * {
+    -fx-fill: #ffca18;
 }
 
 .game-alert > .content.label {
@@ -29,8 +39,10 @@
     -fx-text-fill: #ffca18;
 }
 
+
 .game-alert > .button-bar > .container {
 }
+
 
 .dialog-pane .button {
     -fx-background-color: #bf9612;

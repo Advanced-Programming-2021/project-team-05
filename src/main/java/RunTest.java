@@ -5,7 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import model.User;
+import utils.PromptListener;
 import utils.ViewUtility;
 
 public class RunTest extends Application {
@@ -19,15 +19,24 @@ public class RunTest extends Application {
         initializeFonts();
         DataManager.getInstance().loadData();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/shop.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/deck.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Yo-Gi-Oh!");
         stage.setResizable(false);
         stage.show();
+        ViewUtility.initializeDeck(scene, DataManager.getInstance().getAi());
+        ViewUtility.showPromptAlert("Create Deck", "Please enter deck name", "name", "Create", new PromptListener() {
+            @Override
+            public void onOk(String input) {
+                System.out.println(input);
+            }
 
-        User ai = DataManager.getInstance().getAi();
-        ViewUtility.initializeShop(scene, ai);
+            @Override
+            public void onCancel() {
+
+            }
+        });
     }
 
 
