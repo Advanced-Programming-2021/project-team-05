@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -19,12 +20,22 @@ import javafx.stage.Stage;
 import model.Deck;
 import model.ScoreboardItem;
 import model.User;
+import model.card.Card;
 import model.template.CardTemplate;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Optional;
 
 public class ViewUtility {
+
+    // ToDo: move these to DeckView
+    private static Card selectedMainCard;
+    private static ImageView selectedMainCardImage;
+    private static Card selectedSideCard;
+    private static ImageView selectedSideCardImage;
+
 
     public static void showConfirmationAlert(String title, String header, String message, String cancelText, String confirmText, Listener listener) {
         Alert alert = getAlert(title, header, message);
@@ -117,6 +128,7 @@ public class ViewUtility {
     }
 
 
+    // ToDo: move this to ScoreboardView
     public static void addScoreboardToScene(Scene scene, String userNickname) {
         // TODO: 2021-06-26 delete this
         ObservableList<ScoreboardItem> scoreboardItems = FXCollections.observableArrayList();
@@ -167,6 +179,7 @@ public class ViewUtility {
     }
 
 
+    // ToDo: move this to ProfileView
     public static void setProfileValues(Scene scene, User user) {
         Label usernameLabel = (Label) scene.lookup("#username-label");
         usernameLabel.setText("Username: " + user.getUsername());
@@ -182,18 +195,18 @@ public class ViewUtility {
     }
 
 
+    // ToDo: move these to ShopView
     public static void initializeShop(Scene shopScene, User user) {
         Label moneyLabel = (Label) shopScene.lookup("#money-label");
         moneyLabel.setText("Money: " + user.getMoney());
-        addCards(shopScene, user);
+        addCardsToShop(shopScene, user);
     }
 
-    private static void addCards(Scene shopScene, User user) {
+    private static void addCardsToShop(Scene shopScene, User user) {
         DataManager dataManager = DataManager.getInstance();
         FlowPane cardsContainer = (FlowPane) shopScene.lookup("#cards-container");
         for (CardTemplate template : dataManager.getCardTemplates()) {
-            String imageAddress = "/images/cards/" + template.getName().replaceAll(" ", "_") + ".jpg";
-            ImageView cardImage = new ImageView(new Image(ViewUtility.class.getResource(imageAddress).toExternalForm()));
+            ImageView cardImage = getCardImage(template.getName());
             cardImage.getStyleClass().add("shop-image");
             cardImage.setFitWidth(184);
             cardImage.setFitHeight(300);
@@ -214,6 +227,129 @@ public class ViewUtility {
     }
 
 
+    // ToDo: move these to DeckView
+    public static void initializeEditDeck(Scene shopScene, Deck deck, User user) {
+        Label mainDeckLabel = (Label) shopScene.lookup("#main-deck-label");
+        mainDeckLabel.setText("Main Deck (" + deck.getMainDeckSize() + "/60)");
+
+        Label sideDeckLabel = (Label) shopScene.lookup("#side-deck-label");
+        sideDeckLabel.setText("Side Deck (" + deck.getSideDeckSize() + "/20)");
+
+        addDecks(shopScene, deck, user);
+        updateButtons(shopScene, deck, user);
+    }
+
+    private static void addDecks(Scene shopScene, Deck deck, User user) {
+        FlowPane mainCardsContainer = (FlowPane) shopScene.lookup("#main-cards-container");
+        addDeckToContainer(shopScene, mainCardsContainer, deck, false, user);
+
+        FlowPane sideCardsContainer = (FlowPane) shopScene.lookup("#side-cards-container");
+        addDeckToContainer(shopScene, sideCardsContainer, deck, true, user);
+    }
+
+    private static void addDeckToContainer(Scene scene, FlowPane cardsContainer,Deck deck, boolean isSide, User user) {
+        ArrayList<Card> cards = isSide ? deck.getSideDeck() : deck.getMainDeck();
+        cards.sort(Comparator.comparing(Card::getName));
+        cards.sort(Comparator.comparing(card -> card.getClass().getSimpleName()));
+        for (Card card : cards) {
+            ImageView cardImage = getCardImage(card.getName());
+            cardImage.getStyleClass().add("card-image");
+            cardImage.setFitWidth(80);
+            cardImage.setFitHeight(133);
+            cardImage.setOnMouseClicked(e -> {
+                selectDeselect(cardImage, card, isSide);
+                updateButtons(scene, deck, user);
+            });
+
+            Button showButton = new Button("Show");
+            showButton.getStyleClass().addAll("default-button", "show-button");
+            showButton.setOnMouseClicked(e -> ViewUtility.showCard(card.getName()));
+
+            VBox container = new VBox(2, cardImage, showButton);
+            container.setPrefWidth(80);
+            container.setPrefHeight(165);
+            cardsContainer.getChildren().add(container);
+        }
+        VBox addBox = new VBox();
+        addBox.setPrefWidth(80);
+        addBox.setPrefHeight(165);
+        addBox.setAlignment(Pos.TOP_CENTER);
+
+        Button addButton = new Button("+");
+        addButton.getStyleClass().add("add-button");
+        addButton.setId((isSide ? "side" : "main") + "-add-btn");
+        addButton.setPrefWidth(80);
+        addButton.setPrefHeight(165);
+        addButton.setCursor(Cursor.HAND);
+        addButton.setOnMouseClicked(e -> addCardToDeck(isSide));
+        addBox.getChildren().add(addButton);
+        cardsContainer.getChildren().add(addBox);
+    }
+
+    private static void addCardToDeck(boolean isSide) {
+        // ToDo: complete
+    }
+
+    private static void selectDeselect(ImageView cardImage, Card card, boolean isSide) {
+        if (isSide) {
+            if (cardImage.equals(selectedSideCardImage)) {
+                selectedSideCardImage = null;
+                selectedSideCard = null;
+                cardImage.getStyleClass().remove("selected-image");
+            } else {
+                if (selectedSideCardImage != null) selectedSideCardImage.getStyleClass().remove("selected-image");
+                cardImage.getStyleClass().add("selected-image");
+                selectedSideCardImage = cardImage;
+                selectedSideCard = card;
+            }
+        } else {
+            if (cardImage.equals(selectedMainCardImage)) {
+                selectedMainCardImage = null;
+                selectedMainCard = null;
+                cardImage.getStyleClass().remove("selected-image");
+            } else {
+                if (selectedMainCardImage != null) selectedMainCardImage.getStyleClass().remove("selected-image");
+                cardImage.getStyleClass().add("selected-image");
+                selectedMainCardImage = cardImage;
+                selectedMainCard = card;
+            }
+        }
+    }
+
+    private static void updateButtons(Scene scene, Deck deck, User user) {
+        updateAddButtons(scene, deck, user);
+        updateRemoveButtons(scene);
+        updateMoveButtons(scene, deck);
+    }
+
+    private static void updateAddButtons(Scene scene, Deck deck, User user) {
+        boolean hasCard = user.getPurchasedCardsExceptDeck(deck).size() != 0;
+
+        Button mainAddButton = (Button) scene.lookup("#main-add-btn");
+        mainAddButton.setDisable(!hasCard || deck.isMainDeckFull());
+
+        Button sideAddButton = (Button) scene.lookup("#side-add-btn");
+        sideAddButton.setDisable(!hasCard || deck.isSideDeckFull());
+    }
+
+    private static void updateMoveButtons(Scene scene, Deck deck) {
+        Button mainMoveButton = (Button) scene.lookup("#main-move-btn");
+        mainMoveButton.setDisable(selectedMainCard == null || deck.isSideDeckFull());
+
+        Button sideMoveButton = (Button) scene.lookup("#side-move-btn");
+        sideMoveButton.setDisable(selectedSideCard == null || deck.isMainDeckFull());
+    }
+
+    private static void updateRemoveButtons(Scene scene) {
+        Button mainRemoveButton = (Button) scene.lookup("#main-remove-btn");
+        mainRemoveButton.setDisable(selectedMainCard == null);
+
+        Button sideRemoveButton = (Button) scene.lookup("#side-remove-btn");
+        sideRemoveButton.setDisable(selectedSideCard == null);
+    }
+
+
+    // ToDo: move this to DeckView
     public static void initializeDeck(Scene deckScene, User user) {
         FlowPane decksContainer = (FlowPane) deckScene.lookup("#decks-container");
         decksContainer.setAlignment(Pos.TOP_CENTER);
@@ -252,7 +388,14 @@ public class ViewUtility {
         addButton.setId("add-button");
         addButton.setPrefWidth(250);
         addButton.setPrefHeight(287);
+        addButton.setCursor(Cursor.HAND);
         addBox.getChildren().add(addButton);
         decksContainer.getChildren().add(addBox);
+    }
+
+
+    private static ImageView getCardImage(String cardName) {
+        String imageAddress = "/images/cards/" + cardName.replaceAll(" ", "_") + ".jpg";
+        return new ImageView(new Image(ViewUtility.class.getResource(imageAddress).toExternalForm()));
     }
 }
