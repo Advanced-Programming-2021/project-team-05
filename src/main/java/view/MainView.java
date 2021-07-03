@@ -13,7 +13,6 @@ public class MainView extends Application {
 
     public static void main(String[] args) {
         DataManager.getInstance().loadData();
-        DataManager.getInstance().saveData();
         launch(args);
     }
 
