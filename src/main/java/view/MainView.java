@@ -21,7 +21,9 @@ public class MainView extends Application {
         MainView.stage = stage;
         stage.setTitle("Yu-Gi-Oh");
         stage.setResizable(false);
-        LoginMenuView.setController(new LoginMenuController());
+        LoginMenuController controller = new LoginMenuController();
+        controller.setView(new LoginMenuView());
+        LoginMenuView.setController(controller);
         new LoginMenuView().setWelcomeScene();
         stage.show();
     }
