@@ -64,15 +64,18 @@ public class ChangePasswordTest {
 
     @Test
     public void changePasswordTest() {
-        LoginMenuView loginMenuView = new LoginMenuView(new LoginMenuController());
+        LoginMenuController controller = new LoginMenuController();
+        LoginMenuView loginMenuView = new LoginMenuView();
+        LoginMenuView.setController(controller);
+
         loginMenuView.createUser("user create --username test --password pass --nickname test".split("\\s"));
         loginMenuView.createUser("user create --username hello --password pass --nickname big".split("\\s"));
         loginMenuView.createUser("user create --username user --password pass --nickname blue".split("\\s"));
         loginMenuView.createUser("user create --username good --password pass --nickname weak".split("\\s"));
         outContent.reset();
 
-        ProfileMenuController controller = new ProfileMenuController(DataManager.getInstance().getUserByUsername("test"));
-        ProfileMenuView view = new ProfileMenuView(controller);
+        ProfileMenuController controller1 = new ProfileMenuController(DataManager.getInstance().getUserByUsername("test"));
+        ProfileMenuView view = new ProfileMenuView(controller1);
 
         view.changePassword("profile change -p -n pass -c test".split("\\s"));
         assertOutputIsEqual("current password is invalid");

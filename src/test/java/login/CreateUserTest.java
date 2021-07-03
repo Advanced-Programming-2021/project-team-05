@@ -52,7 +52,8 @@ public class CreateUserTest {
     @Test
     public void createUserInvalidInputTest() {
         LoginMenuController controller = new LoginMenuController();
-        LoginMenuView view = new LoginMenuView(controller);
+        LoginMenuView view = new LoginMenuView();
+        LoginMenuView.setController(controller);
 
         ArrayList<String> commands = new ArrayList<>();
         commands.add("user create --username --password test pass --nickname nick");
@@ -78,7 +79,8 @@ public class CreateUserTest {
     @Test
     public void createUserNotInvalidInputTest() {
         LoginMenuController controller = new LoginMenuController();
-        LoginMenuView view = new LoginMenuView(controller);
+        LoginMenuView view = new LoginMenuView();
+        LoginMenuView.setController(controller);
 
         ArrayList<String> commands = new ArrayList<>();
         commands.add("user create --username u --password p --nickname n");
@@ -111,7 +113,8 @@ public class CreateUserTest {
     @Test
     public void createUserUsernameExistsTest() {
         LoginMenuController controller = new LoginMenuController();
-        LoginMenuView view = new LoginMenuView(controller);
+        LoginMenuView view = new LoginMenuView();
+        LoginMenuView.setController(controller);
 
         view.createUser("user create --username username --password password --nickname nickname".split("\\s"));
 
@@ -149,7 +152,8 @@ public class CreateUserTest {
     @Test
     public void createUserNicknameExistsTest() {
         LoginMenuController controller = new LoginMenuController();
-        LoginMenuView view = new LoginMenuView(controller);
+        LoginMenuView view = new LoginMenuView();
+        LoginMenuView.setController(controller);
 
         view.createUser("user create --username username --password password --nickname nickname".split("\\s"));
 
@@ -185,8 +189,8 @@ public class CreateUserTest {
     @Test
     public void createUserSuccessfulTest() {
         LoginMenuController controller = new LoginMenuController();
-        LoginMenuView view = new LoginMenuView(controller);
-
+        LoginMenuView view = new LoginMenuView();
+        LoginMenuView.setController(controller);
         view.createUser("user create --username test1 --password test1pass --nickname test1nick".split("\\s"));
         assertUserCreatedSuccessfully("test1", "test1pass", "test1nick");
 
@@ -207,7 +211,8 @@ public class CreateUserTest {
     @Test
     public void createUserMixed() {
         LoginMenuController controller = new LoginMenuController();
-        LoginMenuView view = new LoginMenuView(controller);
+        LoginMenuView view = new LoginMenuView();
+        LoginMenuView.setController(controller);
 
         view.createUser("user create -u test --nickname nick -p pass".split("\\s"));
         assertUserCreatedSuccessfully("test", "pass", "nick");

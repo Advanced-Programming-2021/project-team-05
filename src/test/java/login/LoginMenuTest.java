@@ -43,7 +43,7 @@ public class LoginMenuTest {
 
     @Test
     public void showCurrentMenuTest() {
-        LoginMenuView view = new LoginMenuView(new LoginMenuController());
+        LoginMenuView view = new LoginMenuView();
 
         view.showCurrentMenu();
         Assertions.assertEquals("Login Menu\r\n", outContent.toString());
@@ -108,7 +108,7 @@ public class LoginMenuTest {
         }
 
         InputStream stdIn = TestUtility.giveInput(commandsStringBuilder.toString());
-        LoginMenuView view = new LoginMenuView(new LoginMenuController());
+        LoginMenuView view = new LoginMenuView();
         view.run();
 
         Assertions.assertEquals(outputsStringBuilder.toString(), outContent.toString());
@@ -117,7 +117,7 @@ public class LoginMenuTest {
 
     @Test
     public void loginMessageTest() {
-        LoginMenuView view = new LoginMenuView(new LoginMenuController());
+        LoginMenuView view = new LoginMenuView();
         String username = "name", nickname = "nick";
 
         view.printCreateUserMessage(LoginMenuMessage.USER_CREATED, username, nickname);

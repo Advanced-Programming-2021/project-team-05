@@ -29,7 +29,8 @@ public class LoginUserTest {
     @BeforeAll
     public static void createUsers() {
         LoginMenuController controller = new LoginMenuController();
-        LoginMenuView view = new LoginMenuView(controller);
+        LoginMenuView view = new LoginMenuView();
+        LoginMenuView.setController(controller);
         DataManager.getInstance().getUsers().clear();
 
         view.createUser("user create --username test1 --password pass1 --nickname nick1".split("\\s"));
@@ -53,7 +54,8 @@ public class LoginUserTest {
     @Test
     public void loginUserInvalidInputTest() {
         LoginMenuController controller = new LoginMenuController();
-        LoginMenuView view = new LoginMenuView(controller);
+        LoginMenuView view = new LoginMenuView();
+        LoginMenuView.setController(controller);
 
         ArrayList<String> commands = new ArrayList<>();
         commands.add("user login --username --password test pass");
@@ -75,7 +77,9 @@ public class LoginUserTest {
     @Test
     public void loginUserNoMatch() {
         LoginMenuController controller = new LoginMenuController();
-        LoginMenuView view = new LoginMenuView(controller);
+        LoginMenuView view = new LoginMenuView();
+        LoginMenuView.setController(controller);
+
 
         ArrayList<String> commands = new ArrayList<>();
         commands.add("user login --username test --password pass");

@@ -62,7 +62,7 @@ public class ChangeNicknameTest {
 
     @Test
     public void changeNicknameTest() {
-        LoginMenuView loginMenuView = new LoginMenuView(new LoginMenuController());
+        LoginMenuView loginMenuView = new LoginMenuView();
         loginMenuView.createUser("user create --username test --password pass --nickname test".split("\\s"));
         loginMenuView.createUser("user create --username hello --password pass --nickname big".split("\\s"));
         loginMenuView.createUser("user create --username user --password pass --nickname blue".split("\\s"));

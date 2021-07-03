@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.*;
 import utils.TestUtility;
 import utils.Utility;
+import view.MainView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -28,7 +29,7 @@ public class MainTest {
         String[] args = new String[]{""};
         InputStream stdIn = TestUtility.giveInput("menu show-current\nmenu exit");
         Utility.initializeScanner();
-        Main.main(args);
+        MainView.main(args);
 
         Assertions.assertEquals(outContent.toString().trim(), "Login Menu");
         System.setIn(stdIn);

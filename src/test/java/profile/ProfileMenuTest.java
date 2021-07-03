@@ -54,7 +54,11 @@ public class ProfileMenuTest {
 
     @Test
     public void runTest() {
-        LoginMenuView loginMenuView = new LoginMenuView(new LoginMenuController());
+        LoginMenuController controller = new LoginMenuController();
+
+        LoginMenuView loginMenuView = new LoginMenuView();
+        LoginMenuView.setController(controller);
+
         DataManager dataManager = DataManager.getInstance();
         dataManager.addUser(new User("test0", "pass0", "nick0"));
         dataManager.addUser(new User("test1", "pass1", "nick1"));
