@@ -18,14 +18,14 @@
     -fx-alignment: center;
     -fx-background-radius: 5px;
     -fx-font-size: 15px;
-    -fx-pref-height: 15px;
-    -fx-pref-width: 500px;
+    -fx-pref-height: 32px;
+    -fx-pref-width: 184px;
 }
 
 
 .buy-button {
     -fx-font-size: 17px;
-    -fx-pref-height: 30px;
+    -fx-min-height: 43px;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 1), 5, 0, 0, 5);
 }
 

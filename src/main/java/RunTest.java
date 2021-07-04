@@ -22,6 +22,8 @@ import java.util.Random;
 
 public class RunTest extends Application {
 
+    public static Scene scene;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -33,12 +35,13 @@ public class RunTest extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/edit-deck.fxml"));
         Scene scene = new Scene(root);
+        RunTest.scene = scene;
         stage.setScene(scene);
         stage.setTitle("Yo-Gi-Oh!");
         stage.setResizable(false);
         stage.show();
         User user = getUser();
-        ViewUtility.initializeEditDeck(scene, user.getDeckByName("My Deck"), user);
+        ViewUtility.updateEditDeckScene(scene, user.getDeckByName("My Deck"), user);
     }
 
     private User getUser() {
