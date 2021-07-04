@@ -52,17 +52,21 @@ public class RunTest extends Application {
 
         Random random = new Random();
         ArrayList<CardTemplate> cardTemplates = dataManager.getCardTemplates();
-        for (int i = 0; i < 79; i++) {
+        for (int i = 0; i < 100; i++) {
             int randomIndex = random.nextInt(cardTemplates.size());
             CardTemplate template = cardTemplates.get(randomIndex);
             Card card;
             if (template instanceof MonsterTemplate) card = new Monster((MonsterTemplate) template);
             else if (template instanceof SpellTemplate) card = new Spell((SpellTemplate) template);
             else card = new Trap((TrapTemplate) template);
+            if (deck.isCardFull(card)) {
+                i--;
+                continue;
+            }
             dataManager.addCard(card);
             user.purchaseCard(card);
-            if (i < 60) deck.addCardToMainDeck(card);
-            else deck.addCardToSideDeck(card);
+            if (i < 50) deck.addCardToMainDeck(card);
+            else if (i < 60) deck.addCardToSideDeck(card);
         }
 
         return user;

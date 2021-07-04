@@ -7,7 +7,10 @@ import model.card.Spell;
 import model.card.Trap;
 import model.template.property.SpellTrapStatus;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.UUID;
 
 public class Deck implements Cloneable {
     private String id;
@@ -172,6 +175,22 @@ public class Deck implements Cloneable {
 
     public final boolean isValid() {
         return this.mainDeckCardIds.size() >= 40;
+    }
+
+
+    public ArrayList<Card> getAddableCards(ArrayList<Card> cards) {
+        ArrayList<Card> addableCards = new ArrayList<>();
+        for (Card card : cards) {
+            if (!this.hasCardInMainDeck(card) && !this.hasCardInSideDeck(card)) {
+                int cardCount = this.getCardsByNameInMainDeck(card.getName()).size();
+                cardCount += this.getCardsByNameInSideDeck(card.getName()).size();
+                for (Card addableCard : addableCards) {
+                    if (card.getName().equals(addableCard.getName())) cardCount++;
+                }
+                if (cardCount < 3) addableCards.add(card);
+            }
+        }
+        return addableCards;
     }
 
 

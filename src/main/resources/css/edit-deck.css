@@ -15,9 +15,9 @@
 
 
 .show-button {
-    -fx-font-size: 14px;
-    -fx-pref-width: 80px;
-    -fx-pref-height: 14px;
+    -fx-font-size: 16px;
+    -fx-pref-width: 100px;
+    -fx-pref-height: 16px;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 1), 5, 0, 0, 5);
 }
 

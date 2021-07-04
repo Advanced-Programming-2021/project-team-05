@@ -235,27 +235,25 @@ public class ViewUtility {
         Label sideDeckLabel = (Label) shopScene.lookup("#side-deck-label");
         sideDeckLabel.setText("Side Deck (" + deck.getSideDeckSize() + "/20)");
 
-        addDecks(shopScene, deck, user);
+        FlowPane mainCardsContainer = (FlowPane) shopScene.lookup("#main-cards-container");
+        addDeckToContainer(shopScene, mainCardsContainer, deck, user, false);
+
+        FlowPane sideCardsContainer = (FlowPane) shopScene.lookup("#side-cards-container");
+        addDeckToContainer(shopScene, sideCardsContainer, deck, user, true);
+
         updateButtons(shopScene, deck, user);
     }
 
-    private static void addDecks(Scene shopScene, Deck deck, User user) {
-        FlowPane mainCardsContainer = (FlowPane) shopScene.lookup("#main-cards-container");
-        addDeckToContainer(shopScene, mainCardsContainer, deck, false, user);
-
-        FlowPane sideCardsContainer = (FlowPane) shopScene.lookup("#side-cards-container");
-        addDeckToContainer(shopScene, sideCardsContainer, deck, true, user);
-    }
-
-    private static void addDeckToContainer(Scene scene, FlowPane cardsContainer,Deck deck, boolean isSide, User user) {
+    private static void addDeckToContainer(Scene scene, FlowPane cardsContainer, Deck deck, User user, boolean isSide) {
+        cardsContainer.getChildren().clear();
         ArrayList<Card> cards = isSide ? deck.getSideDeck() : deck.getMainDeck();
         cards.sort(Comparator.comparing(Card::getName));
         cards.sort(Comparator.comparing(card -> card.getClass().getSimpleName()));
         for (Card card : cards) {
             ImageView cardImage = getCardImage(card.getName());
             cardImage.getStyleClass().add("card-image");
-            cardImage.setFitWidth(80);
-            cardImage.setFitHeight(133);
+            cardImage.setFitWidth(100);
+            cardImage.setFitHeight(165);
             cardImage.setOnMouseClicked(e -> {
                 selectDeselect(cardImage, card, isSide);
                 updateButtons(scene, deck, user);
@@ -266,28 +264,64 @@ public class ViewUtility {
             showButton.setOnMouseClicked(e -> ViewUtility.showCard(card.getName()));
 
             VBox container = new VBox(2, cardImage, showButton);
-            container.setPrefWidth(80);
-            container.setPrefHeight(165);
+            container.setPrefWidth(100);
+            container.setPrefHeight(205);
             cardsContainer.getChildren().add(container);
         }
         VBox addBox = new VBox();
-        addBox.setPrefWidth(80);
-        addBox.setPrefHeight(165);
+        addBox.setPrefWidth(100);
+        addBox.setPrefHeight(205);
         addBox.setAlignment(Pos.TOP_CENTER);
 
         Button addButton = new Button("+");
         addButton.getStyleClass().add("add-button");
         addButton.setId((isSide ? "side" : "main") + "-add-btn");
-        addButton.setPrefWidth(80);
-        addButton.setPrefHeight(165);
+        addButton.setPrefWidth(100);
+        addButton.setPrefHeight(205);
         addButton.setCursor(Cursor.HAND);
-        addButton.setOnMouseClicked(e -> addCardToDeck(isSide));
+        addButton.setOnMouseClicked(e -> addCard(deck, user, isSide));
         addBox.getChildren().add(addButton);
         cardsContainer.getChildren().add(addBox);
     }
 
-    private static void addCardToDeck(boolean isSide) {
-        // ToDo: complete
+    private static void addCard(Deck deck, User user, boolean isSide) {
+        try {
+            Stage stage = new Stage();
+            stage.setResizable(false);
+            stage.setTitle("Add Card");
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            Parent root = FXMLLoader.load(ViewUtility.class.getResource("/fxml/add-card.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+            ViewUtility.showInformationAlert("Add Card", "", "Select a card to add");
+
+            FlowPane cardsContainer = (FlowPane) scene.lookup("#cards-container");
+            Button backButton = (Button) scene.lookup("#back-btn");
+            backButton.setOnMouseClicked(e -> stage.close());
+            for (Card card : deck.getAddableCards(user.getPurchasedCards())) {
+                ImageView cardImage = getCardImage(card.getName());
+                cardImage.getStyleClass().add("shop-image");
+                cardImage.setFitWidth(184);
+                cardImage.setFitHeight(300);
+                cardImage.setOnMouseClicked(e -> {
+                    // ToDo: add card to side or main deck, show message, call initializeEditDeck
+                    stage.close();
+                });
+
+                Button showButton = new Button("Show");
+                showButton.getStyleClass().addAll("default-button", "show-button");
+                showButton.setOnMouseClicked(e -> ViewUtility.showCard(card.getName()));
+
+                VBox container = new VBox(2, cardImage, showButton);
+                container.setPrefWidth(184);
+                container.setPrefHeight(332);
+                cardsContainer.getChildren().add(container);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void selectDeselect(ImageView cardImage, Card card, boolean isSide) {
@@ -323,7 +357,7 @@ public class ViewUtility {
     }
 
     private static void updateAddButtons(Scene scene, Deck deck, User user) {
-        boolean hasCard = user.getPurchasedCardsExceptDeck(deck).size() != 0;
+        boolean hasCard = deck.getAddableCards(user.getPurchasedCards()).size() != 0;
 
         Button mainAddButton = (Button) scene.lookup("#main-add-btn");
         mainAddButton.setDisable(!hasCard || deck.isMainDeckFull());
