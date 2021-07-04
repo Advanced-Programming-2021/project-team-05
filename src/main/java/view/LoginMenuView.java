@@ -71,6 +71,17 @@ public class LoginMenuView {
         controller.loginUser(username, password);
 
 
+//        Alert alert = new PacmanAlert(Alert.AlertType.INFORMATION, "Log In", "logged in successfully", "");
+//        alert.setOnCloseRequest(event -> {
+//            try {
+//                new MainMenuView().setMainMenuScene();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
+//        alert.show();
+
+
     }
 
     public void signUp() {
@@ -89,7 +100,15 @@ public class LoginMenuView {
         boolean areFieldsValid = true;
 
         controller.createUser(username ,password , nickname);
+
+        try {
+            setWelcomeScene();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+
 
 
     public void printCreateUserMessage(LoginMenuMessage message, String username, String nickname) {
@@ -114,6 +133,7 @@ public class LoginMenuView {
                 break;
             default:
                 System.out.println("unexpected error");
+
         }
     }
 

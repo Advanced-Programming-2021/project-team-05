@@ -6,6 +6,7 @@ import model.User;
 import view.LoginMenuView;
 import view.MainMenuView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -60,8 +61,11 @@ public class LoginMenuController {
         }
 
         view.printLoginUserMessage(LoginMenuMessage.LOGGED_IN);
-        MainMenuController mainMenuController = new MainMenuController(user);
-        MainMenuView mainMenuView = new MainMenuView(mainMenuController);
-        // mainMenuView.run();
+        MainMenuView.setController(new MainMenuController(user));
+        try {
+            new MainMenuView().setMainMenuScene();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
