@@ -116,6 +116,14 @@ public class User {
         return cards;
     }
 
+    public ArrayList<Card> getPurchasedCardsExceptDeck(Deck deck) {
+        ArrayList<Card> cards = new ArrayList<>();
+        for (Card card : this.getPurchasedCards()) {
+            if (!deck.hasCardInMainDeck(card) && !deck.hasCardInSideDeck(card)) cards.add(card);
+        }
+        return cards;
+    }
+
 
     public ArrayList<Deck> getDecks() {
         DataManager dataManager = DataManager.getInstance();
