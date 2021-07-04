@@ -10,7 +10,6 @@ public class MainView extends Application {
     public static Stage stage;
 
 
-
     public static void main(String[] args) {
         DataManager.getInstance().loadData();
         launch(args);
@@ -26,5 +25,10 @@ public class MainView extends Application {
         LoginMenuView.setController(controller);
         new LoginMenuView().setWelcomeScene();
         stage.show();
+    }
+
+    @Override
+    public void stop() {
+        System.exit(0);
     }
 }

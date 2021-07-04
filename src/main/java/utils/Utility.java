@@ -16,9 +16,9 @@ public class Utility {
     }
 
 
-//    public static String getNextLine() {
-////        return scanner.nextLine();
-//    }
+    public static String getNextLine() {
+        return scanner.nextLine();
+    }
 
 
     public static void reverseArray(String[] array) {

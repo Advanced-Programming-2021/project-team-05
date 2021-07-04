@@ -43,6 +43,6 @@
     </children>
     <stylesheets>
         <URL value="@../css/main.css" />
-        <URL value="@../css/scoeboard.css" />
+        <URL value="@../css/scoreboard.css" />
     </stylesheets>
 </GridPane>

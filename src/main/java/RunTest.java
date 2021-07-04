@@ -22,6 +22,8 @@ import java.util.Random;
 
 public class RunTest extends Application {
 
+    public static Scene scene;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -33,12 +35,13 @@ public class RunTest extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/edit-deck.fxml"));
         Scene scene = new Scene(root);
+        RunTest.scene = scene;
         stage.setScene(scene);
         stage.setTitle("Yo-Gi-Oh!");
         stage.setResizable(false);
         stage.show();
         User user = getUser();
-        ViewUtility.initializeEditDeck(scene, user.getDeckByName("My Deck"), user);
+        ViewUtility.updateEditDeckScene(scene, user.getDeckByName("My Deck"), user);
     }
 
     private User getUser() {
@@ -52,17 +55,21 @@ public class RunTest extends Application {
 
         Random random = new Random();
         ArrayList<CardTemplate> cardTemplates = dataManager.getCardTemplates();
-        for (int i = 0; i < 79; i++) {
+        for (int i = 0; i < 100; i++) {
             int randomIndex = random.nextInt(cardTemplates.size());
             CardTemplate template = cardTemplates.get(randomIndex);
             Card card;
             if (template instanceof MonsterTemplate) card = new Monster((MonsterTemplate) template);
             else if (template instanceof SpellTemplate) card = new Spell((SpellTemplate) template);
             else card = new Trap((TrapTemplate) template);
+            if (deck.isCardFull(card)) {
+                i--;
+                continue;
+            }
             dataManager.addCard(card);
             user.purchaseCard(card);
-            if (i < 60) deck.addCardToMainDeck(card);
-            else deck.addCardToSideDeck(card);
+            if (i < 50) deck.addCardToMainDeck(card);
+            else if (i < 60) deck.addCardToSideDeck(card);
         }
 
         return user;
