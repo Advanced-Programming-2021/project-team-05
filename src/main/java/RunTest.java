@@ -33,7 +33,7 @@ public class RunTest extends Application {
         initializeFonts();
         DataManager.getInstance().loadData();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/edit-deck.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/import-export.fxml"));
         Scene scene = new Scene(root);
         RunTest.scene = scene;
         stage.setScene(scene);
@@ -41,7 +41,7 @@ public class RunTest extends Application {
         stage.setResizable(false);
         stage.show();
         User user = getUser();
-        ViewUtility.updateEditDeckScene(scene, user.getDeckByName("My Deck"), user);
+        ViewUtility.initializeImportExportScene(stage, scene);
     }
 
     private User getUser() {

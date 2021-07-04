@@ -1,6 +1,7 @@
 package utils;
 
 import control.DataManager;
+import control.controller.ImportExportController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -12,9 +13,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Deck;
@@ -22,7 +25,9 @@ import model.ScoreboardItem;
 import model.User;
 import model.card.Card;
 import model.template.CardTemplate;
+import view.ImportExportMenuView;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -186,7 +191,7 @@ public class ViewUtility {
     }
 
 
-    // ToDo: move this to ProfileView
+    // ToDo: move these to ProfileView
     public static void updateProfileScene(Scene profileScene, User user) {
         Label usernameLabel = (Label) profileScene.lookup("#username-label");
         usernameLabel.setText("Username: " + user.getUsername());
@@ -207,7 +212,7 @@ public class ViewUtility {
     }
 
 
-    // ToDo: move these to ShopView
+    // ToDo: move this to ShopView
     public static void updateShopScene(Scene shopScene, User user) {
         Label moneyLabel = (Label) shopScene.lookup("#money-label");
         moneyLabel.setText("Money: " + user.getMoney());
@@ -407,7 +412,7 @@ public class ViewUtility {
             stage.setTitle("Add Card");
             stage.initModality(Modality.APPLICATION_MODAL);
 
-            Parent root = FXMLLoader.load(ViewUtility.class.getResource("/fxml/add-card.fxml"));
+            Parent root = FXMLLoader.load(ViewUtility.class.getResource("/fxml/show-cards.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -428,6 +433,82 @@ public class ViewUtility {
                 Button showButton = new Button("Show");
                 showButton.getStyleClass().addAll("default-button", "show-button");
                 showButton.setOnMouseClicked(e -> ViewUtility.showCard(card.getName()));
+
+                VBox container = new VBox(2, cardImage, showButton);
+                container.setPrefWidth(184);
+                container.setPrefHeight(332);
+                cardsContainer.getChildren().add(container);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // ToDo: move these to Import/Export
+    public static void initializeImportExportScene(Stage stage, Scene importExportScene) {
+        ChoiceBox<String> typeChoiceBox = new ChoiceBox<>();
+        typeChoiceBox.setId("type-box");
+        typeChoiceBox.setValue("Select Card Type");
+        typeChoiceBox.getItems().add("Select Card Type");
+        typeChoiceBox.getItems().add("Monster");
+        typeChoiceBox.getItems().add("Spell");
+        typeChoiceBox.getItems().add("Trap");
+        HBox choiceBoxContainer = (HBox) importExportScene.lookup("#type-choice-box-container");
+        choiceBoxContainer.getChildren().add(typeChoiceBox);
+
+        Button fileButton = (Button) importExportScene.lookup("#file-btn");
+        fileButton.setOnMouseClicked(e -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Import Card");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+            File selectedFile = fileChooser.showOpenDialog(stage);
+            if (selectedFile != null) fileButton.setText(selectedFile.getName());
+        });
+        fileButton.setOnDragOver(e -> {
+            if (e.getDragboard().hasFiles()) e.acceptTransferModes(TransferMode.ANY);
+        });
+        fileButton.setOnDragDropped(e -> {
+            File selectedFile = e.getDragboard().getFiles().get(0);
+            if (selectedFile.getName().matches(".*?\\.json")) fileButton.setText(selectedFile.getName());
+            else ViewUtility.showInformationAlert("Import", "Error", "File type should be json");
+        });
+
+        Button exportButton = (Button) importExportScene.lookup("#export-btn");
+        exportButton.setOnMouseClicked(e -> exportCard());
+    }
+
+    private static void exportCard() {
+        try {
+            Stage stage = new Stage();
+            stage.setResizable(false);
+            stage.setTitle("Export Card");
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            Parent root = FXMLLoader.load(ViewUtility.class.getResource("/fxml/show-cards.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+            FlowPane cardsContainer = (FlowPane) scene.lookup("#cards-container");
+            Button backButton = (Button) scene.lookup("#back-btn");
+            backButton.setOnMouseClicked(e -> stage.close());
+            ArrayList<CardTemplate> cardTemplates = DataManager.getInstance().getCardTemplates();
+            cardTemplates.sort(Comparator.comparing(CardTemplate::getName));
+            cardTemplates.sort(Comparator.comparing(template -> template.getClass().getSimpleName()));
+            for (CardTemplate template : cardTemplates) {
+                ImageView cardImage = ViewUtility.getCardImage(template.getName());
+                cardImage.getStyleClass().add("card-image");
+                cardImage.setFitWidth(184);
+                cardImage.setFitHeight(300);
+                cardImage.setOnMouseClicked(e -> {
+                    // ToDo: export card
+                    stage.close();
+                });
+
+                Button showButton = new Button("Show");
+                showButton.getStyleClass().addAll("default-button", "show-button");
+                showButton.setOnMouseClicked(e -> ViewUtility.showCard(template.getName()));
 
                 VBox container = new VBox(2, cardImage, showButton);
                 container.setPrefWidth(184);

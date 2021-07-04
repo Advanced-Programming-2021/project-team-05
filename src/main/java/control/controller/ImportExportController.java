@@ -8,6 +8,7 @@ import model.template.SpellTemplate;
 import model.template.TrapTemplate;
 import view.ImportExportMenuView;
 
+import java.io.File;
 import java.lang.reflect.Type;
 
 public class ImportExportController {
@@ -20,39 +21,29 @@ public class ImportExportController {
     }
 
 
-    public void importCard(String cardName, String typeString, boolean addToCSV) {
+    public void importCard(File file, String typeString, boolean addToCSV) {
         DataManager dataManager = DataManager.getInstance();
-        if (dataManager.getCardTemplateByName(cardName) != null) {
-            view.printImportExportCardMessage(ImportExportMessage.CARD_EXISTS);
-            return;
-        }
         Type type;
-        if ("monster".equals(typeString)) {
+        if ("Monster".equals(typeString)) {
             type = MonsterTemplate.class;
-        } else if ("spell".equals(typeString)) {
+        } else if ("Spell".equals(typeString)) {
             type = SpellTemplate.class;
-        } else if ("trap".equals(typeString)) {
+        } else if ("Trap".equals(typeString)) {
             type = TrapTemplate.class;
         } else {
             view.printImportExportCardMessage(ImportExportMessage.INVALID_CARD_TYPE);
             return;
         }
-        if (dataManager.importCard(cardName, type, addToCSV)) {
+        if (dataManager.importCard(file, type, addToCSV)) {
             view.printImportExportCardMessage(ImportExportMessage.IMPORT_SUCCESSFUL);
         } else {
-            view.printImportExportCardMessage(ImportExportMessage.INVALID_FILE);
+            view.printImportExportCardMessage(ImportExportMessage.IMPORT_FAILED);
         }
     }
 
 
-    public void exportCard(String cardName) {
-        DataManager dataManager = DataManager.getInstance();
-        CardTemplate cardTemplate = dataManager.getCardTemplateByName(cardName);
-        if (cardTemplate == null) {
-            view.printImportExportCardMessage(ImportExportMessage.NO_CARD_EXISTS);
-            return;
-        }
-        dataManager.exportCard(cardTemplate);
+    public void exportCard(CardTemplate cardTemplate) {
+        DataManager.getInstance().exportCard(cardTemplate);
         view.printImportExportCardMessage(ImportExportMessage.EXPORT_SUCCESSFUL);
     }
 }

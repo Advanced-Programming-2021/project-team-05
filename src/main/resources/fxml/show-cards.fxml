@@ -34,7 +34,7 @@
     <children>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2">
             <children>
-                <Label styleClass="title-label" text="Add Card" />
+                <Label styleClass="title-label" text="Select a Card" />
             </children>
         </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="7" />
@@ -51,6 +51,6 @@
     </children>
     <stylesheets>
         <URL value="@../css/main.css" />
-        <URL value="@../css/add-card.css" />
+        <URL value="@../css/show-cards.css" />
     </stylesheets>
 </GridPane>

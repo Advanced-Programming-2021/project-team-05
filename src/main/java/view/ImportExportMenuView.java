@@ -2,7 +2,6 @@ package view;
 
 import control.controller.ImportExportController;
 import control.message.ImportExportMessage;
-import utils.Utility;
 
 
 public class ImportExportMenuView {
@@ -34,7 +33,7 @@ public class ImportExportMenuView {
             }
 //            controller.importCard(cardName, typeString, true);
         } else {
-            controller.exportCard(cardName);
+//            controller.exportCard(cardName);
         }
     }
 
@@ -49,7 +48,7 @@ public class ImportExportMenuView {
             case CARD_EXISTS:
                 System.out.println("card with entered name exists");
                 break;
-            case INVALID_FILE:
+            case IMPORT_FAILED:
                 System.out.println("unable to import card");
                 break;
             case IMPORT_SUCCESSFUL:
