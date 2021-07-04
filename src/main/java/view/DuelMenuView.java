@@ -39,48 +39,21 @@ public class DuelMenuView {
     }
 
 
-    public void run() {
-        while (!endDuel) {
-            String command = Utility.getNextLine();
-            if (command.equals("cancel")) controller.cancel();
-            else if (command.equals("surrender")) controller.surrender();
-            else if (command.equals("next phase")) controller.goToNextPhase(true);
-            else if (command.equals("select -d")) deselect();
-            else if (command.startsWith("select")) select(command.split("\\s"));
-            else if (command.equals("summon")) summon();
-            else if (command.equals("set")) set();
-            else if (command.startsWith("set")) changePosition(command.split("\\s"));
-            else if (command.equals("flip-summon")) flipSummon();
-            else if (command.equals("attack direct")) directAttack();
-            else if (command.matches("^attack \\d$")) attack(command.split("\\s"));
-            else if (command.equals("activate effect")) activateEffect();
-            else if (command.startsWith("show graveyard")) showGraveyard(command.split("\\s"));
-            else if (command.equals("card show --selected") || command.equals("card show -s")) showSelectedCard();
-            else if (command.matches("^card show \\S+$")) showCard(command.split("\\s"));
-            else if (command.equals("menu show-current")) showCurrentMenu();
-            else if (command.startsWith("menu enter")) System.out.println("menu navigation is not possible");
-            else if (command.equals("menu help")) showHelp();
-            else if (command.matches("^increase (--LP|-l) \\d+$")) increaseLP(command.split("\\s"));
-            else if (command.matches("^duel set-winner \\S+$")) setWinner(command.split("\\s"));
-            else if (command.equals("menu exit")) controller.exit();
-            else System.out.println("invalid command");
-        }
-    }
 
 
     public ArrayList<Integer> getNumbers(int numbersCount, String message) {
         ArrayList<Integer> numbers = new ArrayList<>();
         System.out.println(message);
         for (int i = 1; i <= numbersCount; i++) {
-            try {
-                String input = Utility.getNextLine();
-                if ("cancel".equals(input)) return null;
-                int number = Integer.parseInt(input);
-                numbers.add(number);
-            } catch (NumberFormatException e) {
-                System.out.println("please enter a number");
-                i--;
-            }
+//            try {
+//                String input = Utility.getNextLine();
+//                if ("cancel".equals(input)) return null;
+//                int number = Integer.parseInt(input);
+//                numbers.add(number);
+//            } catch (NumberFormatException e) {
+//                System.out.println("please enter a number");
+//                i--;
+//            }
         }
         return numbers;
     }
@@ -122,12 +95,13 @@ public class DuelMenuView {
 
     public String getOneOfValues(String firstValue, String secondValue, String message, String invalidMessage) {
         System.out.println(message);
-        while (true) {
-            String state = Utility.getNextLine();
-            if ("cancel".equals(state)) return null;
-            if (state.equals(firstValue) || state.equals(secondValue)) return state;
-            System.out.println(invalidMessage);
-        }
+//        while (true) {
+//            String state = Utility.getNextLine();
+//            if ("cancel".equals(state)) return null;
+//            if (state.equals(firstValue) || state.equals(secondValue)) return state;
+//            System.out.println(invalidMessage);
+//        }
+        return "";
     }
 
 
@@ -528,9 +502,9 @@ public class DuelMenuView {
         }
         System.out.println(table.graveyardToString());
         while (true) {
-            System.out.println("enter \"back\" to return to game");
-            String input = Utility.getNextLine();
-            if (input.equals("back")) break;
+//            System.out.println("enter \"back\" to return to game");
+//            String input = Utility.getNextLine();
+//            if (input.equals("back")) break;
         }
     }
 

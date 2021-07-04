@@ -18,25 +18,7 @@ public class MainMenuView {
     }
 
 
-    public void run() {
-        while (true) {
-            String command = Utility.getNextLine();
-            if (command.startsWith("duel")) {
-                startDuel(command.split("\\s"));
-            } else if (command.equals("user logout")) {
-                System.out.println("user logged out successfully!");
-                break;
-            } else if (command.equals("menu show-current")) {
-                showCurrentMenu();
-            } else if (command.matches("^menu enter \\S+ Menu$")) {
-                enterMenu(command.split("\\s"));
-            } else if (command.equals("menu help")) {
-                showHelp();
-            } else {
-                System.out.println("invalid command");
-            }
-        }
-    }
+
 
 
     public void startDuel(String[] command) {
@@ -126,28 +108,28 @@ public class MainMenuView {
     }
 
     private void enterImportExportMenu() {
-        ImportExportMenuView importExportMenuView = new ImportExportMenuView(new ImportExportController());
-        importExportMenuView.run();
+//        ImportExportMenuView importExportMenuView = new ImportExportMenuView(new ImportExportController());
+//        importExportMenuView.run();
     }
 
     private void enterShopMenu() {
-        ShopMenuView shopMenuView = new ShopMenuView(new ShopMenuController(controller.getUser()));
-        shopMenuView.run();
+//        ShopMenuView shopMenuView = new ShopMenuView(new ShopMenuController(controller.getUser()));
+//        shopMenuView.run();
     }
 
     private void enterProfileMenu() {
-        ProfileMenuView profileMenuView = new ProfileMenuView(new ProfileMenuController(controller.getUser()));
-        profileMenuView.run();
+//        ProfileMenuView profileMenuView = new ProfileMenuView(new ProfileMenuController(controller.getUser()));
+//        profileMenuView.run();
     }
 
     private void enterScoreboardMenu() {
-        ScoreboardMenuView scoreboardMenuView = new ScoreboardMenuView();
-        scoreboardMenuView.run();
+//        ScoreboardMenuView scoreboardMenuView = new ScoreboardMenuView();
+//        scoreboardMenuView.run();
     }
 
     private void enterDeckMenu() {
-        DeckMenuView deckMenuView = new DeckMenuView(new DeckMenuController(controller.getUser()));
-        deckMenuView.run();
+//        DeckMenuView deckMenuView = new DeckMenuView(new DeckMenuController(controller.getUser()));
+//        deckMenuView.run();
     }
 
 

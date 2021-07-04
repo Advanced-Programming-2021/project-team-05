@@ -60,7 +60,7 @@ public class MainMenuController {
         DuelMenuController duelMenuController = new DuelMenuController(user, opponent, rounds);
         DuelMenuView duelMenuView = new DuelMenuView(duelMenuController);
         duelMenuController.startNextRound();
-        duelMenuView.run();
+     //   duelMenuView.run();
     }
 
     public final void startDuelWithAi(int rounds) {
@@ -81,6 +81,6 @@ public class MainMenuController {
         DuelMenuController duelMenuController = new DuelMenuController(user, DataManager.getInstance().getAi(), rounds);
         DuelMenuView duelMenuView = new DuelMenuView(duelMenuController);
         duelMenuController.startNextRound();
-        duelMenuView.run();
+      //  duelMenuView.run();
     }
 }

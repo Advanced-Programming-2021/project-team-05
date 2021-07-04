@@ -26,41 +26,6 @@ public class DeckMenuView {
     }
 
 
-    public final void run() {
-        System.out.println("separate card name words with '_'. example: Battle_OX");
-        while (true) {
-            String command = Utility.getNextLine();
-            if (command.matches("^deck create \\S+$")) {
-                createDeck(command.split("\\s"));
-            } else if (command.matches("^deck delete \\S+$")) {
-                deleteDeck(command.split("\\s"));
-            } else if (command.matches("^deck set-activate \\S+$")) {
-                activateDeck(command.split("\\s"));
-            } else if (command.startsWith("deck add-card")) {
-                addOrRemoveCard(command.split("\\s"), true);
-            } else if (command.startsWith("deck rm-card")) {
-                addOrRemoveCard(command.split("\\s"), false);
-            } else if (command.equals("deck show --all")) {
-                showAllDecks();
-            } else if (command.equals("deck show --cards")) {
-                showAllCards();
-            } else if (command.startsWith("deck show")) {
-                showDeck(command.split("\\s"));
-            } else if (command.matches("^card show \\S+$")) {
-                showCard(command.split("\\s"));
-            } else if (command.equals("menu show-current")) {
-                showCurrentMenu();
-            } else if (command.startsWith("menu enter")) {
-                System.out.println("menu navigation is not possible");
-            } else if (command.equals("menu exit")) {
-                break;
-            } else if (command.equals("menu help")) {
-                showHelp();
-            } else {
-                System.out.println("invalid command");
-            }
-        }
-    }
 
 
     public void createDeck(String[] command) {

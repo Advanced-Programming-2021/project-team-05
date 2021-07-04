@@ -65,6 +65,7 @@ public class LoginMenuView {
         String password = passwordField.getText();
 
         if (username.length() == 0 || password.length() == 0) {
+            ViewUtility.showInformationAlert("","error","fill all the parts");
             return;
         }
         controller.loginUser(username, password);
@@ -79,60 +80,17 @@ public class LoginMenuView {
         String username = usernameField.getText();
         String password = passwordField.getText();
         String nickname = nicknameField.getText();
+
+        if (username.equals("") || nickname.equals("") || password.equals("")) {
+            ViewUtility.showInformationAlert("","error","fill all the parts");
+            return;
+        }
 ;
         boolean areFieldsValid = true;
 
         controller.createUser(username ,password , nickname);
     }
 
-    public void run() {
-        Utility.initializeScanner();
-        while (true) {
-            String command = Utility.getNextLine();
-            if (command.startsWith("user create")) {
-                createUser(command.split("\\s"));
-            } else if (command.startsWith("user login")) {
-                loginUser(command.split("\\s"));
-            } else if (command.equals("menu show-current")) {
-                showCurrentMenu();
-            } else if (command.startsWith("menu enter")) {
-                System.out.println("please login first");
-            } else if (command.equals("menu exit")) {
-                break;
-            } else {
-                System.out.println("invalid command");
-            }
-        }
-    }
-
-
-    public void createUser(String[] command) {
-        if (command.length != 8) {
-            System.out.println("invalid command");
-            return;
-        }
-
-        CmdLineParser parser = new CmdLineParser();
-        CmdLineParser.Option<String> usernameOption = parser.addStringOption('u', "username");
-        CmdLineParser.Option<String> nicknameOption = parser.addStringOption('n', "nickname");
-        CmdLineParser.Option<String> passwordOption = parser.addStringOption('p', "password");
-        try {
-            parser.parse(command);
-        } catch (CmdLineParser.OptionException e) {
-            System.out.println("invalid command");
-            return;
-        }
-
-        String username = parser.getOptionValue(usernameOption);
-        String nickname = parser.getOptionValue(nicknameOption);
-        String password = parser.getOptionValue(passwordOption);
-        if (username == null || nickname == null || password == null) {
-            System.out.println("invalid command");
-            return;
-        }
-
-        controller.createUser(username, password, nickname);
-    }
 
     public void printCreateUserMessage(LoginMenuMessage message, String username, String nickname) {
         switch (message) {
@@ -145,37 +103,20 @@ public class LoginMenuView {
             case USER_CREATED:
                 ViewUtility.showInformationAlert("","successful","user created successfully!");
                 break;
+            case INVALID_PASSWORD:
+                ViewUtility.showInformationAlert("","error","password should not contain space!");
+                break;
+            case USERNAME_CONTAIN_SPACE:
+                ViewUtility.showInformationAlert("","error","username should not contain space!");
+                break;
+            case NICKNAME_CONTAIN_SPACE:
+                ViewUtility.showInformationAlert("","error","nickname should not contain space!");
+                break;
             default:
                 System.out.println("unexpected error");
         }
     }
 
-
-    public void loginUser(String[] command) {
-        if (command.length != 6) {
-            System.out.println("invalid command");
-            return;
-        }
-
-        CmdLineParser parser = new CmdLineParser();
-        CmdLineParser.Option<String> usernameOption = parser.addStringOption('u', "username");
-        CmdLineParser.Option<String> passwordOption = parser.addStringOption('p', "password");
-        try {
-            parser.parse(command);
-        } catch (CmdLineParser.OptionException e) {
-            System.out.println("invalid command");
-            return;
-        }
-
-        String username = parser.getOptionValue(usernameOption);
-        String password = parser.getOptionValue(passwordOption);
-        if (username == null || password == null) {
-            System.out.println("invalid command");
-            return;
-        }
-
-        controller.loginUser(username, password);
-    }
 
     public void printLoginUserMessage(LoginMenuMessage message) {
         switch (message) {
@@ -189,11 +130,6 @@ public class LoginMenuView {
                 ViewUtility.showInformationAlert("","error","unexpected error");
 
         }
-    }
-
-
-    public void showCurrentMenu() {
-        System.out.println("Login Menu");
     }
 
     public void exit() {
