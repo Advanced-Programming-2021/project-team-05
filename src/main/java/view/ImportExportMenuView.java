@@ -16,27 +16,7 @@ public class ImportExportMenuView {
     }
 
 
-    public void run() {
-        System.out.println("separate card name words with '_'. example: Battle_OX");
-        while (true) {
-            String command = Utility.getNextLine();
-            if (command.matches("^import card \\S+$")) {
-                importOrExportCard(command.split("\\s"), true);
-            } else if (command.matches("^export card \\S+$")) {
-                importOrExportCard(command.split("\\s"), false);
-            } else if (command.equals("menu show-current")) {
-                showCurrentMenu();
-            } else if (command.startsWith("menu enter")) {
-                System.out.println("menu navigation is not possible");
-            } else if (command.equals("menu exit")) {
-                break;
-            } else if (command.equals("menu help")) {
-                showHelp();
-            } else {
-                System.out.println("invalid command");
-            }
-        }
-    }
+
 
 
     private void importOrExportCard(String[] command, boolean importCard) {
@@ -45,14 +25,14 @@ public class ImportExportMenuView {
             System.out.println("please enter card type: (monster/spell/trap)");
             String typeString;
             while (true) {
-                typeString = Utility.getNextLine();
-                if (!typeString.equals("monster") && !typeString.equals("spell") && !typeString.equals("trap")) {
-                    System.out.println("invalid type");
-                    continue;
-                }
-                break;
+//                typeString = Utility.getNextLine();
+//                if (!typeString.equals("monster") && !typeString.equals("spell") && !typeString.equals("trap")) {
+//                    System.out.println("invalid type");
+//                    continue;
+//                }
+//                break;
             }
-            controller.importCard(cardName, typeString, true);
+//            controller.importCard(cardName, typeString, true);
         } else {
             controller.exportCard(cardName);
         }

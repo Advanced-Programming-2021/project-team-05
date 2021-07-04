@@ -17,26 +17,7 @@ public class ProfileMenuView {
     }
 
 
-    public void run() {
-        while (true) {
-            String command = Utility.getNextLine();
-            if (command.startsWith("profile change --nickname") || command.startsWith("profile change -n")) {
-                changeNickname(command.split("\\s"));
-            } else if (command.startsWith("profile change")) {
-                changePassword(command.split("\\s"));
-            } else if (command.equals("menu show-current")) {
-                showCurrentMenu();
-            } else if (command.startsWith("menu enter")) {
-                System.out.println("menu navigation is not possible");
-            } else if (command.equals("menu exit")) {
-                break;
-            } else if (command.equals("menu help")) {
-                showHelp();
-            } else {
-                System.out.println("invalid command");
-            }
-        }
-    }
+
 
 
     public void changeNickname(String[] command) {
