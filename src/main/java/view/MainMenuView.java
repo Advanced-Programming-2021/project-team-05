@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import model.User;
 import utils.Utility;
 import utils.ViewUtility;
 
@@ -36,6 +37,8 @@ public class MainMenuView {
         Scene scoreboardScene = new Scene(root);
         scene = scoreboardScene;
         MainView.stage.setScene(scoreboardScene);
+        ViewUtility.updateScoreboardScene(scene , controller.getUser().getNickname());
+
     }
 
     public void setShopScene() throws IOException {

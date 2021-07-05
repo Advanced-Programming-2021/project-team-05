@@ -1,12 +1,14 @@
 package view;
 
 import control.controller.LoginMenuController;
+import control.controller.MainMenuController;
 import control.message.LoginMenuMessage;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import model.User;
 import utils.ViewUtility;
 
 import java.io.IOException;
@@ -60,7 +62,8 @@ public class LoginMenuView {
             ViewUtility.showInformationAlert("Login", "Error", "Please fill all fields");
             return;
         }
-        controller.loginUser(username, password);
+        User user = controller.loginUser(username, password);
+        MainMenuView.setController(new MainMenuController(user));
         setMainMenuScene();
     }
 
