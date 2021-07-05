@@ -42,9 +42,15 @@ public class LoginMenuView {
         scene = signupScene;
         MainView.stage.setScene(signupScene);
     }
+    public void setMainMenuScene() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/main-menu.fxml"));
+        Scene signupScene = new Scene(root);
+        scene = signupScene;
+        MainView.stage.setScene(signupScene);
+    }
 
 
-    public void logIn() {
+    public void logIn() throws IOException {
         TextField usernameField = (TextField) scene.lookup("#username-field");
         TextField passwordField = (TextField) scene.lookup("#password-field");
         String username = usernameField.getText();
@@ -55,6 +61,7 @@ public class LoginMenuView {
             return;
         }
         controller.loginUser(username, password);
+        setMainMenuScene();
     }
 
     public void showLoginMessage(LoginMenuMessage message) {

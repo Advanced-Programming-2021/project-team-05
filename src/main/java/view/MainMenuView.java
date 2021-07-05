@@ -59,8 +59,8 @@ public class MainMenuView {
         MainView.stage.setScene(scoreboardScene);
     }
 
-    public void setCreatCardScene() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/card.fxml"));
+    public void setImportExportScene() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/import-export.fxml"));
         Scene scoreboardScene = new Scene(root);
         scene = scoreboardScene;
         MainView.stage.setScene(scoreboardScene);
