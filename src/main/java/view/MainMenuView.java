@@ -34,7 +34,6 @@ public class MainMenuView {
     public void setScoreboardScene() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/scoreboard.fxml"));
         Scene scoreboardScene = new Scene(root);
-        scoreboardScene.getStylesheets().add("css/scoreboard.css");
         scene = scoreboardScene;
         MainView.stage.setScene(scoreboardScene);
     }
@@ -42,7 +41,6 @@ public class MainMenuView {
     public void setShopScene() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/shop.fxml"));
         Scene scoreboardScene = new Scene(root);
-        scoreboardScene.getStylesheets().add("css/shop.css");
         scene = scoreboardScene;
         MainView.stage.setScene(scoreboardScene);
     }
@@ -50,7 +48,6 @@ public class MainMenuView {
     public void setDeckScene() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/deck.fxml"));
         Scene scoreboardScene = new Scene(root);
-        scoreboardScene.getStylesheets().add("css/deck.css");
         scene = scoreboardScene;
         MainView.stage.setScene(scoreboardScene);
     }
@@ -58,7 +55,6 @@ public class MainMenuView {
     public void setProfileScene() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/profile.fxml"));
         Scene scoreboardScene = new Scene(root);
-        scoreboardScene.getStylesheets().add("css/profile.css");
         scene = scoreboardScene;
         MainView.stage.setScene(scoreboardScene);
     }
@@ -66,7 +62,6 @@ public class MainMenuView {
     public void setCreatCardScene() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/card.fxml"));
         Scene scoreboardScene = new Scene(root);
-        scoreboardScene.getStylesheets().add("css/card.css");
         scene = scoreboardScene;
         MainView.stage.setScene(scoreboardScene);
     }
