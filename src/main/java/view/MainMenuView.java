@@ -37,6 +37,7 @@ public class MainMenuView {
         Scene scoreboardScene = new Scene(root);
         scene = scoreboardScene;
         MainView.stage.setScene(scoreboardScene);
+        System.out.println(controller.getUser().getNickname());
         ViewUtility.updateScoreboardScene(scene , controller.getUser().getNickname());
 
     }

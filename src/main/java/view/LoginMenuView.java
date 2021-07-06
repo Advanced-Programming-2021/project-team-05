@@ -17,7 +17,6 @@ public class LoginMenuView {
 
     private static Scene scene;
     private static LoginMenuController controller;
-    private User user;
 
 
     public static void setController(LoginMenuController controller) {
@@ -45,6 +44,7 @@ public class LoginMenuView {
         scene = signupScene;
         MainView.stage.setScene(signupScene);
     }
+
     public void setMainMenuScene() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/main-menu.fxml"));
         Scene signupScene = new Scene(root);
@@ -63,9 +63,11 @@ public class LoginMenuView {
             ViewUtility.showInformationAlert("Login", "Error", "Please fill all fields");
             return;
         }
-         user = controller.loginUser(username, password);
-
-
+        User user = controller.loginUser(username, password);
+        if (user != null) {
+            MainMenuView.setController(new MainMenuController(user));
+            setMainMenuScene();
+        }
     }
 
     public void showLoginMessage(LoginMenuMessage message) throws IOException {
@@ -75,8 +77,6 @@ public class LoginMenuView {
                 break;
             case LOGGED_IN:
                 ViewUtility.showInformationAlert("Login", "Successful", "Logged in successfully!");
-                MainMenuView.setController(new MainMenuController(user));
-                setMainMenuScene();
                 break;
             default:
                 ViewUtility.showInformationAlert("Login", "Error", "Unexpected error");
