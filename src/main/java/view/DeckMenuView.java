@@ -20,6 +20,7 @@ import model.Deck;
 import model.User;
 import model.card.Card;
 import model.template.CardTemplate;
+import utils.PromptListener;
 import utils.Utility;
 import utils.ViewUtility;
 
@@ -81,6 +82,22 @@ public class DeckMenuView {
         addButton.setPrefWidth(250);
         addButton.setPrefHeight(287);
         addButton.setCursor(Cursor.HAND);
+        addButton.setOnMouseClicked(event -> {
+            ViewUtility.showPromptAlert("Create new Deck",
+                    "Enter the deck name:",
+                    "Deck name",
+                    "Create",
+                    new PromptListener() {
+                @Override
+                public void onOk(String input) {
+                    controller.createDeck(input);
+                    updateDeckScene(deckScene, user);
+                }
+
+                @Override
+                public void onCancel() {}
+            });
+        });
         addBox.getChildren().add(addButton);
         decksContainer.getChildren().add(addBox);
     }
@@ -246,7 +263,7 @@ public class DeckMenuView {
 
 //    ----------------------Phase 1----------------------
 
-//    public void createDeck(String[] command) {
+    //    public void createDeck(String[] command) {
 //        String deckName = command[2];
 //        controller.createDeck(deckName);
 //    }
@@ -263,7 +280,8 @@ public class DeckMenuView {
                 System.out.println("unexpected error");
         }
     }
-//
+
+    //
 //
 //    public void deleteDeck(String[] command) {
 //        String deckName = command[2];
@@ -282,7 +300,8 @@ public class DeckMenuView {
                 System.out.println("unexpected error");
         }
     }
-//
+
+    //
 //
 //    public void activateDeck(String[] command) {
 //        String deckName = command[2];
@@ -301,7 +320,8 @@ public class DeckMenuView {
                 System.out.println("unexpected error");
         }
     }
-//
+
+    //
 //
 //    public void addOrRemoveCard(String[] command, boolean addCard) {
 //        CmdLineParser parser = new CmdLineParser();
@@ -359,7 +379,8 @@ public class DeckMenuView {
                 System.out.println("unexpected error");
         }
     }
-//
+
+    //
     public void printRemoveCardMessage(DeckMenuMessage message, String deckName, String cardName) {
         switch (message) {
             case NO_DECK_EXISTS:

@@ -33,13 +33,13 @@ public class DeckMenuController {
 
     public final void createDeck(String deckName) {
         if (user.getDeckByName(deckName) != null) {
-            view.printCreateDeckMessage(DeckMenuMessage.DECK_NAME_EXISTS, deckName);
+//            view.printCreateDeckMessage(DeckMenuMessage.DECK_NAME_EXISTS, deckName);
             return;
         }
         Deck deck = new Deck(deckName);
         DataManager.getInstance().addDeck(deck);
         user.addDeck(deck);
-        view.printCreateDeckMessage(DeckMenuMessage.DECK_CREATED, deckName);
+//        view.printCreateDeckMessage(DeckMenuMessage.DECK_CREATED, deckName);
     }
 
 
