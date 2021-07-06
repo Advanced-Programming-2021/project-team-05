@@ -34,14 +34,6 @@ import java.util.Comparator;
 import java.util.Optional;
 
 public class ViewUtility {
-
-    // ToDo: move these to DeckView
-    private static Card selectedMainCard;
-    private static ImageView selectedMainCardImage;
-    private static Card selectedSideCard;
-    private static ImageView selectedSideCardImage;
-
-
     public static void showConfirmationAlert(String title, String header, String message, String cancelText, String confirmText, Listener listener) {
         Alert alert = getAlert(title, header, message);
 
