@@ -380,7 +380,7 @@ public class DataManager {
     }
 
 
-    public void checkTemplate(CardTemplate template, boolean add) throws NullPointerException {
+    public void checkTemplate(CardTemplate template, boolean add) throws Exception {
         String[] line;
         String path;
         if (template instanceof MonsterTemplate) {
@@ -402,12 +402,13 @@ public class DataManager {
         }
     }
 
-    private String[] getCSVLineMonster(CardTemplate template) throws NullPointerException {
+    private String[] getCSVLineMonster(CardTemplate template) throws Exception {
         if (template.getEffects() == null) {
-            throw new NullPointerException();
+            throw new Exception("Invalid File");
         }
         String[] line = new String[9];
         line[0] = template.getName();
+        if (getCardTemplateByName(line[0]) != null) throw new Exception("Template Exists");
         line[1] = String.valueOf(((MonsterTemplate) template).getLevel());
         line[2] = ((MonsterTemplate) template).getAttribute().getName();
         line[3] = ((MonsterTemplate) template).getMonsterType().getName();
@@ -419,12 +420,13 @@ public class DataManager {
         return line;
     }
 
-    private String[] getCSVLineSpellTrap(CardTemplate template) throws NullPointerException {
+    private String[] getCSVLineSpellTrap(CardTemplate template) throws Exception {
         if (template.getEffects() == null) {
             throw new NullPointerException();
         }
         String[] line = new String[6];
         line[0] = template.getName();
+        if (getCardTemplateByName(line[0]) != null) throw new Exception("Template Exists");
         line[2] = template.getType().getName();
         line[3] = template.getDescription();
         line[5] = String.valueOf(template.getPrice());
@@ -440,16 +442,15 @@ public class DataManager {
     }
 
 
-    public boolean importCard(String cardName, Type type, boolean addToCSV) {
+    public boolean importCard(File file, Type type, boolean addToCSV) {
         try {
-            String path = IMPORT_EXPORT_DIR + "\\" + cardName.replaceAll("\\s", "_") + ".json";
             Gson gson = new GsonBuilder().serializeNulls().create();
-            JsonReader reader = new JsonReader(new FileReader(path));
+            JsonReader reader = new JsonReader(new FileReader(file));
             CardTemplate template = gson.fromJson(reader, type);
             reader.close();
             this.checkTemplate(template, addToCSV);
             this.templates.add(template);
-        } catch (NullPointerException | IOException e) {
+        } catch (Exception e) {
             return false;
         }
         return true;

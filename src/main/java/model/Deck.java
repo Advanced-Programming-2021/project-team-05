@@ -7,7 +7,10 @@ import model.card.Spell;
 import model.card.Trap;
 import model.template.property.SpellTrapStatus;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.UUID;
 
 public class Deck implements Cloneable {
     private String id;
@@ -175,6 +178,22 @@ public class Deck implements Cloneable {
     }
 
 
+    public ArrayList<Card> getAddableCards(ArrayList<Card> cards) {
+        ArrayList<Card> addableCards = new ArrayList<>();
+        for (Card card : cards) {
+            if (!this.hasCardInMainDeck(card) && !this.hasCardInSideDeck(card)) {
+                int cardCount = this.getCardsByNameInMainDeck(card.getName()).size();
+                cardCount += this.getCardsByNameInSideDeck(card.getName()).size();
+                for (Card addableCard : addableCards) {
+                    if (card.getName().equals(addableCard.getName())) cardCount++;
+                }
+                if (cardCount < 3) addableCards.add(card);
+            }
+        }
+        return addableCards;
+    }
+
+
     public final String detailedToString(boolean isSide) {
         DataManager dataManager = DataManager.getInstance();
         ArrayList<String> cards = isSide ? sideDeckCardIds : mainDeckCardIds;
@@ -222,10 +241,10 @@ public class Deck implements Cloneable {
 
     @Override
     public final String toString() {
-        return this.getName() + ": " +
-                "main deck " + this.getMainDeckSize() +
-                ", side deck " + this.getSideDeckSize() +
-                ", " + (this.isValid() ? "valid" : "invalid");
+        return this.getName() + "\n" +
+                "Main Deck Size: " + this.getMainDeckSize() + "\n" +
+                "Side Deck Size: " + this.getSideDeckSize() + "\n" +
+                "Deck is " + (this.isValid() ? "" : "Not ") + "Valid";
     }
 
 

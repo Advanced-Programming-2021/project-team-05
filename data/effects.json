@@ -60,7 +60,7 @@
     "action": "DESTROY_PLAYER_ALL_MONSTERS"
   },
   {
-    "cardName": "Mystical space typhoon",
+    "cardName": "Mystical Space Typhoon",
     "event": "ACTIVATE_EFFECT",
     "action": "DESTROY_OPPONENT_ONE_SPELL_OR_TRAP"
   },

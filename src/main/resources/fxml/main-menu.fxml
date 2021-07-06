@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" fx:controller="view.MainMenuView" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -35,7 +35,7 @@
         </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Start Duel">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Start Duel" onMouseClicked="#startDuel">
                <styleClass>
                   <String fx:value="default-button" />
                   <String fx:value="button-large" />
@@ -43,32 +43,32 @@
             </Button>
          </children>
       </HBox>
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Profile" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Profile" onMouseClicked="#setProfileScene" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Shop" GridPane.columnIndex="2" GridPane.rowIndex="4">
+      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Shop" onMouseClicked="#setShopScene"  GridPane.columnIndex="2" GridPane.rowIndex="4">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Deck" GridPane.columnIndex="1" GridPane.rowIndex="5">
+        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Deck" onMouseClicked="#setDeckScene" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Login" GridPane.columnIndex="2" GridPane.rowIndex="5">
+      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#setImportExportScene" text="Create Card"  GridPane.columnIndex="2" GridPane.rowIndex="5">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Scoreboard" GridPane.columnIndex="1" GridPane.rowIndex="6">
+        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#setScoreboardScene" text="Scoreboard" GridPane.columnIndex="1" GridPane.rowIndex="6">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Logout" GridPane.columnIndex="2" GridPane.rowIndex="6">
+      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#logOut" text="Logout" GridPane.columnIndex="2" GridPane.rowIndex="6">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />

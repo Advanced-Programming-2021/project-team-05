@@ -1,143 +1,133 @@
 package view;
 
-import com.sanityinc.jargs.CmdLineParser;
 import control.controller.LoginMenuController;
+import control.controller.MainMenuController;
 import control.message.LoginMenuMessage;
-import utils.Utility;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.TextField;
+import model.User;
+import utils.ViewUtility;
 
+import java.io.IOException;
 
 public class LoginMenuView {
 
-    private final LoginMenuController controller;
+    private static Scene scene;
+    private static LoginMenuController controller;
 
 
-    public LoginMenuView(LoginMenuController controller) {
-        this.controller = controller;
-        controller.setView(this);
+    public static void setController(LoginMenuController controller) {
+        LoginMenuView.controller = controller;
     }
 
 
-    public void run() {
-        Utility.initializeScanner();
-        while (true) {
-            String command = Utility.getNextLine();
-            if (command.startsWith("user create")) {
-                createUser(command.split("\\s"));
-            } else if (command.startsWith("user login")) {
-                loginUser(command.split("\\s"));
-            } else if (command.equals("menu show-current")) {
-                showCurrentMenu();
-            } else if (command.startsWith("menu enter")) {
-                System.out.println("please login first");
-            } else if (command.equals("menu exit")) {
+    public void setWelcomeScene() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/welcome.fxml"));
+        Scene welcomeScene = new Scene(root);
+        scene = welcomeScene;
+        MainView.stage.setScene(welcomeScene);
+    }
+
+    public void setLoginScene() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
+        Scene loginScene = new Scene(root);
+        scene = loginScene;
+        MainView.stage.setScene(loginScene);
+    }
+
+    public void setRegisterScene() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/register.fxml"));
+        Scene signupScene = new Scene(root);
+        scene = signupScene;
+        MainView.stage.setScene(signupScene);
+    }
+    public void setMainMenuScene() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/main-menu.fxml"));
+        Scene signupScene = new Scene(root);
+        scene = signupScene;
+        MainView.stage.setScene(signupScene);
+    }
+
+
+    public void logIn() throws IOException {
+        TextField usernameField = (TextField) scene.lookup("#username-field");
+        TextField passwordField = (TextField) scene.lookup("#password-field");
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+
+        if (username.length() == 0 || password.length() == 0) {
+            ViewUtility.showInformationAlert("Login", "Error", "Please fill all fields");
+            return;
+        }
+        User user = controller.loginUser(username, password);
+        MainMenuView.setController(new MainMenuController(user));
+        setMainMenuScene();
+    }
+
+    public void showLoginMessage(LoginMenuMessage message) {
+        switch (message) {
+            case NO_MATCH:
+                ViewUtility.showInformationAlert("Login", "Incorrect Username or Password", "Username and password don't match!");
                 break;
-            } else if (command.equals("menu help")) {
-                showHelp();
-            } else {
-                System.out.println("invalid command");
-            }
+            case LOGGED_IN:
+                ViewUtility.showInformationAlert("Login", "Successful", "Logged in successfully!");
+                break;
+            default:
+                ViewUtility.showInformationAlert("Login", "Error", "Unexpected error");
         }
     }
 
 
-    public void createUser(String[] command) {
-        if (command.length != 8) {
-            System.out.println("invalid command");
+    public void register() {
+        TextField usernameField = (TextField) scene.lookup("#username-field");
+        TextField passwordField = (TextField) scene.lookup("#password-field");
+        TextField nicknameField = (TextField) scene.lookup("#nickname-field");
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+        String nickname = nicknameField.getText();
+
+        if (username.length() == 0 || nickname.length() == 0 || password.length() == 0) {
+            ViewUtility.showInformationAlert("Signup", "Error", "Please fill all fields");
             return;
         }
-
-        CmdLineParser parser = new CmdLineParser();
-        CmdLineParser.Option<String> usernameOption = parser.addStringOption('u', "username");
-        CmdLineParser.Option<String> nicknameOption = parser.addStringOption('n', "nickname");
-        CmdLineParser.Option<String> passwordOption = parser.addStringOption('p', "password");
-        try {
-            parser.parse(command);
-        } catch (CmdLineParser.OptionException e) {
-            System.out.println("invalid command");
-            return;
-        }
-
-        String username = parser.getOptionValue(usernameOption);
-        String nickname = parser.getOptionValue(nicknameOption);
-        String password = parser.getOptionValue(passwordOption);
-        if (username == null || nickname == null || password == null) {
-            System.out.println("invalid command");
-            return;
-        }
-
         controller.createUser(username, password, nickname);
     }
 
-    public void printCreateUserMessage(LoginMenuMessage message, String username, String nickname) {
+    public void showRegisterMessage(LoginMenuMessage message, String username, String nickname) {
         switch (message) {
             case USERNAME_EXISTS:
-                System.out.println("user with username " + username + " already exists");
+                ViewUtility.showInformationAlert("Register", "Username Exist", "User with username " + username + " already exists");
                 break;
             case NICKNAME_EXISTS:
-                System.out.println("user with nickname " + nickname + " already exists");
+                ViewUtility.showInformationAlert("Register", "Nickname Exist", "User with nickname " + nickname + " already exists");
+                break;
+            case USERNAME_CONTAIN_SPACE:
+                ViewUtility.showInformationAlert("Register", "Error", "Username should not contain whitespace!");
+                break;
+            case PASSWORD_CONTAIN_SPACE:
+                ViewUtility.showInformationAlert("Register", "Error", "Password should not contain whitespace!");
+                break;
+            case NICKNAME_CONTAIN_SPACE:
+                ViewUtility.showInformationAlert("Register", "Error", "Nickname should not contain whitespace!");
                 break;
             case USER_CREATED:
-                System.out.println("user created successfully!");
+                try {
+                    setLoginScene();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                ViewUtility.showInformationAlert("Register", "Successful", "User created successfully!");
                 break;
             default:
-                System.out.println("unexpected error");
+                ViewUtility.showInformationAlert("Register", "Error", "Unexpected error");
         }
     }
 
 
-    public void loginUser(String[] command) {
-        if (command.length != 6) {
-            System.out.println("invalid command");
-            return;
-        }
-
-        CmdLineParser parser = new CmdLineParser();
-        CmdLineParser.Option<String> usernameOption = parser.addStringOption('u', "username");
-        CmdLineParser.Option<String> passwordOption = parser.addStringOption('p', "password");
-        try {
-            parser.parse(command);
-        } catch (CmdLineParser.OptionException e) {
-            System.out.println("invalid command");
-            return;
-        }
-
-        String username = parser.getOptionValue(usernameOption);
-        String password = parser.getOptionValue(passwordOption);
-        if (username == null || password == null) {
-            System.out.println("invalid command");
-            return;
-        }
-
-        controller.loginUser(username, password);
-    }
-
-    public void printLoginUserMessage(LoginMenuMessage message) {
-        switch (message) {
-            case NO_MATCH:
-                System.out.println("username and password didn't match");
-                break;
-            case LOGGED_IN:
-                System.out.println("user logged in successfully!");
-                break;
-            default:
-                System.out.println("unexpected error");
-        }
-    }
-
-
-    public void showCurrentMenu() {
-        System.out.println("Login Menu");
-    }
-
-
-    public void showHelp() {
-        System.out.print(
-                "commands:\r\n" +
-                        "\tuser create --username <username> --nickname <nickname> --password <password>\r\n" +
-                        "\tuser login --username <username> --password <password>\r\n" +
-                        "\tmenu show-current\r\n" +
-                        "\tmenu exit\r\n" +
-                        "\tmenu help\r\n"
-        );
+    public void exit() {
+        Platform.exit();
     }
 }

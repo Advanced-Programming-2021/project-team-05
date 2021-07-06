@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane id="root" fx:controller="view.MainMenuView" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -30,13 +30,13 @@
     <children>
         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Change Password" GridPane.columnIndex="1" GridPane.rowIndex="5" />
         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Change Nickname" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Back" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Back" onMouseClicked="#back" GridPane.columnIndex="1" GridPane.rowIndex="7" />
           <Label styleClass="title-label" text="Profile" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <HBox id="profile-pic-container" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-spacing: 10px;" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <children>
-            <Label id="username-label" styleClass="default-input-label" text="Username: test" />
-            <Label id="nickname-label" styleClass="default-input-label" text="Nickname: test" />
+            <Label id="username-label" styleClass="default-label" text="Username: test" />
+            <Label id="nickname-label" styleClass="default-label" text="Nickname: test" />
          </children>
       </VBox>
     </children>

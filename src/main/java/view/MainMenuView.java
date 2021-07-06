@@ -4,67 +4,89 @@ import com.sanityinc.jargs.CmdLineParser;
 import com.sanityinc.jargs.CmdLineParser.Option;
 import control.controller.*;
 import control.message.MainMenuMessage;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import model.User;
 import utils.Utility;
+import utils.ViewUtility;
+
+import java.io.IOException;
 
 
 public class MainMenuView {
 
-    private final MainMenuController controller;
+    private static Scene scene;
+    private static MainMenuController controller;
 
-
-    public MainMenuView(MainMenuController controller) {
-        this.controller = controller;
-        controller.setView(this);
+    public void setMainMenuScene() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/main-menu.fxml"));
+        Scene mainMenuScene = new Scene(root);
+        mainMenuScene.getStylesheets().add("css/main-menu.css");
+        scene = mainMenuScene;
+        MainView.stage.setScene(mainMenuScene);
     }
 
-
-    public void run() {
-        while (true) {
-            String command = Utility.getNextLine();
-            if (command.startsWith("duel")) {
-                startDuel(command.split("\\s"));
-            } else if (command.equals("user logout")) {
-                System.out.println("user logged out successfully!");
-                break;
-            } else if (command.equals("menu show-current")) {
-                showCurrentMenu();
-            } else if (command.matches("^menu enter \\S+ Menu$")) {
-                enterMenu(command.split("\\s"));
-            } else if (command.equals("menu help")) {
-                showHelp();
-            } else {
-                System.out.println("invalid command");
-            }
-        }
+    public static void setController(MainMenuController controller) {
+        MainMenuView.controller = controller;
     }
 
+    public void setScoreboardScene() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/scoreboard.fxml"));
+        Scene scoreboardScene = new Scene(root);
+        scene = scoreboardScene;
+        MainView.stage.setScene(scoreboardScene);
+        ViewUtility.updateScoreboardScene(scene , controller.getUser().getNickname());
 
-    public void startDuel(String[] command) {
+    }
+
+    public void setShopScene() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/shop.fxml"));
+        Scene scoreboardScene = new Scene(root);
+        scene = scoreboardScene;
+        MainView.stage.setScene(scoreboardScene);
+    }
+
+    public void setDeckScene() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/deck.fxml"));
+        Scene scoreboardScene = new Scene(root);
+        scene = scoreboardScene;
+        MainView.stage.setScene(scoreboardScene);
+    }
+
+    public void setProfileScene() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/profile.fxml"));
+        Scene scoreboardScene = new Scene(root);
+        scene = scoreboardScene;
+        MainView.stage.setScene(scoreboardScene);
+    }
+
+    public void setImportExportScene() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/import-export.fxml"));
+        Scene scoreboardScene = new Scene(root);
+        scene = scoreboardScene;
+        MainView.stage.setScene(scoreboardScene);
+    }
+
+    public void startDuel() throws IOException{
         CmdLineParser parser = new CmdLineParser();
         Option<Boolean> newOption = parser.addBooleanOption('n', "new");
         Option<String> opponentUsernameOption = parser.addStringOption('p', "second-player");
         Option<Integer> roundsOption = parser.addIntegerOption('r', "rounds");
         Option<Boolean> aiOption = parser.addBooleanOption('a', "ai");
-        try {
-            parser.parse(command);
-        } catch (CmdLineParser.OptionException e) {
-            System.out.println("invalid command");
-            return;
-        }
+
 
         boolean newDuel = parser.getOptionValue(newOption, false);
         String opponentUsername = parser.getOptionValue(opponentUsernameOption);
         Integer rounds = parser.getOptionValue(roundsOption);
         boolean ai = parser.getOptionValue(aiOption, false);
-        if (!newDuel || rounds == null || (opponentUsername != null) == ai) {
-            System.out.println("invalid command");
-            return;
-        }
-        if ((ai && command.length != 5) || (!ai && command.length != 6)) {
-            System.out.println("invalid command");
-            return;
-        }
 
+
+
+        if (!newDuel || rounds == null || (opponentUsername != null) == ai) {
+            return;
+        }
         if (ai) {
             controller.startDuelWithAi(rounds);
         } else {
@@ -75,91 +97,46 @@ public class MainMenuView {
     public void printStartDuelMessage(MainMenuMessage message, String username) {
         switch (message) {
             case NO_PLAYER_EXISTS:
-                System.out.println("there is no player with this username");
+                ViewUtility.showInformationAlert("","error" ,"there is no player with this username");
                 break;
             case NO_ACTIVE_DECK:
-                System.out.println(username + " has no active deck");
+                ViewUtility.showInformationAlert("","error" ,username + " has no active deck");
                 break;
             case INVALID_DECK:
-                System.out.println(username + "'s deck is invalid");
+                ViewUtility.showInformationAlert("","error" ,username + "'s deck is invalid");
                 break;
             case INVALID_ROUND:
-                System.out.println("number of rounds is not supported");
+                ViewUtility.showInformationAlert("","error" ,"number of rounds is not supported");
                 break;
             default:
-                System.out.println("unexpected error");
+                ViewUtility.showInformationAlert("","error" ,"unexpected error");
         }
     }
 
-
-    private void showCurrentMenu() {
-        System.out.println("Main Menu");
-    }
-
-
-    public void enterMenu(String[] command) {
-        if (command.length != 4) {
-            System.out.println("invalid command");
-            return;
+    public void logOut() throws IOException {
+        controller = null;
+        // Alert alert = new PacmanAlert(Alert.AlertType.INFORMATION, "Log Out", "logged out successfully!", "");
+        //alert.setOnCloseRequest(event -> {
+        try {
+            new LoginMenuView().setWelcomeScene();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        // });
+        // alert.show();
+    }
 
-        String menuName = command[2];
-        switch (menuName) {
-            case "Deck":
-                enterDeckMenu();
-                break;
-            case "Scoreboard":
-                enterScoreboardMenu();
-                break;
-            case "Profile":
-                enterProfileMenu();
-                break;
-            case "Shop":
-                enterShopMenu();
-                break;
-            case "Import/Export":
-                enterImportExportMenu();
-                break;
-            default:
-                System.out.println("menu name is not valid");
+    public void back() throws IOException {
+        // Alert alert = new PacmanAlert(Alert.AlertType.INFORMATION, "Log Out", "logged out successfully!", "");
+        //alert.setOnCloseRequest(event -> {
+        try {
+            new MainMenuView().setMainMenuScene();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }
-
-    private void enterImportExportMenu() {
-        ImportExportMenuView importExportMenuView = new ImportExportMenuView(new ImportExportController());
-        importExportMenuView.run();
-    }
-
-    private void enterShopMenu() {
-        ShopMenuView shopMenuView = new ShopMenuView(new ShopMenuController(controller.getUser()));
-        shopMenuView.run();
-    }
-
-    private void enterProfileMenu() {
-        ProfileMenuView profileMenuView = new ProfileMenuView(new ProfileMenuController(controller.getUser()));
-        profileMenuView.run();
-    }
-
-    private void enterScoreboardMenu() {
-        ScoreboardMenuView scoreboardMenuView = new ScoreboardMenuView();
-        scoreboardMenuView.run();
-    }
-
-    private void enterDeckMenu() {
-        DeckMenuView deckMenuView = new DeckMenuView(new DeckMenuController(controller.getUser()));
-        deckMenuView.run();
+        // });
+        // alert.show();
     }
 
 
-    public void showHelp() {
-        System.out.println(
-                "commands:\r\n" +
-                        "\tduel --new --second-player <player2 username> --rounds <1/3>\r\n" +
-                        "\tduel --new --ai --rounds <1/3>\r\n" +
-                        "\tuser logout\r\n" +
-                        "\tmenu show-current\r\n" +
-                        "\tmenu enter <menu name>\r\n" +
-                        "\tmenu help"
-        );
-    }
 }

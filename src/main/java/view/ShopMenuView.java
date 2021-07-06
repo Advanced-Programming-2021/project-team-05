@@ -21,31 +21,6 @@ public class ShopMenuView {
     }
 
 
-    public final void run() {
-        System.out.println("separate card name words with '_'. example: Battle_OX");
-        while (true) {
-            String command = Utility.getNextLine();
-            if (command.matches("^shop buy \\S+$")) {
-                buyCard(command.split("\\s"));
-            } else if (command.equals("shop show --all")) {
-                showAllCards();
-            } else if (command.matches("^card show \\S+$")) {
-                showCard(command.split("\\s"));
-            } else if (command.equals("menu show-current")) {
-                showCurrentMenu();
-            } else if (command.startsWith("menu enter")) {
-                System.out.println("menu navigation is not possible");
-            } else if (command.equals("menu exit")) {
-                break;
-            } else if (command.equals("menu help")) {
-                showHelp();
-            } else if (command.matches("^increase --money \\S+$")) {
-                increaseMoney(command.split("\\s"));
-            } else {
-                System.out.println("invalid command");
-            }
-        }
-    }
 
 
     public void buyCard(String[] command) {
