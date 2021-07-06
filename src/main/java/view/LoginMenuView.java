@@ -44,6 +44,7 @@ public class LoginMenuView {
         scene = signupScene;
         MainView.stage.setScene(signupScene);
     }
+
     public void setMainMenuScene() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/main-menu.fxml"));
         Scene signupScene = new Scene(root);
@@ -69,7 +70,7 @@ public class LoginMenuView {
         }
     }
 
-    public void showLoginMessage(LoginMenuMessage message) {
+    public void showLoginMessage(LoginMenuMessage message) throws IOException {
         switch (message) {
             case NO_MATCH:
                 ViewUtility.showInformationAlert("Login", "Incorrect Username or Password", "Username and password don't match!");
