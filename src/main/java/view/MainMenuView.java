@@ -37,7 +37,6 @@ public class MainMenuView {
         Scene scoreboardScene = new Scene(root);
         scene = scoreboardScene;
         MainView.stage.setScene(scoreboardScene);
-        System.out.println(controller.getUser().getNickname());
         ViewUtility.updateScoreboardScene(scene , controller.getUser().getNickname());
 
     }
@@ -54,6 +53,7 @@ public class MainMenuView {
         Scene scoreboardScene = new Scene(root);
         scene = scoreboardScene;
         MainView.stage.setScene(scoreboardScene);
+        DeckMenuView.updateDeckScene(scene, controller.getUser());
     }
 
     public void setProfileScene() throws IOException {
