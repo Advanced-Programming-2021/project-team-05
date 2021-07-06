@@ -1,8 +1,5 @@
 package view;
 
-import com.sanityinc.jargs.CmdLineParser;
-import com.sanityinc.jargs.CmdLineParser.Option;
-import control.DataManager;
 import control.controller.DeckMenuController;
 import control.message.DeckMenuMessage;
 import javafx.fxml.FXMLLoader;
