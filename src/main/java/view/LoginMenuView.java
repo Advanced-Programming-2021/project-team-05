@@ -17,6 +17,7 @@ public class LoginMenuView {
 
     private static Scene scene;
     private static LoginMenuController controller;
+    private User user;
 
 
     public static void setController(LoginMenuController controller) {
@@ -62,18 +63,20 @@ public class LoginMenuView {
             ViewUtility.showInformationAlert("Login", "Error", "Please fill all fields");
             return;
         }
-        User user = controller.loginUser(username, password);
-        MainMenuView.setController(new MainMenuController(user));
-        setMainMenuScene();
+         user = controller.loginUser(username, password);
+
+
     }
 
-    public void showLoginMessage(LoginMenuMessage message) {
+    public void showLoginMessage(LoginMenuMessage message) throws IOException {
         switch (message) {
             case NO_MATCH:
                 ViewUtility.showInformationAlert("Login", "Incorrect Username or Password", "Username and password don't match!");
                 break;
             case LOGGED_IN:
                 ViewUtility.showInformationAlert("Login", "Successful", "Logged in successfully!");
+                MainMenuView.setController(new MainMenuController(user));
+                setMainMenuScene();
                 break;
             default:
                 ViewUtility.showInformationAlert("Login", "Error", "Unexpected error");

@@ -5,6 +5,8 @@ import control.message.LoginMenuMessage;
 import model.User;
 import view.LoginMenuView;
 
+import java.io.IOException;
+
 public class LoginMenuController {
 
     private LoginMenuView view;
@@ -43,7 +45,7 @@ public class LoginMenuController {
     }
 
 
-    public final User loginUser(String username, String password) {
+    public final User loginUser(String username, String password) throws IOException {
         if (username.contains(" ")) {
             view.showLoginMessage(LoginMenuMessage.USERNAME_CONTAIN_SPACE);
             return null;
