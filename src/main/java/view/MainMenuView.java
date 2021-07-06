@@ -56,6 +56,7 @@ public class MainMenuView {
         DeckMenuController deckMenuController = new DeckMenuController(controller.getUser());
         deckMenuController.setView(new DeckMenuView());
         DeckMenuView.setController(deckMenuController);
+        DeckMenuView.setScene(scene);
         DeckMenuView.updateDeckScene(scene, controller.getUser());
     }
 

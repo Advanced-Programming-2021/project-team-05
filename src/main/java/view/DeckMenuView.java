@@ -19,9 +19,8 @@ import javafx.stage.Stage;
 import model.Deck;
 import model.User;
 import model.card.Card;
-import model.template.CardTemplate;
+import utils.Listener;
 import utils.PromptListener;
-import utils.Utility;
 import utils.ViewUtility;
 
 import java.io.IOException;
@@ -44,6 +43,9 @@ public class DeckMenuView {
         DeckMenuView.controller = controller;
     }
 
+    public static void setScene(Scene scene) {
+        DeckMenuView.scene = scene;
+    }
 
     public static void updateDeckScene(Scene deckScene, User user) {
         FlowPane decksContainer = (FlowPane) deckScene.lookup("#decks-container");
@@ -58,13 +60,30 @@ public class DeckMenuView {
             Button editButton = new Button("Edit");
             editButton.getStyleClass().addAll("default-button", "edit-button");
             editButton.setOnMouseClicked(event -> {
-                System.out.println("edit");
+                Parent root = null;
+                try {
+                    root = FXMLLoader.load(DeckMenuView.class.getResource("/fxml/edit-deck.fxml"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                assert root != null;
+                Scene editDeckScene = new Scene(root);
+                MainView.stage.setScene(editDeckScene);
+                updateEditDeckScene(editDeckScene, deck, user);
             });
             Button deleteButton = new Button("Delete");
             deleteButton.getStyleClass().addAll("default-button", "delete-button");
-            deleteButton.setOnMouseClicked(event -> {
-                System.out.println("delete");
-            });
+            deleteButton.setOnMouseClicked(event -> ViewUtility.showConfirmationAlert("Deck", "Delete Deck", "Are you sure you want to delete this deck?", "No", "Yes", new Listener() {
+                @Override
+                public void onConfirm() {
+                    controller.deleteDeck(deck.getName());
+                    updateDeckScene(deckScene, user);
+                }
+
+                @Override
+                public void onCancel() {
+                }
+            }));
             HBox buttonContainer = new HBox(5, editButton, deleteButton);
             buttonContainer.setPrefWidth(300);
 
@@ -72,7 +91,8 @@ public class DeckMenuView {
             activateButton.getStyleClass().addAll("default-button", "activate-button");
             if (deck.equals(user.getActiveDeck())) activateButton.setDisable(true);
             activateButton.setOnMouseClicked(event -> {
-                System.out.println("activate");
+                user.setActiveDeck(deck);
+                updateDeckScene(deckScene, user);
             });
 
             VBox container = new VBox(7, deckDescription, buttonContainer, activateButton);
@@ -91,22 +111,21 @@ public class DeckMenuView {
         addButton.setPrefWidth(250);
         addButton.setPrefHeight(287);
         addButton.setCursor(Cursor.HAND);
-        addButton.setOnMouseClicked(event -> {
-            ViewUtility.showPromptAlert("Create new Deck",
-                    "Enter the deck name:",
-                    "Deck name",
-                    "Create",
-                    new PromptListener() {
-                @Override
-                public void onOk(String input) {
-                    controller.createDeck(input);
-                    updateDeckScene(deckScene, user);
-                }
+        addButton.setOnMouseClicked(event -> ViewUtility.showPromptAlert("Create new Deck",
+                "Enter the deck name:",
+                "Deck name",
+                "Create",
+                new PromptListener() {
+                    @Override
+                    public void onOk(String input) {
+                        controller.createDeck(input);
+                        updateDeckScene(deckScene, user);
+                    }
 
-                @Override
-                public void onCancel() {}
-            });
-        });
+                    @Override
+                    public void onCancel() {
+                    }
+                }));
         addBox.getChildren().add(addButton);
         decksContainer.getChildren().add(addBox);
     }
@@ -269,15 +288,13 @@ public class DeckMenuView {
         }
     }
 
+    public void back() {
+        MainView.stage.setScene(scene);
+    }
 
-//    ----------------------Phase 1----------------------
+//    ----------------------Phase 1----------------------    //
 
-    //    public void createDeck(String[] command) {
-//        String deckName = command[2];
-//        controller.createDeck(deckName);
-//    }
-//
-    public void showCreateDeckMessage(DeckMenuMessage message, String deckName) {
+    public void showCreateDeckMessage(DeckMenuMessage message) {
         switch (message) {
             case DECK_NAME_EXISTS:
                 ViewUtility.showInformationAlert("Deck", "Crete Deck", "Deck name exists.");
@@ -290,13 +307,6 @@ public class DeckMenuView {
         }
     }
 
-    //
-//
-//    public void deleteDeck(String[] command) {
-//        String deckName = command[2];
-//        controller.deleteDeck(deckName);
-//    }
-//
     public void showDeleteDeckMessage(DeckMenuMessage message, String deckName) {
         switch (message) {
             case NO_DECK_EXISTS:
@@ -310,13 +320,6 @@ public class DeckMenuView {
         }
     }
 
-    //
-//
-//    public void activateDeck(String[] command) {
-//        String deckName = command[2];
-//        controller.activateDeck(deckName);
-//    }
-//
     public void showActivateDeckMessage(DeckMenuMessage message, String deckName) {
         switch (message) {
             case NO_DECK_EXISTS:
@@ -330,40 +333,6 @@ public class DeckMenuView {
         }
     }
 
-    //
-//
-//    public void addOrRemoveCard(String[] command, boolean addCard) {
-//        CmdLineParser parser = new CmdLineParser();
-//        Option<String> deckNameOption = parser.addStringOption('d', "deck");
-//        Option<String> cardNameOption = parser.addStringOption('c', "card");
-//        Option<Boolean> isSideOption = parser.addBooleanOption('s', "side");
-//        try {
-//            parser.parse(command);
-//        } catch (CmdLineParser.OptionException e) {
-//            System.out.println("invalid command");
-//            return;
-//        }
-//
-//        String deckName = parser.getOptionValue(deckNameOption);
-//        String cardName = parser.getOptionValue(cardNameOption);
-//        Boolean isSide = parser.getOptionValue(isSideOption, false);
-//        if (deckName == null || cardName == null) {
-//            System.out.println("invalid command");
-//            return;
-//        }
-//        if ((isSide && command.length != 7) || (!isSide && command.length != 6)) {
-//            System.out.println("invalid command");
-//            return;
-//        }
-//        cardName = cardName.replace('_', ' ');
-//
-//        if (addCard) {
-//            controller.addCard(deckName, cardName, isSide);
-//        } else {
-//            controller.removeCard(deckName, cardName, isSide);
-//        }
-//    }
-//
     public void showAddCardMessage(DeckMenuMessage message, String deckName, String cardName) {
         switch (message) {
             case NO_CARD_EXISTS:
@@ -389,7 +358,6 @@ public class DeckMenuView {
         }
     }
 
-    //
     public void showRemoveCardMessage(DeckMenuMessage message, String deckName, String cardName) {
         switch (message) {
             case NO_DECK_EXISTS:
@@ -408,112 +376,4 @@ public class DeckMenuView {
                 ViewUtility.showInformationAlert("Deck", "Remove Card", "unexpected error");
         }
     }
-//
-//
-//    public void showAllDecks() {
-//        User user = controller.getUser();
-//        ArrayList<Deck> allDecks = user.getDecks();
-//
-//        System.out.println("Decks:");
-//
-//        System.out.println("Active Deck:");
-//        Deck activeDeck = user.getActiveDeck();
-//        if (activeDeck != null) {
-//            allDecks.remove(activeDeck);
-//            System.out.println(activeDeck);
-//        }
-//
-//        System.out.println("Other Decks:");
-//        if (allDecks.size() != 0) {
-//            allDecks.sort(Comparator.comparing(Deck::getName));
-//            for (Deck deck : allDecks) {
-//                System.out.println(deck);
-//            }
-//        }
-//    }
-//
-//
-//    public void showDeck(String[] command) {
-//        CmdLineParser parser = new CmdLineParser();
-//        Option<String> deckNameOption = parser.addStringOption('d', "deck-name");
-//        Option<Boolean> isSideOption = parser.addBooleanOption('s', "side");
-//        try {
-//            parser.parse(command);
-//        } catch (CmdLineParser.OptionException e) {
-//            System.out.println("invalid command");
-//            return;
-//        }
-//
-//        String deckName = parser.getOptionValue(deckNameOption);
-//        Boolean isSide = parser.getOptionValue(isSideOption, false);
-//        if (deckName == null) {
-//            System.out.println("invalid command");
-//            return;
-//        }
-//        if ((isSide && command.length != 5) || (!isSide && command.length != 4)) {
-//            System.out.println("invalid command");
-//            return;
-//        }
-//
-//        User user = controller.getUser();
-//        Deck deck = user.getDeckByName(deckName);
-//        if (deck == null) {
-//            System.out.println("no deck found");
-//        } else {
-//            System.out.println(deck.detailedToString(isSide));
-//        }
-//    }
-//
-//
-//    public void showAllCards() {
-//        User user = controller.getUser();
-//        ArrayList<Card> cards = user.getPurchasedCards();
-//        cards.sort(Comparator.comparing(Card::getName));
-//
-//        for (Card card : cards) {
-//            System.out.println(card);
-//        }
-//    }
-//
-//
-//    public void showCard(String[] command) {
-//        String cardName;
-//        try {
-//            cardName = command[2].replace('_', ' ');
-//        } catch (IndexOutOfBoundsException e) {
-//            System.out.println("invalid command");
-//            return;
-//        }
-//        DataManager dataManager = DataManager.getInstance();
-//        CardTemplate template = dataManager.getCardTemplateByName(cardName);
-//        if (template == null) {
-//            System.out.println("invalid card name");
-//        } else {
-//            System.out.println(template.detailedToString());
-//        }
-//    }
-//
-//
-//    private void showCurrentMenu() {
-//        System.out.println("Deck Menu");
-//    }
-//
-//
-//    public void showHelp() {
-//        System.out.println(
-//                "commands:\r\n" +
-//                        "\tdeck create <deck name>\r\n" +
-//                        "\tdeck delete <deck name>\r\n" +
-//                        "\tdeck set-activate <deck name>\r\n" +
-//                        "\tdeck add-card --card <card name> --deck <deck name> --side(optional)\r\n" +
-//                        "\tdeck rm-card --card <card name> --deck <deck name> --side(optional)\r\n" +
-//                        "\tdeck show --all\r\n" +
-//                        "\tdeck show --deck-name <deck name> --side(optional)\r\n" +
-//                        "\tdeck show --cards\r\n" +
-//                        "\tcard show <card name>\r\n" +
-//                        "\tmenu show-current\r\n" +
-//                        "\tmenu exit\r\n" +
-//                        "\tmenu help"
-//        );
-//    }
 }
