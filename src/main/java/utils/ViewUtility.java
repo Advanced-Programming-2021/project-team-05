@@ -133,7 +133,7 @@ public class ViewUtility {
     }
 
 
-    private static ImageView getCardImage(String cardName) {
+    public static ImageView getCardImage(String cardName) {
         String imageAddress = "/images/cards/" + cardName.replaceAll(" ", "_") + ".jpg";
         return new ImageView(new Image(ViewUtility.class.getResource(imageAddress).toExternalForm()));
     }
