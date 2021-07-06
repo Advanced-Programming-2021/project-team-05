@@ -54,6 +54,7 @@ public class MainMenuView {
         scene = scoreboardScene;
         MainView.stage.setScene(scoreboardScene);
         DeckMenuController deckMenuController = new DeckMenuController(controller.getUser());
+        deckMenuController.setView(new DeckMenuView());
         DeckMenuView.setController(deckMenuController);
         DeckMenuView.updateDeckScene(scene, controller.getUser());
     }

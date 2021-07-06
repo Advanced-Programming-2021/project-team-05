@@ -57,14 +57,23 @@ public class DeckMenuView {
 
             Button editButton = new Button("Edit");
             editButton.getStyleClass().addAll("default-button", "edit-button");
+            editButton.setOnMouseClicked(event -> {
+                System.out.println("edit");
+            });
             Button deleteButton = new Button("Delete");
             deleteButton.getStyleClass().addAll("default-button", "delete-button");
+            deleteButton.setOnMouseClicked(event -> {
+                System.out.println("delete");
+            });
             HBox buttonContainer = new HBox(5, editButton, deleteButton);
             buttonContainer.setPrefWidth(300);
 
             Button activateButton = new Button("Activate Deck");
             activateButton.getStyleClass().addAll("default-button", "activate-button");
             if (deck.equals(user.getActiveDeck())) activateButton.setDisable(true);
+            activateButton.setOnMouseClicked(event -> {
+                System.out.println("activate");
+            });
 
             VBox container = new VBox(7, deckDescription, buttonContainer, activateButton);
             if (deck.equals(user.getActiveDeck())) container.setId("active-deck-container");
@@ -268,16 +277,16 @@ public class DeckMenuView {
 //        controller.createDeck(deckName);
 //    }
 //
-    public void printCreateDeckMessage(DeckMenuMessage message, String deckName) {
+    public void showCreateDeckMessage(DeckMenuMessage message, String deckName) {
         switch (message) {
             case DECK_NAME_EXISTS:
-                System.out.println("deck with name " + deckName + " already exists");
+                ViewUtility.showInformationAlert("Deck", "Crete Deck", "Deck name exists.");
                 break;
             case DECK_CREATED:
-                System.out.println("deck created successfully!");
+                ViewUtility.showInformationAlert("Deck", "Crete Deck", "Deck created successfully.");
                 break;
             default:
-                System.out.println("unexpected error");
+                ViewUtility.showInformationAlert("Deck", "Crete Deck", "Unexpected error.");
         }
     }
 
@@ -288,16 +297,16 @@ public class DeckMenuView {
 //        controller.deleteDeck(deckName);
 //    }
 //
-    public void printDeleteDeckMessage(DeckMenuMessage message, String deckName) {
+    public void showDeleteDeckMessage(DeckMenuMessage message, String deckName) {
         switch (message) {
             case NO_DECK_EXISTS:
-                System.out.println("deck with name " + deckName + " does not exist");
+                ViewUtility.showInformationAlert("Deck", "Delete Deck", "deck with name " + deckName + " does not exist");
                 break;
             case DECK_DELETED:
-                System.out.println("deck deleted successfully!");
+                ViewUtility.showInformationAlert("Deck", "Delete Deck", "deck deleted successfully!");
                 break;
             default:
-                System.out.println("unexpected error");
+                ViewUtility.showInformationAlert("Deck", "Delete Deck", "unexpected error");
         }
     }
 
@@ -308,16 +317,16 @@ public class DeckMenuView {
 //        controller.activateDeck(deckName);
 //    }
 //
-    public void printActivateDeckMessage(DeckMenuMessage message, String deckName) {
+    public void showActivateDeckMessage(DeckMenuMessage message, String deckName) {
         switch (message) {
             case NO_DECK_EXISTS:
-                System.out.println("deck with name " + deckName + " does not exist");
+                ViewUtility.showInformationAlert("Deck", "Activate Deck", "deck with name " + deckName + " does not exist");
                 break;
             case DECK_ACTIVATED:
-                System.out.println("deck activated successfully!");
+                ViewUtility.showInformationAlert("Deck", "Activate Deck", "deck activated successfully!");
                 break;
             default:
-                System.out.println("unexpected error");
+                ViewUtility.showInformationAlert("Deck", "Activate Deck", "unexpected error");
         }
     }
 
@@ -355,48 +364,48 @@ public class DeckMenuView {
 //        }
 //    }
 //
-    public void printAddCardMessage(DeckMenuMessage message, String deckName, String cardName) {
+    public void showAddCardMessage(DeckMenuMessage message, String deckName, String cardName) {
         switch (message) {
             case NO_CARD_EXISTS:
-                System.out.println("card with name " + cardName + " does not exist");
+                ViewUtility.showInformationAlert("Deck", "Add Card", "card with name " + cardName + " does not exist");
                 break;
             case NO_DECK_EXISTS:
-                System.out.println("deck with name " + deckName + " does not exist");
+                ViewUtility.showInformationAlert("Deck", "Add Card", "deck with name " + deckName + " does not exist");
                 break;
             case MAIN_DECK_IS_FULL:
-                System.out.println("main deck is full");
+                ViewUtility.showInformationAlert("Deck", "Add Card", "main deck is full");
                 break;
             case SIDE_DECK_IS_FULL:
-                System.out.println("side deck is full");
+                ViewUtility.showInformationAlert("Deck", "Add Card", "side deck is full");
                 break;
             case DECK_IS_FULL:
-                System.out.println("you can't add more cards with name " + cardName + " in deck " + deckName);
+                ViewUtility.showInformationAlert("Deck", "Add Card", "you can't add more cards with name " + cardName + " in deck " + deckName);
                 break;
             case CARD_ADDED:
-                System.out.println("card added to deck successfully!");
+                ViewUtility.showInformationAlert("Deck", "Add Card", "card added to deck successfully!");
                 break;
             default:
-                System.out.println("unexpected error");
+                ViewUtility.showInformationAlert("Deck", "Add Card", "unexpected error");
         }
     }
 
     //
-    public void printRemoveCardMessage(DeckMenuMessage message, String deckName, String cardName) {
+    public void showRemoveCardMessage(DeckMenuMessage message, String deckName, String cardName) {
         switch (message) {
             case NO_DECK_EXISTS:
-                System.out.println("deck with name " + deckName + " does not exist");
+                ViewUtility.showInformationAlert("Deck", "Remove Card", "deck with name " + deckName + " does not exist");
                 break;
             case NO_CARD_EXISTS_IN_MAIN_DECK:
-                System.out.println("card with name " + cardName + " does not exist in main deck");
+                ViewUtility.showInformationAlert("Deck", "Remove Card", "card with name " + cardName + " does not exist in main deck");
                 break;
             case NO_CARD_EXISTS_IN_SIDE_DECK:
-                System.out.println("card with name " + cardName + " does not exist in side deck");
+                ViewUtility.showInformationAlert("Deck", "Remove Card", "card with name " + cardName + " does not exist in side deck");
                 break;
             case CARD_REMOVED:
-                System.out.println("card removed form deck successfully!");
+                ViewUtility.showInformationAlert("Deck", "Remove Card", "card removed form deck successfully!");
                 break;
             default:
-                System.out.println("unexpected error");
+                ViewUtility.showInformationAlert("Deck", "Remove Card", "unexpected error");
         }
     }
 //
