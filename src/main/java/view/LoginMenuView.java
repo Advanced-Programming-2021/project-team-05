@@ -63,8 +63,10 @@ public class LoginMenuView {
             return;
         }
         User user = controller.loginUser(username, password);
-        MainMenuView.setController(new MainMenuController(user));
-        setMainMenuScene();
+        if (user != null) {
+            MainMenuView.setController(new MainMenuController(user));
+            setMainMenuScene();
+        }
     }
 
     public void showLoginMessage(LoginMenuMessage message) {
