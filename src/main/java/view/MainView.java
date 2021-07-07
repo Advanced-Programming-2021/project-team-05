@@ -16,15 +16,18 @@ public class MainView extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-        MainView.stage = stage;
-        stage.setTitle("Yu-Gi-Oh");
-        stage.setResizable(false);
-        LoginMenuController controller = new LoginMenuController();
-        controller.setView(new LoginMenuView());
-        LoginMenuView.setController(controller);
-        new LoginMenuView().setWelcomeScene();
-        stage.show();
+    public void start(Stage stage) {
+        try {
+            MainView.stage = stage;
+            stage.setTitle("Yu-Gi-Oh");
+            stage.setResizable(false);
+            LoginMenuController controller = new LoginMenuController();
+            LoginMenuView view = new LoginMenuView(controller);
+            view.setWelcomeScene();
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

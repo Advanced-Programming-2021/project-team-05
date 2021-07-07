@@ -1,11 +1,17 @@
 package view;
 
 import control.DataManager;
+import control.controller.MainMenuController;
 import control.controller.ShopMenuController;
 import control.message.ShopMenuMessage;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import model.template.CardTemplate;
 import utils.Utility;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -13,6 +19,7 @@ import java.util.Comparator;
 public class ShopMenuView {
 
     private final ShopMenuController controller;
+    private Scene scene;
 
 
     public ShopMenuView(ShopMenuController controller) {
@@ -21,6 +28,27 @@ public class ShopMenuView {
     }
 
 
+    public void setShopScene() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/fxml/shop.fxml"));
+            Parent root = loader.load();
+            scene = new Scene(root);
+            MainView.stage.setScene(scene);
+            initializeShopSceneButtons();
+        } catch (IOException e) {
+            System.out.println("Failed to load shop scene");
+        }
+    }
+
+    private void initializeShopSceneButtons() {
+        Button backButton = (Button) scene.lookup("#back-btn");
+        backButton.setOnMouseClicked(e -> {
+            MainMenuController mainMenuController = new MainMenuController(controller.getUser());
+            MainMenuView mainMenuView = new MainMenuView(mainMenuController);
+            mainMenuView.setMainMenuScene();
+        });
+    }
 
 
     public void buyCard(String[] command) {

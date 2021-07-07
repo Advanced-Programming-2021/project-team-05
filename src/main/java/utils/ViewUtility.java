@@ -1,12 +1,9 @@
 package utils;
 
 import control.DataManager;
-import control.controller.ImportExportController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -20,12 +17,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.Deck;
 import model.ScoreboardItem;
 import model.User;
 import model.card.Card;
 import model.template.CardTemplate;
-import view.ImportExportMenuView;
 
 import java.io.File;
 import java.io.IOException;

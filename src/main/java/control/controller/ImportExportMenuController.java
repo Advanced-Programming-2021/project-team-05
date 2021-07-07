@@ -2,22 +2,36 @@ package control.controller;
 
 import control.DataManager;
 import control.message.ImportExportMessage;
+import javafx.scene.control.Button;
+import model.User;
 import model.template.CardTemplate;
 import model.template.MonsterTemplate;
 import model.template.SpellTemplate;
 import model.template.TrapTemplate;
 import view.ImportExportMenuView;
+import view.MainMenuView;
 
 import java.io.File;
 import java.lang.reflect.Type;
 
-public class ImportExportController {
+public class ImportExportMenuController {
 
+    private final User user;
     private ImportExportMenuView view;
+
+
+    public ImportExportMenuController(User user) {
+        this.user = user;
+    }
 
 
     public void setView(ImportExportMenuView view) {
         this.view = view;
+    }
+
+
+    public User getUser() {
+        return this.user;
     }
 
 

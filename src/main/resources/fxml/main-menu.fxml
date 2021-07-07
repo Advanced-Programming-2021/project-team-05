@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainMenuView">
+<GridPane id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -25,6 +25,7 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
@@ -35,7 +36,7 @@
         </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#startDuel" text="Start Duel">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" id="start-duel-btn" text="Start Duel">
                <styleClass>
                   <String fx:value="default-button" />
                   <String fx:value="button-large" />
@@ -43,36 +44,46 @@
             </Button>
          </children>
       </HBox>
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#setProfileScene" text="Profile" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" id="profile-btn" text="Profile" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#setShopScene" text="Shop" GridPane.columnIndex="2" GridPane.rowIndex="4">
+      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" id="shop-btn" text="Shop" GridPane.columnIndex="2" GridPane.rowIndex="4">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#setDeckScene" text="Deck" GridPane.columnIndex="1" GridPane.rowIndex="5">
+        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" id="deck-btn" text="Deck" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#setImportExportScene" text="Create Card"  GridPane.columnIndex="2" GridPane.rowIndex="5">
+      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" id="create-card-btn" text="Create Card" GridPane.columnIndex="2" GridPane.rowIndex="5">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#setScoreboardScene" text="Scoreboard" GridPane.columnIndex="1" GridPane.rowIndex="6">
+        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" id="scoreboard-btn" text="Scoreboard" GridPane.columnIndex="1" GridPane.rowIndex="6">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#logOut" text="Logout" GridPane.columnIndex="2" GridPane.rowIndex="6">
+      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" id="import-export-btn" text="Import/Export" GridPane.columnIndex="2" GridPane.rowIndex="6">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7">
+         <children>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" id="logout-btn" text="Logout">
+               <styleClass>
+                  <String fx:value="default-button" />
+                  <String fx:value="button-large" />
+               </styleClass>
+            </Button>
+         </children>
+      </HBox>
     </children>
     <stylesheets>
         <URL value="@../css/main-menu.css" />

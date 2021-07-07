@@ -25,6 +25,11 @@ public class ProfileMenuController {
     }
 
 
+    public User getUser() {
+        return this.user;
+    }
+
+
     public final void changeNickname(String newNickname) {
         DataManager dataManager = DataManager.getInstance();
         if (dataManager.getUserByNickname(newNickname) != null) {
@@ -48,16 +53,4 @@ public class ProfileMenuController {
         user.setPassword(newPassword);
         view.printChangePasswordMessage(ProfileMenuMessage.PASSWORD_CHANGED);
     }
-    public void back() throws IOException {
-        // Alert alert = new PacmanAlert(Alert.AlertType.INFORMATION, "Log Out", "logged out successfully!", "");
-        //alert.setOnCloseRequest(event -> {
-        try {
-            new MainMenuView().setProfileScene();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // });
-        // alert.show();
-    }
-
 }

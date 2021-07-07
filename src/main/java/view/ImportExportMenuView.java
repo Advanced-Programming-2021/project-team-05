@@ -1,21 +1,49 @@
 package view;
 
-import control.controller.ImportExportController;
+import control.controller.ImportExportMenuController;
+import control.controller.MainMenuController;
 import control.message.ImportExportMessage;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+
+import java.io.IOException;
 
 
 public class ImportExportMenuView {
 
-    private final ImportExportController controller;
+    private final ImportExportMenuController controller;
+    private Scene scene;
 
 
-    public ImportExportMenuView(ImportExportController controller) {
+    public ImportExportMenuView(ImportExportMenuController controller) {
         this.controller = controller;
         controller.setView(this);
     }
 
 
+    public void setImportExportScene() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/fxml/import-export.fxml"));
+            Parent root = loader.load();
+            scene = new Scene(root);
+            MainView.stage.setScene(scene);
+            initializeImportExportSceneButtons();
+        } catch (IOException e) {
+            System.out.println("Failed to load import export scene");
+        }
+    }
 
+    private void initializeImportExportSceneButtons() {
+        Button backButton = (Button) scene.lookup("#back-btn");
+        backButton.setOnMouseClicked(e -> {
+            MainMenuController mainMenuController = new MainMenuController(controller.getUser());
+            MainMenuView mainMenuView = new MainMenuView(mainMenuController);
+            mainMenuView.setMainMenuScene();
+        });
+    }
 
 
     private void importOrExportCard(String[] command, boolean importCard) {
