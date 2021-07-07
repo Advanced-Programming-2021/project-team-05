@@ -11,11 +11,12 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="RunTest">
+<GridPane id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="RunTest">
     <columnConstraints>
         <ColumnConstraints />
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
       <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="250.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="50.0" />
         <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="250.0" />
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
       <ColumnConstraints />
@@ -32,25 +33,25 @@
       <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="NEVER" />
     </rowConstraints>
     <children>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2">
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="2">
             <children>
                 <Label styleClass="title-label" text="Edit Deck" />
             </children>
         </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="7" />
-      <Button mnemonicParsing="false" text="Back" GridPane.columnIndex="4" GridPane.rowIndex="7">
+      <Button mnemonicParsing="false" text="Back" GridPane.columnIndex="5" GridPane.rowIndex="7">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
       <ScrollPane id="main-scroll-pane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" GridPane.rowSpan="2">
          <content>
-            <FlowPane id="main-cards-container" prefWidth="480.0" styleClass="cards-container" />
+            <FlowPane id="main-cards-container" alignment="CENTER" columnHalignment="CENTER" prefWidth="480.0" styleClass="cards-container" />
          </content>
       </ScrollPane>
-      <ScrollPane id="side-scroll-pane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="4" GridPane.rowSpan="2">
+      <ScrollPane id="side-scroll-pane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="4" GridPane.rowSpan="2">
          <content>
-            <FlowPane id="side-cards-container" prefWidth="480.0" styleClass="cards-container" />
+            <FlowPane id="side-cards-container" alignment="CENTER" columnHalignment="CENTER" prefWidth="480.0" styleClass="cards-container" />
          </content>
       </ScrollPane>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-spacing: 20px;" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6">
@@ -69,7 +70,7 @@
             </Button>
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-spacing: 20px;" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="6">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-spacing: 20px;" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="6">
          <children>
             <Button id="side-remove-btn" mnemonicParsing="false" text="Remove">
                <styleClass>
@@ -90,7 +91,7 @@
             <Label id="main-deck-label" styleClass="default-label" text="Main Deck" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="3">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <children>
             <Label id="side-deck-label" styleClass="default-label" text="Side Deck" />
          </children>

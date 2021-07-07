@@ -1,7 +1,6 @@
 package utils;
 
 import control.DataManager;
-import control.controller.ImportExportController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +24,6 @@ import model.ScoreboardItem;
 import model.User;
 import model.card.Card;
 import model.template.CardTemplate;
-import view.ImportExportMenuView;
 
 import java.io.File;
 import java.io.IOException;
@@ -117,7 +115,7 @@ public class ViewUtility {
 
             String description = DataManager.getInstance().getCardTemplateByName(cardName).detailedToString();
             TextArea descriptionArea = new TextArea(description);
-            descriptionArea.setId("description-area");
+            descriptionArea.getStyleClass().add("description-box");
             descriptionArea.setEditable(false);
             descriptionArea.setWrapText(true);
             descriptionArea.setMinHeight(150);
@@ -133,9 +131,13 @@ public class ViewUtility {
     }
 
 
-    private static ImageView getCardImage(String cardName) {
+    public static Image getCardImage(String cardName) {
         String imageAddress = "/images/cards/" + cardName.replaceAll(" ", "_") + ".jpg";
-        return new ImageView(new Image(ViewUtility.class.getResource(imageAddress).toExternalForm()));
+        return new Image(ViewUtility.class.getResource(imageAddress).toExternalForm());
+    }
+
+    public static ImageView getCardImageView(String cardName) {
+        return new ImageView(getCardImage(cardName));
     }
 
 
@@ -221,7 +223,7 @@ public class ViewUtility {
         FlowPane cardsContainer = (FlowPane) shopScene.lookup("#cards-container");
         cardsContainer.getChildren().clear();
         for (CardTemplate template : dataManager.getCardTemplates()) {
-            ImageView cardImage = ViewUtility.getCardImage(template.getName());
+            ImageView cardImage = ViewUtility.getCardImageView(template.getName());
             cardImage.getStyleClass().add("shop-image");
             cardImage.setFitWidth(184);
             cardImage.setFitHeight(300);
@@ -313,7 +315,7 @@ public class ViewUtility {
         cards.sort(Comparator.comparing(Card::getName));
         cards.sort(Comparator.comparing(card -> card.getClass().getSimpleName()));
         for (Card card : cards) {
-            ImageView cardImage = ViewUtility.getCardImage(card.getName());
+            ImageView cardImage = ViewUtility.getCardImageView(card.getName());
             cardImage.getStyleClass().add("card-image");
             cardImage.setFitWidth(100);
             cardImage.setFitHeight(165);
@@ -421,7 +423,7 @@ public class ViewUtility {
             Button backButton = (Button) scene.lookup("#back-btn");
             backButton.setOnMouseClicked(e -> stage.close());
             for (Card card : deck.getAddableCards(user.getPurchasedCards())) {
-                ImageView cardImage = ViewUtility.getCardImage(card.getName());
+                ImageView cardImage = ViewUtility.getCardImageView(card.getName());
                 cardImage.getStyleClass().add("card-image");
                 cardImage.setFitWidth(184);
                 cardImage.setFitHeight(300);
@@ -497,7 +499,7 @@ public class ViewUtility {
             cardTemplates.sort(Comparator.comparing(CardTemplate::getName));
             cardTemplates.sort(Comparator.comparing(template -> template.getClass().getSimpleName()));
             for (CardTemplate template : cardTemplates) {
-                ImageView cardImage = ViewUtility.getCardImage(template.getName());
+                ImageView cardImage = ViewUtility.getCardImageView(template.getName());
                 cardImage.getStyleClass().add("card-image");
                 cardImage.setFitWidth(184);
                 cardImage.setFitHeight(300);
@@ -518,5 +520,45 @@ public class ViewUtility {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public static void showCardDetails(Scene duelScene, Card card) {
+        String address = "/images/cards/" + card.getName().replace(" ", "_") + ".jpg";
+        ImageView cardImage = new ImageView(new Image(ViewUtility.class.getResource(address).toExternalForm()));
+        cardImage.setFitWidth(219);
+        cardImage.setFitHeight(329);
+
+        String description = DataManager.getInstance().getCardTemplateByName(card.getName()).detailedToString();
+        TextArea descriptionArea = new TextArea(description);
+        descriptionArea.getStyleClass().add("description-box");
+        descriptionArea.setEditable(false);
+        descriptionArea.setWrapText(true);
+        descriptionArea.setMinHeight(200);
+        descriptionArea.setMaxHeight(200);
+
+        VBox container = (VBox) duelScene.lookup("#card-details-box");
+        container.getChildren().clear();
+        container.getChildren().addAll(cardImage, descriptionArea);
+    }
+
+    public static void updatePlayersInfo(Scene duelScene, User player1, User player2) {
+        Label player1Username = (Label) duelScene.lookup("#username-label");
+        player1Username.setText(player1.getUsername());
+
+        Label player1Nickname = (Label) duelScene.lookup("#nickname-label");
+        player1Nickname.setText(player1.getNickname());
+
+        ImageView player1Pic = (ImageView) duelScene.lookup("#profile-pic");
+        player1Pic.setImage(new Image(ViewUtility.class.getResource("/images/profile-pics/" + player1.getProfilePictureName()).toExternalForm()));
+
+        Label player2Username = (Label) duelScene.lookup("#opp-username-label");
+        player2Username.setText(player2.getUsername());
+
+        Label player2Nickname = (Label) duelScene.lookup("#opp-nickname-label");
+        player2Nickname.setText(player2.getNickname());
+
+        ImageView player2Pic = (ImageView) duelScene.lookup("#opp-profile-pic");
+        player2Pic.setImage(new Image(ViewUtility.class.getResource("/images/profile-pics/" + player2.getProfilePictureName()).toExternalForm()));
     }
 }

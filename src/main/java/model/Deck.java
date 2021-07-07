@@ -184,10 +184,16 @@ public class Deck implements Cloneable {
             if (!this.hasCardInMainDeck(card) && !this.hasCardInSideDeck(card)) {
                 int cardCount = this.getCardsByNameInMainDeck(card.getName()).size();
                 cardCount += this.getCardsByNameInSideDeck(card.getName()).size();
-                for (Card addableCard : addableCards) {
+                for (Card addableCard : addableCards)
                     if (card.getName().equals(addableCard.getName())) cardCount++;
-                }
-                if (cardCount < 3) addableCards.add(card);
+
+                int maxCount = 3;
+                if (card instanceof Spell && ((Spell) card).getStatus() == SpellTrapStatus.LIMITED)
+                    maxCount = 1;
+                else if (card instanceof Trap && ((Trap) card).getStatus() == SpellTrapStatus.LIMITED)
+                    maxCount = 1;
+
+                if (cardCount < maxCount) addableCards.add(card);
             }
         }
         return addableCards;

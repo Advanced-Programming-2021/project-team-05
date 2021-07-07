@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainMenuView">
+<GridPane id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainMenuView">
     <columnConstraints>
         <ColumnConstraints />
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
@@ -38,19 +38,19 @@
             </children>
         </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="7" />
-      <Button mnemonicParsing="false" text="Back" GridPane.columnIndex="4" onMouseClicked="#back" GridPane.rowIndex="7">
+      <Button mnemonicParsing="false" onMouseClicked="#back" text="Back" GridPane.columnIndex="4" GridPane.rowIndex="7">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" style="-fx-spacing: 10px;" GridPane.columnIndex="4" GridPane.rowIndex="2">
          <children>
-            <Label id="money-label" styleClass="default-label" text="Money: 51500" />
+            <Label id="money-label" styleClass="default-label" text="Money: 200000" />
          </children>
       </HBox>
       <ScrollPane id="scroll-pane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="4" GridPane.rowSpan="3">
          <content>
-            <FlowPane id="cards-container" prefWidth="980.0" />
+            <FlowPane id="cards-container" alignment="CENTER" columnHalignment="CENTER" prefWidth="1080.0" />
          </content>
       </ScrollPane>
     </children>
