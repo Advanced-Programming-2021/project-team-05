@@ -7,7 +7,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import model.User;
 import utils.ViewUtility;
 
 import java.io.IOException;
@@ -33,6 +38,7 @@ public class ProfileMenuView {
             scene = new Scene(root);
             MainView.stage.setScene(scene);
             initializeProfileSceneButtons();
+            updateProfileScene(scene, controller.getUser());
         } catch (IOException e) {
             System.out.println("Failed to load profile scene");
         }
@@ -49,6 +55,20 @@ public class ProfileMenuView {
         backButton.setOnMouseClicked(e -> backToMainMenu());
     }
 
+    public static void updateProfileScene(Scene profileScene, User user) {
+        Label usernameLabel = (Label) profileScene.lookup("#username-label");
+        usernameLabel.setText("Username: " + user.getUsername());
+
+        Label nicknameLabel = (Label) profileScene.lookup("#nickname-label");
+        nicknameLabel.setText("Nickname: " + user.getNickname());
+
+        String imagePath = "/images/profile-pics/" + user.getProfilePictureName();
+        ImageView imageView = new ImageView(new Image(ViewUtility.class.getResource(imagePath).toExternalForm()));
+        imageView.setId("profile-pic");
+        HBox profilePicContainer = (HBox) profileScene.lookup("#profile-pic-container");
+        profilePicContainer.getChildren().add(imageView);
+    }
+
 
     public void setChangeNicknameScene() {
         try {
@@ -58,6 +78,7 @@ public class ProfileMenuView {
             scene = new Scene(root);
             MainView.stage.setScene(scene);
             initializeChangeNicknameSceneButtons();
+            updateChangeNicknameScene();
         } catch (IOException e) {
             System.out.println("Failed to load change nickname scene");
         }
@@ -69,6 +90,11 @@ public class ProfileMenuView {
 
         Button backButton = (Button) scene.lookup("#back-btn");
         backButton.setOnMouseClicked(e -> setProfileScene());
+    }
+
+    public void updateChangeNicknameScene() {
+        Label nicknameLabel = (Label) scene.lookup("#nickname-label");
+        nicknameLabel.setText("Nickname: " + controller.getUser().getNickname());
     }
 
 
@@ -109,16 +135,16 @@ public class ProfileMenuView {
             ViewUtility.showInformationAlert("change nickname", "Error", "Please fill all fields");
             return;
         }
-
         controller.changeNickname(nicknameText);
     }
 
-    public void printChangeNicknameMessage(ProfileMenuMessage message, String nickname) {
+    public void showChangeNicknameMessage(ProfileMenuMessage message, String nickname) {
         switch (message) {
             case NICKNAME_EXISTS:
                 ViewUtility.showInformationAlert("ChangeNickname", "Error", "user with nickname " + nickname + " already exists");
                 break;
             case NICKNAME_CHANGED:
+                updateChangeNicknameScene();
                 ViewUtility.showInformationAlert("ChangeNickname", "successful", "nickname changed successfully!");
                 break;
             default:
@@ -128,7 +154,6 @@ public class ProfileMenuView {
 
 
     public void changePassword() {
-
         TextField newPassword = (TextField) scene.lookup("#newPassword");
         TextField currentPassword = (TextField) scene.lookup("#oldPassword");
         String newPasswordText = newPassword.getText();
@@ -141,7 +166,7 @@ public class ProfileMenuView {
         controller.changePassword(currentPasswordText, newPasswordText);
     }
 
-    public void printChangePasswordMessage(ProfileMenuMessage message) {
+    public void showChangePasswordMessage(ProfileMenuMessage message) {
         switch (message) {
             case INVALID_CURRENT_PASSWORD:
                 ViewUtility.showInformationAlert("changePassword", "Error", "current password is invalid");
@@ -151,7 +176,7 @@ public class ProfileMenuView {
                 break;
             case PASSWORD_CHANGED:
                 ViewUtility.showInformationAlert("changePassword", "Successful", "password changed successfully!");
-                backToMainMenu();
+                setProfileScene();
                 break;
             default:
                 ViewUtility.showInformationAlert("changePassword", "Error", "unexpected error!");

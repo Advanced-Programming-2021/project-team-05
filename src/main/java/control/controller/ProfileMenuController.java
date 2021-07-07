@@ -3,10 +3,7 @@ package control.controller;
 import control.DataManager;
 import control.message.ProfileMenuMessage;
 import model.User;
-import view.MainMenuView;
 import view.ProfileMenuView;
-
-import java.io.IOException;
 
 
 public class ProfileMenuController {
@@ -33,24 +30,24 @@ public class ProfileMenuController {
     public final void changeNickname(String newNickname) {
         DataManager dataManager = DataManager.getInstance();
         if (dataManager.getUserByNickname(newNickname) != null) {
-            view.printChangeNicknameMessage(ProfileMenuMessage.NICKNAME_EXISTS, newNickname);
+            view.showChangeNicknameMessage(ProfileMenuMessage.NICKNAME_EXISTS, newNickname);
             return;
         }
         user.setNickname(newNickname);
-        view.printChangeNicknameMessage(ProfileMenuMessage.NICKNAME_CHANGED, newNickname);
+        view.showChangeNicknameMessage(ProfileMenuMessage.NICKNAME_CHANGED, newNickname);
     }
 
 
     public final void changePassword(String currentPassword, String newPassword) {
         if (!user.getPassword().equals(currentPassword)) {
-            view.printChangePasswordMessage(ProfileMenuMessage.INVALID_CURRENT_PASSWORD);
+            view.showChangePasswordMessage(ProfileMenuMessage.INVALID_CURRENT_PASSWORD);
             return;
         }
         if (user.getPassword().equals(newPassword)) {
-            view.printChangePasswordMessage(ProfileMenuMessage.SAME_NEW_AND_CURRENT_PASSWORD);
+            view.showChangePasswordMessage(ProfileMenuMessage.SAME_NEW_AND_CURRENT_PASSWORD);
             return;
         }
         user.setPassword(newPassword);
-        view.printChangePasswordMessage(ProfileMenuMessage.PASSWORD_CHANGED);
+        view.showChangePasswordMessage(ProfileMenuMessage.PASSWORD_CHANGED);
     }
 }

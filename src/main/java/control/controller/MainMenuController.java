@@ -2,10 +2,12 @@ package control.controller;
 
 import control.DataManager;
 import control.message.MainMenuMessage;
+import javafx.stage.Stage;
 import model.Deck;
 import model.User;
 import view.DuelMenuView;
 import view.MainMenuView;
+import view.MainView;
 
 public class MainMenuController {
 
@@ -59,7 +61,12 @@ public class MainMenuController {
         }
 
         DuelMenuController duelMenuController = new DuelMenuController(user, opponent, rounds);
-        DuelMenuView duelMenuView = new DuelMenuView(duelMenuController);
+        DuelMenuView userView = new DuelMenuView(duelMenuController, MainView.stage);
+
+        Stage opponentStage = new Stage();
+        MainView.initializeStage(opponentStage);
+        DuelMenuView opponentView = new DuelMenuView(duelMenuController, opponentStage);
+
         duelMenuController.startNextRound();
      //   duelMenuView.run();
     }
@@ -80,7 +87,7 @@ public class MainMenuController {
         }
 
         DuelMenuController duelMenuController = new DuelMenuController(user, DataManager.getInstance().getAi(), rounds);
-        DuelMenuView duelMenuView = new DuelMenuView(duelMenuController);
+        DuelMenuView duelMenuView = new DuelMenuView(duelMenuController, MainView.stage);
         duelMenuController.startNextRound();
       //  duelMenuView.run();
     }

@@ -4,6 +4,8 @@ import com.sanityinc.jargs.CmdLineParser;
 import control.DataManager;
 import control.controller.DuelMenuController;
 import control.message.DuelMenuMessage;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import model.board.Board;
 import model.board.CardAddress;
 import model.board.CardAddressZone;
@@ -19,25 +21,23 @@ import java.util.Map;
 
 public class DuelMenuView {
 
-    private DuelMenuController controller;
+    private final DuelMenuController controller;
+    private final Stage stage;
+    private Scene scene;
     private boolean endDuel;
 
 
-    public DuelMenuView(DuelMenuController controller) {
-        this.setController(controller);
-        controller.setView(this);
-        this.setEndDuel(false);
-    }
-
-
-    public void setController(DuelMenuController controller) {
+    public DuelMenuView(DuelMenuController controller, Stage stage) {
         this.controller = controller;
+        this.stage = stage;
+        this.setEndDuel(false);
+        controller.setView(this);
     }
+
 
     public void setEndDuel(boolean endDuel) {
         this.endDuel = endDuel;
     }
-
 
 
 

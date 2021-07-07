@@ -29,6 +29,7 @@ import java.util.Comparator;
 import java.util.Optional;
 
 public class ViewUtility {
+
     public static void showConfirmationAlert(String title, String header, String message, String cancelText, String confirmText, Listener listener) {
         Alert alert = getAlert(title, header, message);
 
@@ -127,79 +128,6 @@ public class ViewUtility {
 
     public static ImageView getCardImageView(String cardName) {
         return new ImageView(getCardImage(cardName));
-    }
-
-
-    // ToDo: move this to ScoreboardView
-    public static void updateScoreboardScene(Scene scoreboardScene, String userNickname) {
-        // TODO: 2021-06-26 delete this
-        ObservableList<ScoreboardItem> scoreboardItems = FXCollections.observableArrayList();
-        for (int i = 0; i < 20; i++) {
-            scoreboardItems.add(new ScoreboardItem(String.valueOf(i + 1), "test" + i, String.valueOf(20 - i)));
-        }
-
-        TableColumn<ScoreboardItem, String> rankColumn = new TableColumn<>("Rank");
-        rankColumn.setCellValueFactory(new PropertyValueFactory<>("rank"));
-        rankColumn.setId("rank-column");
-        rankColumn.setPrefWidth(100);
-        rankColumn.setResizable(false);
-        rankColumn.setSortable(false);
-
-        TableColumn<ScoreboardItem, String> nicknameColumn = new TableColumn<>("Nickname");
-        nicknameColumn.setCellValueFactory(new PropertyValueFactory<>("nickname"));
-        nicknameColumn.setId("nickname-column");
-        nicknameColumn.setPrefWidth(230);
-        nicknameColumn.setResizable(false);
-        nicknameColumn.setSortable(false);
-
-        TableColumn<ScoreboardItem, String> scoreColumn = new TableColumn<>("Score");
-        scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
-        scoreColumn.setId("score-column");
-        scoreColumn.setPrefWidth(150);
-        scoreColumn.setResizable(false);
-        scoreColumn.setSortable(false);
-
-        TableView<ScoreboardItem> tableView = new TableView<>();
-        tableView.setId("scoreboard-table");
-        tableView.getColumns().addAll(rankColumn, nicknameColumn, scoreColumn);
-        // TODO: 2021-06-26 delete next line, uncomment other line
-        tableView.setItems(scoreboardItems);
-//        tableView.setItems(DataManager.getInstance().getScoreboardItems());
-        tableView.setEditable(true);
-        tableView.setRowFactory(tv -> new TableRow<ScoreboardItem>() {
-            @Override
-            public void updateItem(ScoreboardItem item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null) return;
-                if (userNickname.equals(item.getNickname())) setId("current-user-row");
-                else setId(null);
-            }
-        });
-
-        HBox scoreboardContainer = (HBox) scoreboardScene.lookup("#scoreboard-container");
-        scoreboardContainer.getChildren().clear();
-        scoreboardContainer.getChildren().add(tableView);
-    }
-
-
-    // ToDo: move these to ProfileView
-    public static void updateProfileScene(Scene profileScene, User user) {
-        Label usernameLabel = (Label) profileScene.lookup("#username-label");
-        usernameLabel.setText("Username: " + user.getUsername());
-
-        Label nicknameLabel = (Label) profileScene.lookup("#nickname-label");
-        nicknameLabel.setText("Nickname: " + user.getNickname());
-
-        String imagePath = "/images/profile-pics/" + user.getProfilePictureName();
-        ImageView imageView = new ImageView(new Image(ViewUtility.class.getResource(imagePath).toExternalForm()));
-        imageView.setId("profile-pic");
-        HBox profilePicContainer = (HBox) profileScene.lookup("#profile-pic-container");
-        profilePicContainer.getChildren().add(imageView);
-    }
-
-    public static void updateChangeNicknameScene(Scene changeNicknameScene, String userNickname) {
-        Label nicknameLabel = (Label) changeNicknameScene.lookup("#nickname-label");
-        nicknameLabel.setText("Nickname: " + userNickname);
     }
 
 

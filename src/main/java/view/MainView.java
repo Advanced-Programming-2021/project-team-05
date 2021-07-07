@@ -15,6 +15,7 @@ public class MainView extends Application {
         launch(args);
     }
 
+
     @Override
     public void start(Stage stage) {
         try {
@@ -29,6 +30,12 @@ public class MainView extends Application {
             e.printStackTrace();
         }
     }
+
+    public static void initializeStage(Stage stage) {
+        stage.setTitle("Yu-Gi-Oh");
+        stage.setResizable(false);
+    }
+
 
     @Override
     public void stop() {
