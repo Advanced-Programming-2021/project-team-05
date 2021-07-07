@@ -157,7 +157,7 @@ public class DeckMenuView {
         cards.sort(Comparator.comparing(Card::getName));
         cards.sort(Comparator.comparing(card -> card.getClass().getSimpleName()));
         for (Card card : cards) {
-            ImageView cardImage = ViewUtility.getCardImage(card.getName());
+            ImageView cardImage = ViewUtility.getCardImageView(card.getName());
             cardImage.getStyleClass().add("card-image");
             cardImage.setFitWidth(100);
             cardImage.setFitHeight(165);
@@ -265,7 +265,7 @@ public class DeckMenuView {
             Button backButton = (Button) scene.lookup("#back-btn");
             backButton.setOnMouseClicked(e -> stage.close());
             for (Card card : deck.getAddableCards(user.getPurchasedCards())) {
-                ImageView cardImage = ViewUtility.getCardImage(card.getName());
+                ImageView cardImage = ViewUtility.getCardImageView(card.getName());
                 cardImage.getStyleClass().add("card-image");
                 cardImage.setFitWidth(184);
                 cardImage.setFitHeight(300);
