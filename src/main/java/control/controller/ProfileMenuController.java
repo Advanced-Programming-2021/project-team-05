@@ -3,7 +3,10 @@ package control.controller;
 import control.DataManager;
 import control.message.ProfileMenuMessage;
 import model.User;
+import view.MainMenuView;
 import view.ProfileMenuView;
+
+import java.io.IOException;
 
 
 public class ProfileMenuController {
@@ -45,4 +48,16 @@ public class ProfileMenuController {
         user.setPassword(newPassword);
         view.printChangePasswordMessage(ProfileMenuMessage.PASSWORD_CHANGED);
     }
+    public void back() throws IOException {
+        // Alert alert = new PacmanAlert(Alert.AlertType.INFORMATION, "Log Out", "logged out successfully!", "");
+        //alert.setOnCloseRequest(event -> {
+        try {
+            new MainMenuView().setProfileScene();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // });
+        // alert.show();
+    }
+
 }

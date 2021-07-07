@@ -33,65 +33,65 @@ public class DeckMenuController {
 
     public final void createDeck(String deckName) {
         if (user.getDeckByName(deckName) != null) {
-            view.printCreateDeckMessage(DeckMenuMessage.DECK_NAME_EXISTS, deckName);
+            view.showCreateDeckMessage(DeckMenuMessage.DECK_NAME_EXISTS);
             return;
         }
         Deck deck = new Deck(deckName);
         DataManager.getInstance().addDeck(deck);
         user.addDeck(deck);
-        view.printCreateDeckMessage(DeckMenuMessage.DECK_CREATED, deckName);
+        view.showCreateDeckMessage(DeckMenuMessage.DECK_CREATED);
     }
 
 
     public final void deleteDeck(String deckName) {
         Deck deck = user.getDeckByName(deckName);
         if (deck == null) {
-            view.printDeleteDeckMessage(DeckMenuMessage.NO_DECK_EXISTS, deckName);
+            view.showDeleteDeckMessage(DeckMenuMessage.NO_DECK_EXISTS, deckName);
             return;
         }
         user.removeDeck(deck);
         DataManager.getInstance().removeDeck(deck);
-        view.printDeleteDeckMessage(DeckMenuMessage.DECK_DELETED, deckName);
+        view.showDeleteDeckMessage(DeckMenuMessage.DECK_DELETED, deckName);
     }
 
 
     public final void activateDeck(String deckName) {
         Deck deck = user.getDeckByName(deckName);
         if (deck == null) {
-            view.printActivateDeckMessage(DeckMenuMessage.NO_DECK_EXISTS, deckName);
+            view.showActivateDeckMessage(DeckMenuMessage.NO_DECK_EXISTS, deckName);
             return;
         }
         user.setActiveDeck(deck);
-        view.printActivateDeckMessage(DeckMenuMessage.DECK_ACTIVATED, deckName);
+        view.showActivateDeckMessage(DeckMenuMessage.DECK_ACTIVATED, deckName);
     }
 
 
     public final void addCard(String deckName, String cardName, boolean isSideDeck) {
         Deck deck = user.getDeckByName(deckName);
         if (deck == null) {
-            view.printAddCardMessage(DeckMenuMessage.NO_DECK_EXISTS, deckName, cardName);
+            view.showAddCardMessage(DeckMenuMessage.NO_DECK_EXISTS, deckName, cardName);
             return;
         }
         ArrayList<Card> cards = user.getPurchasedCardsByName(cardName);
         cards.removeIf(card -> (deck.hasCardInMainDeck(card) || deck.hasCardInSideDeck(card)));
         if (cards.size() == 0) {
-            view.printAddCardMessage(DeckMenuMessage.NO_CARD_EXISTS, deckName, cardName);
+            view.showAddCardMessage(DeckMenuMessage.NO_CARD_EXISTS, deckName, cardName);
             return;
         }
         if (isSideDeck) {
             if (deck.isSideDeckFull()) {
-                view.printAddCardMessage(DeckMenuMessage.SIDE_DECK_IS_FULL, deckName, cardName);
+                view.showAddCardMessage(DeckMenuMessage.SIDE_DECK_IS_FULL, deckName, cardName);
                 return;
             }
         } else {
             if (deck.isMainDeckFull()) {
-                view.printAddCardMessage(DeckMenuMessage.MAIN_DECK_IS_FULL, deckName, cardName);
+                view.showAddCardMessage(DeckMenuMessage.MAIN_DECK_IS_FULL, deckName, cardName);
                 return;
             }
         }
         Card card = cards.get(0);
         if (deck.isCardFull(card)) {
-            view.printAddCardMessage(DeckMenuMessage.DECK_IS_FULL, deckName, cardName);
+            view.showAddCardMessage(DeckMenuMessage.DECK_IS_FULL, deckName, cardName);
             return;
         }
         if (isSideDeck) {
@@ -99,31 +99,31 @@ public class DeckMenuController {
         } else {
             deck.addCardToMainDeck(card);
         }
-        view.printAddCardMessage(DeckMenuMessage.CARD_ADDED, deckName, cardName);
+        view.showAddCardMessage(DeckMenuMessage.CARD_ADDED, deckName, cardName);
     }
 
 
     public final void removeCard(String deckName, String cardName, boolean isSideDeck) {
         Deck deck = user.getDeckByName(deckName);
         if (deck == null) {
-            view.printRemoveCardMessage(DeckMenuMessage.NO_DECK_EXISTS, deckName, cardName);
+            view.showRemoveCardMessage(DeckMenuMessage.NO_DECK_EXISTS, deckName, cardName);
             return;
         }
         if (isSideDeck) {
             ArrayList<Card> cards = deck.getCardsByNameInSideDeck(cardName);
             if (cards.size() == 0) {
-                view.printRemoveCardMessage(DeckMenuMessage.NO_CARD_EXISTS_IN_SIDE_DECK, deckName, cardName);
+                view.showRemoveCardMessage(DeckMenuMessage.NO_CARD_EXISTS_IN_SIDE_DECK, deckName, cardName);
                 return;
             }
             deck.removeCardFromSideDeck(cards.get(0));
         } else {
             ArrayList<Card> cards = deck.getCardsByNameInMainDeck(cardName);
             if (cards.size() == 0) {
-                view.printRemoveCardMessage(DeckMenuMessage.NO_CARD_EXISTS_IN_MAIN_DECK, deckName, cardName);
+                view.showRemoveCardMessage(DeckMenuMessage.NO_CARD_EXISTS_IN_MAIN_DECK, deckName, cardName);
                 return;
             }
             deck.removeCardFromMainDeck(cards.get(0));
         }
-        view.printRemoveCardMessage(DeckMenuMessage.CARD_REMOVED, deckName, cardName);
+        view.showRemoveCardMessage(DeckMenuMessage.CARD_REMOVED, deckName, cardName);
     }
 }

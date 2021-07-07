@@ -19,9 +19,9 @@
     -fx-font-size: 24px;
     -fx-font-family: "Merienda";
     -fx-font-weight: bold;
-    -fx-text-fill: orange;
+    -fx-text-fill: #E7D551;
 
-    -fx-background-color: linear-gradient(to right, #640c0cee, #b83939dd);
+    -fx-background-color: #a82f4e;
     -fx-background-radius: 8px;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 1), 10, 0, 0, 10);
 
@@ -39,7 +39,7 @@
 }
 
 .default-button:focused {
-    -fx-background-color: linear-gradient(to right, #050505ee, rgba(28, 28, 28, 0.5));
+    -fx-background-color: linear-gradient(to right, #050505ee, rgb(114, 20, 126));
 }
 
 
@@ -59,8 +59,8 @@
     -fx-padding: 10px;
     -fx-background-radius: 20px;
 
-    -fx-text-fill: black;
-    -fx-background-color: linear-gradient(to top right, #640707ee, #a00707dd);
+    -fx-text-fill: #E7D551;
+    -fx-background-color: #8248a1;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0, 0, 8);
 }
 
@@ -76,7 +76,7 @@
     -fx-alignment: center;
     -fx-font-size: 35;
 
-    -fx-background-color: linear-gradient(to top right, #5a1306dd, #ff3300cc);
+    -fx-background-color: linear-gradient(to top right, #FA1E0E, #72147E);
     -fx-background-radius: 10px;
     -fx-padding: 18px 40px;
     -fx-text-fill: black;
@@ -86,7 +86,7 @@
 .title-label:hover {
     -fx-scale-x: 1.01;
     -fx-scale-y: 1.01;
-    -fx-background-color: linear-gradient(to top right, #5a1306, #ff3300);
+    -fx-background-color: linear-gradient(to top right, #72147E, #FA1E0E);
 }
 
 

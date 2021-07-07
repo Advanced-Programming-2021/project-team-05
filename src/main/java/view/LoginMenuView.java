@@ -1,12 +1,14 @@
 package view;
 
 import control.controller.LoginMenuController;
+import control.controller.MainMenuController;
 import control.message.LoginMenuMessage;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import model.User;
 import utils.ViewUtility;
 
 import java.io.IOException;
@@ -43,8 +45,15 @@ public class LoginMenuView {
         MainView.stage.setScene(signupScene);
     }
 
+    public void setMainMenuScene() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/main-menu.fxml"));
+        Scene signupScene = new Scene(root);
+        scene = signupScene;
+        MainView.stage.setScene(signupScene);
+    }
 
-    public void logIn() {
+
+    public void logIn() throws IOException {
         TextField usernameField = (TextField) scene.lookup("#username-field");
         TextField passwordField = (TextField) scene.lookup("#password-field");
         String username = usernameField.getText();
@@ -54,10 +63,14 @@ public class LoginMenuView {
             ViewUtility.showInformationAlert("Login", "Error", "Please fill all fields");
             return;
         }
-        controller.loginUser(username, password);
+        User user = controller.loginUser(username, password);
+        if (user != null) {
+            MainMenuView.setController(new MainMenuController(user));
+            setMainMenuScene();
+        }
     }
 
-    public void showLoginMessage(LoginMenuMessage message) {
+    public void showLoginMessage(LoginMenuMessage message) throws IOException {
         switch (message) {
             case NO_MATCH:
                 ViewUtility.showInformationAlert("Login", "Incorrect Username or Password", "Username and password don't match!");

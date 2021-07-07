@@ -5,6 +5,8 @@ import control.message.LoginMenuMessage;
 import model.User;
 import view.LoginMenuView;
 
+import java.io.IOException;
+
 public class LoginMenuController {
 
     private LoginMenuView view;
@@ -43,20 +45,21 @@ public class LoginMenuController {
     }
 
 
-    public final void loginUser(String username, String password) {
+    public final User loginUser(String username, String password) throws IOException {
         if (username.contains(" ")) {
             view.showLoginMessage(LoginMenuMessage.USERNAME_CONTAIN_SPACE);
-            return;
+            return null;
         }
         if (password.contains(" ")) {
             view.showLoginMessage(LoginMenuMessage.PASSWORD_CONTAIN_SPACE);
-            return;
+            return null;
         }
         User user = DataManager.getInstance().getUserByUsername(username);
         if (user == null || !password.equals(user.getPassword())) {
             view.showLoginMessage(LoginMenuMessage.NO_MATCH);
-            return;
+            return null;
         }
         view.showLoginMessage(LoginMenuMessage.LOGGED_IN);
+        return user;
     }
 }
