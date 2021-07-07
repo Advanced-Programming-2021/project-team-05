@@ -14,6 +14,7 @@ public class MainMenuController {
 
 
     public MainMenuController(User user) {
+
         this.user = user;
     }
 

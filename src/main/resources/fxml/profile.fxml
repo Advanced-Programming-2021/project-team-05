@@ -28,8 +28,8 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Change Password" GridPane.columnIndex="1" GridPane.rowIndex="5" onMouseClicked="#changePassword"/>
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Change Nickname" GridPane.columnIndex="1" GridPane.rowIndex="6" onMouseClicked="#changeNickname" />
+        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Change Password" GridPane.columnIndex="1" GridPane.rowIndex="5" onMouseClicked="#setPasswordScene"/>
+        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Change Nickname" GridPane.columnIndex="1" GridPane.rowIndex="6" onMouseClicked="#setNicknameScene" />
         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Back" onMouseClicked="#back" GridPane.columnIndex="1" GridPane.rowIndex="7" />
           <Label styleClass="title-label" text="Profile" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <HBox id="profile-pic-container" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />

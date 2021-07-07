@@ -21,6 +21,7 @@ public class MainMenuView {
     private static MainMenuController controller;
 
     public void setMainMenuScene() throws IOException {
+        controller.setView(new MainMenuView());
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/main-menu.fxml"));
         Scene mainMenuScene = new Scene(root);
         mainMenuScene.getStylesheets().add("css/main-menu.css");
@@ -61,10 +62,12 @@ public class MainMenuView {
     }
 
     public void setProfileScene() throws IOException {
+        ProfileMenuView.setController(new ProfileMenuController(controller.getUser()));
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/profile.fxml"));
         Scene scoreboardScene = new Scene(root);
         scene = scoreboardScene;
         MainView.stage.setScene(scoreboardScene);
+
     }
 
     public void setImportExportScene() throws IOException {
