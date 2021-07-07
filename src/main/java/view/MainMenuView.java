@@ -37,7 +37,7 @@ public class MainMenuView {
         Scene scoreboardScene = new Scene(root);
         scene = scoreboardScene;
         MainView.stage.setScene(scoreboardScene);
-        ViewUtility.updateScoreboardScene(scene, controller.getUser().getNickname());
+        ViewUtility.updateScoreboardScene(scene , controller.getUser().getNickname());
 
     }
 
@@ -53,6 +53,11 @@ public class MainMenuView {
         Scene scoreboardScene = new Scene(root);
         scene = scoreboardScene;
         MainView.stage.setScene(scoreboardScene);
+        DeckMenuController deckMenuController = new DeckMenuController(controller.getUser());
+        deckMenuController.setView(new DeckMenuView());
+        DeckMenuView.setController(deckMenuController);
+        DeckMenuView.setScene(scene);
+        DeckMenuView.updateDeckScene(scene, controller.getUser());
     }
 
     public void setProfileScene() throws IOException {
@@ -60,8 +65,6 @@ public class MainMenuView {
         Scene scoreboardScene = new Scene(root);
         scene = scoreboardScene;
         MainView.stage.setScene(scoreboardScene);
-        ProfileMenuView.setController(new ProfileMenuController(controller.getUser()));
-        ViewUtility.updateProfileScene(scene, controller.getUser());
     }
 
     public void setImportExportScene() throws IOException {
@@ -71,7 +74,7 @@ public class MainMenuView {
         MainView.stage.setScene(scoreboardScene);
     }
 
-    public void startDuel() throws IOException {
+    public void startDuel() throws IOException{
         CmdLineParser parser = new CmdLineParser();
         Option<Boolean> newOption = parser.addBooleanOption('n', "new");
         Option<String> opponentUsernameOption = parser.addStringOption('p', "second-player");
@@ -83,6 +86,7 @@ public class MainMenuView {
         String opponentUsername = parser.getOptionValue(opponentUsernameOption);
         Integer rounds = parser.getOptionValue(roundsOption);
         boolean ai = parser.getOptionValue(aiOption, false);
+
 
 
         if (!newDuel || rounds == null || (opponentUsername != null) == ai) {
@@ -98,19 +102,19 @@ public class MainMenuView {
     public void printStartDuelMessage(MainMenuMessage message, String username) {
         switch (message) {
             case NO_PLAYER_EXISTS:
-                ViewUtility.showInformationAlert("", "error", "there is no player with this username");
+                ViewUtility.showInformationAlert("","error" ,"there is no player with this username");
                 break;
             case NO_ACTIVE_DECK:
-                ViewUtility.showInformationAlert("", "error", username + " has no active deck");
+                ViewUtility.showInformationAlert("","error" ,username + " has no active deck");
                 break;
             case INVALID_DECK:
-                ViewUtility.showInformationAlert("", "error", username + "'s deck is invalid");
+                ViewUtility.showInformationAlert("","error" ,username + "'s deck is invalid");
                 break;
             case INVALID_ROUND:
-                ViewUtility.showInformationAlert("", "error", "number of rounds is not supported");
+                ViewUtility.showInformationAlert("","error" ,"number of rounds is not supported");
                 break;
             default:
-                ViewUtility.showInformationAlert("", "error", "unexpected error");
+                ViewUtility.showInformationAlert("","error" ,"unexpected error");
         }
     }
 
