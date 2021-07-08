@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DuelMenuView {
+public class DuelMenuView implements CheatRunner {
 
     private final DuelMenuController controller;
     private Scene scene;
@@ -64,6 +64,7 @@ public class DuelMenuView {
             scene = new Scene(root);
             MainView.stage.setScene(scene);
             initializeDuelSceneButtons();
+            scene.setOnKeyPressed(keyEvent -> handleConsoleKeyEvent(keyEvent, this));
         } catch (IOException e) {
             System.out.println("Failed to load duel scene");
         }
@@ -955,19 +956,23 @@ public class DuelMenuView {
     }
 
 
+    @Override
+    public void runCheat(String command) {
+        if (command.matches("^increase --LP \\d+$"))
+            increaseLP(command.split("\\s"));
+        else if (command.matches("^duel set-winner \\S+$"))
+            setWinner(command.split("\\s"));
+    }
+
+
     private void increaseLP(String[] command) {
         int amount;
         try {
             amount = Integer.parseInt(command[2]);
         } catch (NumberFormatException e) {
-            System.out.println("invalid command");
             return;
         }
         controller.increaseLP(amount);
-    }
-
-    public void showLPIncreased() {
-        System.out.println("LP increased!");
     }
 
 
@@ -977,6 +982,7 @@ public class DuelMenuView {
     }
 
     public void showSetWinnerMessage(DuelMenuMessage message) {
+        // TODO: 2021-07-08 remove after complete
         switch (message) {
             case INVALID_NICKNAME:
                 System.out.println("invalid nickname");

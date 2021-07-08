@@ -65,6 +65,6 @@ public class ShopMenuController {
 
     public void increaseMoney(long amount) {
         user.increaseMoney(amount);
-        view.showMoneyIncreased();
+        view.updateShopScene(user);
     }
 }

@@ -1163,8 +1163,7 @@ public class DuelMenuController {
 
     public final void increaseLP(int amount) {
         board.getPlayerTable().increaseLifePoint(amount);
-        view.showLPIncreased();
-        view.updateBoard(board);
+        view.updateLPs(board.getPlayerTable().getLifePoint(), board.getOpponentTable().getLifePoint());
     }
 
 

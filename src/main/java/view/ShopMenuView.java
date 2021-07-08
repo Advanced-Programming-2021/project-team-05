@@ -14,15 +14,12 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import model.User;
 import model.template.CardTemplate;
-import utils.Utility;
 import utils.ViewUtility;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
 
 
-public class ShopMenuView {
+public class ShopMenuView implements CheatRunner {
 
     private final ShopMenuController controller;
     private Scene scene;
@@ -42,7 +39,8 @@ public class ShopMenuView {
             scene = new Scene(root);
             MainView.stage.setScene(scene);
             initializeShopSceneButtons();
-            updateShopScene(scene, controller.getUser());
+            updateShopScene(controller.getUser());
+            scene.setOnKeyPressed(keyEvent -> handleConsoleKeyEvent(keyEvent, this));
         } catch (IOException e) {
             System.out.println("Failed to load shop scene");
         }
@@ -62,12 +60,12 @@ public class ShopMenuView {
         });
     }
 
-    public static void updateShopScene(Scene shopScene, User user) {
-        Label moneyLabel = (Label) shopScene.lookup("#money-label");
+    public void updateShopScene(User user) {
+        Label moneyLabel = (Label) scene.lookup("#money-label");
         moneyLabel.setText("Money: " + user.getMoney());
 
         DataManager dataManager = DataManager.getInstance();
-        FlowPane cardsContainer = (FlowPane) shopScene.lookup("#cards-container");
+        FlowPane cardsContainer = (FlowPane) scene.lookup("#cards-container");
         cardsContainer.getChildren().clear();
         for (CardTemplate template : dataManager.getCardTemplates()) {
             ImageView cardImage = ViewUtility.getCardImageView(template.getName());
@@ -90,11 +88,6 @@ public class ShopMenuView {
         }
     }
 
-//    public void buyCard(String[] command) {
-//        String cardName = command[2].replace('_', ' ');
-//        controller.buyCard(cardName);
-//    }
-
     public void printBuyCardMessage(ShopMenuMessage message) {
         switch (message) {
             case NO_CARD_EXISTS:
@@ -112,58 +105,19 @@ public class ShopMenuView {
     }
 
 
-//    public void showAllCards() {
-//        DataManager dataManager = DataManager.getInstance();
-//        ArrayList<CardTemplate> allTemplates = dataManager.getCardTemplates();
-//        allTemplates.sort(Comparator.comparing(CardTemplate::getName));
-//        for (CardTemplate template : allTemplates) {
-//            System.out.println(template.getName() + ": " + template.getPrice());
-//        }
-//    }
+    @Override
+    public void runCheat(String command) {
+        if (command.matches("^increase --money \\d+$"))
+            increaseMoney(command.split("\\s"));
+    }
 
-
-//    public void showCard(String[] command) {
-//        String cardName = command[2].replace('_', ' ');
-//        DataManager dataManager = DataManager.getInstance();
-//        CardTemplate template = dataManager.getCardTemplateByName(cardName);
-//        if (template == null) {
-//            System.out.println("invalid card name");
-//        } else {
-//            System.out.println(template.detailedToString());
-//        }
-//    }
-
-
-//    public void showCurrentMenu() {
-//        System.out.println("Shop Menu");
-//    }
-//
-//
-//    public void showHelp() {
-//        System.out.print(
-//                "commands:\r\n" +
-//                        "\tshop buy <card name>\r\n" +
-//                        "\tshop show --all\r\n" +
-//                        "\tcard show <card name>\r\n" +
-//                        "\tmenu show-current\r\n" +
-//                        "\tmenu exit\r\n" +
-//                        "\tmenu help\r\n"
-//        );
-//    }
-
-
-//    public void increaseMoney(String[] command) {
-//        long amount;
-//        try {
-//            amount = Long.parseLong(command[2]);
-//        } catch (NumberFormatException e) {
-//            System.out.println("invalid command");
-//            return;
-//        }
-//        controller.increaseMoney(amount);
-//    }
-
-    public void showMoneyIncreased() {
-        System.out.println("money increased!");
+    public void increaseMoney(String[] command) {
+        long amount;
+        try {
+            amount = Long.parseLong(command[2]);
+        } catch (NumberFormatException e) {
+            return;
+        }
+        controller.increaseMoney(amount);
     }
 }
