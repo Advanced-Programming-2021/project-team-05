@@ -133,35 +133,6 @@ public class ViewUtility {
     }
 
 
-    // ToDo: move this to ShopView
-    public static void updateShopScene(Scene shopScene, User user) {
-        Label moneyLabel = (Label) shopScene.lookup("#money-label");
-        moneyLabel.setText("Money: " + user.getMoney());
-
-        DataManager dataManager = DataManager.getInstance();
-        FlowPane cardsContainer = (FlowPane) shopScene.lookup("#cards-container");
-        cardsContainer.getChildren().clear();
-        for (CardTemplate template : dataManager.getCardTemplates()) {
-            ImageView cardImage = ViewUtility.getCardImageView(template.getName());
-            cardImage.getStyleClass().add("shop-image");
-            cardImage.setFitWidth(184);
-            cardImage.setFitHeight(300);
-            cardImage.setOnMouseClicked(e -> ViewUtility.showCard(template.getName()));
-
-            Label countLabel = new Label("Purchased: " + user.getPurchasedCardsByName(template.getName()).size());
-            countLabel.getStyleClass().addAll("default-label", "number-label");
-
-            Button buyButton = new Button("Buy (" + template.getPrice() + ")");
-            buyButton.getStyleClass().addAll("default-button", "buy-button");
-            if (user.getMoney() < template.getPrice()) buyButton.setDisable(true);
-
-            VBox container = new VBox(2, cardImage, countLabel, buyButton);
-            container.setPrefWidth(184);
-            container.setPrefHeight(364);
-            cardsContainer.getChildren().add(container);
-        }
-    }
-
     // ToDo: move these to Import/Export
     public static void initializeImportExportScene(Stage stage, Scene importExportScene) {
         ChoiceBox<String> typeChoiceBox = new ChoiceBox<>();
