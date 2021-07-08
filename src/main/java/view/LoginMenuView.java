@@ -41,12 +41,15 @@ public class LoginMenuView {
     private void initializeWelcomeSceneButtons() {
         Button loginButton = (Button) scene.lookup("#login-btn");
         loginButton.setOnMouseClicked(e -> setLoginScene());
+        loginButton.setOnAction(e -> setLoginScene());
 
         Button registerButton = (Button) scene.lookup("#register-btn");
         registerButton.setOnMouseClicked(e -> setRegisterScene());
+        registerButton.setOnAction(e -> setRegisterScene());
 
         Button exitButton = (Button) scene.lookup("#exit-btn");
         exitButton.setOnMouseClicked(e -> exit());
+        exitButton.setOnAction(e -> exit());
     }
 
 
@@ -67,9 +70,11 @@ public class LoginMenuView {
     private void initializeLoginSceneButtons() {
         Button loginButton = (Button) scene.lookup("#login-btn");
         loginButton.setOnMouseClicked(e -> logIn());
+        loginButton.setOnAction(e -> logIn());
 
         Button backButton = (Button) scene.lookup("#back-btn");
         backButton.setOnMouseClicked(e -> setWelcomeScene());
+        backButton.setOnAction(e -> setWelcomeScene());
     }
 
 
@@ -90,9 +95,11 @@ public class LoginMenuView {
     private void initializeRegisterSceneButtons() {
         Button loginButton = (Button) scene.lookup("#register-btn");
         loginButton.setOnMouseClicked(e -> register());
+        loginButton.setOnAction(e -> register());
 
         Button backButton = (Button) scene.lookup("#back-btn");
         backButton.setOnMouseClicked(e -> setWelcomeScene());
+        backButton.setOnAction(e -> setWelcomeScene());
     }
 
 

@@ -55,7 +55,7 @@
 
 /* ----------label---------- */
 .default-label {
-    -fx-font-size: 20;
+    -fx-font-size: 20px;
     -fx-padding: 10px;
     -fx-background-radius: 20px;
 
@@ -133,6 +133,8 @@
 
 /* ----------choice box---------- */
 .choice-box {
+    -fx-pref-width: 150px;
+    -fx-font-size: 20px;
     -fx-background-color: #2b2b2b;
     -fx-mark-color: orange;
     -fx-cursor: hand;
@@ -148,11 +150,18 @@
     -fx-scale-y: 0.99;
 }
 
+.choice-box:focused {
+    -fx-background-color: #535353;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
 .choice-box > .label {
     -fx-text-fill: white;
 }
 
 .choice-box .context-menu {
+    -fx-pref-width: 150px;
     -fx-background-color: black;
     -fx-cursor: hand;
 }
@@ -167,6 +176,47 @@
 
 .choice-box .menu-item:focused > .label {
     -fx-text-fill: #b81111;
+}
+
+
+/* ----------check box---------- */
+.default-check-box {
+    -fx-padding: 10px;
+    -fx-font-size: 20px;
+
+    -fx-text-fill: #E7D551;
+    -fx-background-color: #8248a1;
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0, 0, 8);
+}
+
+.default-check-box:hover {
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.default-check-box:pressed {
+    -fx-scale-x: 0.99;
+    -fx-scale-y: 0.99;
+}
+
+.default-check-box:focused {
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-background-color: #6e2a8d;
+}
+
+.default-check-box:selected > .box {
+    -fx-background-color: #a82f4e;
+}
+
+.default-check-box > .box {
+    -fx-background-color: #ccccccee;
+}
+
+.default-check-box:selected > .box > .mark,
+.default-check-box:indeterminate  > .box > .mark {
+    -fx-background-color: #E7D551;
 }
 
 

@@ -3,6 +3,7 @@ package view;
 import control.DataManager;
 import control.controller.LoginMenuController;
 import javafx.application.Application;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class MainView extends Application {
@@ -18,6 +19,7 @@ public class MainView extends Application {
 
     @Override
     public void start(Stage stage) {
+        initializeFonts();
         try {
             MainView.stage = stage;
             stage.setTitle("Yu-Gi-Oh");
@@ -31,14 +33,15 @@ public class MainView extends Application {
         }
     }
 
-    public static void initializeStage(Stage stage) {
-        stage.setTitle("Yu-Gi-Oh");
-        stage.setResizable(false);
-    }
-
 
     @Override
     public void stop() {
         System.exit(0);
+    }
+
+
+    private void initializeFonts() {
+        Font.loadFont(getClass().getResourceAsStream("/font/Merienda-Regular.ttf"), 20);
+        Font.loadFont(getClass().getResourceAsStream("/font/Merienda-Bold.ttf"), 20);
     }
 }

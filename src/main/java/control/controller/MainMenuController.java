@@ -2,12 +2,10 @@ package control.controller;
 
 import control.DataManager;
 import control.message.MainMenuMessage;
-import javafx.stage.Stage;
 import model.Deck;
 import model.User;
 import view.DuelMenuView;
 import view.MainMenuView;
-import view.MainView;
 
 public class MainMenuController {
 
@@ -30,65 +28,58 @@ public class MainMenuController {
     }
 
 
-    public final void startDuelWithUser(String opponentUsername, int rounds) {
+    public final boolean startDuelWithUser(String opponentUsername, int rounds) {
+        if (user.getUsername().equals(opponentUsername)) {
+            view.showStartDuelMessage(MainMenuMessage.CANT_DUEL_WITH_YOURSELF, user.getUsername());
+            return false;
+        }
         DataManager dataManager = DataManager.getInstance();
         User opponent = dataManager.getUserByUsername(opponentUsername);
         if (opponent == null) {
-            view.printStartDuelMessage(MainMenuMessage.NO_PLAYER_EXISTS, user.getUsername());
-            return;
+            view.showStartDuelMessage(MainMenuMessage.NO_PLAYER_EXISTS, user.getUsername());
+            return false;
         }
         Deck userDeck = user.getActiveDeck();
         if (userDeck == null) {
-            view.printStartDuelMessage(MainMenuMessage.NO_ACTIVE_DECK, user.getUsername());
-            return;
+            view.showStartDuelMessage(MainMenuMessage.NO_ACTIVE_DECK, user.getUsername());
+            return true;
         }
         Deck opponentDeck = opponent.getActiveDeck();
         if (opponentDeck == null) {
-            view.printStartDuelMessage(MainMenuMessage.NO_ACTIVE_DECK, opponentUsername);
-            return;
+            view.showStartDuelMessage(MainMenuMessage.NO_ACTIVE_DECK, opponentUsername);
+            return false;
         }
         if (!userDeck.isValid()) {
-            view.printStartDuelMessage(MainMenuMessage.INVALID_DECK, user.getUsername());
-            return;
+            view.showStartDuelMessage(MainMenuMessage.INVALID_DECK, user.getUsername());
+            return true;
         }
         if (!opponentDeck.isValid()) {
-            view.printStartDuelMessage(MainMenuMessage.INVALID_DECK, opponentUsername);
-            return;
+            view.showStartDuelMessage(MainMenuMessage.INVALID_DECK, opponentUsername);
+            return false;
         }
-        if (rounds != 1 && rounds != 3) {
-            view.printStartDuelMessage(MainMenuMessage.INVALID_ROUND, null);
-            return;
-        }
-
         DuelMenuController duelMenuController = new DuelMenuController(user, opponent, rounds);
-        DuelMenuView userView = new DuelMenuView(duelMenuController, MainView.stage);
-
-        Stage opponentStage = new Stage();
-        MainView.initializeStage(opponentStage);
-        DuelMenuView opponentView = new DuelMenuView(duelMenuController, opponentStage);
+        DuelMenuView view = new DuelMenuView(duelMenuController);
+        view.setDuelScene();
+        view.updatePlayersInfo(user, opponent);
 
         duelMenuController.startNextRound();
-     //   duelMenuView.run();
+        return true;
     }
 
-    public final void startDuelWithAi(int rounds) {
+    public final boolean startDuelWithAi(int rounds) {
         Deck userDeck = user.getActiveDeck();
         if (userDeck == null) {
-            view.printStartDuelMessage(MainMenuMessage.NO_ACTIVE_DECK, user.getUsername());
-            return;
+            view.showStartDuelMessage(MainMenuMessage.NO_ACTIVE_DECK, user.getUsername());
+            return true;
         }
         if (!userDeck.isValid()) {
-            view.printStartDuelMessage(MainMenuMessage.INVALID_DECK, user.getUsername());
-            return;
+            view.showStartDuelMessage(MainMenuMessage.INVALID_DECK, user.getUsername());
+            return true;
         }
-        if (rounds != 1 && rounds != 3) {
-            view.printStartDuelMessage(MainMenuMessage.INVALID_ROUND, null);
-            return;
-        }
-
-        DuelMenuController duelMenuController = new DuelMenuController(user, DataManager.getInstance().getAi(), rounds);
-        DuelMenuView duelMenuView = new DuelMenuView(duelMenuController, MainView.stage);
-        duelMenuController.startNextRound();
+//        DuelMenuController duelMenuController = new DuelMenuController(user, DataManager.getInstance().getAi(), rounds);
+//        DuelMenuView duelMenuView = new DuelMenuView(duelMenuController);
+//        duelMenuController.startNextRound();
       //  duelMenuView.run();
+        return true;
     }
 }

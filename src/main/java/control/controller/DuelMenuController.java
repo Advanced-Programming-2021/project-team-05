@@ -77,6 +77,11 @@ public class DuelMenuController {
     }
 
 
+    public final User getPlayerOne() {
+        return this.playerOne;
+    }
+
+
     public final Board getBoard() {
         return this.board;
     }
@@ -132,22 +137,23 @@ public class DuelMenuController {
 
     public final void startNextRound() {
         currentRound++;
-        initializeBoard();
+        initializeGame();
         view.showTurn(board.getPlayerTable().getOwner().getNickname());
         if (currentRound != 1) rearrangeDeck();
 
         phase = Phase.DRAW;
-        view.showPhase(phase.getName());
+        view.showPhase(phase);
 
         boards[currentRound - 1] = board;
         board.getPlayerTable().initializeHand();
         board.getOpponentTable().initializeHand();
 
-        view.showDrawMessage(board.getPlayerTable().drawCard());
+        board.getPlayerTable().drawCard();
+        view.updateBoard(board);
         if (isAi(board.getPlayerTable().getOwner())) handleAI();
     }
 
-    private void initializeBoard() {
+    private void initializeGame() {
         User player;
         User opponent;
         if (currentRound == 1) {
@@ -225,12 +231,14 @@ public class DuelMenuController {
         board.getPlayerTable().reset();
         board.getOpponentTable().reset();
         view.showTurn(board.getPlayerTable().getOwner().getNickname());
+        view.updateBoard(board);
+        view.updatePlayersInfo(board.getPlayerTable().getOwner(), board.getOpponentTable().getOwner());
     }
 
     public final void quickChangeTurn(boolean showBoard) {
         board.swapTables();
         view.showQuickTurn(board.getPlayerTable().getOwner().getNickname());
-        if (showBoard) view.showBoard(board);
+        if (showBoard) view.updateBoard(board);
     }
 
 
@@ -243,22 +251,23 @@ public class DuelMenuController {
         phase = phase.getNextPhase();
         if (phase == Phase.DRAW) {
             changeTurn();
-            view.showPhase(phase.getName());
+            view.showPhase(phase);
             if (board.getPlayerTable().getHand().size() < 6) {
                 if (board.getPlayerTable().getDeck().getMainDeckSize() == 0) {
                     win(board.getPlayerTable(), board.getOpponentTable());
                     return;
                 }
-                view.showDrawMessage(board.getPlayerTable().drawCard());
+                board.getPlayerTable().drawCard();
+                view.updateBoard(board);
             }
             if (isAi(board.getPlayerTable().getOwner())) handleAI();
             return;
         } else if (phase == Phase.MAIN_1 || phase == Phase.MAIN_2) {
-            view.showPhase(phase.getName());
-            if (showBoard) view.showBoard(board);
+            view.showPhase(phase);
+            if (showBoard) view.updateBoard(board);
             return;
         }
-        view.showPhase(phase.getName());
+        view.showPhase(phase);
     }
 
 
@@ -269,6 +278,7 @@ public class DuelMenuController {
         }
         selectedCard = null;
         selectedCardAddress = null;
+        view.deselectCard();
         if (print) view.printDeselectMessage(DuelMenuMessage.CARD_DESELECTED);
     }
 
@@ -290,6 +300,26 @@ public class DuelMenuController {
             default:
                 view.printTributeSummonMessage(DuelMenuMessage.INVALID_SELECTION);
         }
+    }
+
+    public void selectCardFromHand(Card card) {
+        Table targetTable = board.getPlayerTable();
+        ArrayList<Card> hand = targetTable.getHand();
+        int position = -1;
+        for (int i = 0, handSize = hand.size(); i < handSize; i++) {
+            Card handCard = hand.get(i);
+            if (card.equals(handCard)) {
+                position = i + 1;
+                break;
+            }
+        }
+        if (position < 1) {
+            view.printSelectMessage(DuelMenuMessage.INVALID_SELECTION);
+            return;
+        }
+        CardAddress address = new CardAddress(CardAddressZone.HAND, position, false);
+        setSelectedCard(card, address);
+        view.printSelectMessage(DuelMenuMessage.CARD_SELECTED);
     }
 
     private void selectCardFromHand(CardAddress cardAddress) {
@@ -522,7 +552,7 @@ public class DuelMenuController {
                 checkQuickActivation(Event.MONSTER_WITH_1000_ATTACK_SUMMONED);
         }
         checkQuickActivation(Event.MONSTER_SUMMONED);
-        view.showBoard(board);
+        view.updateBoard(board);
         deselect(false);
     }
 
@@ -535,7 +565,7 @@ public class DuelMenuController {
         selectedCardAddress.setZone(CardAddressZone.MONSTER);
         selectedCardAddress.setPosition(playerTable.getFirstEmptyMonsterCellPosition());
         view.printTributeSummonMessage(DuelMenuMessage.SUMMON_SUCCESSFUL);
-        view.showBoard(board);
+        view.updateBoard(board);
         checkQuickActivation(Event.MONSTER_SUMMONED);
         deselect(false);
         ritualSummonSpellAddress = null;
@@ -574,7 +604,7 @@ public class DuelMenuController {
         if (((Monster) selectedCard).getAttack() >= 1000)
             checkQuickActivation(Event.MONSTER_WITH_1000_ATTACK_SUMMONED);
         selectedCard.runActions(Event.YOU_FLIP_SUMMONED_MANUALLY, this);
-        view.showBoard(board);
+        view.updateBoard(board);
         deselect(false);
     }
 
@@ -615,7 +645,7 @@ public class DuelMenuController {
             playerTable.setCanSummonOrSet(false);
             deselect(false);
             view.printSetMessage(DuelMenuMessage.SET_SUCCESSFUL);
-            view.showBoard(board);
+            view.updateBoard(board);
         } else if (selectedCard instanceof Spell || selectedCard instanceof Trap) {
             if (selectedCard.getType() == CardType.FIELD) {
                 removeCardFromHand(playerTable, selectedCardAddress.getPosition());
@@ -632,7 +662,7 @@ public class DuelMenuController {
             }
             deselect(false);
             view.printSetMessage(DuelMenuMessage.SET_SUCCESSFUL);
-            view.showBoard(board);
+            view.updateBoard(board);
         } else view.printSetMessage(DuelMenuMessage.UNEXPECTED_ERROR);
     }
 
@@ -682,7 +712,7 @@ public class DuelMenuController {
         targetCell.setDoesPositionChanged(true);
         deselect(false);
         view.printChangePositionMessage(DuelMenuMessage.POSITION_CHANGED);
-        view.showBoard(board);
+        view.updateBoard(board);
     }
 
 
@@ -761,7 +791,7 @@ public class DuelMenuController {
             else return;
         }
         board.setPlayersImmune(false);
-        view.showBoard(board);
+        view.updateBoard(board);
     }
 
     private void attackDefensePositionCard(int targetPosition, MonsterCell attackerCell, MonsterCell targetCell) {
@@ -789,7 +819,7 @@ public class DuelMenuController {
             else return;
         }
         board.setPlayersImmune(false);
-        view.showBoard(board);
+        view.updateBoard(board);
     }
 
 
@@ -821,12 +851,12 @@ public class DuelMenuController {
         checkQuickActivation(Event.DECLARE_ATTACK);
         if (preventAttack) {
             view.printDirectAttackMessage(DuelMenuMessage.ATTACK_PREVENTED, 0);
-            view.showBoard(board);
+            view.updateBoard(board);
         } else {
             view.printDirectAttackMessage(DuelMenuMessage.DIRECT_ATTACK_SUCCESSFUL, damage);
             if (checkLifePoint(opponentTable, board.getPlayerTable(), damage)) {
                 opponentTable.decreaseLifePoint(damage);
-                view.showBoard(board);
+                view.updateBoard(board);
             }
         }
         deselect(false);
@@ -960,7 +990,7 @@ public class DuelMenuController {
             table.moveSpellOrTrapToGraveyard(position);
         if (!isQuick) {
             deselect(false);
-            view.showBoard(board);
+            view.updateBoard(board);
         }
     }
 
@@ -1134,7 +1164,7 @@ public class DuelMenuController {
     public final void increaseLP(int amount) {
         board.getPlayerTable().increaseLifePoint(amount);
         view.showLPIncreased();
-        view.showBoard(board);
+        view.updateBoard(board);
     }
 
 

@@ -112,7 +112,9 @@ public class ViewUtility {
             descriptionArea.setMaxHeight(150);
             container.getChildren().add(1, descriptionArea);
 
-            scene.lookup("#back-button").setOnMouseClicked(e -> stage.close());
+            Button backButton = (Button) scene.lookup("#back-button");
+            backButton.setOnMouseClicked(e -> stage.close());
+            backButton.setOnAction(e -> stage.close());
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
@@ -173,13 +175,8 @@ public class ViewUtility {
         choiceBoxContainer.getChildren().add(typeChoiceBox);
 
         Button fileButton = (Button) importExportScene.lookup("#file-btn");
-        fileButton.setOnMouseClicked(e -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Import Card");
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
-            File selectedFile = fileChooser.showOpenDialog(stage);
-            if (selectedFile != null) fileButton.setText(selectedFile.getName());
-        });
+        fileButton.setOnMouseClicked(e -> openFileChooser(stage, fileButton));
+        fileButton.setOnAction(e -> openFileChooser(stage, fileButton));
         fileButton.setOnDragOver(e -> {
             if (e.getDragboard().hasFiles()) e.acceptTransferModes(TransferMode.ANY);
         });
@@ -191,6 +188,15 @@ public class ViewUtility {
 
         Button exportButton = (Button) importExportScene.lookup("#export-btn");
         exportButton.setOnMouseClicked(e -> exportCard());
+        exportButton.setOnAction(e -> exportCard());
+    }
+
+    private static void openFileChooser(Stage stage, Button fileButton) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import Card");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile != null) fileButton.setText(selectedFile.getName());
     }
 
     private static void exportCard() {
@@ -208,6 +214,7 @@ public class ViewUtility {
             FlowPane cardsContainer = (FlowPane) scene.lookup("#cards-container");
             Button backButton = (Button) scene.lookup("#back-btn");
             backButton.setOnMouseClicked(e -> stage.close());
+            backButton.setOnAction(e -> stage.close());
             ArrayList<CardTemplate> cardTemplates = DataManager.getInstance().getCardTemplates();
             cardTemplates.sort(Comparator.comparing(CardTemplate::getName));
             cardTemplates.sort(Comparator.comparing(template -> template.getClass().getSimpleName()));
@@ -224,6 +231,7 @@ public class ViewUtility {
                 Button showButton = new Button("Show");
                 showButton.getStyleClass().addAll("default-button", "show-button");
                 showButton.setOnMouseClicked(e -> ViewUtility.showCard(template.getName()));
+                showButton.setOnAction(e -> ViewUtility.showCard(template.getName()));
 
                 VBox container = new VBox(2, cardImage, showButton);
                 container.setPrefWidth(184);
@@ -233,45 +241,5 @@ public class ViewUtility {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-    public static void showCardDetails(Scene duelScene, Card card) {
-        String address = "/images/cards/" + card.getName().replace(" ", "_") + ".jpg";
-        ImageView cardImage = new ImageView(new Image(ViewUtility.class.getResource(address).toExternalForm()));
-        cardImage.setFitWidth(219);
-        cardImage.setFitHeight(329);
-
-        String description = DataManager.getInstance().getCardTemplateByName(card.getName()).detailedToString();
-        TextArea descriptionArea = new TextArea(description);
-        descriptionArea.getStyleClass().add("description-box");
-        descriptionArea.setEditable(false);
-        descriptionArea.setWrapText(true);
-        descriptionArea.setMinHeight(200);
-        descriptionArea.setMaxHeight(200);
-
-        VBox container = (VBox) duelScene.lookup("#card-details-box");
-        container.getChildren().clear();
-        container.getChildren().addAll(cardImage, descriptionArea);
-    }
-
-    public static void updatePlayersInfo(Scene duelScene, User player1, User player2) {
-        Label player1Username = (Label) duelScene.lookup("#username-label");
-        player1Username.setText(player1.getUsername());
-
-        Label player1Nickname = (Label) duelScene.lookup("#nickname-label");
-        player1Nickname.setText(player1.getNickname());
-
-        ImageView player1Pic = (ImageView) duelScene.lookup("#profile-pic");
-        player1Pic.setImage(new Image(ViewUtility.class.getResource("/images/profile-pics/" + player1.getProfilePictureName()).toExternalForm()));
-
-        Label player2Username = (Label) duelScene.lookup("#opp-username-label");
-        player2Username.setText(player2.getUsername());
-
-        Label player2Nickname = (Label) duelScene.lookup("#opp-nickname-label");
-        player2Nickname.setText(player2.getNickname());
-
-        ImageView player2Pic = (ImageView) duelScene.lookup("#opp-profile-pic");
-        player2Pic.setImage(new Image(ViewUtility.class.getResource("/images/profile-pics/" + player2.getProfilePictureName()).toExternalForm()));
     }
 }

@@ -43,6 +43,11 @@ public class ImportExportMenuView {
             MainMenuView mainMenuView = new MainMenuView(mainMenuController);
             mainMenuView.setMainMenuScene();
         });
+        backButton.setOnAction(e -> {
+            MainMenuController mainMenuController = new MainMenuController(controller.getUser());
+            MainMenuView mainMenuView = new MainMenuView(mainMenuController);
+            mainMenuView.setMainMenuScene();
+        });
     }
 
 

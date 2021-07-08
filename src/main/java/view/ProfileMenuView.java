@@ -47,12 +47,15 @@ public class ProfileMenuView {
     private void initializeProfileSceneButtons() {
         Button changeNicknameButton = (Button) scene.lookup("#change-nickname-btn");
         changeNicknameButton.setOnMouseClicked(e -> setChangeNicknameScene());
+        changeNicknameButton.setOnAction(e -> setChangeNicknameScene());
 
         Button changePasswordButton = (Button) scene.lookup("#change-password-btn");
         changePasswordButton.setOnMouseClicked(e -> setChangePasswordScene());
+        changePasswordButton.setOnAction(e -> setChangePasswordScene());
 
         Button backButton = (Button) scene.lookup("#back-btn");
         backButton.setOnMouseClicked(e -> backToMainMenu());
+        backButton.setOnAction(e -> backToMainMenu());
     }
 
     public static void updateProfileScene(Scene profileScene, User user) {
@@ -87,9 +90,11 @@ public class ProfileMenuView {
     private void initializeChangeNicknameSceneButtons() {
         Button changeButton = (Button) scene.lookup("#change-btn");
         changeButton.setOnMouseClicked(e -> changeNickname());
+        changeButton.setOnAction(e -> changeNickname());
 
         Button backButton = (Button) scene.lookup("#back-btn");
         backButton.setOnMouseClicked(e -> setProfileScene());
+        backButton.setOnAction(e -> setProfileScene());
     }
 
     public void updateChangeNicknameScene() {
@@ -114,9 +119,11 @@ public class ProfileMenuView {
     private void initializeChangePasswordSceneButtons() {
         Button changeButton = (Button) scene.lookup("#change-btn");
         changeButton.setOnMouseClicked(e -> changePassword());
+        changeButton.setOnAction(e -> changePassword());
 
         Button backButton = (Button) scene.lookup("#back-btn");
         backButton.setOnMouseClicked(e -> setProfileScene());
+        backButton.setOnAction(e -> setProfileScene());
     }
 
 

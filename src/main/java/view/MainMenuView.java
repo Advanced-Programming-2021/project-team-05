@@ -1,13 +1,17 @@
 package view;
 
-import com.sanityinc.jargs.CmdLineParser;
-import com.sanityinc.jargs.CmdLineParser.Option;
 import control.controller.*;
 import control.message.MainMenuMessage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import utils.ViewUtility;
 
 import java.io.IOException;
@@ -40,10 +44,16 @@ public class MainMenuView {
 
     private void initializeMainMenuSceneButtons() {
         Button startDuelButton = (Button) scene.lookup("#start-duel-btn");
-        startDuelButton.setOnMouseClicked(e -> startDuel());
+        startDuelButton.setOnMouseClicked(e -> showDuelSettingsStage());
+        startDuelButton.setOnAction(e -> showDuelSettingsStage());
 
         Button profileButton = (Button) scene.lookup("#profile-btn");
         profileButton.setOnMouseClicked(e -> {
+            ProfileMenuController profileMenuController = new ProfileMenuController(controller.getUser());
+            ProfileMenuView profileMenuView = new ProfileMenuView(profileMenuController);
+            profileMenuView.setProfileScene();
+        });
+        profileButton.setOnAction(e -> {
             ProfileMenuController profileMenuController = new ProfileMenuController(controller.getUser());
             ProfileMenuView profileMenuView = new ProfileMenuView(profileMenuController);
             profileMenuView.setProfileScene();
@@ -55,9 +65,19 @@ public class MainMenuView {
             ShopMenuView shopMenuView = new ShopMenuView(shopMenuController);
             shopMenuView.setShopScene();
         });
+        shopButton.setOnAction(e -> {
+            ShopMenuController shopMenuController = new ShopMenuController(controller.getUser());
+            ShopMenuView shopMenuView = new ShopMenuView(shopMenuController);
+            shopMenuView.setShopScene();
+        });
 
         Button deckButton = (Button) scene.lookup("#deck-btn");
         deckButton.setOnMouseClicked(e -> {
+            DeckMenuController deckMenuController = new DeckMenuController(controller.getUser());
+            DeckMenuView deckMenuView = new DeckMenuView(deckMenuController);
+            deckMenuView.setDeckScene();
+        });
+        deckButton.setOnAction(e -> {
             DeckMenuController deckMenuController = new DeckMenuController(controller.getUser());
             DeckMenuView deckMenuView = new DeckMenuView(deckMenuController);
             deckMenuView.setDeckScene();
@@ -71,6 +91,10 @@ public class MainMenuView {
             ScoreboardMenuView scoreboardMenuView = new ScoreboardMenuView(controller.getUser());
             scoreboardMenuView.setScoreboardScene();
         });
+        scoreboardButton.setOnAction(e -> {
+            ScoreboardMenuView scoreboardMenuView = new ScoreboardMenuView(controller.getUser());
+            scoreboardMenuView.setScoreboardScene();
+        });
 
         Button importExportButton = (Button) scene.lookup("#import-export-btn");
         importExportButton.setOnMouseClicked(e -> {
@@ -78,52 +102,96 @@ public class MainMenuView {
             ImportExportMenuView importExportMenuView = new ImportExportMenuView(importExportMenuController);
             importExportMenuView.setImportExportScene();
         });
+        importExportButton.setOnAction(e -> {
+            ImportExportMenuController importExportMenuController = new ImportExportMenuController(controller.getUser());
+            ImportExportMenuView importExportMenuView = new ImportExportMenuView(importExportMenuController);
+            importExportMenuView.setImportExportScene();
+        });
 
         Button logoutButton = (Button) scene.lookup("#logout-btn");
         logoutButton.setOnMouseClicked(e -> logOut());
+        logoutButton.setOnAction(e -> logOut());
     }
 
 
-    public void startDuel() {
-        CmdLineParser parser = new CmdLineParser();
-        Option<Boolean> newOption = parser.addBooleanOption('n', "new");
-        Option<String> opponentUsernameOption = parser.addStringOption('p', "second-player");
-        Option<Integer> roundsOption = parser.addIntegerOption('r', "rounds");
-        Option<Boolean> aiOption = parser.addBooleanOption('a', "ai");
+    private void showDuelSettingsStage() {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("Duel Settings");
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
 
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/duel-settings.fxml"));
+            Scene duelSettingScene = new Scene(root);
+            stage.setScene(duelSettingScene);
+            stage.show();
 
-        boolean newDuel = parser.getOptionValue(newOption, false);
-        String opponentUsername = parser.getOptionValue(opponentUsernameOption);
-        Integer rounds = parser.getOptionValue(roundsOption);
-        boolean ai = parser.getOptionValue(aiOption, false);
+            ChoiceBox<Integer> roundsChoiceBox = new ChoiceBox<>();
+            roundsChoiceBox.setId("rounds-choice-box");
+            roundsChoiceBox.setValue(1);
+            roundsChoiceBox.getItems().add(1);
+            roundsChoiceBox.getItems().add(3);
+            VBox choiceBoxContainer = (VBox) duelSettingScene.lookup("#rounds-choice-box-container");
+            choiceBoxContainer.getChildren().add(roundsChoiceBox);
 
+            CheckBox aiCheckBox = (CheckBox) duelSettingScene.lookup("#ai-check-box");
+            aiCheckBox.setOnMouseClicked(e -> {
+                TextField oppUsernameField = (TextField) duelSettingScene.lookup("#opp-username-input");
+                oppUsernameField.setDisable(aiCheckBox.isSelected());
+            });
+            aiCheckBox.setOnAction(e -> {
+                TextField oppUsernameField = (TextField) duelSettingScene.lookup("#opp-username-input");
+                oppUsernameField.setDisable(aiCheckBox.isSelected());
+            });
 
-        if (!newDuel || rounds == null || (opponentUsername != null) == ai) {
-            return;
+            Button backButton = (Button) duelSettingScene.lookup("#back-btn");
+            backButton.setOnMouseClicked(e -> stage.close());
+            backButton.setOnAction(e -> stage.close());
+
+            Button startDuelButton = (Button) duelSettingScene.lookup("#start-duel-btn");
+            startDuelButton.setOnMouseClicked(e -> startDuel(stage, duelSettingScene));
+            startDuelButton.setOnAction(e -> startDuel(stage, duelSettingScene));
+        } catch (IOException e) {
+            System.out.println("Failed to load duel settings scene");
         }
+    }
+
+
+    public void startDuel(Stage duelSettingStage, Scene duelSettingScene) {
+        CheckBox aiCheckBox = (CheckBox) duelSettingScene.lookup("#ai-check-box");
+        boolean ai = aiCheckBox.isSelected();
+
+        ChoiceBox<Integer> roundsChoiceBox = (ChoiceBox<Integer>) duelSettingScene.lookup("#rounds-choice-box");
+        int rounds = roundsChoiceBox.getValue();
+
+        boolean closeSettingStage;
         if (ai) {
-            controller.startDuelWithAi(rounds);
+            closeSettingStage = controller.startDuelWithAi(rounds);
         } else {
-            controller.startDuelWithUser(opponentUsername, rounds);
+            TextField oppUsernameField = (TextField) duelSettingScene.lookup("#opp-username-input");
+            String opponentUsername = oppUsernameField.getText();
+
+            closeSettingStage = controller.startDuelWithUser(opponentUsername, rounds);
         }
+        if (closeSettingStage) duelSettingStage.close();
     }
 
-    public void printStartDuelMessage(MainMenuMessage message, String username) {
+    public void showStartDuelMessage(MainMenuMessage message, String username) {
         switch (message) {
+            case CANT_DUEL_WITH_YOURSELF:
+                ViewUtility.showInformationAlert("Start Duel", "Error", "You can't duel with yourself");
+                break;
             case NO_PLAYER_EXISTS:
-                ViewUtility.showInformationAlert("", "error", "there is no player with this username");
+                ViewUtility.showInformationAlert("Start Duel", "Error", "There is no player with this username");
                 break;
             case NO_ACTIVE_DECK:
-                ViewUtility.showInformationAlert("", "error", username + " has no active deck");
+                ViewUtility.showInformationAlert("Start Duel", "Error", username + " has no active deck");
                 break;
             case INVALID_DECK:
-                ViewUtility.showInformationAlert("", "error", username + "'s deck is invalid");
-                break;
-            case INVALID_ROUND:
-                ViewUtility.showInformationAlert("", "error", "number of rounds is not supported");
+                ViewUtility.showInformationAlert("Start Duel", "Error", username + "'s deck is invalid");
                 break;
             default:
-                ViewUtility.showInformationAlert("", "error", "unexpected error");
+                ViewUtility.showInformationAlert("Start Duel", "Error", "Unexpected error");
         }
     }
 

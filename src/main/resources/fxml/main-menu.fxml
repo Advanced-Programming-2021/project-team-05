@@ -36,52 +36,42 @@
         </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" id="start-duel-btn" text="Start Duel">
-               <styleClass>
-                  <String fx:value="default-button" />
-                  <String fx:value="button-large" />
-               </styleClass>
-            </Button>
+            <Button id="start-duel-btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Start Duel" />
          </children>
       </HBox>
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" id="profile-btn" text="Profile" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <Button id="profile-btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Profile" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" id="shop-btn" text="Shop" GridPane.columnIndex="2" GridPane.rowIndex="4">
+      <Button id="shop-btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Shop" GridPane.columnIndex="2" GridPane.rowIndex="4">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" id="deck-btn" text="Deck" GridPane.columnIndex="1" GridPane.rowIndex="5">
+        <Button id="deck-btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Deck" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" id="create-card-btn" text="Create Card" GridPane.columnIndex="2" GridPane.rowIndex="5">
+      <Button id="create-card-btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Create Card" GridPane.columnIndex="2" GridPane.rowIndex="5">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" id="scoreboard-btn" text="Scoreboard" GridPane.columnIndex="1" GridPane.rowIndex="6">
+        <Button id="scoreboard-btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Scoreboard" GridPane.columnIndex="1" GridPane.rowIndex="6">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" id="import-export-btn" text="Import/Export" GridPane.columnIndex="2" GridPane.rowIndex="6">
+      <Button id="import-export-btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Import/Export" GridPane.columnIndex="2" GridPane.rowIndex="6">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" id="logout-btn" text="Logout">
-               <styleClass>
-                  <String fx:value="default-button" />
-                  <String fx:value="button-large" />
-               </styleClass>
-            </Button>
+            <Button id="logout-btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Logout" />
          </children>
       </HBox>
     </children>

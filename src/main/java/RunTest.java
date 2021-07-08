@@ -4,7 +4,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
@@ -16,9 +19,9 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.Deck;
 import model.User;
-import model.board.CardAddress;
-import model.board.CardAddressZone;
-import model.board.CardState;
+import model.board.*;
+import model.board.cell.MonsterCell;
+import model.board.cell.SpellTrapCell;
 import model.card.Card;
 import model.card.Monster;
 import model.card.Spell;
@@ -35,6 +38,10 @@ import java.util.Random;
 public class RunTest extends Application {
 
     public static Scene scene;
+    private static ImageView selectedCardImage;
+
+    private static Phase phase;
+    private static boolean isOpp = false;
 
     public static void main(String[] args) {
         launch(args);
@@ -53,11 +60,33 @@ public class RunTest extends Application {
         stage.setResizable(false);
         stage.show();
 
-        addCardsToBoard(scene);
-        ViewUtility.updatePlayersInfo(scene, new User("username1", "", "nickname1"), new User("username2", "", "nickname2"));
+        User user1 = getUser();
+        User user2 = getUser();
+
+        Board board = getBoard(user1, user2);
+        updateBoard(board);
+        addCardsToBoard();
+
+        showPhase(Phase.DRAW, false);
+        phase = Phase.DRAW;
+
+        updatePlayersInfo(user1, user2);
+        Button nextPhaseButton = (Button) scene.lookup("#next-phase-btn");
+        nextPhaseButton.setOnMouseClicked(e -> nextPhase());
     }
 
-    private void addCardsToBoard(Scene scene) {
+    private Board getBoard(User user1, User user2) {
+        Board board = new Board(user1, user2);
+        Table playerTable = board.getPlayerTable();
+        Table opponentTable = board.getOpponentTable();
+
+        playerTable.initializeHand();
+        opponentTable.initializeHand();
+
+        return board;
+    }
+
+    private void addCardsToBoard() {
         DataManager dataManager = DataManager.getInstance();
         Random random = new Random();
 
@@ -77,8 +106,8 @@ public class RunTest extends Application {
                 else if (i <= 4) cardState = CardState.HORIZONTAL_DOWN;
                 else cardState = CardState.HORIZONTAL_UP;
 
-                addCardToBoard(scene, card, cardAddress, cardState);
-                updateMonsterLabel(scene, card, cardAddress, cardState, (i + j) % 2 == 0);
+                addCardToBoard(card, cardAddress, cardState);
+                updateMonsterLabel(card, cardAddress, cardState, (i + j) % 2 == 0);
             }
         }
 
@@ -98,103 +127,166 @@ public class RunTest extends Application {
                 if (i <= 2) cardState = CardState.VERTICAL_UP;
                 else cardState = CardState.VERTICAL_DOWN;
 
-                addCardToBoard(scene, card, cardAddress, cardState);
+                addCardToBoard(card, cardAddress, cardState);
             }
         }
 
         Spell fieldSpell = new Spell((SpellTemplate) dataManager.getCardTemplateByName("Forest"));
         CardAddress fieldSpellAddress = new CardAddress(CardAddressZone.FIELD, 0, false);
-        addCardToBoard(scene, fieldSpell, fieldSpellAddress, CardState.VERTICAL_UP);
+        addCardToBoard(fieldSpell, fieldSpellAddress, CardState.VERTICAL_UP);
 
         Spell oppFieldSpell = new Spell((SpellTemplate) dataManager.getCardTemplateByName("Forest"));
         CardAddress oppFieldSpellAddress = new CardAddress(CardAddressZone.FIELD, 0, true);
-        addCardToBoard(scene, oppFieldSpell, oppFieldSpellAddress, CardState.VERTICAL_DOWN);
+        addCardToBoard(oppFieldSpell, oppFieldSpellAddress, CardState.VERTICAL_DOWN);
 
-        Monster graveyard = new Monster((MonsterTemplate) dataManager.getCardTemplateByName("Battle Ox"));
-        CardAddress graveyardAddress = new CardAddress(CardAddressZone.GRAVEYARD, 0, false);
-        addCardToBoard(scene, graveyard, graveyardAddress, CardState.VERTICAL_UP);
+//        Monster graveyard = new Monster((MonsterTemplate) dataManager.getCardTemplateByName("Battle Ox"));
+//        CardAddress graveyardAddress = new CardAddress(CardAddressZone.GRAVEYARD, 0, false);
+//        addCardToBoard(graveyard, graveyardAddress, CardState.VERTICAL_UP);
+//
+//        Monster oppGraveyard = new Monster((MonsterTemplate) dataManager.getCardTemplateByName("Dark Blade"));
+//        CardAddress oppGraveyardAddress = new CardAddress(CardAddressZone.GRAVEYARD, 0, true);
+//        addCardToBoard(oppGraveyard, oppGraveyardAddress, CardState.VERTICAL_UP);
 
-        Monster oppGraveyard = new Monster((MonsterTemplate) dataManager.getCardTemplateByName("Dark Blade"));
-        CardAddress oppGraveyardAddress = new CardAddress(CardAddressZone.GRAVEYARD, 0, true);
-        addCardToBoard(scene, oppGraveyard, oppGraveyardAddress, CardState.VERTICAL_UP);
+//        for (int j = 0; j < 2; j++) {
+//            for (int i = 1; i <= 6; i++) {
+//                Card card;
+//                CardTemplate cardTemplate = dataManager.getCardTemplates().get(random.nextInt(dataManager.getCardTemplates().size()));
+//                if (cardTemplate instanceof MonsterTemplate) card = new Monster((MonsterTemplate) cardTemplate);
+//                else if (cardTemplate instanceof SpellTemplate) card = new Spell((SpellTemplate) cardTemplate);
+//                else card = new Trap((TrapTemplate) cardTemplate);
+//
+//                addCardToHand(card, j == 0);
+//            }
+//        }
+    }
 
+
+    public void updateBoard(Board board) {
         for (int j = 0; j < 2; j++) {
-            for (int i = 1; i <= 6; i++) {
-                Card card;
-                CardTemplate cardTemplate = dataManager.getCardTemplates().get(random.nextInt(dataManager.getCardTemplates().size()));
-                if (cardTemplate instanceof MonsterTemplate) card = new Monster((MonsterTemplate) cardTemplate);
-                else if (cardTemplate instanceof SpellTemplate) card = new Spell((SpellTemplate) cardTemplate);
-                else card = new Trap((TrapTemplate) cardTemplate);
+            Table targetTable = j == 0 ? board.getPlayerTable() : board.getOpponentTable();
 
-                addCardToHand(scene, card, j == 0);
+            for (int i = 1; i <= 5; i++) {
+                MonsterCell monsterCell = targetTable.getMonsterCell(i);
+                CardAddress address = new CardAddress(CardAddressZone.MONSTER, i, j == 1);
+                if (monsterCell.getCard() == null) {
+                    removeCardFromBoard(address);
+                    removeMonsterLabel(address);
+                } else {
+                    Monster monster = (Monster) monsterCell.getCard();
+                    addCardToBoard(monster, address, monsterCell.getState());
+                    updateMonsterLabel(monster, address, monsterCell.getState(), board.isMonsterSpelled(monster));
+                }
+            }
+
+            for (int i = 1; i <= 5; i++) {
+                SpellTrapCell spellTrapCell = targetTable.getSpellOrTrapCell(i);
+                CardAddress address = new CardAddress(CardAddressZone.SPELL, i, j == 1);
+                if (spellTrapCell.getCard() == null) removeCardFromBoard(address);
+                else addCardToBoard(spellTrapCell.getCard(), address, spellTrapCell.getState());
+            }
+
+            SpellTrapCell fieldSpellCell = targetTable.getFieldSpellCell();
+            CardAddress fieldSpellAddress = new CardAddress(CardAddressZone.FIELD, 0, j == 1);
+            if (fieldSpellCell.getCard() == null) removeCardFromBoard(fieldSpellAddress);
+            else addCardToBoard(fieldSpellCell.getCard(), fieldSpellAddress, fieldSpellCell.getState());
+
+            ArrayList<Card> graveyard = targetTable.getGraveyard();
+            CardAddress graveyardAddress = new CardAddress(CardAddressZone.GRAVEYARD, 0, j == 1);
+            Label graveyardLabel = (Label) scene.lookup("#" + (j == 1 ? "opp-" : "") + "graveyard-label");
+            if (graveyard.size() == 0) {
+                removeCardFromBoard(graveyardAddress);
+                graveyardLabel.setText("");
+            } else {
+                addCardToBoard(targetTable.getGraveyard().get(graveyard.size() - 1), graveyardAddress, CardState.VERTICAL_UP);
+                graveyardLabel.setText(String.valueOf(graveyard.size()));
+            }
+
+            int deckSize = targetTable.getDeck().getMainDeckSize();
+            HBox deckContainer = (HBox) scene.lookup("#" + ((j == 1) ? "opp-" : "") + "deck");
+            deckContainer.getChildren().clear();
+            Label deckLabel = (Label) scene.lookup("#" + ((j == 1) ? "opp-" : "") + "deck-label");
+            if (deckSize == 0) {
+                deckLabel.setText("");
+            } else {
+                ImageView deckImage = ViewUtility.getCardImageView("Unknown");
+                deckImage.setFitWidth(95);
+                deckImage.setFitHeight(95);
+                deckImage.setPreserveRatio(true);
+                deckContainer.getChildren().add(deckImage);
+                deckLabel.setText(String.valueOf(deckSize));
+            }
+
+            clearHand(j == 1);
+            ArrayList<Card> hand = targetTable.getHand();
+            for (Card card : hand) {
+                addCardToHand(card, j == 1);
             }
         }
     }
 
-
-    private void addCardToBoard(Scene scene, Card card, CardAddress cardAddress, CardState cardState) {
+    private void addCardToBoard(Card card, CardAddress address, CardState cardState) {
+        if (cardState == null) cardState = CardState.VERTICAL_UP;
         String cardName = cardState.isDown() ? "Unknown" : card.getName();
         ImageView cardImage = ViewUtility.getCardImageView(cardName);
         cardImage.setFitWidth(95);
         cardImage.setFitHeight(95);
         cardImage.setPreserveRatio(true);
 
-        int rotateValue = (cardAddress.isForOpponent() ? 180 : 0) + (cardState.isHorizontal() ? 90 : 0);
+        int rotateValue = (address.isForOpponent() ? 180 : 0) + (cardState.isHorizontal() ? 90 : 0);
         cardImage.setRotate(rotateValue);
 
-        String selector = getSelector(cardAddress);
+        String selector = getSelector(address);
 
         HBox cardContainer = (HBox) scene.lookup(selector);
         cardContainer.getChildren().clear();
         cardContainer.getChildren().add(cardImage);
-        if (cardAddress.isForOpponent() && cardState.isDown()) {
+        if (address.isForOpponent() && cardState.isDown()) {
             cardContainer.getStyleClass().remove("selectable-card-image");
-        } else if (cardAddress.getZone() == CardAddressZone.GRAVEYARD) {
+        } else if (address.getZone() == CardAddressZone.GRAVEYARD) {
             // show graveyard on mouse clicked
             if (!cardContainer.getStyleClass().contains("selectable-card-image"))
                 cardContainer.getStyleClass().add("selectable-card-image");
         } else {
-            cardImage.setOnMouseClicked(e -> ViewUtility.showCardDetails(scene, card));
+            cardImage.setOnMouseClicked(e -> {
+                showCardDetails(card);
+                selectCard(card, cardImage);
+            });
             if (!cardContainer.getStyleClass().contains("selectable-card-image"))
                 cardContainer.getStyleClass().add("selectable-card-image");
         }
     }
 
-    private void addCardToHand(Scene scene, Card card, boolean isOpp) {
-        String cardName = isOpp ? "Unknown" : card.getName();
-        ImageView cardImage = ViewUtility.getCardImageView(cardName);
-        cardImage.setFitWidth(100);
-        cardImage.setFitHeight(95);
-        cardImage.setRotate(isOpp ? 180 : 0);
-        cardImage.setPreserveRatio(true);
-
-        Image oldImage = cardImage.getImage();
-        PixelReader reader = oldImage.getPixelReader();
-        int newImageWidth = (int) Math.round(oldImage.getWidth());
-        int newImageHeight = (int) (95 * oldImage.getWidth() / 100);
-        WritableImage newImage = new WritableImage(reader, 0, 0, newImageWidth, newImageHeight);
-        cardImage.setImage(newImage);
-
-        FlowPane hand = (FlowPane) scene.lookup("#" + (isOpp ? "opp-" : "") + "hand");
-        hand.getChildren().add(cardImage);
-    }
-
-    private void removeCardFromBoard(Scene scene, CardAddress cardAddress) {
-        String selector = getSelector(cardAddress);
+    private void removeCardFromBoard(CardAddress address) {
+        String selector = getSelector(address);
         HBox cardContainer = (HBox) scene.lookup(selector);
         cardContainer.getChildren().clear();
         cardContainer.getStyleClass().remove("selectable-card-image");
     }
 
-    private void updateMonsterLabel(Scene scene, Monster monster, CardAddress cardAddress, CardState cardState, boolean isEffected) {
-        if (cardAddress.getZone() == CardAddressZone.MONSTER) {
-            String selector = "#" + (cardAddress.isForOpponent() ? "opp-" : "") + "monster-" + cardAddress.getPosition() + "-label";
+    private String getSelector(CardAddress address) {
+        switch (address.getZone()) {
+            case MONSTER:
+                return "#" + (address.isForOpponent() ? "opp-" : "") + "monster-" + address.getPosition();
+            case SPELL:
+                return "#" + (address.isForOpponent() ? "opp-" : "") + "spell-" + address.getPosition();
+            case FIELD:
+                return "#" + (address.isForOpponent() ? "opp-" : "") + "field-spell";
+            case GRAVEYARD:
+                return "#" + (address.isForOpponent() ? "opp-" : "") + "graveyard";
+            default:
+                return "#";
+        }
+    }
+
+    private void updateMonsterLabel(Monster monster, CardAddress address, CardState cardState, boolean isEffected) {
+        if (address.getZone() == CardAddressZone.MONSTER) {
+            String selector = "#" + (address.isForOpponent() ? "opp-" : "") + "monster-" + address.getPosition() + "-label";
             HBox monsterLabels = (HBox) scene.lookup(selector);
 
             Label attackLabel = (Label) monsterLabels.getChildren().get(0);
             Label slashLabel = (Label) monsterLabels.getChildren().get(1);
             Label defenseLabel = (Label) monsterLabels.getChildren().get(2);
-            if (cardAddress.isForOpponent() && cardState.isDown()) {
+            if (address.isForOpponent() && cardState.isDown()) {
                 attackLabel.setText("");
                 slashLabel.setText("");
                 defenseLabel.setText("");
@@ -218,9 +310,9 @@ public class RunTest extends Application {
         }
     }
 
-    private void removeMonsterLabel(Scene scene, CardAddress cardAddress) {
-        if (cardAddress.getZone() == CardAddressZone.MONSTER) {
-            String selector = "#" + (cardAddress.isForOpponent() ? "opp-" : "") + "monster-" + cardAddress.getPosition() + "-label";
+    private void removeMonsterLabel(CardAddress address) {
+        if (address.getZone() == CardAddressZone.MONSTER) {
+            String selector = "#" + (address.isForOpponent() ? "opp-" : "") + "monster-" + address.getPosition() + "-label";
             HBox monsterLabels = (HBox) scene.lookup(selector);
 
             ((Label) monsterLabels.getChildren().get(0)).setText("");
@@ -229,58 +321,146 @@ public class RunTest extends Application {
         }
     }
 
-    private String getSelector(CardAddress cardAddress) {
-        switch (cardAddress.getZone()) {
-            case MONSTER:
-                return "#" + (cardAddress.isForOpponent() ? "opp-" : "") + "monster-" + cardAddress.getPosition();
-            case SPELL:
-                return "#" + (cardAddress.isForOpponent() ? "opp-" : "") + "spell-" + cardAddress.getPosition();
-            case FIELD:
-                return "#" + (cardAddress.isForOpponent() ? "opp-" : "") + "field-spell";
-            case GRAVEYARD:
-                return "#" + (cardAddress.isForOpponent() ? "opp-" : "") + "graveyard";
-            default:
-                return "#";
-        }
+    private void addCardToHand(Card card, boolean isOpp) {
+        String cardName = isOpp ? "Unknown" : card.getName();
+        ImageView cardImage = ViewUtility.getCardImageView(cardName);
+        cardImage.setFitWidth(100);
+        cardImage.setFitHeight(95);
+        cardImage.setRotate(isOpp ? 180 : 0);
+        cardImage.setPreserveRatio(true);
+        if (!isOpp) cardImage.setOnMouseClicked(e -> {
+            showCardDetails(card);
+            selectCard(card, cardImage);
+        });
+
+        Image oldImage = cardImage.getImage();
+        PixelReader reader = oldImage.getPixelReader();
+        int newImageWidth = (int) Math.round(oldImage.getWidth());
+        int newImageHeight = (int) (95 * oldImage.getWidth() / 100);
+        WritableImage newImage = new WritableImage(reader, 0, 0, newImageWidth, newImageHeight);
+        cardImage.setImage(newImage);
+
+        FlowPane hand = (FlowPane) scene.lookup("#" + (isOpp ? "opp-" : "") + "hand");
+        hand.getChildren().add(cardImage);
+    }
+
+    private void clearHand(boolean isOpp) {
+        FlowPane hand = (FlowPane) scene.lookup("#" + (isOpp ? "opp-" : "") + "hand");
+        hand.getChildren().clear();
     }
 
 
-    private void showPhase(Phase phase) {
-        VBox drawPhase = (VBox) scene.lookup("#draw-phase-label");
-        drawPhase.getStyleClass().remove("phase-label-active");
-        VBox standbyPhase = (VBox) scene.lookup("#standby-phase-label");
-        standbyPhase.getStyleClass().remove("phase-label-active");
-        VBox main1Phase = (VBox) scene.lookup("#main-1-phase-label");
-        main1Phase.getStyleClass().remove("phase-label-active");
-        VBox battlePhase = (VBox) scene.lookup("#battle-phase-label");
-        battlePhase.getStyleClass().remove("phase-label-active");
-        VBox main2Phase = (VBox) scene.lookup("#main-2-phase-label");
-        main2Phase.getStyleClass().remove("phase-label-active");
-        VBox endPhase = (VBox) scene.lookup("#end-phase-label");
-        endPhase.getStyleClass().remove("phase-label-active");
+    public void updateLPs(int playerLP, int opponentLP) {
+        ProgressBar lpBar = (ProgressBar) scene.lookup("#lp-bar");
+        lpBar.setProgress((double) playerLP / 8000);
 
-        switch (phase) {
-            case DRAW:
-                drawPhase.getStyleClass().add("phase-label-active");
-                break;
-            case STANDBY:
-                standbyPhase.getStyleClass().add("phase-label-active");
-                break;
-            case MAIN_1:
-                main1Phase.getStyleClass().add("phase-label-active");
-                break;
-            case BATTLE:
-                battlePhase.getStyleClass().add("phase-label-active");
-                break;
-            case MAIN_2:
-                main2Phase.getStyleClass().add("phase-label-active");
-                break;
-            case END:
-                endPhase.getStyleClass().add("phase-label-active");
-                break;
-        }
+        Label lpLabel = (Label) scene.lookup("#lp-label");
+        lpLabel.setText(String.valueOf(playerLP));
+
+        ProgressBar oppLPBar = (ProgressBar) scene.lookup("#opp-lp-bar");
+        oppLPBar.setProgress((double) opponentLP / 8000);
+
+        Label oppLBLabel = (Label) scene.lookup("#opp-lp-label");
+        oppLBLabel.setText(String.valueOf(opponentLP));
     }
 
+
+    private void selectCard(Card card, ImageView cardImage) {
+        if (selectedCardImage != null) selectedCardImage.getStyleClass().remove("selected-card");
+        cardImage.getStyleClass().add("selected-card");
+        selectedCardImage = cardImage;
+    }
+
+
+    private void showPhase(Phase phase, boolean isOpp) {
+        VBox[] phases = new VBox[6];
+        phases[0] = (VBox) scene.lookup("#draw-phase-label");
+        phases[1] = (VBox) scene.lookup("#standby-phase-label");
+        phases[2] = (VBox) scene.lookup("#main-1-phase-label");
+        phases[3] = (VBox) scene.lookup("#battle-phase-label");
+        phases[4] = (VBox) scene.lookup("#main-2-phase-label");
+        phases[5] = (VBox) scene.lookup("#end-phase-label");
+
+        if (isOpp) {
+            for (VBox phaseBox : phases) {
+                if (!phaseBox.getStyleClass().contains("phase-label-opp")) {
+                    phaseBox.getStyleClass().add("phase-label-opp");
+                }
+            }
+            Button nextPhaseButton = (Button) scene.lookup("#next-phase-btn");
+            nextPhaseButton.setDisable(true);
+        } else for (VBox phaseBox : phases) phaseBox.getStyleClass().remove("phase-label-opp");
+
+        for (VBox phaseBox : phases) {
+            phaseBox.getStyleClass().remove("phase-label-active");
+            phaseBox.getStyleClass().remove("phase-label-active-opp");
+        }
+        phases[phase.getNumber()].getStyleClass().add("phase-label-active" + (isOpp ? "-opp" : ""));
+    }
+
+
+    public static void showCardDetails(Card card) {
+        String address = "/images/cards/" + card.getName().replace(" ", "_") + ".jpg";
+        ImageView cardImage = new ImageView(new Image(ViewUtility.class.getResource(address).toExternalForm()));
+        cardImage.setFitWidth(219);
+        cardImage.setFitHeight(329);
+
+        String description = DataManager.getInstance().getCardTemplateByName(card.getName()).detailedToString();
+        TextArea descriptionArea = new TextArea(description);
+        descriptionArea.getStyleClass().add("description-box");
+        descriptionArea.setEditable(false);
+        descriptionArea.setWrapText(true);
+        descriptionArea.setMinHeight(200);
+        descriptionArea.setMaxHeight(200);
+
+        VBox container = (VBox) scene.lookup("#card-details-box");
+        container.getChildren().clear();
+        container.getChildren().addAll(cardImage, descriptionArea);
+    }
+
+    public static void clearCardDetails() {
+        VBox container = (VBox) scene.lookup("#card-details-box");
+        container.getChildren().clear();
+    }
+
+    public static void updatePlayersInfo(User player1, User player2) {
+        Label player1Username = (Label) scene.lookup("#username-label");
+        player1Username.setText(player1.getUsername());
+
+        Label player1Nickname = (Label) scene.lookup("#nickname-label");
+        player1Nickname.setText(player1.getNickname());
+
+        ImageView player1Pic = (ImageView) scene.lookup("#profile-pic");
+        player1Pic.setImage(new Image(ViewUtility.class.getResource("/images/profile-pics/" + player1.getProfilePictureName()).toExternalForm()));
+
+        Label player2Username = (Label) scene.lookup("#opp-username-label");
+        player2Username.setText(player2.getUsername());
+
+        Label player2Nickname = (Label) scene.lookup("#opp-nickname-label");
+        player2Nickname.setText(player2.getNickname());
+
+        ImageView player2Pic = (ImageView) scene.lookup("#opp-profile-pic");
+        player2Pic.setImage(new Image(ViewUtility.class.getResource("/images/profile-pics/" + player2.getProfilePictureName()).toExternalForm()));
+    }
+
+
+    public void test() {
+        updateLPs(5452, 3546);
+        clearCardDetails();
+    }
+
+
+    private void initializeFonts() {
+        Font.loadFont(getClass().getResourceAsStream("/font/Merienda-Regular.ttf"), 20);
+        Font.loadFont(getClass().getResourceAsStream("/font/Merienda-Bold.ttf"), 20);
+    }
+
+
+    private void nextPhase() {
+        phase = phase.getNextPhase();
+        if (phase == Phase.DRAW) isOpp = !isOpp;
+        showPhase(phase, isOpp);
+    }
 
     private void centerImage(ImageView imageView) {
         Image img = imageView.getImage();
@@ -300,7 +480,6 @@ public class RunTest extends Application {
         }
     }
 
-
     private User getUser() {
         DataManager dataManager = DataManager.getInstance();
         User user = new User("username", "password", "nickname");
@@ -308,6 +487,7 @@ public class RunTest extends Application {
 
         Deck deck = new Deck("My Deck");
         user.addDeck(deck);
+        user.setActiveDeck(deck);
         dataManager.addDeck(deck);
 
         Random random = new Random();
@@ -330,11 +510,5 @@ public class RunTest extends Application {
         }
 
         return user;
-    }
-
-
-    private void initializeFonts() {
-        Font.loadFont(getClass().getResourceAsStream("/font/Merienda-Regular.ttf"), 20);
-        Font.loadFont(getClass().getResourceAsStream("/font/Merienda-Bold.ttf"), 20);
     }
 }

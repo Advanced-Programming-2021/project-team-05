@@ -29,6 +29,10 @@ public enum Phase {
     }
 
 
+    public int getNumber() {
+        return this.number;
+    }
+
     public String getName() {
         return name;
     }

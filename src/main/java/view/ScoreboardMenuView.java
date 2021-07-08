@@ -49,6 +49,11 @@ public class ScoreboardMenuView {
             MainMenuView mainMenuView = new MainMenuView(mainMenuController);
             mainMenuView.setMainMenuScene();
         });
+        logoutButton.setOnAction(e -> {
+            MainMenuController mainMenuController = new MainMenuController(user);
+            MainMenuView mainMenuView = new MainMenuView(mainMenuController);
+            mainMenuView.setMainMenuScene();
+        });
     }
 
     public void updateScoreboardScene() {
