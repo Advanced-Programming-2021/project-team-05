@@ -136,6 +136,7 @@ public class ProfileMenuView {
             return;
         }
         controller.changeNickname(nicknameText);
+        setProfileScene();
     }
 
     public void showChangeNicknameMessage(ProfileMenuMessage message, String nickname) {
