@@ -146,10 +146,8 @@ public class Table {
     }
 
 
-    public final Card drawCard() {
-        Card card = deck.drawCard();
-        this.addCardToHand(card);
-        return card;
+    public final void drawCard() {
+        this.addCardToHand(deck.drawCard());
     }
 
 
@@ -182,6 +180,13 @@ public class Table {
 
     public final CardState getMonsterState(int position) {
         return this.monsterCells[position - 1].getState();
+    }
+
+    public final int getMonsterPosition(Monster monster) {
+        for (int i = 1; i <= 5; i++) {
+            if (monster.equals(this.getMonster(i))) return i;
+        }
+        return -1;
     }
 
     public final void addMonster(Monster monster, CardState state) {
@@ -245,6 +250,13 @@ public class Table {
         return this.spellAndTrapCells[position - 1].getState();
     }
 
+    public final int getSpellOrTrapPosition(Card card) {
+        for (int i = 1; i <= 5; i++) {
+            if (card.equals(this.getSpellOrTrap(i))) return i;
+        }
+        return -1;
+    }
+
     public final void addSpellOrTrap(Card card, CardState state) {
         for (int i = 0; i < 5; i++) {
             Cell cell = this.spellAndTrapCells[i];
@@ -260,17 +272,6 @@ public class Table {
 
     public final void removeSpellOrTrap(int position) {
         this.spellAndTrapCells[position - 1].clear();
-    }
-
-    public final int getSpellOrTrapPosition(Card card) {
-        for (int i = 1; i <= 5; i++) {
-            SpellTrapCell spellAndTrapCell = this.getSpellOrTrapCell(i);
-            Card spellTrapCard = spellAndTrapCell.getCard();
-            if (card.equals(spellTrapCard)) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     public final int getSpellTrapCardsCount() {

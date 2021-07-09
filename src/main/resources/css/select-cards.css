@@ -9,7 +9,7 @@
 
 #cards-container {
     -fx-padding: 5px 0px 5px 30px;
-    -fx-hgap: 15px;
+    -fx-hgap: 8px;
     -fx-vgap: 20px;
 }
 
@@ -31,4 +31,8 @@
 .card-image:pressed {
     -fx-scale-x: 0.99;
     -fx-scale-y: 0.99;
+}
+
+.selected-image {
+    -fx-opacity: 0.5;
 }

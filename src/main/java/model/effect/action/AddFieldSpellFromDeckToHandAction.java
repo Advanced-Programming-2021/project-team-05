@@ -21,32 +21,16 @@ public class AddFieldSpellFromDeckToHandAction implements Action {
         Table ownTable = controller.getBoard().getPlayerTable();
         Deck deck = ownTable.getDeck();
 
-        int fieldSpellsCount = 0;
         ArrayList<Card> fieldSpells = new ArrayList<>();
         for (String id : deck.getMainDeckCardIds()) {
             Card card = dataManager.getCardById(id);
-            if (card.getType().equals(CardType.FIELD)) {
-                fieldSpells.add(card);
-                fieldSpellsCount++;
-            }
+            if (card.getType().equals(CardType.FIELD)) fieldSpells.add(card);
         }
 
-        view.showCards(fieldSpells, "Field Spells:");
-        String message = "enter a card number to add to your hand:";
-        int position;
-        while (true) {
-            ArrayList<Integer> numbers = view.getNumbers(1, message);
-            if (numbers == null) {
-                view.printActionCanceled();
-                return;
-            }
-            position = numbers.get(0);
-            if (position > fieldSpellsCount || position < 1)
-                message = "position should be between 1 and " + fieldSpellsCount;
-            else break;
-        }
+        ArrayList<Integer> positions = view.getCardsPosition(fieldSpells, 1, "Select field spell to move from deck to hand");
+        if (positions.size() == 0) return;
 
-        ownTable.addCardToHand(fieldSpells.get(position - 1));
+        ownTable.addCardToHand(fieldSpells.get(positions.get(0)));
         deck.shuffleMainDeck();
     }
 

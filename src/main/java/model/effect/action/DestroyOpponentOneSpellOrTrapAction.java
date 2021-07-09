@@ -2,6 +2,9 @@ package model.effect.action;
 
 import control.controller.DuelMenuController;
 import model.board.Table;
+import model.board.cell.Cell;
+import model.board.cell.MonsterCell;
+import model.card.Card;
 import view.DuelMenuView;
 
 import java.util.ArrayList;
@@ -14,20 +17,21 @@ public class DestroyOpponentOneSpellOrTrapAction implements Action {
 
         DuelMenuView view = controller.getView();
         Table targetTable = controller.getBoard().getOpponentTable();
-        int number;
-        String message = "enter spell or trap position to destroy:";
-        while (true) {
-            ArrayList<Integer> numbers = view.getNumbers(1, message);
-            if (numbers == null) {
-                view.printActionCanceled();
-                return;
+
+        ArrayList<Card> cards = new ArrayList<>();
+        ArrayList<Boolean> showCards = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            Cell cell = targetTable.getSpellOrTrapCell(i);
+            if (cell.getCard() != null) {
+                cards.add(cell.getCard());
+                showCards.add(!cell.getState().isDown());
             }
-            number = numbers.get(0);
-            if (number < 1 || number > 5) message = "number should be between 1 and 5";
-            else if (targetTable.getSpellOrTrap(number) == null) message = "no spell or trap in this position";
-            else break;
         }
-        targetTable.moveSpellOrTrapToGraveyard(number);
+
+        ArrayList<Integer> positions = view.getCardsPosition(cards, showCards, 1, "Select spell or trap to destroy");
+        if (positions.size() == 0) return;
+
+        targetTable.moveSpellOrTrapToGraveyard(targetTable.getSpellOrTrapPosition(cards.get(positions.get(0))));
     }
 
     @Override

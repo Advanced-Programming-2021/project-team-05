@@ -1,7 +1,12 @@
 package model.effect.action;
 
 import control.controller.DuelMenuController;
+import model.board.CardState;
 import model.board.Table;
+import model.board.cell.Cell;
+import model.board.cell.MonsterCell;
+import model.card.Card;
+import model.card.Monster;
 import view.DuelMenuView;
 
 import java.util.ArrayList;
@@ -15,20 +20,21 @@ public class DestroyOpponentOneMonsterAction implements Action {
 
         DuelMenuView view = controller.getView();
         Table targetTable = controller.getBoard().getOpponentTable();
-        int position;
-        String message = "enter monster position to destroy:";
-        while (true) {
-            ArrayList<Integer> numbers = view.getNumbers(1, message);
-            if (numbers == null) {
-                view.printActionCanceled();
-                return;
+
+        ArrayList<Card> cards = new ArrayList<>();
+        ArrayList<Boolean> showCards = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            MonsterCell monsterCell = targetTable.getMonsterCell(i);
+            if (monsterCell.getCard() != null) {
+                cards.add(monsterCell.getCard());
+                showCards.add(!monsterCell.getState().isDown());
             }
-            position = numbers.get(0);
-            if (position < 1 || position > 5) message = "position should be between 1 and 5";
-            else if (targetTable.getMonster(position) == null) message = "no monster in this position";
-            else break;
         }
-        controller.moveMonsterToGraveyard(targetTable, position);
+
+        ArrayList<Integer> positions = view.getCardsPosition(cards, showCards, 1, "Select monster to destroy");
+        if (positions.size() == 0) return;
+
+        controller.moveMonsterToGraveyard(targetTable, targetTable.getMonsterPosition((Monster) cards.get(positions.get(0))));
     }
 
     @Override

@@ -4,10 +4,25 @@
 
 
 #board {
-    -fx-background-image: url("../images/field_normal.bmp");
     -fx-background-size: contain;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
+}
+
+.default-board {
+    -fx-background-image: url("../images/duel-backgrounds/field_normal.bmp");
+}
+
+.forest-board {
+    -fx-background-image: url("../images/duel-backgrounds/field_forest.bmp");
+}
+
+.yami-board {
+    -fx-background-image: url("../images/duel-backgrounds/field_yami.bmp");
+}
+
+.umi-board {
+    -fx-background-image: url("../images/duel-backgrounds/field_umi.bmp");
 }
 
 
@@ -85,7 +100,7 @@
 
 
 .phase-label {
-    -fx-background-color: radial-gradient(radius 100%, rgba(0, 208, 255, 0.4), rgba(215, 245, 255, 0.4));
+    -fx-background-color: radial-gradient(radius 100%, rgba(0, 208, 255, 0.5), rgba(215, 245, 255, 0.5));
 }
 
 .phase-label .label {
@@ -171,6 +186,73 @@
 }
 
 
+#cancel-attack-btn {
+    -fx-pref-width: 80px;
+    -fx-pref-height: 75px;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-color: radial-gradient(radius 100%, rgb(198, 52, 26), rgb(190, 10, 10));
+    -fx-background-radius: 5px;
+    -fx-text-fill: #051437;
+    -fx-effect: dropshadow(gaussian, black, 8, 0, 0, 0);
+}
+
+#cancel-attack-btn:hover {
+    -fx-cursor: hand;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+#cancel-attack-btn:pressed {
+    -fx-scale-x: 0.99;
+    -fx-scale-y: 0.99;
+}
+
+
+.action-btn {
+    -fx-background-color: transparent;
+    -fx-background-size: contain;
+    -fx-cursor: hand;
+}
+
+.action-btn:hover {
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+#summon-btn {
+    -fx-background-image: url("../images/duel-icons/normal-summon.png");
+}
+
+#set-btn {
+    -fx-background-image: url("../images/duel-icons/set.png");
+}
+
+#activate-effect-btn {
+    -fx-background-image: url("../images/duel-icons/activate-effect.png");
+}
+
+#flip-summon-btn {
+    -fx-background-image: url("../images/duel-icons/filp-summon.png");
+}
+
+#change-to-attack-position-btn {
+    -fx-background-image: url("../images/duel-icons/change-to-attack-position.png");
+}
+
+#change-to-defense-position-btn {
+    -fx-background-image: url("../images/duel-icons/change-to-defense-position.png");
+}
+
+#direct-attack-btn {
+    -fx-background-image: url("../images/duel-icons/direct-attack.png");
+}
+
+#attack-btn {
+    -fx-background-image: url("../images/duel-icons/attack.png");
+}
+
+
 .card-image .image-view:hover {
 }
 
@@ -184,6 +266,10 @@
     -fx-scale-x: 1.02;
     -fx-scale-y: 1.02;
     -fx-effect: dropshadow(gaussian, white, 5, 0, 0, 0);
+}
+
+.attackable-card {
+    -fx-effect: dropshadow(gaussian, red, 10, 0, 0, 0);
 }
 
 
@@ -231,4 +317,17 @@
 .hand {
     -fx-padding: 0px 29px;
     -fx-hgap: 15px;
+}
+
+
+#message-label-container .label {
+    -fx-font-weight: bold;
+    -fx-font-size: 50px;
+
+    -fx-text-fill: #a82f4e;
+}
+
+#message-label-container .label .text {
+    -fx-stroke: black;
+    -fx-stroke-width: 2px;
 }

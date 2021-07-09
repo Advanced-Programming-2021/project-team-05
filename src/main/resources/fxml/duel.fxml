@@ -41,19 +41,8 @@
                               <Image url="@../images/profile-pics/profile-pic1.png" />
                            </image>
                         </ImageView>
-                        <VBox alignment="CENTER" prefHeight="84.0" prefWidth="196.0" style="-fx-spacing: 2;">
+                        <VBox alignment="CENTER" prefHeight="100.0" prefWidth="196.0" spacing="10.0">
                            <children>
-                              <VBox alignment="CENTER" prefHeight="0.0" prefWidth="196.0">
-                                 <children>
-                                    <Label text="Username:">
-                                       <styleClass>
-                                          <String fx:value="name-label" />
-                                          <String fx:value="name-label-small" />
-                                       </styleClass>
-                                    </Label>
-                                    <Label id="opp-username-label" styleClass="name-label" text="username" />
-                                 </children>
-                              </VBox>
                               <VBox alignment="CENTER" prefHeight="0.0" prefWidth="196.0">
                                  <children>
                                     <Label text="Nickname:">
@@ -65,12 +54,12 @@
                                     <Label id="opp-nickname-label" styleClass="name-label" text="nickname" />
                                  </children>
                               </VBox>
+                              <Label id="opp-score-label" alignment="CENTER" prefWidth="100.0" styleClass="name-label" text="Score: 0" />
                            </children>
                         </VBox>
-                        <Circle id="opp-turn-circle" fill="DODGERBLUE" radius="12.0" stroke="BLACK" strokeType="INSIDE" styleClass="turn-none" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="340.0">
+                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="340.0" spacing="5.0">
                      <children>
                         <Label prefHeight="30.0" prefWidth="34.0" styleClass="lp-label" text="LP:" />
                         <StackPane prefHeight="30.0" prefWidth="250.0">
@@ -79,6 +68,7 @@
                               <Label id="opp-lp-label" styleClass="lp-label" text="8000" />
                            </children>
                         </StackPane>
+                        <Circle id="opp-turn-circle" fill="DODGERBLUE" radius="12.0" stroke="BLACK" strokeType="INSIDE" styleClass="turn-none" />
                      </children>
                   </HBox>
                </children>
@@ -93,19 +83,8 @@
                               <Image url="@../images/profile-pics/profile-pic1.png" />
                            </image>
                         </ImageView>
-                        <VBox alignment="CENTER" prefHeight="84.0" prefWidth="196.0" style="-fx-spacing: 2;">
+                        <VBox alignment="CENTER" prefHeight="84.0" prefWidth="196.0" spacing="10.0">
                            <children>
-                              <VBox alignment="CENTER" prefHeight="0.0" prefWidth="196.0">
-                                 <children>
-                                    <Label text="Username:">
-                                       <styleClass>
-                                          <String fx:value="name-label" />
-                                          <String fx:value="name-label-small" />
-                                       </styleClass>
-                                    </Label>
-                                    <Label id="username-label" styleClass="name-label" text="username" />
-                                 </children>
-                              </VBox>
                               <VBox alignment="CENTER" prefHeight="0.0" prefWidth="196.0">
                                  <children>
                                     <Label text="Nickname:">
@@ -117,12 +96,12 @@
                                     <Label id="nickname-label" styleClass="name-label" text="nickname" />
                                  </children>
                               </VBox>
+                              <Label id="score-label" alignment="CENTER" prefWidth="100.0" styleClass="name-label" text="Score: 0" />
                            </children>
                         </VBox>
-                        <Circle id="turn-circle" fill="DODGERBLUE" radius="12.0" stroke="BLACK" strokeType="INSIDE" styleClass="turn-none" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="340.0">
+                  <HBox alignment="CENTER" maxWidth="340.0" prefHeight="30.0" prefWidth="340.0" spacing="5.0">
                      <children>
                         <Label prefHeight="30.0" prefWidth="34.0" styleClass="lp-label" text="LP:" />
                         <StackPane prefHeight="30.0" prefWidth="250.0">
@@ -131,14 +110,16 @@
                               <Label id="lp-label" styleClass="lp-label" text="8000" />
                            </children>
                         </StackPane>
+                        <Circle id="turn-circle" fill="DODGERBLUE" radius="12.0" stroke="BLACK" strokeType="INSIDE" styleClass="turn-none" />
                      </children>
                   </HBox>
                </children>
             </FlowPane>
          </children>
       </VBox>
-      <AnchorPane id="board" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+      <AnchorPane id="board" prefHeight="200.0" prefWidth="200.0" styleClass="default-board" GridPane.columnIndex="1">
          <children>
+            <HBox id="message-label-container" alignment="CENTER" layoutX="31.0" layoutY="350.0" prefHeight="100.0" prefWidth="722.0" />
             <VBox id="draw-phase-label" layoutY="114.0" prefHeight="70.0" prefWidth="25.0" styleClass="phase-label">
                <children>
                   <Label prefHeight="35.0" prefWidth="25.0" text="D" />
@@ -303,8 +284,16 @@
             </FlowPane>
             <FlowPane id="opp-hand" alignment="BOTTOM_CENTER" columnHalignment="CENTER" layoutX="25.0" maxHeight="95.0" prefHeight="95.0" prefWidth="734.0" styleClass="hand" />
             <Button id="next-phase-btn" layoutX="39.0" layoutY="544.0" mnemonicParsing="false" text="Next&#10;Phase" textAlignment="CENTER" />
-            <Button id="test" layoutX="687.0" layoutY="172.0" mnemonicParsing="false" text="TEST" />
+            <Button id="cancel-attack-btn" disable="true" layoutX="675.0" layoutY="170.0" mnemonicParsing="false" opacity="0.0" prefHeight="136.0" text="Cancel&#10;Attack" />
             <Button id="pause-btn" layoutX="39.0" layoutY="644.0" mnemonicParsing="false" text="Pause" textAlignment="CENTER" />
+            <Button id="summon-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="action-btn" />
+            <Button id="set-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="action-btn" />
+            <Button id="activate-effect-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="action-btn" />
+            <Button id="flip-summon-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="action-btn" />
+            <Button id="change-to-attack-position-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="action-btn" />
+            <Button id="change-to-defense-position-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="action-btn" />
+            <Button id="direct-attack-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="action-btn" />
+            <Button id="attack-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="action-btn" />
             </children>
       </AnchorPane>
    </children>

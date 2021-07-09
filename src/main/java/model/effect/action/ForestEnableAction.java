@@ -5,6 +5,7 @@ import model.board.Board;
 import model.board.Table;
 import model.card.Monster;
 import model.template.property.MonsterType;
+import utils.DuelBackgroundType;
 
 public class ForestEnableAction implements Action {
 
@@ -28,6 +29,7 @@ public class ForestEnableAction implements Action {
                 }
             }
         }
+        controller.getView().setBackground(DuelBackgroundType.FOREST);
     }
 
     @Override

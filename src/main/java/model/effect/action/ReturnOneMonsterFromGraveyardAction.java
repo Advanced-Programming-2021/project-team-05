@@ -20,27 +20,15 @@ public class ReturnOneMonsterFromGraveyardAction implements Action {
         ArrayList<Card> allCards = new ArrayList<>();
         allCards.addAll(playerGraveyardMonsters);
         allCards.addAll(opponentGraveyardMonsters);
-        controller.getView().showCards(allCards, "Graveyards Monsters");
 
-        int position;
+        ArrayList<Integer> positions = controller.getView().getCardsPosition(allCards, 1, "Select monster to return it from graveyard");
+        if (positions.size() == 0) return;
+
+        int position = positions.get(0);
         Table cardTable;
-        String message = "enter monster position to return it from graveyard:";
-        while (true) {
-            ArrayList<Integer> positions = controller.getView().getNumbers(1, message);
-            if (positions == null) {
-                controller.getView().printActionCanceled();
-                return;
-            }
-            position = positions.get(0);
-            if (position < 1 || position > allCards.size()) {
-                message = "position should be between 1 and " + allCards.size();
-                continue;
-            }
-            if (position < playerGraveyardMonsters.size()) cardTable = board.getPlayerTable();
-            else cardTable = board.getOpponentTable();
-            break;
-        }
-        Card targetCard = allCards.get(position - 1);
+        if (position < playerGraveyardMonsters.size()) cardTable = board.getPlayerTable();
+        else cardTable = board.getOpponentTable();
+        Card targetCard = allCards.get(position);
         cardTable.removeCardFromGraveyard(targetCard);
         controller.addMonsterToTable((Monster) targetCard, board.getPlayerTable(), CardState.VERTICAL_UP);
     }

@@ -1,12 +1,17 @@
 package view;
 
-import com.sanityinc.jargs.CmdLineParser;
 import control.DataManager;
 import control.controller.DuelMenuController;
 import control.controller.MainMenuController;
 import control.controller.Phase;
 import control.message.DuelMenuMessage;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -14,26 +19,25 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.User;
 import model.board.*;
 import model.board.cell.MonsterCell;
 import model.board.cell.SpellTrapCell;
 import model.card.Card;
 import model.card.Monster;
-import model.template.CardTemplate;
+import model.card.Spell;
 import utils.CoinSide;
+import utils.DuelBackgroundType;
+import utils.Utility;
 import utils.ViewUtility;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DuelMenuView implements CheatRunner {
 
@@ -42,6 +46,11 @@ public class DuelMenuView implements CheatRunner {
     private boolean endDuel;
 
     private ImageView selectedCardImage;
+    private boolean attackMode;
+
+    {
+        attackMode = false;
+    }
 
 
     public DuelMenuView(DuelMenuController controller) {
@@ -71,20 +80,66 @@ public class DuelMenuView implements CheatRunner {
     }
 
     private void initializeDuelSceneButtons() {
-        Button testButton = (Button) scene.lookup("#test");
-
         Button nextPhaseButton = (Button) scene.lookup("#next-phase-btn");
-        nextPhaseButton.setOnMouseClicked(e -> controller.goToNextPhase(true));
+        nextPhaseButton.setOnMouseClicked(e -> nextPhase());
 
         Button PauseButton = (Button) scene.lookup("#pause-btn");
         PauseButton.setOnMouseClicked(e -> pauseGame());
+
+        Button summonButton = (Button) scene.lookup("#summon-btn");
+        summonButton.setOnMouseClicked(e -> summon());
+
+        Button setButton = (Button) scene.lookup("#set-btn");
+        setButton.setOnMouseClicked(e -> set());
+
+        Button activateEffectButton = (Button) scene.lookup("#activate-effect-btn");
+        activateEffectButton.setOnMouseClicked(e -> activateEffect());
+
+        Button flipSummonButton = (Button) scene.lookup("#flip-summon-btn");
+        flipSummonButton.setOnMouseClicked(e -> flipSummon());
+
+        Button changeToAttackPositionButton = (Button) scene.lookup("#change-to-attack-position-btn");
+        changeToAttackPositionButton.setOnMouseClicked(e -> changePosition("Attack"));
+
+        Button changeToDefensePositionButton = (Button) scene.lookup("#change-to-defense-position-btn");
+        changeToDefensePositionButton.setOnMouseClicked(e -> changePosition("Defense"));
+
+        Button directAttackButton = (Button) scene.lookup("#direct-attack-btn");
+        directAttackButton.setOnMouseClicked(e -> directAttack());
+
+        Button attackButton = (Button) scene.lookup("#attack-btn");
+        attackButton.setOnMouseClicked(e -> turnOnAttackMode());
+
+        Button cancelAttackButton = (Button) scene.lookup("#cancel-attack-btn");
+        cancelAttackButton.setOnMouseClicked(e -> turnOffAttackMode());
+
+        resetButtons();
+    }
+
+    private void resetButtons() {
+        resetButton((Button) scene.lookup("#summon-btn"));
+        resetButton((Button) scene.lookup("#set-btn"));
+        resetButton((Button) scene.lookup("#activate-effect-btn"));
+        resetButton((Button) scene.lookup("#flip-summon-btn"));
+        resetButton((Button) scene.lookup("#change-to-attack-position-btn"));
+        resetButton((Button) scene.lookup("#change-to-defense-position-btn"));
+        resetButton((Button) scene.lookup("#direct-attack-btn"));
+        resetButton((Button) scene.lookup("#attack-btn"));
+    }
+
+    private void resetButton(Button button) {
+        button.setLayoutX(680);
+        button.setLayoutY(100);
+        button.setDisable(true);
+        button.setOpacity(0);
     }
 
 
     public void updateBoard(Board board) {
+        updateLPs(board);
+        updatePlayersInfo(board.getPlayerTable().getOwner(), board.getOpponentTable().getOwner());
         for (int j = 0; j < 2; j++) {
             Table targetTable = j == 0 ? board.getPlayerTable() : board.getOpponentTable();
-
             for (int i = 1; i <= 5; i++) {
                 MonsterCell monsterCell = targetTable.getMonsterCell(i);
                 CardAddress address = new CardAddress(CardAddressZone.MONSTER, i, j == 1);
@@ -160,7 +215,14 @@ public class DuelMenuView implements CheatRunner {
         HBox cardContainer = (HBox) scene.lookup(selector);
         cardContainer.getChildren().clear();
         cardContainer.getChildren().add(cardImage);
-        if (address.isForOpponent() && cardState.isDown()) {
+        if (attackMode && address.isForOpponent() && address.getZone() == CardAddressZone.MONSTER) {
+            cardImage.setOnMouseClicked(e -> {
+                if (!attackMode) showCardDetails(card);
+                selectCard(card, address, cardImage);
+            });
+            if (!cardContainer.getStyleClass().contains("selectable-card-image"))
+                cardContainer.getStyleClass().add("selectable-card-image");
+        } else if (address.isForOpponent() && cardState.isDown()) {
             cardContainer.getStyleClass().remove("selectable-card-image");
         } else if (address.getZone() == CardAddressZone.GRAVEYARD) {
             cardImage.setOnMouseClicked(e -> showGraveyard(address.isForOpponent()));
@@ -168,7 +230,7 @@ public class DuelMenuView implements CheatRunner {
                 cardContainer.getStyleClass().add("selectable-card-image");
         } else {
             cardImage.setOnMouseClicked(e -> {
-                showCardDetails(card);
+                if (!attackMode) showCardDetails(card);
                 selectCard(card, address, cardImage);
             });
             if (!cardContainer.getStyleClass().contains("selectable-card-image"))
@@ -250,7 +312,7 @@ public class DuelMenuView implements CheatRunner {
         cardImage.setPreserveRatio(true);
         FlowPane hand = (FlowPane) scene.lookup("#" + (isOpp ? "opp-" : "") + "hand");
         if (!isOpp) cardImage.setOnMouseClicked(e -> {
-            showCardDetails(card);
+            if (!attackMode) showCardDetails(card);
             selectCard(card, new CardAddress(CardAddressZone.HAND, 0, false), cardImage);
         });
 
@@ -270,19 +332,118 @@ public class DuelMenuView implements CheatRunner {
 
 
     private void selectCard(Card card, CardAddress address, ImageView cardImage) {
-        if (selectedCardImage == cardImage) {
-            controller.deselect(true);
+        if (attackMode) {
+            if (address.isForOpponent() && address.getZone() == CardAddressZone.MONSTER)
+                controller.attack(address.getPosition());
+            else ViewUtility.showInformationAlert("Select", "", "You should attack now");
             return;
         }
+        if (selectedCardImage == cardImage) {
+            controller.deselect();
+            return;
+        }
+        resetButtons();
         if (selectedCardImage != null) selectedCardImage.getStyleClass().remove("selected-card");
         cardImage.getStyleClass().add("selected-card");
         selectedCardImage = cardImage;
 
         if (address.getZone() == CardAddressZone.HAND) controller.selectCardFromHand(card);
         else controller.selectCard(address);
+
+        showRequiredButtons(card, address, cardImage);
+    }
+
+    private void showRequiredButtons(Card card, CardAddress address, ImageView cardImage) {
+        if (address.isForOpponent()) return;
+        Phase phase = controller.getPhase();
+        if (address.getZone() == CardAddressZone.HAND) {
+            double layoutX = cardImage.getLayoutX();
+            if (!(phase == Phase.MAIN_1 || phase == Phase.MAIN_2)) return;
+            if (card instanceof Monster) {
+                Button summonButton = (Button) scene.lookup("#summon-btn");
+                summonButton.setLayoutX(layoutX + 21);
+                summonButton.setLayoutY(720);
+                summonButton.setDisable(false);
+                summonButton.setOpacity(1);
+
+                Button setButton = (Button) scene.lookup("#set-btn");
+                setButton.setLayoutX(layoutX + 73);
+                setButton.setLayoutY(720);
+                setButton.setDisable(false);
+                setButton.setOpacity(1);
+            } else if (card instanceof Spell) {
+                Button activateEffect = (Button) scene.lookup("#activate-effect-btn");
+                activateEffect.setLayoutX(layoutX + 21);
+                activateEffect.setLayoutY(720);
+                activateEffect.setDisable(false);
+                activateEffect.setOpacity(1);
+
+                Button setButton = (Button) scene.lookup("#set-btn");
+                setButton.setLayoutX(layoutX + 73);
+                setButton.setLayoutY(720);
+                setButton.setDisable(false);
+                setButton.setOpacity(1);
+            } else {
+                Button setButton = (Button) scene.lookup("#set-btn");
+                setButton.setLayoutX(layoutX + 40);
+                setButton.setLayoutY(720);
+                setButton.setDisable(false);
+                setButton.setOpacity(1);
+            }
+        } else if (address.getZone() == CardAddressZone.MONSTER) {
+            double layoutX = cardImage.getParent().getLayoutX();
+            if (phase == Phase.MAIN_1 || phase == Phase.MAIN_2) {
+                Button flipSummonButton = (Button) scene.lookup("#flip-summon-btn");
+                flipSummonButton.setLayoutX(layoutX + 13);
+                flipSummonButton.setLayoutY(417);
+                flipSummonButton.setDisable(false);
+                flipSummonButton.setOpacity(1);
+
+                Button changeToAttackButton = (Button) scene.lookup("#change-to-attack-position-btn");
+                changeToAttackButton.setLayoutX(layoutX - 15);
+                changeToAttackButton.setLayoutY(480);
+                changeToAttackButton.setDisable(false);
+                changeToAttackButton.setOpacity(1);
+
+                Button changeToDefenseButton = (Button) scene.lookup("#change-to-defense-position-btn");
+                changeToDefenseButton.setLayoutX(layoutX + 43);
+                changeToDefenseButton.setLayoutY(480);
+                changeToDefenseButton.setDisable(false);
+                changeToDefenseButton.setOpacity(1);
+            } else if (phase == Phase.BATTLE) {
+                Button changeToAttackButton = (Button) scene.lookup("#direct-attack-btn");
+                changeToAttackButton.setLayoutX(layoutX - 15);
+                changeToAttackButton.setLayoutY(440);
+                changeToAttackButton.setDisable(false);
+                changeToAttackButton.setOpacity(1);
+
+                Button changeToDefenseButton = (Button) scene.lookup("#attack-btn");
+                changeToDefenseButton.setLayoutX(layoutX + 43);
+                changeToDefenseButton.setLayoutY(440);
+                changeToDefenseButton.setDisable(false);
+                changeToDefenseButton.setOpacity(1);
+            }
+        } else if (address.getZone() == CardAddressZone.SPELL) {
+            if (card instanceof Spell) {
+                double layoutX = cardImage.getParent().getLayoutX();
+                Button activateEffectButton = (Button) scene.lookup("#activate-effect-btn");
+                activateEffectButton.setLayoutX(layoutX + 13);
+                activateEffectButton.setLayoutY(580);
+                activateEffectButton.setDisable(false);
+                activateEffectButton.setOpacity(1);
+            }
+        } else if (address.getZone() == CardAddressZone.FIELD) {
+            double layoutX = cardImage.getParent().getLayoutX();
+            Button activateEffectButton = (Button) scene.lookup("#activate-effect-btn");
+            activateEffectButton.setLayoutX(layoutX + 13);
+            activateEffectButton.setLayoutY(435);
+            activateEffectButton.setDisable(false);
+            activateEffectButton.setOpacity(1);
+        }
     }
 
     public void deselectCard() {
+        resetButtons();
         if (selectedCardImage != null) {
             selectedCardImage.getStyleClass().remove("selected-card");
             clearCardDetails();
@@ -321,16 +482,31 @@ public class DuelMenuView implements CheatRunner {
 
     public void updateLPs(int playerLP, int opponentLP) {
         ProgressBar lpBar = (ProgressBar) scene.lookup("#lp-bar");
-        lpBar.setProgress((double) playerLP / 8000);
+        double oldPlayerLP = lpBar.getProgress() * 8000;
 
         Label lpLabel = (Label) scene.lookup("#lp-label");
         lpLabel.setText(String.valueOf(playerLP));
 
         ProgressBar oppLPBar = (ProgressBar) scene.lookup("#opp-lp-bar");
-        oppLPBar.setProgress((double) opponentLP / 8000);
+        double oldOpponentLP = oppLPBar.getProgress() * 8000;
 
         Label oppLBLabel = (Label) scene.lookup("#opp-lp-label");
         oppLBLabel.setText(String.valueOf(opponentLP));
+
+        double playerTime = Math.abs(oldPlayerLP - playerLP) / 1.5;
+        double oppTime = Math.abs(oldOpponentLP - opponentLP) / 1.5;
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(lpBar.progressProperty(), oldPlayerLP / 8000)),
+                new KeyFrame(Duration.ZERO, new KeyValue(oppLPBar.progressProperty(), oldOpponentLP / 8000)),
+                new KeyFrame(Duration.millis(playerTime), new KeyValue(lpBar.progressProperty(), (double) playerLP / 8000)),
+                new KeyFrame(Duration.millis(oppTime), new KeyValue(oppLPBar.progressProperty(), (double) opponentLP / 8000))
+        );
+        timeline.setCycleCount(1);
+        timeline.play();
+    }
+
+    private void updateLPs(Board board) {
+        updateLPs(board.getPlayerTable().getLifePoint(), board.getOpponentTable().getLifePoint());
     }
 
 
@@ -359,8 +535,8 @@ public class DuelMenuView implements CheatRunner {
     }
 
     public void updatePlayersInfo(User player1, User player2) {
-        Label player1Username = (Label) scene.lookup("#username-label");
-        player1Username.setText(player1.getUsername());
+        Label player1Score = (Label) scene.lookup("#score-label");
+        player1Score.setText("Score: " + controller.getScore(player1));
 
         Label player1Nickname = (Label) scene.lookup("#nickname-label");
         player1Nickname.setText(player1.getNickname());
@@ -368,8 +544,8 @@ public class DuelMenuView implements CheatRunner {
         ImageView player1Pic = (ImageView) scene.lookup("#profile-pic");
         player1Pic.setImage(new Image(ViewUtility.class.getResource("/images/profile-pics/" + player1.getProfilePictureName()).toExternalForm()));
 
-        Label player2Username = (Label) scene.lookup("#opp-username-label");
-        player2Username.setText(player2.getUsername());
+        Label player2Score = (Label) scene.lookup("#opp-score-label");
+        player2Score.setText("Score: " + controller.getScore(player2));
 
         Label player2Nickname = (Label) scene.lookup("#opp-nickname-label");
         player2Nickname.setText(player2.getNickname());
@@ -395,6 +571,16 @@ public class DuelMenuView implements CheatRunner {
             backButton.setOnAction(e -> stage.close());
             backButton.setOnMouseClicked(e -> stage.close());
 
+            Button surrenderButton = (Button) duelSettingScene.lookup("#surrender-btn");
+            surrenderButton.setOnAction(e -> {
+                stage.close();
+                controller.surrender();
+            });
+            surrenderButton.setOnMouseClicked(e -> {
+                stage.close();
+                controller.surrender();
+            });
+
             Button startDuelButton = (Button) duelSettingScene.lookup("#exit-btn");
             startDuelButton.setOnMouseClicked(e -> {
                 controller.exit();
@@ -416,58 +602,300 @@ public class DuelMenuView implements CheatRunner {
     }
 
 
+    private void nextPhase() {
+        if (attackMode)
+            ViewUtility.showInformationAlert("Next Phase", "", "You can't change phase while in attack mode");
+        else controller.goToNextPhase(true);
+    }
+
+
+    // TODO: 2021-07-09 remove
     public ArrayList<Integer> getNumbers(int numbersCount, String message) {
         ArrayList<Integer> numbers = new ArrayList<>();
         System.out.println(message);
         for (int i = 1; i <= numbersCount; i++) {
-//            try {
-//                String input = Utility.getNextLine();
-//                if ("cancel".equals(input)) return null;
-//                int number = Integer.parseInt(input);
-//                numbers.add(number);
-//            } catch (NumberFormatException e) {
-//                System.out.println("please enter a number");
-//                i--;
-//            }
+            try {
+                String input = Utility.getNextLine();
+                if ("cancel".equals(input)) return null;
+                int number = Integer.parseInt(input);
+                numbers.add(number);
+            } catch (NumberFormatException e) {
+                System.out.println("please enter a number");
+                i--;
+            }
         }
         return numbers;
     }
 
 
-    public CardAddress getAddress(String[] command) {
-        CmdLineParser parser = new CmdLineParser();
-        CmdLineParser.Option<Integer> monsterOption = parser.addIntegerOption('m', "monster");
-        CmdLineParser.Option<Integer> spellOption = parser.addIntegerOption('s', "spell");
-        CmdLineParser.Option<Integer> handOption = parser.addIntegerOption('h', "hand");
-        CmdLineParser.Option<Integer> graveyardOption = parser.addIntegerOption('g', "graveyard");
-        CmdLineParser.Option<Boolean> fieldOption = parser.addBooleanOption('f', "field");
-        CmdLineParser.Option<Boolean> opponentOption = parser.addBooleanOption('o', "opponent");
-        try {
-            parser.parse(command);
-        } catch (CmdLineParser.OptionException e) {
-            return null;
+    public ArrayList<Integer> getCardsPosition(ArrayList<Card> cards, int positionsCount, String message) {
+        ArrayList<Integer> positions = new ArrayList<>();
+
+        Stage stage = new Stage();
+        stage.setResizable(false);
+        stage.setTitle("Select Cards");
+        stage.initModality(Modality.APPLICATION_MODAL);
+
+        Label title = new Label("Select Cards");
+        title.getStyleClass().add("title-label");
+
+        HBox titleContainer = new HBox(title);
+        titleContainer.setAlignment(Pos.CENTER);
+
+        Label messageLabel = new Label(message);
+        messageLabel.setId("message-label");
+        messageLabel.getStyleClass().add("default-label");
+
+        Button finishButton = new Button("Finish");
+        finishButton.setId("finish-btn");
+        finishButton.getStyleClass().addAll("default-button", "button-small");
+        finishButton.setDisable(true);
+        finishButton.setOnMouseClicked(e -> {
+            stage.close();
+        });
+        finishButton.setOnAction(e -> {
+            stage.close();
+        });
+
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setId("cancel-btn");
+        cancelButton.getStyleClass().addAll("default-button", "button-small");
+        cancelButton.setOnMouseClicked(e -> {
+            positions.clear();
+            stage.close();
+        });
+        cancelButton.setOnAction(e -> {
+            positions.clear();
+            stage.close();
+        });
+
+        FlowPane cardsContainer = new FlowPane();
+        cardsContainer.setPrefWidth(780);
+        cardsContainer.setId("cards-container");
+        cardsContainer.setAlignment(Pos.CENTER);
+        for (int i = 0, cardsSize = cards.size(); i < cardsSize; i++) {
+            int index = i;
+            Card card = cards.get(i);
+            ImageView cardImage = ViewUtility.getCardImageView(card.getName());
+            cardImage.getStyleClass().add("card-image");
+            cardImage.setFitWidth(150);
+            cardImage.setFitHeight(250);
+            cardImage.setOnMouseClicked(e -> {
+                if (cardImage.getStyleClass().contains("selected-image")) {
+                    positions.remove(Integer.valueOf(index));
+                    cardImage.getStyleClass().remove("selected-image");
+                } else {
+                    positions.add(index);
+                    cardImage.getStyleClass().add("selected-image");
+                }
+                finishButton.setDisable(positions.size() != positionsCount);
+            });
+
+            Button showButton = new Button("Show");
+            showButton.getStyleClass().addAll("default-button", "show-button");
+            showButton.setOnMouseClicked(e -> ViewUtility.showCard(card.getName()));
+            showButton.setOnAction(e -> ViewUtility.showCard(card.getName()));
+
+            VBox container = new VBox(2, cardImage, showButton);
+            container.setPrefWidth(150);
+            container.setPrefHeight(282);
+            cardsContainer.getChildren().add(container);
         }
 
-        HashMap<CardAddressZone, Integer> positions = new HashMap<>();
-        positions.put(CardAddressZone.MONSTER, parser.getOptionValue(monsterOption));
-        positions.put(CardAddressZone.SPELL, parser.getOptionValue(spellOption));
-        positions.put(CardAddressZone.HAND, parser.getOptionValue(handOption));
-        positions.put(CardAddressZone.GRAVEYARD, parser.getOptionValue(graveyardOption));
-        positions.put(CardAddressZone.FIELD, parser.getOptionValue(fieldOption) == null ? null : 0);
+        ScrollPane scrollPane = new ScrollPane(cardsContainer);
+        scrollPane.setId("scroll-pane");
 
-        positions.entrySet().removeIf(key -> key.getValue() == null);
-        if (positions.size() == 1) {
-            Map.Entry<CardAddressZone, Integer> entry = positions.entrySet().iterator().next();
-            CardAddressZone zone = entry.getKey();
-            int position = entry.getValue();
-            boolean isOpponent = parser.getOptionValue(opponentOption, false);
+        GridPane root = new GridPane();
+        root.setId("root");
+        root.getStylesheets().add(getClass().getResource("/css/main.css").toExternalForm());
+        root.getStylesheets().add(getClass().getResource("/css/select-cards.css").toExternalForm());
+        root.setPrefWidth(800);
+        root.setPrefHeight(700);
 
-            return new CardAddress(zone, position, isOpponent);
+        ColumnConstraints columnConstraints1 = new ColumnConstraints(150);
+        columnConstraints1.setHgrow(Priority.NEVER);
+        columnConstraints1.setHalignment(HPos.CENTER);
+        ColumnConstraints columnConstraints2 = new ColumnConstraints(250);
+        columnConstraints2.setHgrow(Priority.NEVER);
+        columnConstraints2.setHalignment(HPos.CENTER);
+        ColumnConstraints columnConstraints3 = new ColumnConstraints(250);
+        columnConstraints3.setHgrow(Priority.NEVER);
+        columnConstraints3.setHalignment(HPos.CENTER);
+        ColumnConstraints columnConstraints4 = new ColumnConstraints(150);
+        columnConstraints4.setHgrow(Priority.NEVER);
+        columnConstraints4.setHalignment(HPos.CENTER);
+        root.getColumnConstraints().clear();
+        root.getColumnConstraints().addAll(columnConstraints1, columnConstraints2, columnConstraints3, columnConstraints4);
+
+        RowConstraints rowConstraints1 = new RowConstraints(40);
+        rowConstraints1.setVgrow(Priority.NEVER);
+        RowConstraints rowConstraints2 = new RowConstraints(100);
+        rowConstraints2.setVgrow(Priority.NEVER);
+        RowConstraints rowConstraints3 = new RowConstraints(100);
+        rowConstraints3.setVgrow(Priority.NEVER);
+        RowConstraints rowConstraints4 = new RowConstraints(120);
+        rowConstraints3.setVgrow(Priority.NEVER);
+        RowConstraints rowConstraints5 = new RowConstraints(100);
+        rowConstraints3.setVgrow(Priority.NEVER);
+        RowConstraints rowConstraints6 = new RowConstraints(100);
+        rowConstraints3.setVgrow(Priority.NEVER);
+        RowConstraints rowConstraints7 = new RowConstraints(120);
+        rowConstraints3.setVgrow(Priority.NEVER);
+        RowConstraints rowConstraints8 = new RowConstraints(20);
+        rowConstraints3.setVgrow(Priority.NEVER);
+        root.getRowConstraints().clear();
+        root.getRowConstraints().addAll(rowConstraints1, rowConstraints2, rowConstraints3, rowConstraints4, rowConstraints5, rowConstraints6, rowConstraints7, rowConstraints8);
+
+        root.add(titleContainer, 1, 1, 2, 1);
+        root.add(messageLabel, 0, 2, 4, 1);
+        root.add(scrollPane, 0, 3, 4, 3);
+        root.add(finishButton, 1, 6, 1, 1);
+        root.add(cancelButton, 2, 6, 1, 1);
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.showAndWait();
+
+        return positions;
+    }
+
+    public ArrayList<Integer> getCardsPosition(ArrayList<Card> cards, ArrayList<Boolean> showCards, int positionsCount, String message) {
+        ArrayList<Integer> positions = new ArrayList<>();
+
+        Stage stage = new Stage();
+        stage.setResizable(false);
+        stage.setTitle("Select Cards");
+        stage.initModality(Modality.APPLICATION_MODAL);
+
+        Label title = new Label("Select Cards");
+        title.getStyleClass().add("title-label");
+
+        HBox titleContainer = new HBox(title);
+        titleContainer.setAlignment(Pos.CENTER);
+
+        Label messageLabel = new Label(message);
+        messageLabel.setId("message-label");
+        messageLabel.getStyleClass().add("default-label");
+
+        Button finishButton = new Button("Finish");
+        finishButton.setId("finish-btn");
+        finishButton.getStyleClass().addAll("default-button", "button-small");
+        finishButton.setDisable(true);
+        finishButton.setOnMouseClicked(e -> {
+            stage.close();
+        });
+        finishButton.setOnAction(e -> {
+            stage.close();
+        });
+
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setId("cancel-btn");
+        cancelButton.getStyleClass().addAll("default-button", "button-small");
+        cancelButton.setOnMouseClicked(e -> {
+            positions.clear();
+            stage.close();
+        });
+        cancelButton.setOnAction(e -> {
+            positions.clear();
+            stage.close();
+        });
+
+        FlowPane cardsContainer = new FlowPane();
+        cardsContainer.setPrefWidth(780);
+        cardsContainer.setId("cards-container");
+        cardsContainer.setAlignment(Pos.CENTER);
+        for (int i = 0, cardsSize = cards.size(); i < cardsSize; i++) {
+            int index = i;
+            Card card = cards.get(i);
+            boolean showCard = showCards.get(i);
+            ImageView cardImage = ViewUtility.getCardImageView(showCard ? card.getName() : "Unknown");
+            cardImage.getStyleClass().add("card-image");
+            cardImage.setFitWidth(150);
+            cardImage.setFitHeight(250);
+            cardImage.setOnMouseClicked(e -> {
+                if (cardImage.getStyleClass().contains("selected-image")) {
+                    positions.remove(Integer.valueOf(index));
+                    cardImage.getStyleClass().remove("selected-image");
+                } else {
+                    positions.add(index);
+                    cardImage.getStyleClass().add("selected-image");
+                }
+                finishButton.setDisable(positions.size() != positionsCount);
+            });
+
+            Button showButton = new Button("Show");
+            showButton.getStyleClass().addAll("default-button", "show-button");
+            showButton.setDisable(!showCard);
+            if (showCard) {
+                showButton.setOnMouseClicked(e -> ViewUtility.showCard(card.getName()));
+                showButton.setOnAction(e -> ViewUtility.showCard(card.getName()));
+            }
+
+            VBox container = new VBox(2, cardImage, showButton);
+            container.setPrefWidth(150);
+            container.setPrefHeight(282);
+            cardsContainer.getChildren().add(container);
         }
-        return null;
+
+        ScrollPane scrollPane = new ScrollPane(cardsContainer);
+        scrollPane.setId("scroll-pane");
+
+        GridPane root = new GridPane();
+        root.setId("root");
+        root.getStylesheets().add(getClass().getResource("/css/main.css").toExternalForm());
+        root.getStylesheets().add(getClass().getResource("/css/select-cards.css").toExternalForm());
+        root.setPrefWidth(800);
+        root.setPrefHeight(700);
+
+        ColumnConstraints columnConstraints1 = new ColumnConstraints(150);
+        columnConstraints1.setHgrow(Priority.NEVER);
+        columnConstraints1.setHalignment(HPos.CENTER);
+        ColumnConstraints columnConstraints2 = new ColumnConstraints(250);
+        columnConstraints2.setHgrow(Priority.NEVER);
+        columnConstraints2.setHalignment(HPos.CENTER);
+        ColumnConstraints columnConstraints3 = new ColumnConstraints(250);
+        columnConstraints3.setHgrow(Priority.NEVER);
+        columnConstraints3.setHalignment(HPos.CENTER);
+        ColumnConstraints columnConstraints4 = new ColumnConstraints(150);
+        columnConstraints4.setHgrow(Priority.NEVER);
+        columnConstraints4.setHalignment(HPos.CENTER);
+        root.getColumnConstraints().clear();
+        root.getColumnConstraints().addAll(columnConstraints1, columnConstraints2, columnConstraints3, columnConstraints4);
+
+        RowConstraints rowConstraints1 = new RowConstraints(40);
+        rowConstraints1.setVgrow(Priority.NEVER);
+        RowConstraints rowConstraints2 = new RowConstraints(100);
+        rowConstraints2.setVgrow(Priority.NEVER);
+        RowConstraints rowConstraints3 = new RowConstraints(100);
+        rowConstraints3.setVgrow(Priority.NEVER);
+        RowConstraints rowConstraints4 = new RowConstraints(120);
+        rowConstraints3.setVgrow(Priority.NEVER);
+        RowConstraints rowConstraints5 = new RowConstraints(100);
+        rowConstraints3.setVgrow(Priority.NEVER);
+        RowConstraints rowConstraints6 = new RowConstraints(100);
+        rowConstraints3.setVgrow(Priority.NEVER);
+        RowConstraints rowConstraints7 = new RowConstraints(120);
+        rowConstraints3.setVgrow(Priority.NEVER);
+        RowConstraints rowConstraints8 = new RowConstraints(20);
+        rowConstraints3.setVgrow(Priority.NEVER);
+        root.getRowConstraints().clear();
+        root.getRowConstraints().addAll(rowConstraints1, rowConstraints2, rowConstraints3, rowConstraints4, rowConstraints5, rowConstraints6, rowConstraints7, rowConstraints8);
+
+        root.add(titleContainer, 1, 1, 2, 1);
+        root.add(messageLabel, 0, 2, 4, 1);
+        root.add(scrollPane, 0, 3, 4, 3);
+        root.add(finishButton, 1, 6, 1, 1);
+        root.add(cancelButton, 2, 6, 1, 1);
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.showAndWait();
+
+        return positions;
     }
 
 
+    // TODO: 2021-07-09 remove
     public String getOneOfValues(String firstValue, String secondValue, String message, String invalidMessage) {
         System.out.println(message);
 //        while (true) {
@@ -480,98 +908,55 @@ public class DuelMenuView implements CheatRunner {
     }
 
 
-    private void select(String[] command) {
-        CardAddress cardAddress = getAddress(command);
-        if (cardAddress == null || CardAddressZone.GRAVEYARD.equals(cardAddress.getZone())) {
-            System.out.println("invalid selection");
-            return;
-        }
-
-        controller.selectCard(cardAddress);
-    }
-
-    public void printSelectMessage(DuelMenuMessage message) {
-        switch (message) {
-            case INVALID_SELECTION:
-                System.out.println("invalid selection");
-                break;
-            case NO_CARD_FOUND:
-                System.out.println("no card found in the given position");
-                break;
-            case CARD_SELECTED:
-                System.out.println("card selected!");
-                break;
-            default:
-                System.out.println("unexpected error");
-        }
-    }
-
-
-    public void printDeselectMessage(DuelMenuMessage message) {
-        switch (message) {
-            case NO_CARD_IS_SELECTED:
-                System.out.println("no card is selected yet");
-                break;
-            case CARD_DESELECTED:
-                System.out.println("card deselected!");
-                break;
-            default:
-                System.out.println("unexpected error");
-        }
-    }
-
-
     private void summon() {
         controller.checkSummon(false);
     }
 
-    public void printSummonMessage(DuelMenuMessage message) {
+    public void showSummonMessage(DuelMenuMessage message) {
         switch (message) {
             case NO_CARD_IS_SELECTED:
-                System.out.println("no card is selected yet");
+                ViewUtility.showInformationAlert("Summon", "", "No card is selected yet");
                 break;
             case CANT_SUMMON:
-                System.out.println("you can’t summon this card");
+                ViewUtility.showInformationAlert("Summon", "", "You can’t summon this card");
                 break;
             case ACTION_NOT_ALLOWED:
-                System.out.println("you can’t do this action in this phase");
+                ViewUtility.showInformationAlert("Summon", "", "You can’t do this action in this phase");
                 break;
             case MONSTER_ZONE_IS_FULL:
-                System.out.println("monster card zone is full");
+                ViewUtility.showInformationAlert("Summon", "", "Monster card zone is full");
                 break;
             case ALREADY_SUMMONED_SET:
-                System.out.println("you already summoned/set on this turn");
+                ViewUtility.showInformationAlert("Summon", "", "You already summoned/set on this turn");
                 break;
             case NOT_ENOUGH_TRIBUTE:
-                System.out.println("there are not enough cards for tribute");
+                ViewUtility.showInformationAlert("Summon", "", "There are not enough cards for tribute");
                 break;
             case CANT_PLAY_THIS_KIND_OF_MOVES:
-                System.out.println("it’s not your turn to play this kind of moves");
-                break;
-            case SUMMON_SUCCESSFUL:
-                System.out.println("summoned successfully!");
+                ViewUtility.showInformationAlert("Summon", "", "It’s not your turn to play this kind of moves");
                 break;
             case SPECIAL_SUMMON_RIGHT_NOW:
-                System.out.println("you should special summon right now");
+                ViewUtility.showInformationAlert("Summon", "", "You should special summon right now");
+                break;
+            case SUMMON_SUCCESSFUL:
                 break;
             default:
-                System.out.println("unexpected error");
+                ViewUtility.showInformationAlert("Summon", "", "Unexpected error");
         }
     }
 
-    public void printTributeSummonMessage(DuelMenuMessage message) {
+    public void showTributeSummonMessage(DuelMenuMessage message) {
         switch (message) {
             case INVALID_POSITION:
-                System.out.println("invalid position");
+                ViewUtility.showInformationAlert("Tribute Summon", "", "Invalid position");
                 break;
             case NO_MONSTER_ON_ADDRESS:
-                System.out.println("there is no monsters in one of addresses");
+                ViewUtility.showInformationAlert("Tribute Summon", "", "There is no monsters in one of addresses");
                 break;
             case SUMMON_SUCCESSFUL:
-                System.out.println("summoned successfully!");
                 break;
             default:
-                System.out.println("unexpected error");
+                ViewUtility.showInformationAlert("Tribute Summon", "", "Unexpected error");
         }
     }
 
@@ -580,83 +965,62 @@ public class DuelMenuView implements CheatRunner {
         controller.set();
     }
 
-    public void printSetMessage(DuelMenuMessage message) {
+    public void showSetMessage(DuelMenuMessage message) {
         switch (message) {
             case NO_CARD_IS_SELECTED:
-                System.out.println("no card is selected yet");
+                ViewUtility.showInformationAlert("Set", "", "No card is selected yet");
                 break;
             case CANT_SET:
-                System.out.println("you can’t set this card");
+                ViewUtility.showInformationAlert("Set", "", "You can’t set this card");
                 break;
             case ACTION_NOT_ALLOWED:
-                System.out.println("you can’t do this action in this phase");
+                ViewUtility.showInformationAlert("Set", "", "You can’t do this action in this phase");
                 break;
             case MONSTER_ZONE_IS_FULL:
-                System.out.println("monster card zone is full");
+                ViewUtility.showInformationAlert("Set", "", "Monster card zone is full");
                 break;
             case SPELL_ZONE_FULL:
-                System.out.println("spell card zone is full");
+                ViewUtility.showInformationAlert("Set", "", "Spell card zone is full");
                 break;
             case ALREADY_SUMMONED_SET:
-                System.out.println("you already summoned/set on this turn");
+                ViewUtility.showInformationAlert("Set", "", "You already summoned/set on this turn");
                 break;
             case CANT_PLAY_THIS_KIND_OF_MOVES:
-                System.out.println("it’s not your turn to play this kind of moves");
+                ViewUtility.showInformationAlert("Set", "", "It’s not your turn to play this kind of moves");
                 break;
             case SET_SUCCESSFUL:
-                System.out.println("set successfully!");
                 break;
             default:
-                System.out.println("unexpected error");
+                ViewUtility.showInformationAlert("Set", "", "Unexpected error");
         }
     }
 
 
-    private void changePosition(String[] command) {
-        CmdLineParser parser = new CmdLineParser();
-        CmdLineParser.Option<String> positionOption = parser.addStringOption('p', "position");
-
-        try {
-            parser.parse(command);
-        } catch (CmdLineParser.OptionException e) {
-            System.out.println("invalid command");
-            return;
-        }
-
-        String position = parser.getOptionValue(positionOption);
-        if (position == null) {
-            System.out.println("invalid command");
-            return;
-        }
-
+    private void changePosition(String position) {
         controller.changePosition(position);
     }
 
-    public void printChangePositionMessage(DuelMenuMessage message) {
+    public void showChangePositionMessage(DuelMenuMessage message) {
         switch (message) {
-            case INVALID_COMMAND:
-                System.out.println("invalid command");
-                break;
             case NO_CARD_IS_SELECTED:
-                System.out.println("no card is selected yet");
+                ViewUtility.showInformationAlert("Change Position", "", "No card is selected yet");
                 break;
             case CANT_CHANGE_POSITION:
-                System.out.println("you can’t change this card position");
+                ViewUtility.showInformationAlert("Change Position", "", "You can’t change this card position");
                 break;
             case ACTION_NOT_ALLOWED:
-                System.out.println("you can’t do this action in this phase");
+                ViewUtility.showInformationAlert("Change Position", "", "You can’t do this action in this phase");
                 break;
             case ALREADY_IN_WANTED_POSITION:
-                System.out.println("this card is already in the wanted position");
+                ViewUtility.showInformationAlert("Change Position", "", "This card is already in the wanted position");
                 break;
             case ALREADY_CHANGED_POSITION:
-                System.out.println("you already changed this card position in this turn");
+                ViewUtility.showInformationAlert("Change Position", "", "You already changed this card position in this turn");
                 break;
             case POSITION_CHANGED:
-                System.out.println("monster card position changed successfully!");
                 break;
             default:
-                System.out.println("unexpected error");
+                ViewUtility.showInformationAlert("Change Position", "", "Unexpected error");
         }
     }
 
@@ -665,25 +1029,24 @@ public class DuelMenuView implements CheatRunner {
         controller.checkFlipSummon();
     }
 
-    public void printFlipSummonMessage(DuelMenuMessage message) {
+    public void showFlipSummonMessage(DuelMenuMessage message) {
         switch (message) {
             case NO_CARD_IS_SELECTED:
-                System.out.println("no card is selected yet");
+                ViewUtility.showInformationAlert("Flip Summon", "", "No card is selected yet");
                 break;
             case CANT_CHANGE_POSITION:
-                System.out.println("you can’t change this card position");
+                ViewUtility.showInformationAlert("Flip Summon", "", "You can’t change this card position");
                 break;
             case ACTION_NOT_ALLOWED:
-                System.out.println("you can’t do this action in this phase");
+                ViewUtility.showInformationAlert("Flip Summon", "", "You can’t do this action in this phase");
                 break;
             case CANT_FLIP_SUMMON:
-                System.out.println("you can’t flip summon this card");
+                ViewUtility.showInformationAlert("Flip Summon", "", "You can’t flip summon this card");
                 break;
             case FLIP_SUMMON_SUCCESSFUL:
-                System.out.println("flip summoned successfully!");
                 break;
             default:
-                System.out.println("unexpected error");
+                ViewUtility.showInformationAlert("Flip Summon", "", "Unexpected error");
         }
     }
 
@@ -692,85 +1055,74 @@ public class DuelMenuView implements CheatRunner {
         controller.directAttack();
     }
 
-    public void printDirectAttackMessage(DuelMenuMessage message, int damage) {
+    public void showDirectAttackMessage(DuelMenuMessage message) {
         switch (message) {
             case NO_CARD_IS_SELECTED:
-                System.out.println("no card is selected yet");
+                ViewUtility.showInformationAlert("Direct Attack", "", "No card is selected yet");
                 break;
             case CANT_ATTACK:
-                System.out.println("you can’t attack with this card");
+                ViewUtility.showInformationAlert("Direct Attack", "", "You can’t attack with this card");
                 break;
             case ACTION_NOT_ALLOWED:
-                System.out.println("you can’t do this action in this phase");
+                ViewUtility.showInformationAlert("Direct Attack", "", "You can’t do this action in this phase");
                 break;
             case ALREADY_ATTACKED:
-                System.out.println("this card already attacked");
+                ViewUtility.showInformationAlert("Direct Attack", "", "This card already attacked");
                 break;
             case CANT_ATTACK_DIRECTLY:
-                System.out.println("you can’t attack the opponent directly");
+                ViewUtility.showInformationAlert("Direct Attack", "", "You can’t attack the opponent directly");
                 break;
             case ATTACK_PREVENTED:
-                System.out.println("attack prevented");
+                ViewUtility.showInformationAlert("Direct Attack", "", "Attack prevented");
                 return;
             case DIRECT_ATTACK_SUCCESSFUL:
-                System.out.println("you opponent receives " + damage + " battle damage");
+                // TODO: 2021-07-09 add animation
+
+                updateLPs(controller.getBoard());
                 break;
             default:
-                System.out.println("unexpected error");
+                ViewUtility.showInformationAlert("Direct Attack", "", "Unexpected error");
         }
     }
 
 
-    private void attack(String[] command) {
-        int position = Integer.parseInt(command[1]);
-        controller.attack(position);
+    private void turnOnAttackMode() {
+        if (attackMode) return;
+        if (controller.canSelectedCardAttack()) {
+            attackMode = true;
+            updateBoard(controller.getBoard());
+
+            Table opponentTable = controller.getBoard().getOpponentTable();
+            for (int i = 1; i <= 5; i++) {
+                Monster monster = opponentTable.getMonster(i);
+                if (monster != null) {
+                    HBox cardContainer = (HBox) scene.lookup("#opp-monster-" + i);
+                    cardContainer.getChildren().get(0).getStyleClass().add("attackable-card");
+                }
+            }
+            Button cancelAttackButton = (Button) scene.lookup("#cancel-attack-btn");
+            cancelAttackButton.setOpacity(1);
+            cancelAttackButton.setDisable(false);
+
+        } else ViewUtility.showInformationAlert("Attack", "", "You can't attack with this card");
     }
 
-    public void printAttackMessage(DuelMenuMessage message, int damage, String hiddenCardName) {
-        if (hiddenCardName != null) System.out.print("opponent’s monster card was " + hiddenCardName + " and ");
-        switch (message) {
-            case INVALID_POSITION:
-                System.out.println("invalid position");
-                break;
-            case NO_CARD_IS_SELECTED:
-                System.out.println("no card is selected yet");
-                break;
-            case CANT_ATTACK:
-                System.out.println("you can’t attack with this card");
-                break;
-            case ACTION_NOT_ALLOWED:
-                System.out.println("you can’t do this action in this phase");
-                break;
-            case ALREADY_ATTACKED:
-                System.out.println("this card already attacked");
-                break;
-            case NO_CARD_TO_ATTACK:
-                System.out.println("there is no card to attack here");
-                break;
-            case ATTACK_PREVENTED:
-                System.out.println("attack prevented");
-                break;
-            case OPPONENT_ATTACK_POSITION_MONSTER_DESTROYED:
-                System.out.println("your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
-                break;
-            case BOTH_ATTACK_POSITION_MONSTERS_DESTROYED:
-                System.out.println("both you and your opponent monster cards are destroyed and no one receives damage");
-                break;
-            case YOUR_ATTACK_POSITION_MONSTER_DESTROYED:
-                System.out.println("Your monster card is destroyed and you received " + damage + " battle damage");
-                break;
-            case OPPONENT_DEFENSE_POSITION_MONSTER_DESTROYED:
-                System.out.println("the defense position monster is destroyed");
-                break;
-            case NO_CARD_DESTROYED_AND_NO_DAMAGE:
-                System.out.println("no card is destroyed");
-                break;
-            case NO_CARD_DESTROYED_WITH_DAMAGE:
-                System.out.println("no card is destroyed and you received " + damage + " battle damage");
-                break;
-            default:
-                System.out.println("unexpected error");
+    public void turnOffAttackMode() {
+        attackMode = false;
+        updateBoard(controller.getBoard());
+
+        Table opponentTable = controller.getBoard().getOpponentTable();
+        for (int i = 1; i <= 5; i++) {
+            Monster monster = opponentTable.getMonster(i);
+            if (monster != null) {
+                HBox cardContainer = (HBox) scene.lookup("#opp-monster-" + i);
+                cardContainer.getChildren().get(0).getStyleClass().remove("attackable-card");
+            }
         }
+
+        Button cancelAttackButton = (Button) scene.lookup("#cancel-attack-btn");
+        cancelAttackButton.setOpacity(0);
+        cancelAttackButton.setDisable(true);
     }
 
 
@@ -778,69 +1130,52 @@ public class DuelMenuView implements CheatRunner {
         controller.checkActivateEffect();
     }
 
-    public void printActivateEffectMessage(DuelMenuMessage message) {
+    public void showActivateEffectMessage(DuelMenuMessage message) {
         switch (message) {
             case NO_CARD_IS_SELECTED:
-                System.out.println("no card is selected yet");
+                ViewUtility.showInformationAlert("Activate Effect", "", "No card is selected yet");
                 break;
             case ONLY_FOR_SPELLS:
-                System.out.println("activate effect is only for spell cards");
+                ViewUtility.showInformationAlert("Activate Effect", "", "Activate effect is only for spell cards");
                 break;
             case CANT_ACTIVATE_EFFECT:
-                System.out.println("you can’t activate an effect on this turn");
+                ViewUtility.showInformationAlert("Activate Effect", "", "You can’t activate an effect on this turn");
                 break;
             case ACTION_NOT_ALLOWED:
-                System.out.println("you can’t do this action in this phase");
+                ViewUtility.showInformationAlert("Activate Effect", "", "You can’t do this action in this phase");
                 break;
             case CARD_ALREADY_ACTIVATED:
-                System.out.println("you have already activated this card");
+                ViewUtility.showInformationAlert("Activate Effect", "", "You have already activated this card");
                 break;
             case SPELL_ZONE_FULL:
-                System.out.println("spell card zone is full");
+                ViewUtility.showInformationAlert("Activate Effect", "", "Spell card zone is full");
                 break;
             case PREPARATIONS_NOT_DONE_YET:
-                System.out.println("preparations of this spell are not done yet");
+                ViewUtility.showInformationAlert("Activate Effect", "", "Preparations of this spell are not done yet");
                 break;
             case SPELL_TRAP_ACTIVATED:
-                System.out.println("spell/trap activated!");
                 break;
             default:
-                System.out.println("unexpected error");
+                ViewUtility.showInformationAlert("Activate Effect", "", "Unexpected error");
         }
     }
 
 
-    public void printRitualSummonMessage(DuelMenuMessage message) {
+    public void showRitualSummonMessage(DuelMenuMessage message) {
         switch (message) {
             case NO_WAY_TO_RITUAL_SUMMON:
-                System.out.println("there is no way you could ritual summon a monster");
+                ViewUtility.showInformationAlert("Ritual Summon", "", "There is no way you could ritual summon a monster");
                 break;
             case RITUAL_SUMMON_RIGHT_NOW:
-                System.out.println("you should ritual summon right now");
+                ViewUtility.showInformationAlert("Ritual Summon", "", "You should ritual summon right now");
                 break;
             case DONT_MATCH_WITH_RITUAL_MONSTER:
-                System.out.println("selected monsters levels don’t match with ritual monster");
+                ViewUtility.showInformationAlert("Ritual Summon", "", "Selected monsters levels don’t match with ritual monster");
                 break;
             case SUMMON_SUCCESSFUL:
-                System.out.println("summoned successfully!");
                 break;
             default:
-                System.out.println("unexpected error");
-                break;
-        }
-    }
-
-
-    public void printCancelMessage(DuelMenuMessage message) {
-        switch (message) {
-            case ACTION_CANCELED:
-                System.out.println("action canceled");
-                break;
-            case NOTHING_TO_CANCEL:
-                System.out.println("there is nothing to cancel");
-                break;
-            default:
-                System.out.println("unexpected error");
+                ViewUtility.showInformationAlert("Ritual Summon", "", "Unexpected error");
         }
     }
 
@@ -883,22 +1218,7 @@ public class DuelMenuView implements CheatRunner {
     }
 
 
-    private void showSelectedCard() {
-        System.out.println(controller.getSelectedCardString());
-    }
-
-
-    private void showCard(String[] command) {
-        String cardName;
-        cardName = command[2];
-
-        DataManager dataManager = DataManager.getInstance();
-        CardTemplate template = dataManager.getCardTemplateByName(cardName);
-        if (template == null) System.out.println("invalid card name");
-        else System.out.println(template.detailedToString());
-    }
-
-
+    // TODO: 2021-07-09 remove
     public void showCards(ArrayList<Card> cards, String title) {
         System.out.println(title);
         for (int i = 0, cardsSize = cards.size(); i < cardsSize; i++) {
@@ -908,14 +1228,24 @@ public class DuelMenuView implements CheatRunner {
     }
 
 
+    // TODO: 2021-07-09 change
     public void showFlipCoinResult(String starterNickname, CoinSide coinSide) {
         System.out.println("coin side was " + coinSide.getName() + " and " + starterNickname + " starts duel");
     }
 
 
-    public void showTurn(String playerNickname) {
-        // TODO: 2021-07-08 change
-        System.out.println("its " + playerNickname + "'s turn");
+    public void showTurn(String playerNickname, boolean isQuick) {
+        String message;
+        if (isQuick) message = "Now it's " + playerNickname + "'s turn!";
+        else message = "It's " + playerNickname + "'s turn!";
+
+        HBox messageLabelContainer = (HBox) scene.lookup("#message-label-container");
+        messageLabelContainer.getChildren().clear();
+        messageLabelContainer.getChildren().add(new Label(message));
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(2), e -> messageLabelContainer.getChildren().clear());
+        Timeline timeline = new Timeline(keyFrame);
+        timeline.setCycleCount(1);
+        timeline.play();
 
         Circle turnCircle = (Circle) scene.lookup("#turn-circle");
         turnCircle.getStyleClass().clear();
@@ -926,33 +1256,41 @@ public class DuelMenuView implements CheatRunner {
         oppTurnCircle.getStyleClass().add("turn-inactive");
     }
 
-    public void showQuickTurn(String playerNickname) {
-        System.out.println("now it will be " + playerNickname + "'s turn");
+
+    // TODO: 2021-07-08 change
+    public void showWinner(boolean isWholeMatch, String winnerNickname, int score1, int score2) {
+        if (!isWholeMatch) {
+            Label messageLabel = (Label) scene.lookup("#message-label");
+            messageLabel.setText(winnerNickname + " won the round!");
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(2), e -> {
+                messageLabel.setText("");
+                controller.reset();
+                controller.startNextRound();
+            });
+            Timeline timeline = new Timeline(keyFrame);
+            timeline.setCycleCount(1);
+            timeline.play();
+        } else System.out.println(winnerNickname + " won the whole match with score: " + score1 + "-" + score2);
     }
 
 
-    public void showHand(ArrayList<Card> hand) {
-        showCards(hand, "Hand");
-    }
-
-
-    public void showDrawMessage(Card card) {
-        // TODO: 2021-07-08 change
-        System.out.println("you drew \"" + card.getName() + "\" from your deck");
-    }
-
-
-    public void printWinnerMessage(boolean isWholeMatch, String winnerUsername, int score1, int score2) {
-        // TODO: 2021-07-08 change
-        if (isWholeMatch)
-            System.out.println(winnerUsername + " won the whole match with score: " + score1 + "-" + score2);
-        else System.out.println(winnerUsername + " won the game with score: " + score1 + "-" + score2);
-    }
-
-
-    public void printActionCanceled() {
-        // TODO: 2021-07-08 change
-        System.out.println("action canceled");
+    public void setBackground(DuelBackgroundType backgroundType) {
+        AnchorPane board = (AnchorPane) scene.lookup("#board");
+        board.getStyleClass().clear();
+        switch (backgroundType) {
+            case DEFAULT:
+                board.getStyleClass().add("default-board");
+                break;
+            case FOREST:
+                board.getStyleClass().add("forest-board");
+                break;
+            case YAMI:
+                board.getStyleClass().add("yami-board");
+                break;
+            case UMI:
+                board.getStyleClass().add("umi-board");
+                break;
+        }
     }
 
 
@@ -979,19 +1317,5 @@ public class DuelMenuView implements CheatRunner {
     private void setWinner(String[] command) {
         String nickname = command[2];
         controller.setWinner(nickname);
-    }
-
-    public void showSetWinnerMessage(DuelMenuMessage message) {
-        // TODO: 2021-07-08 remove after complete
-        switch (message) {
-            case INVALID_NICKNAME:
-                System.out.println("invalid nickname");
-                break;
-            case WINNER_SET:
-                System.out.println("winner set successfully!");
-                break;
-            default:
-                System.out.println("unexpected error");
-        }
     }
 }

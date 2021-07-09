@@ -3,6 +3,7 @@ package model.effect.action;
 import control.controller.DuelMenuController;
 import model.board.Board;
 import model.card.Monster;
+import utils.DuelBackgroundType;
 
 public class ForestDisableAction implements Action {
 
@@ -14,6 +15,7 @@ public class ForestDisableAction implements Action {
             monster.decreaseDefense(200);
         }
         board.clearSpelledMonsters();
+        controller.getView().setBackground(DuelBackgroundType.DEFAULT);
     }
 
     @Override

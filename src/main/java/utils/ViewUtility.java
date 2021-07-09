@@ -31,6 +31,11 @@ import java.util.Optional;
 public class ViewUtility {
 
     public static void showConfirmationAlert(String title, String header, String message, String cancelText, String confirmText, Listener listener) {
+        if (showConfirmationAlertAndReturn(title, header, message, cancelText, confirmText)) listener.onConfirm();
+        else listener.onCancel();
+    }
+
+    public static boolean showConfirmationAlertAndReturn(String title, String header, String message, String cancelText, String confirmText) {
         Alert alert = getAlert(title, header, message);
 
         ButtonType cancelButtonType = new ButtonType(cancelText, ButtonBar.ButtonData.NO);
@@ -39,8 +44,22 @@ public class ViewUtility {
         alert.getButtonTypes().add(confirmButtonType);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get().equals(confirmButtonType)) listener.onConfirm();
-        else listener.onCancel();
+        return result.isPresent() && result.get().equals(confirmButtonType);
+    }
+
+    public static String getOneOfValues(String title, String header, String message, String firstValue, String secondValue) {
+        Alert alert = getAlert(title, header, message);
+
+        ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.NO);
+        ButtonType firstButtonType = new ButtonType(firstValue);
+        ButtonType secondButtonType = new ButtonType(secondValue);
+        alert.getButtonTypes().add(cancelButtonType);
+        alert.getButtonTypes().add(firstButtonType);
+        alert.getButtonTypes().add(secondButtonType);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && !result.get().equals(cancelButtonType)) return result.get().getText();
+        else return null;
     }
 
     public static void showInformationAlert(String title, String header, String message) {

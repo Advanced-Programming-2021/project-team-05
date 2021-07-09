@@ -5,6 +5,7 @@ import model.board.Board;
 import model.board.Table;
 import model.card.Monster;
 import model.template.property.MonsterType;
+import utils.DuelBackgroundType;
 
 public class YamiEnableAction implements Action {
 
@@ -33,6 +34,7 @@ public class YamiEnableAction implements Action {
                 }
             }
         }
+        controller.getView().setBackground(DuelBackgroundType.YAMI);
     }
 
     @Override

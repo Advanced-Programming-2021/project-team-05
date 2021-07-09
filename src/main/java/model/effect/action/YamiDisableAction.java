@@ -4,6 +4,7 @@ import control.controller.DuelMenuController;
 import model.board.Board;
 import model.card.Monster;
 import model.template.property.MonsterType;
+import utils.DuelBackgroundType;
 
 public class YamiDisableAction implements Action {
 
@@ -22,6 +23,7 @@ public class YamiDisableAction implements Action {
             }
         }
         board.clearSpelledMonsters();
+        controller.getView().setBackground(DuelBackgroundType.DEFAULT);
     }
 
     @Override

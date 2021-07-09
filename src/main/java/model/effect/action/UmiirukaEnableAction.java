@@ -5,6 +5,7 @@ import model.board.Board;
 import model.board.Table;
 import model.card.Monster;
 import model.template.property.MonsterType;
+import utils.DuelBackgroundType;
 
 public class UmiirukaEnableAction implements Action {
 
@@ -27,6 +28,7 @@ public class UmiirukaEnableAction implements Action {
                 }
             }
         }
+        controller.getView().setBackground(DuelBackgroundType.UMI);
     }
 
     @Override

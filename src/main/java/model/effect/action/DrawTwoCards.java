@@ -11,8 +11,8 @@ public class DrawTwoCards implements Action {
     public void run(DuelMenuController controller) {
         if (!canBeRun(controller)) return;
         Table table = controller.getBoard().getPlayerTable();
-        controller.getView().showDrawMessage(table.drawCard());
-        controller.getView().showDrawMessage(table.drawCard());
+        table.drawCard();
+        table.drawCard();
     }
 
     @Override
