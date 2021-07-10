@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.ScoreboardItem;
 import model.User;
 import model.card.Card;
@@ -77,6 +78,7 @@ public class ViewUtility {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(message);
+        alert.initStyle(StageStyle.TRANSPARENT);
 
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStyleClass().add("game-alert");

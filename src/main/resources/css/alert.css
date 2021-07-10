@@ -4,8 +4,8 @@
 
 
 .game-alert {
-    -fx-background-color: linear-gradient(to right, #042854, #051932);
-    -fx-text-fill: yellow;
+    -fx-background-color: linear-gradient(to right, #962477, #4a6c8a);
+    -fx-text-fill: #a4deb2;
     -fx-pref-height: 160px;
 }
 
@@ -15,12 +15,12 @@
 }
 
 .game-alert .header-panel {
-    -fx-background-color: linear-gradient(to right, #042854, #051932);
+    -fx-background-color: linear-gradient(to right, #962477, #4a6c8a);
     -fx-pref-height: 40px;
 }
 
 .game-alert .header-panel .label {
-    -fx-text-fill: #ffca18;
+    -fx-text-fill: #a4deb2;
     -fx-font-weight: bold;
 }
 
@@ -31,12 +31,12 @@
 }
 
 .game-alert .content > * {
-    -fx-fill: #ffca18;
+    -fx-fill: #a4deb2;
 }
 
 .game-alert > .content.label {
     -fx-font-size: 16px;
-    -fx-text-fill: #ffca18;
+    -fx-text-fill: #a4deb2;
 }
 
 
@@ -45,25 +45,25 @@
 
 
 .dialog-pane .button {
-    -fx-background-color: #bf9612;
+    -fx-background-color: #a4deb2;
     -fx-text-fill: #434343;
     -fx-font-weight: bold;
     -fx-wrap-text: true;
     -fx-border-radius: 5px;
-    -fx-effect: dropshadow(three-pass-box, black, 10.0, 0.0, 0.0, 0.0);
+    -fx-effect: dropshadow(three-pass-box, #236131, 10.0, 0.0, 0.0, 0.0);
     -fx-cursor: hand;
 }
 
 .dialog-pane .button:hover {
-    -fx-background-color: #eeba19;
+    -fx-background-color: #a4deb2;
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
 }
 
 .dialog-pane .button:focused {
-    -fx-background-color: #ffca18;
+    -fx-background-color: #a4deb2;
     -fx-text-fill: black;
-    -fx-effect: dropshadow(three-pass-box, black, 10.0, 0.0, 0.0, 0.0);
+    -fx-effect: dropshadow(three-pass-box, #236131, 10.0, 0.0, 0.0, 0.0);
 }
 
 .dialog-pane .button:pressed {
