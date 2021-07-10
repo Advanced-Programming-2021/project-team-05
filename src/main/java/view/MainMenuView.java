@@ -84,7 +84,16 @@ public class MainMenuView {
         });
 
         Button createCardButton = (Button) scene.lookup("#create-card-btn");
-        // ToDo: setCreateCardScene
+        createCardButton.setOnMouseClicked(e -> {
+            CreateCardController createCardController = new CreateCardController(controller.getUser());
+            CreateCardView createCardView = new CreateCardView(createCardController);
+            createCardView.setCreateCardScene();
+        });
+        createCardButton.setOnAction(e -> {
+            CreateCardController createCardController = new CreateCardController(controller.getUser());
+            CreateCardView createCardView = new CreateCardView(createCardController);
+            createCardView.setCreateCardScene();
+        });
 
         Button scoreboardButton = (Button) scene.lookup("#scoreboard-btn");
         scoreboardButton.setOnMouseClicked(e -> {

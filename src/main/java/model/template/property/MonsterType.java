@@ -1,8 +1,8 @@
 package model.template.property;
 
 public enum MonsterType {
-    BEAST_WARRIOR("Beast-Warrior"),
     WARRIOR("Warrior"),
+    BEAST_WARRIOR("Beast-Warrior"),
     AQUA("Aqua"),
     FIEND("Fiend"),
     BEAST("Beast"),

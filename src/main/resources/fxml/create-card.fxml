@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints />
+      <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="50.0" prefHeight="20.0" vgrow="NEVER" />
+        <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="NEVER" />
+        <RowConstraints minHeight="0.0" prefHeight="120.0" valignment="CENTER" vgrow="NEVER" />
+      <RowConstraints minHeight="10.0" prefHeight="120.0" valignment="CENTER" vgrow="NEVER" />
+        <RowConstraints minHeight="10.0" prefHeight="150.0" valignment="CENTER" vgrow="NEVER" />
+        <RowConstraints minHeight="10.0" prefHeight="120.0" valignment="CENTER" vgrow="NEVER" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="1">
+      <children>
+         <AnchorPane prefHeight="200.0" prefWidth="1100.0">
+            <children>
+                 <Label layoutX="400.0" layoutY="7.0" styleClass="title-label" text="Create Card" />
+               <Label id="money-label" layoutX="806.0" layoutY="26.0" styleClass="default-label" text="Money: ?" />
+            </children>
+         </AnchorPane>
+      </children>
+    </HBox>
+   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.rowIndex="2">
+      <children>
+         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="550.0" spacing="20.0">
+            <children>
+               <Label styleClass="default-label" text="Card Name" />
+               <TextField id="name-field" promptText="enter card name" styleClass="default-input" />
+            </children>
+         </HBox>
+         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="550.0" spacing="50.0">
+            <children>
+               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                  <children>
+                     <Label styleClass="default-label" text="Attack" />
+                     <TextField id="attack-field" alignment="CENTER" promptText="attack">
+                        <styleClass>
+                           <String fx:value="default-input" />
+                           <String fx:value="number-input" />
+                        </styleClass>
+                     </TextField>
+                  </children>
+               </HBox>
+               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                  <children>
+                     <Label styleClass="default-label" text="Defense" />
+                     <TextField id="defense-field" alignment="CENTER" promptText="defense">
+                        <styleClass>
+                           <String fx:value="default-input" />
+                           <String fx:value="number-input" />
+                        </styleClass>
+                     </TextField>
+                  </children>
+               </HBox>
+            </children>
+         </HBox>
+      </children>
+   </HBox>
+   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0" GridPane.rowIndex="3">
+      <children>
+         <HBox alignment="CENTER" prefHeight="137.0" prefWidth="550.0" spacing="20.0">
+            <children>
+               <Label styleClass="default-label" text="Monster Type" />
+               <HBox id="type-box-container" alignment="CENTER" prefHeight="120.0" prefWidth="250.0" />
+            </children>
+         </HBox>
+         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="550.0" spacing="20.0">
+            <children>
+               <Label styleClass="default-label" text="Monster Attribute" />
+               <HBox id="attribute-box-container" alignment="CENTER" prefHeight="120.0" prefWidth="250.0" />
+            </children>
+         </HBox>
+      </children>
+   </HBox>
+   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.rowIndex="4">
+      <children>
+         <Label styleClass="default-label" text="Description" />
+         <TextArea id="decription-area" prefHeight="200.0" prefWidth="200.0" promptText="enter decription" styleClass="default-text-area" />
+      </children>
+   </HBox>
+   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" GridPane.rowIndex="5">
+      <children>
+         <Label id="price-label" alignment="CENTER" styleClass="default-label" text="Price: ?" />
+         <Label id="level-label" alignment="CENTER" styleClass="default-label" text="Level: ?" />
+      </children>
+   </HBox>
+   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0" GridPane.rowIndex="6">
+      <children>
+         <Button id="create-btn" mnemonicParsing="false" text="Create">
+            <styleClass>
+               <String fx:value="default-button" />
+               <String fx:value="button-small" />
+            </styleClass>
+         </Button>
+         <Button id="back-btn" mnemonicParsing="false" text="Back">
+            <styleClass>
+               <String fx:value="default-button" />
+               <String fx:value="button-small" />
+            </styleClass>
+         </Button>
+      </children>
+   </HBox>
+    <stylesheets>
+        <URL value="@../css/main.css" />
+        <URL value="@../css/create-card.css" />
+    </stylesheets>
+</GridPane>

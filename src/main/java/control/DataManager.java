@@ -28,6 +28,7 @@ import model.template.property.CardType;
 import model.template.property.MonsterAttribute;
 import model.template.property.MonsterType;
 import model.template.property.SpellTrapStatus;
+import utils.ViewUtility;
 
 import java.io.File;
 import java.io.FileReader;
@@ -126,6 +127,10 @@ public class DataManager {
             }
         }
         return null;
+    }
+
+    public void addTemplate(CardTemplate template) {
+        this.templates.add(template);
     }
 
 
@@ -394,7 +399,7 @@ public class DataManager {
 
         if (add) {
             try {
-                CSVWriter writer = new CSVWriter(new FileWriter(path, true), ',', CSVWriter.NO_QUOTE_CHARACTER, ICSVWriter.DEFAULT_ESCAPE_CHARACTER, ICSVWriter.DEFAULT_LINE_END);
+                CSVWriter writer = new CSVWriter(new FileWriter(path, true), ',', CSVWriter.NO_QUOTE_CHARACTER, ICSVWriter.DEFAULT_ESCAPE_CHARACTER, ICSVWriter.RFC4180_LINE_END);
                 writer.writeNext(line);
                 writer.close();
             } catch (IOException e) {

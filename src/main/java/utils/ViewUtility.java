@@ -24,6 +24,7 @@ import model.template.CardTemplate;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
@@ -116,8 +117,7 @@ public class ViewUtility {
             Scene scene = new Scene(root);
             VBox container = (VBox) scene.lookup("#container");
 
-            String address = "/images/cards/" + cardName.replace(" ", "_") + ".jpg";
-            ImageView cardImage = new ImageView(new Image(ViewUtility.class.getResource(address).toExternalForm()));
+            ImageView cardImage = ViewUtility.getCardImageView(cardName);
             cardImage.setFitWidth(334);
             cardImage.setFitHeight(500);
             container.getChildren().add(0, cardImage);
@@ -144,7 +144,9 @@ public class ViewUtility {
 
     public static Image getCardImage(String cardName) {
         String imageAddress = "/images/cards/" + cardName.replaceAll(" ", "_") + ".jpg";
-        return new Image(ViewUtility.class.getResource(imageAddress).toExternalForm());
+        URL url = ViewUtility.class.getResource(imageAddress);
+        if (url == null) url = ViewUtility.class.getResource("/images/cards/New_Card.png");
+        return new Image(url.toExternalForm());
     }
 
     public static ImageView getCardImageView(String cardName) {
