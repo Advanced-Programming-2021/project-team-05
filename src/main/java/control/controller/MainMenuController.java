@@ -58,10 +58,8 @@ public class MainMenuController {
             return false;
         }
         DuelMenuController duelMenuController = new DuelMenuController(user, opponent, rounds);
-        DuelMenuView duelMenuView = new DuelMenuView(duelMenuController);
-        duelMenuView.setDuelScene();
-        duelMenuView.updatePlayersInfo(user, opponent);
-        duelMenuController.startNextRound();
+        new DuelMenuView(duelMenuController);
+        duelMenuController.startDuel();
         return true;
     }
 
@@ -77,10 +75,8 @@ public class MainMenuController {
         }
         User opponent = DataManager.getInstance().getAi();
         DuelMenuController duelMenuController = new DuelMenuController(user, opponent, rounds);
-        DuelMenuView duelMenuView = new DuelMenuView(duelMenuController);
-        duelMenuView.setDuelScene();
-        duelMenuView.updatePlayersInfo(user, opponent);
-        duelMenuController.startNextRound();
+        new DuelMenuView(duelMenuController);
+        duelMenuController.startDuel();
         return true;
     }
 }

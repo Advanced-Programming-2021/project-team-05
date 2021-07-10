@@ -15,7 +15,7 @@ public class DestroyAttackerInOpponentTableAction implements Action {
     }
 
     public boolean canBeRun(DuelMenuController controller) {
-        Table table = controller.getBoard().getPlayerTable();
+        Table table = controller.getBoard().getOpponentTable();
         int position = controller.getSelectedCardAddress().getPosition();
         return table.getMonster(position) != null;
     }

@@ -4,22 +4,6 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Utility {
-    private static Scanner scanner;
-
-
-    public static void initializeScanner() {
-        scanner = new Scanner(System.in);
-    }
-
-    public static void killScanner() {
-        scanner = null;
-    }
-
-
-    public static String getNextLine() {
-        return scanner.nextLine();
-    }
-
 
     public static void reverseArray(String[] array) {
         for (int i = 0, length = array.length; i < length / 2; i++) {
