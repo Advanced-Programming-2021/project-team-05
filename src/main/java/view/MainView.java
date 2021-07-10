@@ -58,6 +58,7 @@ public class MainView extends Application {
             Media media = new Media(Paths.get(path).toUri().toString());
             player = new MediaPlayer(media);
             player.autoPlayProperty().setValue(true);
+            player.setCycleCount(MediaPlayer.INDEFINITE);
             player.play();
         } catch (Exception e) {
             System.out.println("music error");
