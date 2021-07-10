@@ -81,6 +81,11 @@ public class ShopMenuView implements CheatRunner {
             buyButton.getStyleClass().addAll("default-button", "buy-button");
             if (user.getMoney() < template.getPrice()) buyButton.setDisable(true);
 
+            buyButton.setOnMouseClicked(event -> {
+                controller.buyCard(template.getName());
+                updateShopScene(user);
+            });
+
             VBox container = new VBox(2, cardImage, countLabel, buyButton);
             container.setPrefWidth(184);
             container.setPrefHeight(364);
@@ -88,19 +93,16 @@ public class ShopMenuView implements CheatRunner {
         }
     }
 
-    public void printBuyCardMessage(ShopMenuMessage message) {
+    public void showBuyCardMessage(ShopMenuMessage message) {
         switch (message) {
-            case NO_CARD_EXISTS:
-                System.out.println("there is no card with this name");
-                break;
             case NOT_ENOUGH_MONEY:
-                System.out.println("not enough money");
+                ViewUtility.showInformationAlert("Shop", "Buy Card", "not enough money");
                 break;
             case CARD_SUCCESSFULLY_PURCHASED:
-                System.out.println("card bought successfully!");
+                ViewUtility.showInformationAlert("Shop", "Buy Card", "card bought successfully!");
                 break;
             default:
-                System.out.println("unexpected error");
+                ViewUtility.showInformationAlert("Shop", "Buy Card", "unexpected error");
         }
     }
 

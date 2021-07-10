@@ -39,11 +39,11 @@ public class ShopMenuController {
         DataManager dataManager = DataManager.getInstance();
         CardTemplate cardTemplate = dataManager.getCardTemplateByName(cardName);
         if (cardTemplate == null) {
-            view.printBuyCardMessage(ShopMenuMessage.NO_CARD_EXISTS);
+            view.showBuyCardMessage(ShopMenuMessage.NO_CARD_EXISTS);
             return;
         }
         if (cardTemplate.getPrice() > user.getMoney()) {
-            view.printBuyCardMessage(ShopMenuMessage.NOT_ENOUGH_MONEY);
+            view.showBuyCardMessage(ShopMenuMessage.NOT_ENOUGH_MONEY);
             return;
         }
 
@@ -59,7 +59,7 @@ public class ShopMenuController {
         dataManager.addCard(card);
         user.purchaseCard(card);
         user.decreaseMoney(cardTemplate.getPrice());
-        view.printBuyCardMessage(ShopMenuMessage.CARD_SUCCESSFULLY_PURCHASED);
+        view.showBuyCardMessage(ShopMenuMessage.CARD_SUCCESSFULLY_PURCHASED);
     }
 
 
