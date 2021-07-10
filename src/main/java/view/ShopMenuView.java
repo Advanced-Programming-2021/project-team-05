@@ -96,13 +96,12 @@ public class ShopMenuView implements CheatRunner {
     public void showBuyCardMessage(ShopMenuMessage message) {
         switch (message) {
             case NOT_ENOUGH_MONEY:
-                ViewUtility.showInformationAlert("Shop", "Buy Card", "not enough money");
+                ViewUtility.showInformationAlert("Shop", "Buy Card", "Not enough money");
                 break;
             case CARD_SUCCESSFULLY_PURCHASED:
-                ViewUtility.showInformationAlert("Shop", "Buy Card", "card bought successfully!");
                 break;
             default:
-                ViewUtility.showInformationAlert("Shop", "Buy Card", "unexpected error");
+                ViewUtility.showInformationAlert("Shop", "Buy Card", "Unexpected error");
         }
     }
 

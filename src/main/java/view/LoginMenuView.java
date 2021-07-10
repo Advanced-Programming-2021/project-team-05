@@ -19,6 +19,7 @@ public class LoginMenuView {
     private final LoginMenuController controller;
     private Scene scene;
 
+
     public LoginMenuView(LoginMenuController controller) {
         this.controller = controller;
         controller.setView(this);
@@ -123,6 +124,12 @@ public class LoginMenuView {
 
     public void showLoginMessage(LoginMenuMessage message) {
         switch (message) {
+            case USERNAME_CONTAIN_SPACE:
+                ViewUtility.showInformationAlert("Register", "Error", "Username should not contain whitespace!");
+                break;
+            case PASSWORD_CONTAIN_SPACE:
+                ViewUtility.showInformationAlert("Register", "Error", "Password should not contain whitespace!");
+                break;
             case NO_MATCH:
                 ViewUtility.showInformationAlert("Login", "Incorrect Username or Password", "Username and password don't match!");
                 break;

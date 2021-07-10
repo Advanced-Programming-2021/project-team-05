@@ -36,6 +36,7 @@ public class MainView extends Application {
 
     @Override
     public void stop() {
+        DataManager.getInstance().saveData();
         System.exit(0);
     }
 

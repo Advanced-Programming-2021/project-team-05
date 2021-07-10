@@ -380,29 +380,28 @@ public class DeckMenuView {
         MainView.stage.setScene(scene);
     }
 
+
     public void showCreateDeckMessage(DeckMenuMessage message) {
         switch (message) {
             case DECK_NAME_EXISTS:
-                ViewUtility.showInformationAlert("Deck", "Crete Deck", "Deck name exists.");
+                ViewUtility.showInformationAlert("Deck", "Create Deck", "Deck name exists");
                 break;
             case DECK_CREATED:
-                ViewUtility.showInformationAlert("Deck", "Crete Deck", "Deck created successfully.");
                 break;
             default:
-                ViewUtility.showInformationAlert("Deck", "Crete Deck", "Unexpected error.");
+                ViewUtility.showInformationAlert("Deck", "Create Deck", "Unexpected error");
         }
     }
 
     public void showDeleteDeckMessage(DeckMenuMessage message, String deckName) {
         switch (message) {
             case NO_DECK_EXISTS:
-                ViewUtility.showInformationAlert("Deck", "Delete Deck", "deck with name " + deckName + " does not exist");
+                ViewUtility.showInformationAlert("Deck", "Delete Deck", "Deck with name " + deckName + " does not exist");
                 break;
             case DECK_DELETED:
-                ViewUtility.showInformationAlert("Deck", "Delete Deck", "deck deleted successfully!");
                 break;
             default:
-                ViewUtility.showInformationAlert("Deck", "Delete Deck", "unexpected error");
+                ViewUtility.showInformationAlert("Deck", "Delete Deck", "Unexpected error");
         }
     }
 
@@ -412,7 +411,6 @@ public class DeckMenuView {
                 ViewUtility.showInformationAlert("Deck", "Activate Deck", "deck with name " + deckName + " does not exist");
                 break;
             case DECK_ACTIVATED:
-                ViewUtility.showInformationAlert("Deck", "Activate Deck", "deck activated successfully!");
                 break;
             default:
                 ViewUtility.showInformationAlert("Deck", "Activate Deck", "unexpected error");
@@ -447,19 +445,19 @@ public class DeckMenuView {
     public void showRemoveCardMessage(DeckMenuMessage message, String deckName, String cardName) {
         switch (message) {
             case NO_DECK_EXISTS:
-                ViewUtility.showInformationAlert("Deck", "Remove Card", "deck with name " + deckName + " does not exist");
+                ViewUtility.showInformationAlert("Deck", "Remove Card", "Deck with name " + deckName + " does not exist");
                 break;
             case NO_CARD_EXISTS_IN_MAIN_DECK:
-                ViewUtility.showInformationAlert("Deck", "Remove Card", "card with name " + cardName + " does not exist in main deck");
+                ViewUtility.showInformationAlert("Deck", "Remove Card", "Card with name " + cardName + " does not exist in main deck");
                 break;
             case NO_CARD_EXISTS_IN_SIDE_DECK:
-                ViewUtility.showInformationAlert("Deck", "Remove Card", "card with name " + cardName + " does not exist in side deck");
+                ViewUtility.showInformationAlert("Deck", "Remove Card", "Card with name " + cardName + " does not exist in side deck");
                 break;
             case CARD_REMOVED:
-                ViewUtility.showInformationAlert("Deck", "Remove Card", "card removed form deck successfully!");
+                ViewUtility.showInformationAlert("Deck", "Remove Card", "Card removed form deck successfully!");
                 break;
             default:
-                ViewUtility.showInformationAlert("Deck", "Remove Card", "unexpected error");
+                ViewUtility.showInformationAlert("Deck", "Remove Card", "Unexpected error");
         }
     }
 }
