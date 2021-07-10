@@ -116,18 +116,34 @@
 /* ----------scroll---------- */
 .increment-button,
 .decrement-button {
-    -fx-background-color: #1fc3ae;
+    -fx-background-color: transparent;
 }
 
 .scroll-bar:horizontal .track,
 .scroll-bar:vertical .track {
-    -fx-background-color: #851116;
-    -fx-border-color: derive(#6622CC, 80%);
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
 }
 
 .scroll-bar:horizontal .thumb,
 .scroll-bar:vertical .thumb {
-    -fx-background-color: derive(#6622CC, 90%);
+    -fx-background-color: #6e2a8d;
+}
+
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+    -fx-background-color: #E7D551;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: #E7D551;
+}
+
+.scroll-pane .content {
+    -fx-background-color: #E7D551;
 }
 
 
@@ -215,7 +231,7 @@
 }
 
 .default-check-box:selected > .box > .mark,
-.default-check-box:indeterminate  > .box > .mark {
+.default-check-box:indeterminate > .box > .mark {
     -fx-background-color: #E7D551;
 }
 
@@ -223,17 +239,13 @@
 /* ----------description box---------- */
 .description-box {
     -fx-padding: 5px;
-    -fx-text-fill: blue;
-    -fx-background-color: orange;
+    -fx-text-fill: #6e2a8d;
+    -fx-background-color: #6e2a8d;
     -fx-background-radius: 5px;
 }
 
 .description-box .content {
     -fx-text-alignment: justify;
-    -fx-background-color: yellow;
+    -fx-background-color: #E7D551;
     -fx-background-radius: 5px;
-}
-
-.description-box .scroll-bar {
-    -fx-background-color: red;
 }

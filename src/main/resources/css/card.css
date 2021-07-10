@@ -4,24 +4,6 @@
 }
 
 
-.description-box {
-    -fx-padding: 5px;
-    -fx-text-fill: blue;
-    -fx-background-color: orange;
-    -fx-background-radius: 5px;
-}
-
-.description-box .content {
-    -fx-text-alignment: justify;
-    -fx-background-color: yellow;
-    -fx-background-radius: 5px;
-}
-
-.description-box .scroll-bar {
-    -fx-background-color: red;
-}
-
-
 #back-button {
     -fx-pref-height: 60px;
 }

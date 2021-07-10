@@ -2,14 +2,12 @@ package control.controller;
 
 import control.DataManager;
 import control.message.ImportExportMessage;
-import javafx.scene.control.Button;
 import model.User;
 import model.template.CardTemplate;
 import model.template.MonsterTemplate;
 import model.template.SpellTemplate;
 import model.template.TrapTemplate;
 import view.ImportExportMenuView;
-import view.MainMenuView;
 
 import java.io.File;
 import java.lang.reflect.Type;
@@ -48,11 +46,10 @@ public class ImportExportMenuController {
             view.printImportExportCardMessage(ImportExportMessage.INVALID_CARD_TYPE);
             return;
         }
-        if (dataManager.importCard(file, type, addToCSV)) {
+        if (dataManager.importCard(file, type, addToCSV))
             view.printImportExportCardMessage(ImportExportMessage.IMPORT_SUCCESSFUL);
-        } else {
+        else
             view.printImportExportCardMessage(ImportExportMessage.IMPORT_FAILED);
-        }
     }
 
 

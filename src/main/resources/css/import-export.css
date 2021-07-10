@@ -9,3 +9,7 @@
     -fx-pref-width: 250px;
     -fx-pref-height: 43px;
 }
+
+#type-box .context-menu {
+    -fx-pref-width: 250px;
+}
