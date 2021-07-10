@@ -99,7 +99,6 @@ public class DeckMenuController {
         } else {
             deck.addCardToMainDeck(card);
         }
-        view.showAddCardMessage(DeckMenuMessage.CARD_ADDED, deckName, cardName);
     }
 
 
@@ -124,6 +123,5 @@ public class DeckMenuController {
             }
             deck.removeCardFromMainDeck(cards.get(0));
         }
-        view.showRemoveCardMessage(DeckMenuMessage.CARD_REMOVED, deckName, cardName);
     }
 }
