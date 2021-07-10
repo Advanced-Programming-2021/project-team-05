@@ -5,7 +5,6 @@ import control.controller.DuelMenuController;
 import control.controller.MainMenuController;
 import control.controller.Phase;
 import control.message.DuelMenuMessage;
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -33,7 +32,6 @@ import model.card.Monster;
 import model.card.Spell;
 import utils.CoinSide;
 import utils.DuelBackgroundType;
-import utils.Utility;
 import utils.ViewUtility;
 
 import java.io.IOException;
@@ -43,7 +41,6 @@ public class DuelMenuView implements CheatRunner {
 
     private final DuelMenuController controller;
     private Scene scene;
-    private boolean endDuel;
 
     private ImageView selectedCardImage;
     private boolean attackMode;
@@ -55,13 +52,7 @@ public class DuelMenuView implements CheatRunner {
 
     public DuelMenuView(DuelMenuController controller) {
         this.controller = controller;
-        this.setEndDuel(false);
         controller.setView(this);
-    }
-
-
-    public void setEndDuel(boolean endDuel) {
-        this.endDuel = endDuel;
     }
 
 
@@ -453,7 +444,7 @@ public class DuelMenuView implements CheatRunner {
 
 
     public void showPhase(Phase phase) {
-        boolean isOpp = false;
+//        boolean isOpp = false;
         VBox[] phases = new VBox[6];
         phases[0] = (VBox) scene.lookup("#draw-phase-label");
         phases[1] = (VBox) scene.lookup("#standby-phase-label");
@@ -462,21 +453,23 @@ public class DuelMenuView implements CheatRunner {
         phases[4] = (VBox) scene.lookup("#main-2-phase-label");
         phases[5] = (VBox) scene.lookup("#end-phase-label");
 
-//        if (isOpp) {
-//            for (VBox phaseBox : phases) {
-//                if (!phaseBox.getStyleClass().contains("phase-label-opp")) {
-//                    phaseBox.getStyleClass().add("phase-label-opp");
-//                }
-//            }
-//            Button nextPhaseButton = (Button) scene.lookup("#next-phase-btn");
-//            nextPhaseButton.setDisable(true);
-//        } else for (VBox phaseBox : phases) phaseBox.getStyleClass().remove("phase-label-opp");
+        // In graphic phase current player is never opponent
+        /*if (isOpp) {
+            for (VBox phaseBox : phases) {
+                if (!phaseBox.getStyleClass().contains("phase-label-opp")) {
+                    phaseBox.getStyleClass().add("phase-label-opp");
+                }
+            }
+            Button nextPhaseButton = (Button) scene.lookup("#next-phase-btn");
+            nextPhaseButton.setDisable(true);
+        } else for (VBox phaseBox : phases) phaseBox.getStyleClass().remove("phase-label-opp");*/
 
         for (VBox phaseBox : phases) {
             phaseBox.getStyleClass().remove("phase-label-active");
 //            phaseBox.getStyleClass().remove("phase-label-active-opp");
         }
-        phases[phase.getNumber()].getStyleClass().add("phase-label-active" + (isOpp ? "-opp" : ""));
+        phases[phase.getNumber()].getStyleClass().add("phase-label-active");
+//        phases[phase.getNumber()].getStyleClass().add("phase-label-active" + (isOpp ? "-opp" : ""));
     }
 
 
@@ -493,8 +486,8 @@ public class DuelMenuView implements CheatRunner {
         Label oppLBLabel = (Label) scene.lookup("#opp-lp-label");
         oppLBLabel.setText(String.valueOf(opponentLP));
 
-        double playerTime = Math.abs(oldPlayerLP - playerLP) / 1.5;
-        double oppTime = Math.abs(oldOpponentLP - opponentLP) / 1.5;
+        double playerTime = Math.abs(oldPlayerLP - playerLP) / 5 + 100;
+        double oppTime = Math.abs(oldOpponentLP - opponentLP) / 5 + 100;
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.ZERO, new KeyValue(lpBar.progressProperty(), oldPlayerLP / 8000)),
                 new KeyFrame(Duration.ZERO, new KeyValue(oppLPBar.progressProperty(), oldOpponentLP / 8000)),
@@ -609,25 +602,6 @@ public class DuelMenuView implements CheatRunner {
     }
 
 
-    // TODO: 2021-07-09 remove
-    public ArrayList<Integer> getNumbers(int numbersCount, String message) {
-        ArrayList<Integer> numbers = new ArrayList<>();
-        System.out.println(message);
-        for (int i = 1; i <= numbersCount; i++) {
-            try {
-                String input = Utility.getNextLine();
-                if ("cancel".equals(input)) return null;
-                int number = Integer.parseInt(input);
-                numbers.add(number);
-            } catch (NumberFormatException e) {
-                System.out.println("please enter a number");
-                i--;
-            }
-        }
-        return numbers;
-    }
-
-
     public ArrayList<Integer> getCardsPosition(ArrayList<Card> cards, int positionsCount, String message) {
         ArrayList<Integer> positions = new ArrayList<>();
 
@@ -650,12 +624,8 @@ public class DuelMenuView implements CheatRunner {
         finishButton.setId("finish-btn");
         finishButton.getStyleClass().addAll("default-button", "button-small");
         finishButton.setDisable(true);
-        finishButton.setOnMouseClicked(e -> {
-            stage.close();
-        });
-        finishButton.setOnAction(e -> {
-            stage.close();
-        });
+        finishButton.setOnMouseClicked(e -> stage.close());
+        finishButton.setOnAction(e -> stage.close());
 
         Button cancelButton = new Button("Cancel");
         cancelButton.setId("cancel-btn");
@@ -781,12 +751,8 @@ public class DuelMenuView implements CheatRunner {
         finishButton.setId("finish-btn");
         finishButton.getStyleClass().addAll("default-button", "button-small");
         finishButton.setDisable(true);
-        finishButton.setOnMouseClicked(e -> {
-            stage.close();
-        });
-        finishButton.setOnAction(e -> {
-            stage.close();
-        });
+        finishButton.setOnMouseClicked(e -> stage.close());
+        finishButton.setOnAction(e -> stage.close());
 
         Button cancelButton = new Button("Cancel");
         cancelButton.setId("cancel-btn");
@@ -892,19 +858,6 @@ public class DuelMenuView implements CheatRunner {
         stage.showAndWait();
 
         return positions;
-    }
-
-
-    // TODO: 2021-07-09 remove
-    public String getOneOfValues(String firstValue, String secondValue, String message, String invalidMessage) {
-        System.out.println(message);
-//        while (true) {
-//            String state = Utility.getNextLine();
-//            if ("cancel".equals(state)) return null;
-//            if (state.equals(firstValue) || state.equals(secondValue)) return state;
-//            System.out.println(invalidMessage);
-//        }
-        return "";
     }
 
 
@@ -1076,8 +1029,6 @@ public class DuelMenuView implements CheatRunner {
                 ViewUtility.showInformationAlert("Direct Attack", "", "Attack prevented");
                 return;
             case DIRECT_ATTACK_SUCCESSFUL:
-                // TODO: 2021-07-09 add animation
-
                 updateLPs(controller.getBoard());
                 break;
             default:
@@ -1218,26 +1169,54 @@ public class DuelMenuView implements CheatRunner {
     }
 
 
-    // TODO: 2021-07-09 remove
-    public void showCards(ArrayList<Card> cards, String title) {
-        System.out.println(title);
-        for (int i = 0, cardsSize = cards.size(); i < cardsSize; i++) {
-            Card card = cards.get(i);
-            System.out.println((i + 1) + ". " + card);
+    public void showFlipCoinResult(User player, User opponent, CoinSide coinSide) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/flip-coin.fxml"));
+            Scene scene = new Scene(root);
+            MainView.stage.setScene(scene);
+
+            Label resultLabel = (Label) scene.lookup("#result-label");
+
+            String resultMessage = player.getNickname() + " starts duel!";
+            Timeline showStarterTimeline = new Timeline(
+                    new KeyFrame(Duration.seconds(2), e -> {
+                        this.setDuelScene();
+                        this.updatePlayersInfo(player, opponent);
+                        controller.startNextRound(player, opponent);
+                    })
+            );
+            showStarterTimeline.setCycleCount(1);
+
+            ImageView coinImage = (ImageView) scene.lookup("#coin-image");
+            FlipCoinAnimation flipCoinAnimation = new FlipCoinAnimation(coinImage);
+            flipCoinAnimation.setCycleCount(coinSide == CoinSide.HEADS ? 10 : 11);
+            flipCoinAnimation.setOnFinished(e -> {
+                resultLabel.setText(resultMessage);
+                showStarterTimeline.play();
+            });
+
+            double duration = coinSide == CoinSide.HEADS ? 2000 : 2100;
+            ThrowCoinAnimation throwCoinAnimation = new ThrowCoinAnimation(coinImage, duration);
+
+            Timeline waiter = new Timeline(
+                    new KeyFrame(Duration.seconds(1), e -> {
+                        throwCoinAnimation.play();
+                        flipCoinAnimation.play();
+                    })
+            );
+            waiter.play();
+        } catch (IOException e) {
+            System.out.println("Failed to load flip coin scene");
         }
-    }
-
-
-    // TODO: 2021-07-09 change
-    public void showFlipCoinResult(String starterNickname, CoinSide coinSide) {
-        System.out.println("coin side was " + coinSide.getName() + " and " + starterNickname + " starts duel");
     }
 
 
     public void showTurn(String playerNickname, boolean isQuick) {
         String message;
-        if (isQuick) message = "Now it's " + playerNickname + "'s turn!";
-        else message = "It's " + playerNickname + "'s turn!";
+        if (isQuick) {
+            message = "Now it's " + playerNickname + "'s turn!";
+            deselectCard();
+        } else message = "It's " + playerNickname + "'s turn!";
 
         HBox messageLabelContainer = (HBox) scene.lookup("#message-label-container");
         messageLabelContainer.getChildren().clear();
@@ -1257,20 +1236,65 @@ public class DuelMenuView implements CheatRunner {
     }
 
 
-    // TODO: 2021-07-08 change
-    public void showWinner(boolean isWholeMatch, String winnerNickname, int score1, int score2) {
-        if (!isWholeMatch) {
-            Label messageLabel = (Label) scene.lookup("#message-label");
-            messageLabel.setText(winnerNickname + " won the round!");
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(2), e -> {
-                messageLabel.setText("");
-                controller.reset();
-                controller.startNextRound();
+    public void showRoundWinner(String winnerNickname, User player, User opponent) {
+        HBox messageLabelContainer = (HBox) scene.lookup("#message-label-container");
+        messageLabelContainer.getChildren().clear();
+        messageLabelContainer.getChildren().add(new Label(winnerNickname + " won the round!"));
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(2), e -> {
+            messageLabelContainer.getChildren().clear();
+            controller.reset();
+            controller.startNextRound(player, opponent);
+        });
+        Timeline timeline = new Timeline(keyFrame);
+        timeline.setCycleCount(1);
+        timeline.play();
+    }
+
+    public void showDuelWinner(int score1, int score2, User player1, User player2) {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("Duel Result");
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/duel-result.fxml"));
+            Scene duelResultScene = new Scene(root);
+            stage.setScene(duelResultScene);
+            stage.show();
+
+            ImageView player1Image = (ImageView) duelResultScene.lookup("#player-1-image");
+            String player1ImagePath = "/images/profile-pics/" + player1.getProfilePictureName();
+            player1Image.setImage(new Image(getClass().getResource(player1ImagePath).toExternalForm()));
+
+            Label player1Label = (Label) duelResultScene.lookup("#player-1-nickname");
+            player1Label.setText(player1.getNickname());
+
+            ImageView player2Image = (ImageView) duelResultScene.lookup("#player-2-image");
+            String player2ImagePath = "/images/profile-pics/" + player2.getProfilePictureName();
+            player2Image.setImage(new Image(getClass().getResource(player2ImagePath).toExternalForm()));
+
+            Label player2Label = (Label) duelResultScene.lookup("#player-2-nickname");
+            player2Label.setText(player2.getNickname());
+
+            Label resultLabel = (Label) duelResultScene.lookup("#result-label");
+            resultLabel.setText(score1 + " - " + score2);
+
+            Button backButton = (Button) duelResultScene.lookup("#back-btn");
+            backButton.setOnMouseClicked(e -> {
+                stage.close();
+                MainMenuController mainMenuController = new MainMenuController(controller.getPlayerOne());
+                MainMenuView mainMenuView = new MainMenuView(mainMenuController);
+                mainMenuView.setMainMenuScene();
             });
-            Timeline timeline = new Timeline(keyFrame);
-            timeline.setCycleCount(1);
-            timeline.play();
-        } else System.out.println(winnerNickname + " won the whole match with score: " + score1 + "-" + score2);
+            backButton.setOnAction(e -> {
+                stage.close();
+                MainMenuController mainMenuController = new MainMenuController(controller.getPlayerOne());
+                MainMenuView mainMenuView = new MainMenuView(mainMenuController);
+                mainMenuView.setMainMenuScene();
+            });
+        } catch (IOException e) {
+            System.out.println("Failed to load duel result scene");
+        }
     }
 
 

@@ -1,0 +1,26 @@
+#root {
+    -fx-background-image: url("../images/flip-coin-background.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: none;
+}
+
+
+#coin-image {
+    -fx-alignment: center;
+}
+
+
+#result-label {
+    -fx-font-size: 80px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Merienda";
+
+    -fx-text-fill: #cfb713;
+
+    -fx-background-radius: 8px;
+}
+
+#result-label .text {
+    -fx-stroke: black;
+    -fx-stroke-width: 2px;
+}
