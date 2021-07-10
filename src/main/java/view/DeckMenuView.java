@@ -99,11 +99,11 @@ public class DeckMenuView {
             activateButton.getStyleClass().addAll("default-button", "activate-button");
             if (deck.equals(user.getActiveDeck())) activateButton.setDisable(true);
             activateButton.setOnMouseClicked(event -> {
-                user.setActiveDeck(deck);
+                controller.activateDeck(deck.getName());
                 updateDeckScene(user);
             });
             activateButton.setOnAction(event -> {
-                user.setActiveDeck(deck);
+                controller.activateDeck(deck.getName());
                 updateDeckScene(user);
             });
 
@@ -174,17 +174,43 @@ public class DeckMenuView {
             Parent root = loader.load();
             scene = new Scene(root);
             MainView.stage.setScene(scene);
-            initializeEditDeckSceneButtons();
+            initializeEditDeckSceneButtons(deck);
             updateEditDeckScene(deck, controller.getUser());
         } catch (IOException e) {
             System.out.println("Failed to load edit deck scene");
         }
     }
 
-    private void initializeEditDeckSceneButtons() {
+    private void initializeEditDeckSceneButtons(Deck deck) {
         Button backButton = (Button) scene.lookup("#back-btn");
         backButton.setOnMouseClicked(e -> setDeckScene());
         backButton.setOnAction(e -> setDeckScene());
+
+        Button mainRemoveButton = (Button) scene.lookup("#main-remove-btn");
+        mainRemoveButton.setOnMouseClicked(event -> {
+            controller.removeCard(deck.getName(), selectedMainCard.getName(), false);
+            updateEditDeckScene(deck, controller.getUser());
+        });
+
+        Button mainMoveButton = (Button) scene.lookup("#main-move-btn");
+        mainMoveButton.setOnMouseClicked(event -> {
+            controller.removeCard(deck.getName(), selectedMainCard.getName(), false);
+            controller.addCard(deck.getName(), selectedMainCard.getName(), true);
+            updateEditDeckScene(deck, controller.getUser());
+        });
+
+        Button sideRemoveButton = (Button) scene.lookup("#side-remove-btn");
+        sideRemoveButton.setOnMouseClicked(event -> {
+            controller.removeCard(deck.getName(), selectedSideCard.getName(), true);
+            updateEditDeckScene(deck, controller.getUser());
+        });
+
+        Button sideMoveButton = (Button) scene.lookup("#side-move-btn");
+        sideMoveButton.setOnMouseClicked(event -> {
+            controller.removeCard(deck.getName(), selectedSideCard.getName(), true);
+            controller.addCard(deck.getName(), selectedSideCard.getName(), false);
+            updateEditDeckScene(deck, controller.getUser());
+        });
     }
 
     public void updateEditDeckScene(Deck deck, User user) {
@@ -308,7 +334,6 @@ public class DeckMenuView {
         sideRemoveButton.setDisable(selectedSideCard == null);
     }
 
-
     private void addCard(Deck deck, User user, boolean isSide) {
         try {
             Stage stage = new Stage();
@@ -331,7 +356,8 @@ public class DeckMenuView {
                 cardImage.setFitWidth(184);
                 cardImage.setFitHeight(300);
                 cardImage.setOnMouseClicked(e -> {
-                    // ToDo: add card to side or main deck, show message, call updateEditDeckScene
+                    controller.addCard(deck.getName(), card.getName(), isSide);
+                    updateEditDeckScene(deck, user);
                     stage.close();
                 });
 
@@ -353,8 +379,6 @@ public class DeckMenuView {
     public void back() {
         MainView.stage.setScene(scene);
     }
-
-//    ----------------------Phase 1----------------------    //
 
     public void showCreateDeckMessage(DeckMenuMessage message) {
         switch (message) {
