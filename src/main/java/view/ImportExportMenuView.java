@@ -96,7 +96,7 @@ public class ImportExportMenuView {
         });
         fileButton.setOnDragDropped(e -> {
             selectedFile = e.getDragboard().getFiles().get(0);
-            if (selectedFile.getName().matches(".*?\\.json")) fileButton.setText(selectedFile.getName());
+            if (selectedFile.getName().matches(".*?\\.(json|txt)")) fileButton.setText(selectedFile.getName());
             else ViewUtility.showInformationAlert("Import", "", "File type should be json");
         });
     }
@@ -105,6 +105,7 @@ public class ImportExportMenuView {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Import Card");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         selectedFile = fileChooser.showOpenDialog(MainView.stage);
         if (selectedFile != null) fileButton.setText(selectedFile.getName());
     }
