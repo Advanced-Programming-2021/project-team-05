@@ -1,11 +1,11 @@
 package control.controller;
 
-import control.DataManager;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import control.Sender;
 import control.message.LoginMenuMessage;
-import model.User;
 import view.LoginMenuView;
-
-import java.io.IOException;
+import view.MainView;
 
 public class LoginMenuController {
 
@@ -18,48 +18,56 @@ public class LoginMenuController {
 
 
     public final void createUser(String username, String password, String nickname) {
-        if (username.contains(" ")) {
-            view.showRegisterMessage(LoginMenuMessage.USERNAME_CONTAIN_SPACE, username, nickname);
-            return;
+        try {
+            JsonObject infoObject = new JsonObject();
+            infoObject.addProperty("username", username);
+            infoObject.addProperty("password", password);
+            infoObject.addProperty("nickname", nickname);
+            JsonObject commandObject = new JsonObject();
+            commandObject.addProperty("command_type", "login");
+            commandObject.addProperty("command_name", "create_user");
+            commandObject.add("info", infoObject);
+
+            String response = Sender.sendAndGetResponse(commandObject.toString());
+            if (response == null) {
+                MainView.showNetworkError();
+                return;
+            }
+            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
+            LoginMenuMessage message = LoginMenuMessage.valueOf(responseObject.get("message").getAsString());
+            view.showRegisterMessage(message, username, nickname);
+        } catch (Exception e) {
+            view.showRegisterMessage(LoginMenuMessage.ERROR, username, nickname);
         }
-        if (nickname.contains(" ")) {
-            view.showRegisterMessage(LoginMenuMessage.NICKNAME_CONTAIN_SPACE, username, nickname);
-            return;
-        }
-        if (password.contains(" ")) {
-            view.showRegisterMessage(LoginMenuMessage.PASSWORD_CONTAIN_SPACE, username, nickname);
-            return;
-        }
-        DataManager dataManager = DataManager.getInstance();
-        if (dataManager.getUserByUsername(username) != null) {
-            view.showRegisterMessage(LoginMenuMessage.USERNAME_EXISTS, username, nickname);
-            return;
-        }
-        if (dataManager.getUserByNickname(nickname) != null) {
-            view.showRegisterMessage(LoginMenuMessage.NICKNAME_EXISTS, username, nickname);
-            return;
-        }
-        User user = new User(username, password, nickname);
-        dataManager.addUser(user);
-        view.showRegisterMessage(LoginMenuMessage.USER_CREATED, username, nickname);
     }
 
 
-    public final User loginUser(String username, String password) {
-        if (username.contains(" ")) {
-            view.showLoginMessage(LoginMenuMessage.USERNAME_CONTAIN_SPACE);
+    public final String loginUser(String username, String password) {
+        try {
+            JsonObject infoObject = new JsonObject();
+            infoObject.addProperty("username", username);
+            infoObject.addProperty("password", password);
+            JsonObject commandObject = new JsonObject();
+            commandObject.addProperty("command_type", "login");
+            commandObject.addProperty("command_name", "login_user");
+            commandObject.add("info", infoObject);
+
+            String response = Sender.sendAndGetResponse(commandObject.toString());
+            if (response == null) {
+                MainView.showNetworkError();
+                return null;
+            }
+            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
+            LoginMenuMessage message = LoginMenuMessage.valueOf(responseObject.get("message").getAsString());
+            view.showLoginMessage(message);
+            if (message == LoginMenuMessage.LOGGED_IN) {
+                JsonObject responseInfoObject = responseObject.get("info").getAsJsonObject();
+                return responseInfoObject.get("token").getAsString();
+            } else return null;
+        } catch (Exception e) {
+            view.showLoginMessage(LoginMenuMessage.ERROR);
+            e.printStackTrace();
             return null;
         }
-        if (password.contains(" ")) {
-            view.showLoginMessage(LoginMenuMessage.PASSWORD_CONTAIN_SPACE);
-            return null;
-        }
-        User user = DataManager.getInstance().getUserByUsername(username);
-        if (user == null || !password.equals(user.getPassword())) {
-            view.showLoginMessage(LoginMenuMessage.NO_MATCH);
-            return null;
-        }
-        view.showLoginMessage(LoginMenuMessage.LOGGED_IN);
-        return user;
     }
 }

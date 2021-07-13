@@ -1,12 +1,14 @@
 package view;
 
 import control.DataManager;
+import control.Sender;
 import control.controller.LoginMenuController;
 import javafx.application.Application;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import utils.ViewUtility;
 
 import java.nio.file.Paths;
 
@@ -24,7 +26,12 @@ public class MainView extends Application {
     @Override
     public void start(Stage stage) {
         initializeFonts();
-        playMusic();
+        // TODO: 2021-07-13 uncomment
+//        playMusic();
+        if (!Sender.initialize()) {
+            stop();
+            return;
+        }
         try {
             MainView.stage = stage;
             stage.setTitle("Yu-Gi-Oh");
@@ -34,7 +41,7 @@ public class MainView extends Application {
             view.setWelcomeScene();
             stage.show();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Failed to initialize stage");
         }
     }
 
@@ -63,5 +70,10 @@ public class MainView extends Application {
         } catch (Exception e) {
             System.out.println("music error");
         }
+    }
+
+
+    public static void showNetworkError() {
+        ViewUtility.showInformationAlert("Network", "Error", "Network error");
     }
 }

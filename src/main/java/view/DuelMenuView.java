@@ -33,6 +33,8 @@ import model.card.Spell;
 import utils.CoinSide;
 import utils.DuelBackgroundType;
 import utils.ViewUtility;
+import view.animation.FlipCoinAnimation;
+import view.animation.ThrowCoinAnimation;
 
 import java.io.IOException;
 import java.util.ArrayList;

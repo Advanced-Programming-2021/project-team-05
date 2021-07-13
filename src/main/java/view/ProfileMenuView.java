@@ -29,6 +29,21 @@ public class ProfileMenuView {
         controller.setView(this);
     }
 
+    public static void updateProfileScene(Scene profileScene, User user) {
+        Label usernameLabel = (Label) profileScene.lookup("#username-label");
+        usernameLabel.setText("Username: " + ((user == null) ? "?" : user.getUsername()));
+
+        Label nicknameLabel = (Label) profileScene.lookup("#nickname-label");
+        nicknameLabel.setText("Nickname: " + ((user == null) ? "?" : user.getNickname()));
+
+        if (user != null) {
+            String imagePath = "/images/profile-pics/" + user.getProfilePictureName();
+            ImageView imageView = new ImageView(new Image(ViewUtility.class.getResource(imagePath).toExternalForm()));
+            imageView.setId("profile-pic");
+            HBox profilePicContainer = (HBox) profileScene.lookup("#profile-pic-container");
+            profilePicContainer.getChildren().add(imageView);
+        }
+    }
 
     public void setProfileScene() {
         try {
@@ -58,21 +73,6 @@ public class ProfileMenuView {
         backButton.setOnAction(e -> backToMainMenu());
     }
 
-    public static void updateProfileScene(Scene profileScene, User user) {
-        Label usernameLabel = (Label) profileScene.lookup("#username-label");
-        usernameLabel.setText("Username: " + user.getUsername());
-
-        Label nicknameLabel = (Label) profileScene.lookup("#nickname-label");
-        nicknameLabel.setText("Nickname: " + user.getNickname());
-
-        String imagePath = "/images/profile-pics/" + user.getProfilePictureName();
-        ImageView imageView = new ImageView(new Image(ViewUtility.class.getResource(imagePath).toExternalForm()));
-        imageView.setId("profile-pic");
-        HBox profilePicContainer = (HBox) profileScene.lookup("#profile-pic-container");
-        profilePicContainer.getChildren().add(imageView);
-    }
-
-
     public void setChangeNicknameScene() {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -98,8 +98,10 @@ public class ProfileMenuView {
     }
 
     public void updateChangeNicknameScene() {
+        User user = controller.getUser();
+
         Label nicknameLabel = (Label) scene.lookup("#nickname-label");
-        nicknameLabel.setText("Nickname: " + controller.getUser().getNickname());
+        nicknameLabel.setText("Nickname: " + (user == null ? "?" : user.getNickname()));
     }
 
 
@@ -128,7 +130,7 @@ public class ProfileMenuView {
 
 
     private void backToMainMenu() {
-        MainMenuController mainMenuController = new MainMenuController(controller.getUser());
+        MainMenuController mainMenuController = new MainMenuController(controller.getToken());
         MainMenuView mainMenuView = new MainMenuView(mainMenuController);
         mainMenuView.setMainMenuScene();
     }
@@ -148,15 +150,18 @@ public class ProfileMenuView {
 
     public void showChangeNicknameMessage(ProfileMenuMessage message, String nickname) {
         switch (message) {
+            case NICKNAME_CONTAIN_WHITESPACE:
+                ViewUtility.showInformationAlert("Change Nickname", "Error", "Nickname contain space");
+                break;
             case NICKNAME_EXISTS:
-                ViewUtility.showInformationAlert("ChangeNickname", "Error", "user with nickname " + nickname + " already exists");
+                ViewUtility.showInformationAlert("Change Nickname", "Error", "User with nickname " + nickname + " already exists");
                 break;
             case NICKNAME_CHANGED:
                 updateChangeNicknameScene();
-                ViewUtility.showInformationAlert("ChangeNickname", "successful", "nickname changed successfully!");
+                ViewUtility.showInformationAlert("Change Nickname", "Successful", "Nickname changed successfully!");
                 break;
             default:
-                ViewUtility.showInformationAlert("ChangeNickname", "Error", "unexpected error");
+                ViewUtility.showInformationAlert("Change Nickname", "Error", "Unexpected error");
         }
     }
 
@@ -168,7 +173,7 @@ public class ProfileMenuView {
         String currentPasswordText = currentPassword.getText();
 
         if (newPasswordText.length() == 0 || currentPasswordText.length() == 0) {
-            ViewUtility.showInformationAlert("changePassword", "Error", "Please fill all fields");
+            ViewUtility.showInformationAlert("Change Password", "Error", "Please fill all fields");
             return;
         }
         controller.changePassword(currentPasswordText, newPasswordText);
@@ -177,17 +182,20 @@ public class ProfileMenuView {
     public void showChangePasswordMessage(ProfileMenuMessage message) {
         switch (message) {
             case INVALID_CURRENT_PASSWORD:
-                ViewUtility.showInformationAlert("changePassword", "Error", "current password is invalid");
+                ViewUtility.showInformationAlert("Change Password", "Error", "Current password is invalid");
+                break;
+            case PASSWORD_CONTAIN_WHITESPACE:
+                ViewUtility.showInformationAlert("Change Password", "Error", "Password contain space");
                 break;
             case SAME_NEW_AND_CURRENT_PASSWORD:
-                ViewUtility.showInformationAlert("changePassword", "Error", "please enter a new password");
+                ViewUtility.showInformationAlert("Change Password", "Error", "Please enter a new password");
                 break;
             case PASSWORD_CHANGED:
-                ViewUtility.showInformationAlert("changePassword", "Successful", "password changed successfully!");
+                ViewUtility.showInformationAlert("Change Password", "Successful", "Password changed successfully!");
                 setProfileScene();
                 break;
             default:
-                ViewUtility.showInformationAlert("changePassword", "Error", "unexpected error!");
+                ViewUtility.showInformationAlert("Change Password", "Error", "Unexpected error!");
         }
     }
 }

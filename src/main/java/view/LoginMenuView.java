@@ -114,9 +114,9 @@ public class LoginMenuView {
             ViewUtility.showInformationAlert("Login", "Error", "Please fill all fields");
             return;
         }
-        User user = controller.loginUser(username, password);
-        if (user != null) {
-            MainMenuController mainMenuController = new MainMenuController(user);
+        String token = controller.loginUser(username, password);
+        if (token != null) {
+            MainMenuController mainMenuController = new MainMenuController(token);
             MainMenuView mainMenuView = new MainMenuView(mainMenuController);
             mainMenuView.setMainMenuScene();
         }
@@ -125,10 +125,10 @@ public class LoginMenuView {
     public void showLoginMessage(LoginMenuMessage message) {
         switch (message) {
             case USERNAME_CONTAIN_SPACE:
-                ViewUtility.showInformationAlert("Register", "Error", "Username should not contain whitespace!");
+                ViewUtility.showInformationAlert("Register", "Error", "Username should not contain space!");
                 break;
             case PASSWORD_CONTAIN_SPACE:
-                ViewUtility.showInformationAlert("Register", "Error", "Password should not contain whitespace!");
+                ViewUtility.showInformationAlert("Register", "Error", "Password should not contain space!");
                 break;
             case NO_MATCH:
                 ViewUtility.showInformationAlert("Login", "Incorrect Username or Password", "Username and password don't match!");
@@ -166,13 +166,13 @@ public class LoginMenuView {
                 ViewUtility.showInformationAlert("Register", "Nickname Exist", "User with nickname " + nickname + " already exists");
                 break;
             case USERNAME_CONTAIN_SPACE:
-                ViewUtility.showInformationAlert("Register", "Error", "Username should not contain whitespace!");
+                ViewUtility.showInformationAlert("Register", "Error", "Username should not contain space!");
                 break;
             case PASSWORD_CONTAIN_SPACE:
-                ViewUtility.showInformationAlert("Register", "Error", "Password should not contain whitespace!");
+                ViewUtility.showInformationAlert("Register", "Error", "Password should not contain space!");
                 break;
             case NICKNAME_CONTAIN_SPACE:
-                ViewUtility.showInformationAlert("Register", "Error", "Nickname should not contain whitespace!");
+                ViewUtility.showInformationAlert("Register", "Error", "Nickname should not contain space!");
                 break;
             case USER_CREATED:
                 setLoginScene();

@@ -49,12 +49,12 @@ public class MainMenuView {
 
         Button profileButton = (Button) scene.lookup("#profile-btn");
         profileButton.setOnMouseClicked(e -> {
-            ProfileMenuController profileMenuController = new ProfileMenuController(controller.getUser());
+            ProfileMenuController profileMenuController = new ProfileMenuController(controller.getToken());
             ProfileMenuView profileMenuView = new ProfileMenuView(profileMenuController);
             profileMenuView.setProfileScene();
         });
         profileButton.setOnAction(e -> {
-            ProfileMenuController profileMenuController = new ProfileMenuController(controller.getUser());
+            ProfileMenuController profileMenuController = new ProfileMenuController(controller.getToken());
             ProfileMenuView profileMenuView = new ProfileMenuView(profileMenuController);
             profileMenuView.setProfileScene();
         });
@@ -206,6 +206,7 @@ public class MainMenuView {
 
 
     public void logOut() {
+        controller.logOut();
         LoginMenuController loginMenuController = new LoginMenuController();
         LoginMenuView loginMenuView = new LoginMenuView(loginMenuController);
         loginMenuView.setWelcomeScene();

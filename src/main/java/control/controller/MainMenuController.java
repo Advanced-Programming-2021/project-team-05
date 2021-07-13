@@ -1,6 +1,8 @@
 package control.controller;
 
+import com.google.gson.JsonObject;
 import control.DataManager;
+import control.Sender;
 import control.message.MainMenuMessage;
 import model.Deck;
 import model.User;
@@ -10,12 +12,16 @@ import view.MainMenuView;
 public class MainMenuController {
 
     private MainMenuView view;
-    private final User user;
+    private User user;
+    private String token;
 
 
     public MainMenuController(User user) {
-
         this.user = user;
+    }
+
+    public MainMenuController(String token) {
+        this.token = token;
     }
 
 
@@ -23,8 +29,14 @@ public class MainMenuController {
         this.view = view;
     }
 
+
     public User getUser() {
         return this.user;
+    }
+
+
+    public String getToken() {
+        return this.token;
     }
 
 
@@ -78,5 +90,16 @@ public class MainMenuController {
         new DuelMenuView(duelMenuController);
         duelMenuController.startDuel();
         return true;
+    }
+
+
+    public final void logOut() {
+        JsonObject infoObject = new JsonObject();
+        infoObject.addProperty("token", token);
+        JsonObject commandObject = new JsonObject();
+        commandObject.addProperty("command_type", "main");
+        commandObject.addProperty("command_name", "logout_user");
+        commandObject.add("info", infoObject);
+        Sender.send(commandObject.toString());
     }
 }
