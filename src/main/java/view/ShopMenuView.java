@@ -1,6 +1,7 @@
 package view;
 
 import control.DataManager;
+import control.controller.MainController;
 import control.controller.MainMenuController;
 import control.controller.ShopMenuController;
 import control.message.ShopMenuMessage;
@@ -12,12 +13,13 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import model.ShopItem;
 import model.User;
 import model.template.CardTemplate;
 import utils.ViewUtility;
 
 import java.io.IOException;
-
+import java.util.ArrayList;
 
 public class ShopMenuView implements CheatRunner {
 
@@ -39,7 +41,7 @@ public class ShopMenuView implements CheatRunner {
             scene = new Scene(root);
             MainView.stage.setScene(scene);
             initializeShopSceneButtons();
-            updateShopScene(controller.getUser());
+            updateShopScene(MainController.getUser());
             scene.setOnKeyPressed(keyEvent -> handleConsoleKeyEvent(keyEvent, this));
         } catch (IOException e) {
             System.out.println("Failed to load shop scene");
@@ -49,32 +51,41 @@ public class ShopMenuView implements CheatRunner {
     private void initializeShopSceneButtons() {
         Button backButton = (Button) scene.lookup("#back-btn");
         backButton.setOnMouseClicked(e -> {
-            MainMenuController mainMenuController = new MainMenuController(controller.getUser());
+            MainMenuController mainMenuController = new MainMenuController(MainController.getUser());
             MainMenuView mainMenuView = new MainMenuView(mainMenuController);
             mainMenuView.setMainMenuScene();
         });
         backButton.setOnAction(e -> {
-            MainMenuController mainMenuController = new MainMenuController(controller.getUser());
+            MainMenuController mainMenuController = new MainMenuController(MainController.getUser());
             MainMenuView mainMenuView = new MainMenuView(mainMenuController);
             mainMenuView.setMainMenuScene();
         });
     }
 
     public void updateShopScene(User user) {
+        if (user == null) {
+            ViewUtility.showInformationAlert("Shop", "Error", "Failed to load shop");
+            return;
+        }
         Label moneyLabel = (Label) scene.lookup("#money-label");
         moneyLabel.setText("Money: " + user.getMoney());
 
-        DataManager dataManager = DataManager.getInstance();
         FlowPane cardsContainer = (FlowPane) scene.lookup("#cards-container");
         cardsContainer.getChildren().clear();
-        for (CardTemplate template : dataManager.getCardTemplates()) {
+        ArrayList<ShopItem> shopItems = controller.getShopItems();
+        if (shopItems == null) {
+            ViewUtility.showInformationAlert("Shop", "Error", "Failed to load shop");
+            return;
+        }
+        for (ShopItem shopItem : shopItems) {
+            CardTemplate template = shopItem.getCardTemplate();
             ImageView cardImage = ViewUtility.getCardImageView(template.getName());
             cardImage.getStyleClass().add("shop-image");
             cardImage.setFitWidth(184);
             cardImage.setFitHeight(300);
             cardImage.setOnMouseClicked(e -> ViewUtility.showCard(template.getName()));
 
-            Label countLabel = new Label("Purchased: " + user.getPurchasedCardsByName(template.getName()).size());
+            Label countLabel = new Label("Purchased: " + shopItem.getPurchasedCount());
             countLabel.getStyleClass().addAll("default-label", "number-label");
 
             Button buyButton = new Button("Buy (" + template.getPrice() + ")");

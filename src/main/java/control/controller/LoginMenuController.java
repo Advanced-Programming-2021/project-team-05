@@ -42,7 +42,7 @@ public class LoginMenuController {
     }
 
 
-    public final String loginUser(String username, String password) {
+    public final void loginUser(String username, String password) {
         try {
             JsonObject infoObject = new JsonObject();
             infoObject.addProperty("username", username);
@@ -55,19 +55,18 @@ public class LoginMenuController {
             String response = Sender.sendAndGetResponse(commandObject.toString());
             if (response == null) {
                 MainView.showNetworkError();
-                return null;
+                return;
             }
             JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
             LoginMenuMessage message = LoginMenuMessage.valueOf(responseObject.get("message").getAsString());
             view.showLoginMessage(message);
             if (message == LoginMenuMessage.LOGGED_IN) {
                 JsonObject responseInfoObject = responseObject.get("info").getAsJsonObject();
-                return responseInfoObject.get("token").getAsString();
-            } else return null;
+                String token = responseInfoObject.get("token").getAsString();
+                MainController.setToken(token);
+            }
         } catch (Exception e) {
             view.showLoginMessage(LoginMenuMessage.ERROR);
-            e.printStackTrace();
-            return null;
         }
     }
 }

@@ -16,7 +16,6 @@ import utils.ViewUtility;
 
 import java.io.IOException;
 
-
 public class MainMenuView {
 
     private final MainMenuController controller;
@@ -49,24 +48,24 @@ public class MainMenuView {
 
         Button profileButton = (Button) scene.lookup("#profile-btn");
         profileButton.setOnMouseClicked(e -> {
-            ProfileMenuController profileMenuController = new ProfileMenuController(controller.getToken());
+            ProfileMenuController profileMenuController = new ProfileMenuController();
             ProfileMenuView profileMenuView = new ProfileMenuView(profileMenuController);
             profileMenuView.setProfileScene();
         });
         profileButton.setOnAction(e -> {
-            ProfileMenuController profileMenuController = new ProfileMenuController(controller.getToken());
+            ProfileMenuController profileMenuController = new ProfileMenuController();
             ProfileMenuView profileMenuView = new ProfileMenuView(profileMenuController);
             profileMenuView.setProfileScene();
         });
 
         Button shopButton = (Button) scene.lookup("#shop-btn");
         shopButton.setOnMouseClicked(e -> {
-            ShopMenuController shopMenuController = new ShopMenuController(controller.getUser());
+            ShopMenuController shopMenuController = new ShopMenuController();
             ShopMenuView shopMenuView = new ShopMenuView(shopMenuController);
             shopMenuView.setShopScene();
         });
         shopButton.setOnAction(e -> {
-            ShopMenuController shopMenuController = new ShopMenuController(controller.getUser());
+            ShopMenuController shopMenuController = new ShopMenuController();
             ShopMenuView shopMenuView = new ShopMenuView(shopMenuController);
             shopMenuView.setShopScene();
         });
@@ -206,7 +205,7 @@ public class MainMenuView {
 
 
     public void logOut() {
-        controller.logOut();
+        MainController.logOut();
         LoginMenuController loginMenuController = new LoginMenuController();
         LoginMenuView loginMenuView = new LoginMenuView(loginMenuController);
         loginMenuView.setWelcomeScene();

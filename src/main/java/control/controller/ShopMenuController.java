@@ -1,28 +1,23 @@
 package control.controller;
 
-import control.DataManager;
+import com.google.gson.*;
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
+import control.Sender;
 import control.message.ShopMenuMessage;
-import model.User;
-import model.card.Card;
-import model.card.Monster;
-import model.card.Spell;
-import model.card.Trap;
+import model.ShopItem;
 import model.template.CardTemplate;
 import model.template.MonsterTemplate;
 import model.template.SpellTemplate;
 import model.template.TrapTemplate;
+import view.MainView;
 import view.ShopMenuView;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class ShopMenuController {
 
     private ShopMenuView view;
-    private final User user;
-
-
-    public ShopMenuController(User user) {
-        this.user = user;
-    }
 
 
     public void setView(ShopMenuView view) {
@@ -30,41 +25,96 @@ public class ShopMenuController {
     }
 
 
-    public User getUser() {
-        return this.user;
+    private RuntimeTypeAdapterFactory<CardTemplate> getCardTemplateAdapter() {
+        return RuntimeTypeAdapterFactory
+                .of(CardTemplate.class, "card_template_type")
+                .registerSubtype(MonsterTemplate.class, MonsterTemplate.class.getName())
+                .registerSubtype(SpellTemplate.class, SpellTemplate.class.getName())
+                .registerSubtype(TrapTemplate.class, TrapTemplate.class.getName());
+    }
+
+
+    public ArrayList<ShopItem> getShopItems() {
+        try {
+            JsonObject infoObject = new JsonObject();
+            infoObject.addProperty("token", MainController.getToken());
+            JsonObject commandObject = new JsonObject();
+            commandObject.addProperty("command_type", "data");
+            commandObject.addProperty("command_name", "get_shop_items");
+            commandObject.add("info", infoObject);
+
+            String response = Sender.sendAndGetResponse(commandObject.toString());
+            if (response == null) {
+                MainView.showNetworkError();
+                return null;
+            }
+            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
+            JsonObject data = responseObject.get("data").getAsJsonObject();
+            JsonArray templatesArray = data.get("templates").getAsJsonArray();
+            JsonArray purchasedCounts = data.get("purchased_counts").getAsJsonArray();
+
+            RuntimeTypeAdapterFactory<CardTemplate> cardTemplateAdapter = getCardTemplateAdapter();
+            Gson gson = new GsonBuilder().registerTypeAdapterFactory(cardTemplateAdapter).create();
+            Type templateType = CardTemplate.class;
+            ArrayList<ShopItem> shopItems = new ArrayList<>();
+            for (int i = 0; i < templatesArray.size(); i++) {
+                JsonObject templateObject = templatesArray.get(i).getAsJsonObject();
+                CardTemplate template = gson.fromJson(templateObject, templateType);
+                int count = purchasedCounts.get(i).getAsInt();
+                shopItems.add(new ShopItem(template, count));
+            }
+            return shopItems;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
     public final void buyCard(String cardName) {
-        DataManager dataManager = DataManager.getInstance();
-        CardTemplate cardTemplate = dataManager.getCardTemplateByName(cardName);
-        if (cardTemplate == null) {
-            view.showBuyCardMessage(ShopMenuMessage.NO_CARD_EXISTS);
-            return;
-        }
-        if (cardTemplate.getPrice() > user.getMoney()) {
-            view.showBuyCardMessage(ShopMenuMessage.NOT_ENOUGH_MONEY);
-            return;
-        }
+        try {
+            JsonObject infoObject = new JsonObject();
+            infoObject.addProperty("token", MainController.getToken());
+            infoObject.addProperty("card_name", cardName);
+            JsonObject commandObject = new JsonObject();
+            commandObject.addProperty("command_type", "shop");
+            commandObject.addProperty("command_name", "buy_card");
+            commandObject.add("info", infoObject);
 
-        Card card;
-        if (cardTemplate instanceof MonsterTemplate) {
-            card = new Monster((MonsterTemplate) cardTemplate);
-        } else if (cardTemplate instanceof SpellTemplate) {
-            card = new Spell((SpellTemplate) cardTemplate);
-        } else {
-            card = new Trap((TrapTemplate) cardTemplate);
+            String response = Sender.sendAndGetResponse(commandObject.toString());
+            if (response == null) {
+                MainView.showNetworkError();
+                return;
+            }
+            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
+            ShopMenuMessage message = ShopMenuMessage.valueOf(responseObject.get("message").getAsString());
+            view.showBuyCardMessage(message);
+        } catch (Exception e) {
+            view.showBuyCardMessage(ShopMenuMessage.ERROR);
         }
-
-        dataManager.addCard(card);
-        user.purchaseCard(card);
-        user.decreaseMoney(cardTemplate.getPrice());
-        view.showBuyCardMessage(ShopMenuMessage.CARD_SUCCESSFULLY_PURCHASED);
     }
 
 
     public void increaseMoney(long amount) {
-        user.increaseMoney(amount);
-        view.updateShopScene(user);
+        try {
+            JsonObject infoObject = new JsonObject();
+            infoObject.addProperty("token", MainController.getToken());
+            infoObject.addProperty("amount", amount);
+            JsonObject commandObject = new JsonObject();
+            commandObject.addProperty("command_type", "shop");
+            commandObject.addProperty("command_name", "increase_money");
+            commandObject.add("info", infoObject);
+
+            String response = Sender.sendAndGetResponse(commandObject.toString());
+            if (response == null) {
+                MainView.showNetworkError();
+                return;
+            }
+            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
+            ShopMenuMessage message = ShopMenuMessage.valueOf(responseObject.get("message").getAsString());
+            view.showBuyCardMessage(message);
+        } catch (Exception ignored) {
+        }
+        view.updateShopScene(MainController.getUser());
     }
 }

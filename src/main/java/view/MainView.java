@@ -3,6 +3,7 @@ package view;
 import control.DataManager;
 import control.Sender;
 import control.controller.LoginMenuController;
+import control.controller.MainController;
 import javafx.application.Application;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -49,6 +50,7 @@ public class MainView extends Application {
     @Override
     public void stop() {
         DataManager.getInstance().saveData();
+        MainController.logOut();
         System.exit(0);
     }
 

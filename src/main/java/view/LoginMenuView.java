@@ -9,7 +9,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import model.User;
 import utils.ViewUtility;
 
 import java.io.IOException;
@@ -114,12 +113,7 @@ public class LoginMenuView {
             ViewUtility.showInformationAlert("Login", "Error", "Please fill all fields");
             return;
         }
-        String token = controller.loginUser(username, password);
-        if (token != null) {
-            MainMenuController mainMenuController = new MainMenuController(token);
-            MainMenuView mainMenuView = new MainMenuView(mainMenuController);
-            mainMenuView.setMainMenuScene();
-        }
+        controller.loginUser(username, password);
     }
 
     public void showLoginMessage(LoginMenuMessage message) {
@@ -135,6 +129,9 @@ public class LoginMenuView {
                 break;
             case LOGGED_IN:
                 ViewUtility.showInformationAlert("Login", "Successful", "Logged in successfully!");
+                MainMenuController mainMenuController = new MainMenuController();
+                MainMenuView mainMenuView = new MainMenuView(mainMenuController);
+                mainMenuView.setMainMenuScene();
                 break;
             default:
                 ViewUtility.showInformationAlert("Login", "Error", "Unexpected error");

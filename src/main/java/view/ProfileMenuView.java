@@ -1,5 +1,6 @@
 package view;
 
+import control.controller.MainController;
 import control.controller.MainMenuController;
 import control.controller.ProfileMenuController;
 import control.message.ProfileMenuMessage;
@@ -53,7 +54,7 @@ public class ProfileMenuView {
             scene = new Scene(root);
             MainView.stage.setScene(scene);
             initializeProfileSceneButtons();
-            updateProfileScene(scene, controller.getUser());
+            updateProfileScene(scene, MainController.getUser());
         } catch (IOException e) {
             System.out.println("Failed to load profile scene");
         }
@@ -98,7 +99,7 @@ public class ProfileMenuView {
     }
 
     public void updateChangeNicknameScene() {
-        User user = controller.getUser();
+        User user = MainController.getUser();
 
         Label nicknameLabel = (Label) scene.lookup("#nickname-label");
         nicknameLabel.setText("Nickname: " + (user == null ? "?" : user.getNickname()));
@@ -130,7 +131,7 @@ public class ProfileMenuView {
 
 
     private void backToMainMenu() {
-        MainMenuController mainMenuController = new MainMenuController(controller.getToken());
+        MainMenuController mainMenuController = new MainMenuController();
         MainMenuView mainMenuView = new MainMenuView(mainMenuController);
         mainMenuView.setMainMenuScene();
     }
