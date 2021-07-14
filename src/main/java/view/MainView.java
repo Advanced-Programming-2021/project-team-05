@@ -5,6 +5,7 @@ import control.Sender;
 import control.controller.LoginMenuController;
 import control.controller.MainController;
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
@@ -37,6 +38,7 @@ public class MainView extends Application {
             MainView.stage = stage;
             stage.setTitle("Yu-Gi-Oh");
             stage.setResizable(false);
+            stage.getIcons().add(new Image(getClass().getResource("/images/icon.png").toExternalForm()));
             LoginMenuController controller = new LoginMenuController();
             LoginMenuView view = new LoginMenuView(controller);
             view.setWelcomeScene();
