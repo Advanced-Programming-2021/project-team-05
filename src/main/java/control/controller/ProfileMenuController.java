@@ -7,7 +7,6 @@ import control.message.ProfileMenuMessage;
 import view.MainView;
 import view.ProfileMenuView;
 
-
 public class ProfileMenuController {
 
     private ProfileMenuView view;

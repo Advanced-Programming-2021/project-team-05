@@ -1,6 +1,5 @@
 package view;
 
-import control.DataManager;
 import control.controller.MainController;
 import control.controller.MainMenuController;
 import control.controller.ShopMenuController;
@@ -94,7 +93,7 @@ public class ShopMenuView implements CheatRunner {
 
             buyButton.setOnMouseClicked(event -> {
                 controller.buyCard(template.getName());
-                updateShopScene(user);
+                updateShopScene(MainController.getUser());
             });
 
             VBox container = new VBox(2, cardImage, countLabel, buyButton);

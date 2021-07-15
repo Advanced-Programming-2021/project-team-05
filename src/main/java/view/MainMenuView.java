@@ -72,12 +72,12 @@ public class MainMenuView {
 
         Button deckButton = (Button) scene.lookup("#deck-btn");
         deckButton.setOnMouseClicked(e -> {
-            DeckMenuController deckMenuController = new DeckMenuController(controller.getUser());
+            DeckMenuController deckMenuController = new DeckMenuController();
             DeckMenuView deckMenuView = new DeckMenuView(deckMenuController);
             deckMenuView.setDeckScene();
         });
         deckButton.setOnAction(e -> {
-            DeckMenuController deckMenuController = new DeckMenuController(controller.getUser());
+            DeckMenuController deckMenuController = new DeckMenuController();
             DeckMenuView deckMenuView = new DeckMenuView(deckMenuController);
             deckMenuView.setDeckScene();
         });

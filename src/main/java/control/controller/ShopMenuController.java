@@ -65,7 +65,6 @@ public class ShopMenuController {
             }
             return shopItems;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

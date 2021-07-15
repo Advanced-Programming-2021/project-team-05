@@ -154,6 +154,10 @@ public class User {
         this.activeDeckId = activeDeck.getId();
     }
 
+    public boolean isActiveDeck(Deck deck) {
+        return deck.getId().equals(this.activeDeckId);
+    }
+
 
     public String getProfilePictureName() {
         return this.profilePictureName;

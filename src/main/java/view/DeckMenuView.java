@@ -1,6 +1,7 @@
 package view;
 
 import control.controller.DeckMenuController;
+import control.controller.MainController;
 import control.controller.MainMenuController;
 import control.message.DeckMenuMessage;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Deck;
+import model.DeckInfo;
 import model.User;
 import model.card.Card;
 import utils.Listener;
@@ -27,7 +29,6 @@ import utils.ViewUtility;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
-
 
 public class DeckMenuView {
 
@@ -54,8 +55,8 @@ public class DeckMenuView {
             scene = new Scene(root);
             MainView.stage.setScene(scene);
             initializeDeckSceneButtons();
-            updateDeckScene(controller.getUser());
-        } catch (IOException e) {
+            updateDeckScene(MainController.getUser());
+        } catch (Exception e) {
             System.out.println("Failed to load deck scene");
         }
     }
@@ -63,22 +64,31 @@ public class DeckMenuView {
     private void initializeDeckSceneButtons() {
         Button backButton = (Button) scene.lookup("#back-btn");
         backButton.setOnMouseClicked(e -> {
-            MainMenuController mainMenuController = new MainMenuController(controller.getUser());
+            MainMenuController mainMenuController = new MainMenuController(MainController.getUser());
             MainMenuView mainMenuView = new MainMenuView(mainMenuController);
             mainMenuView.setMainMenuScene();
         });
         backButton.setOnAction(e -> {
-            MainMenuController mainMenuController = new MainMenuController(controller.getUser());
+            MainMenuController mainMenuController = new MainMenuController(MainController.getUser());
             MainMenuView mainMenuView = new MainMenuView(mainMenuController);
             mainMenuView.setMainMenuScene();
         });
     }
 
     public void updateDeckScene(User user) {
+        if (user == null) {
+            ViewUtility.showInformationAlert("Deck", "Error", "Failed to load decks");
+            return;
+        }
         FlowPane decksContainer = (FlowPane) scene.lookup("#decks-container");
         decksContainer.setAlignment(Pos.TOP_CENTER);
         decksContainer.getChildren().clear();
-        for (Deck deck : user.getDecks()) {
+        ArrayList<Deck> decks = controller.getDecks();
+        if (decks == null) {
+            ViewUtility.showInformationAlert("Deck", "Error", "Failed to load decks");
+            return;
+        }
+        for (Deck deck : decks) {
             TextArea deckDescription = new TextArea(deck.toString());
             deckDescription.setEditable(false);
             deckDescription.setPrefHeight(150);
@@ -90,25 +100,25 @@ public class DeckMenuView {
             editButton.setOnAction(event -> setEditDeckScene(deck));
             Button deleteButton = new Button("Delete");
             deleteButton.getStyleClass().addAll("default-button", "delete-button");
-            deleteButton.setOnMouseClicked(event -> askDelete(user, deck));
-            deleteButton.setOnAction(event -> askDelete(user, deck));
+            deleteButton.setOnMouseClicked(event -> askDelete(deck));
+            deleteButton.setOnAction(event -> askDelete(deck));
             HBox buttonContainer = new HBox(5, editButton, deleteButton);
             buttonContainer.setPrefWidth(300);
 
             Button activateButton = new Button("Activate Deck");
             activateButton.getStyleClass().addAll("default-button", "activate-button");
-            if (deck.equals(user.getActiveDeck())) activateButton.setDisable(true);
+            if (user.isActiveDeck(deck)) activateButton.setDisable(true);
             activateButton.setOnMouseClicked(event -> {
                 controller.activateDeck(deck.getName());
-                updateDeckScene(user);
+                updateDeckScene(MainController.getUser());
             });
             activateButton.setOnAction(event -> {
                 controller.activateDeck(deck.getName());
-                updateDeckScene(user);
+                updateDeckScene(MainController.getUser());
             });
 
             VBox container = new VBox(7, deckDescription, buttonContainer, activateButton);
-            if (deck.equals(user.getActiveDeck())) container.setId("active-deck-container");
+            if (user.isActiveDeck(deck)) container.setId("active-deck-container");
             container.setPrefWidth(250);
             container.setPrefHeight(290);
             decksContainer.getChildren().add(container);
@@ -123,13 +133,13 @@ public class DeckMenuView {
         addButton.setPrefWidth(250);
         addButton.setPrefHeight(287);
         addButton.setCursor(Cursor.HAND);
-        addButton.setOnMouseClicked(event -> createDeck(user));
-        addButton.setOnAction(event -> createDeck(user));
+        addButton.setOnMouseClicked(event -> createDeck());
+        addButton.setOnAction(event -> createDeck());
         addBox.getChildren().add(addButton);
         decksContainer.getChildren().add(addBox);
     }
 
-    private void createDeck(User user) {
+    private void createDeck() {
         ViewUtility.showPromptAlert("Create new Deck",
                 "Enter the deck name:",
                 "Deck name",
@@ -138,7 +148,7 @@ public class DeckMenuView {
                     @Override
                     public void onOk(String input) {
                         controller.createDeck(input);
-                        updateDeckScene(user);
+                        updateDeckScene(MainController.getUser());
                     }
 
                     @Override
@@ -147,7 +157,7 @@ public class DeckMenuView {
                 });
     }
 
-    private void askDelete(User user, Deck deck) {
+    private void askDelete(Deck deck) {
         ViewUtility.showConfirmationAlert("Deck",
                 "Delete Deck",
                 "Are you sure you want to delete this deck?",
@@ -157,7 +167,7 @@ public class DeckMenuView {
                     @Override
                     public void onConfirm() {
                         controller.deleteDeck(deck.getName());
-                        updateDeckScene(user);
+                        updateDeckScene(MainController.getUser());
                     }
 
                     @Override
@@ -174,69 +184,74 @@ public class DeckMenuView {
             Parent root = loader.load();
             scene = new Scene(root);
             MainView.stage.setScene(scene);
-            initializeEditDeckSceneButtons(deck);
-            updateEditDeckScene(deck, controller.getUser());
+            initializeEditDeckSceneButtons(deck.getName());
+            updateEditDeckScene(controller.getDeckInfo(deck.getName()), MainController.getUser());
         } catch (IOException e) {
             System.out.println("Failed to load edit deck scene");
         }
     }
 
-    private void initializeEditDeckSceneButtons(Deck deck) {
+    private void initializeEditDeckSceneButtons(String deckName) {
         Button backButton = (Button) scene.lookup("#back-btn");
         backButton.setOnMouseClicked(e -> setDeckScene());
         backButton.setOnAction(e -> setDeckScene());
 
         Button mainRemoveButton = (Button) scene.lookup("#main-remove-btn");
         mainRemoveButton.setOnMouseClicked(event -> {
-            controller.removeCard(deck.getName(), selectedMainCard.getName(), false);
-            updateEditDeckScene(deck, controller.getUser());
+            controller.removeCard(deckName, selectedMainCard.getName(), false);
+            updateEditDeckScene(controller.getDeckInfo(deckName), MainController.getUser());
         });
 
         Button mainMoveButton = (Button) scene.lookup("#main-move-btn");
         mainMoveButton.setOnMouseClicked(event -> {
-            controller.removeCard(deck.getName(), selectedMainCard.getName(), false);
-            controller.addCard(deck.getName(), selectedMainCard.getName(), true);
-            updateEditDeckScene(deck, controller.getUser());
+            controller.removeCard(deckName, selectedMainCard.getName(), false);
+            controller.addCard(deckName, selectedMainCard.getName(), true);
+            updateEditDeckScene(controller.getDeckInfo(deckName), MainController.getUser());
         });
 
         Button sideRemoveButton = (Button) scene.lookup("#side-remove-btn");
         sideRemoveButton.setOnMouseClicked(event -> {
-            controller.removeCard(deck.getName(), selectedSideCard.getName(), true);
-            updateEditDeckScene(deck, controller.getUser());
+            controller.removeCard(deckName, selectedSideCard.getName(), true);
+            updateEditDeckScene(controller.getDeckInfo(deckName), MainController.getUser());
         });
 
         Button sideMoveButton = (Button) scene.lookup("#side-move-btn");
         sideMoveButton.setOnMouseClicked(event -> {
-            controller.removeCard(deck.getName(), selectedSideCard.getName(), true);
-            controller.addCard(deck.getName(), selectedSideCard.getName(), false);
-            updateEditDeckScene(deck, controller.getUser());
+            controller.removeCard(deckName, selectedSideCard.getName(), true);
+            controller.addCard(deckName, selectedSideCard.getName(), false);
+            updateEditDeckScene(controller.getDeckInfo(deckName), MainController.getUser());
         });
     }
 
-    public void updateEditDeckScene(Deck deck, User user) {
+    public void updateEditDeckScene(DeckInfo deckInfo, User user) {
+        if (deckInfo == null) {
+            ViewUtility.showInformationAlert("Edit Deck", "Error", "Failed to load deck");
+            return;
+        }
+
         selectedMainCardImage = null;
         selectedMainCard = null;
         selectedSideCardImage = null;
         selectedSideCard = null;
 
         Label mainDeckLabel = (Label) scene.lookup("#main-deck-label");
-        mainDeckLabel.setText("Main Deck (" + deck.getMainDeckSize() + "/60)");
+        mainDeckLabel.setText("Main Deck (" + deckInfo.getDeck().getMainDeckSize() + "/60)");
 
         Label sideDeckLabel = (Label) scene.lookup("#side-deck-label");
-        sideDeckLabel.setText("Side Deck (" + deck.getSideDeckSize() + "/20)");
+        sideDeckLabel.setText("Side Deck (" + deckInfo.getDeck().getSideDeckSize() + "/20)");
 
         FlowPane mainCardsContainer = (FlowPane) scene.lookup("#main-cards-container");
-        updateCardsContainer(mainCardsContainer, deck, user, false);
+        updateCardsContainer(mainCardsContainer, deckInfo, user, false);
 
         FlowPane sideCardsContainer = (FlowPane) scene.lookup("#side-cards-container");
-        updateCardsContainer(sideCardsContainer, deck, user, true);
+        updateCardsContainer(sideCardsContainer, deckInfo, user, true);
 
-        updateButtons(deck, user);
+        updateButtons(deckInfo.getDeck());
     }
 
-    private void updateCardsContainer(FlowPane cardsContainer, Deck deck, User user, boolean isSide) {
+    private void updateCardsContainer(FlowPane cardsContainer, DeckInfo deckInfo, User user, boolean isSide) {
         cardsContainer.getChildren().clear();
-        ArrayList<Card> cards = isSide ? deck.getSideDeck() : deck.getMainDeck();
+        ArrayList<Card> cards = isSide ? deckInfo.getSideDeck() : deckInfo.getMainDeck();
         cards.sort(Comparator.comparing(Card::getName));
         cards.sort(Comparator.comparing(card -> card.getClass().getSimpleName()));
         for (Card card : cards) {
@@ -246,7 +261,7 @@ public class DeckMenuView {
             cardImage.setFitHeight(165);
             cardImage.setOnMouseClicked(e -> {
                 selectDeselect(cardImage, card, isSide);
-                updateButtons(deck, user);
+                updateButtons(deckInfo.getDeck());
             });
 
             Button showButton = new Button("Show");
@@ -270,8 +285,8 @@ public class DeckMenuView {
         addButton.setPrefWidth(100);
         addButton.setPrefHeight(205);
         addButton.setCursor(Cursor.HAND);
-        addButton.setOnMouseClicked(e -> addCard(deck, user, isSide));
-        addButton.setOnAction(e -> addCard(deck, user, isSide));
+        addButton.setOnMouseClicked(e -> addCard(deckInfo.getDeck(), isSide));
+        addButton.setOnAction(e -> addCard(deckInfo.getDeck(), isSide));
         addBox.getChildren().add(addButton);
         cardsContainer.getChildren().add(addBox);
     }
@@ -302,14 +317,19 @@ public class DeckMenuView {
         }
     }
 
-    private void updateButtons(Deck deck, User user) {
-        updateAddButtons(deck, user);
+    private void updateButtons(Deck deck) {
+        updateAddButtons(deck);
         updateRemoveButtons();
         updateMoveButtons(deck);
     }
 
-    private void updateAddButtons(Deck deck, User user) {
-        boolean hasCard = deck.getAddableCards(user.getPurchasedCards()).size() != 0;
+    private void updateAddButtons(Deck deck) {
+        ArrayList<Card> addableCards = controller.getAddableCards(deck.getName());
+        if (addableCards == null) {
+            ViewUtility.showInformationAlert("Edit Deck", "Error", "Error in loading deck");
+            return;
+        }
+        boolean hasCard = addableCards.size() != 0;
 
         Button mainAddButton = (Button) scene.lookup("#main-add-btn");
         mainAddButton.setDisable(!hasCard || deck.isMainDeckFull());
@@ -334,7 +354,7 @@ public class DeckMenuView {
         sideRemoveButton.setDisable(selectedSideCard == null);
     }
 
-    private void addCard(Deck deck, User user, boolean isSide) {
+    private void addCard(Deck deck, boolean isSide) {
         try {
             Stage stage = new Stage();
             stage.setResizable(false);
@@ -350,14 +370,19 @@ public class DeckMenuView {
             Button backButton = (Button) scene.lookup("#back-btn");
             backButton.setOnMouseClicked(e -> stage.close());
             backButton.setOnAction(e -> stage.close());
-            for (Card card : deck.getAddableCards(user.getPurchasedCards())) {
+            ArrayList<Card> addableCards = controller.getAddableCards(deck.getName());
+            if (addableCards == null) {
+                ViewUtility.showInformationAlert("Edit Deck", "Error", "Error in loading deck");
+                return;
+            }
+            for (Card card : addableCards) {
                 ImageView cardImage = ViewUtility.getCardImageView(card.getName());
                 cardImage.getStyleClass().add("card-image");
                 cardImage.setFitWidth(184);
                 cardImage.setFitHeight(300);
                 cardImage.setOnMouseClicked(e -> {
                     controller.addCard(deck.getName(), card.getName(), isSide);
-                    updateEditDeckScene(deck, user);
+                    updateEditDeckScene(controller.getDeckInfo(deck.getName()), MainController.getUser());
                     stage.close();
                 });
 
@@ -420,25 +445,24 @@ public class DeckMenuView {
     public void showAddCardMessage(DeckMenuMessage message, String deckName, String cardName) {
         switch (message) {
             case NO_CARD_EXISTS:
-                ViewUtility.showInformationAlert("Deck", "Add Card", "card with name " + cardName + " does not exist");
+                ViewUtility.showInformationAlert("Deck", "Add Card", "Card with name " + cardName + " does not exist");
                 break;
             case NO_DECK_EXISTS:
-                ViewUtility.showInformationAlert("Deck", "Add Card", "deck with name " + deckName + " does not exist");
+                ViewUtility.showInformationAlert("Deck", "Add Card", "Deck with name " + deckName + " does not exist");
                 break;
             case MAIN_DECK_IS_FULL:
-                ViewUtility.showInformationAlert("Deck", "Add Card", "main deck is full");
+                ViewUtility.showInformationAlert("Deck", "Add Card", "Main deck is full");
                 break;
             case SIDE_DECK_IS_FULL:
-                ViewUtility.showInformationAlert("Deck", "Add Card", "side deck is full");
+                ViewUtility.showInformationAlert("Deck", "Add Card", "Side deck is full");
                 break;
             case DECK_IS_FULL:
-                ViewUtility.showInformationAlert("Deck", "Add Card", "you can't add more cards with name " + cardName + " in deck " + deckName);
+                ViewUtility.showInformationAlert("Deck", "Add Card", "You can't add more cards with name " + cardName + " in deck " + deckName);
                 break;
             case CARD_ADDED:
-                ViewUtility.showInformationAlert("Deck", "Add Card", "card added to deck successfully!");
                 break;
             default:
-                ViewUtility.showInformationAlert("Deck", "Add Card", "unexpected error");
+                ViewUtility.showInformationAlert("Deck", "Add Card", "Unexpected error");
         }
     }
 
@@ -454,7 +478,6 @@ public class DeckMenuView {
                 ViewUtility.showInformationAlert("Deck", "Remove Card", "Card with name " + cardName + " does not exist in side deck");
                 break;
             case CARD_REMOVED:
-                ViewUtility.showInformationAlert("Deck", "Remove Card", "Card removed form deck successfully!");
                 break;
             default:
                 ViewUtility.showInformationAlert("Deck", "Remove Card", "Unexpected error");
