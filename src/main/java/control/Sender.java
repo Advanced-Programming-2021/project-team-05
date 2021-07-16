@@ -31,7 +31,6 @@ public class Sender {
             dataOutputStream.flush();
         } catch (IOException e) {
             System.out.println("Failed to send message to server");
-            e.printStackTrace();
         }
     }
 

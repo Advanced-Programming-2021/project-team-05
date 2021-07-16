@@ -96,11 +96,13 @@ public class MainMenuView {
 
         Button scoreboardButton = (Button) scene.lookup("#scoreboard-btn");
         scoreboardButton.setOnMouseClicked(e -> {
-            ScoreboardMenuView scoreboardMenuView = new ScoreboardMenuView(controller.getUser());
+            ScoreboardMenuController scoreboardMenuController = new ScoreboardMenuController();
+            ScoreboardMenuView scoreboardMenuView = new ScoreboardMenuView(scoreboardMenuController);
             scoreboardMenuView.setScoreboardScene();
         });
         scoreboardButton.setOnAction(e -> {
-            ScoreboardMenuView scoreboardMenuView = new ScoreboardMenuView(controller.getUser());
+            ScoreboardMenuController scoreboardMenuController = new ScoreboardMenuController();
+            ScoreboardMenuView scoreboardMenuView = new ScoreboardMenuView(scoreboardMenuController);
             scoreboardMenuView.setScoreboardScene();
         });
 

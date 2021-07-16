@@ -174,23 +174,6 @@ public class DataManager {
     }
 
 
-    public ObservableList<ScoreboardItem> getScoreboardItems() {
-        sortUsers();
-        ObservableList<ScoreboardItem> scoreboardItems = FXCollections.observableArrayList();
-        for (int i = 0, rank = 1, size = this.users.size(); i < size; i++) {
-            User user = this.users.get(i);
-            String rankString = String.valueOf(rank);
-            String scoreString = String.valueOf(user.getScore());
-            scoreboardItems.add(new ScoreboardItem(rankString, user.getNickname(), scoreString));
-            if (i < size - 1 && user.getScore() != this.users.get(i + 1).getScore()) rank = i + 2;
-        }
-        for (int i = scoreboardItems.size(); i < 20; i++) {
-            scoreboardItems.add(new ScoreboardItem("-", "-", "-"));
-        }
-        return scoreboardItems;
-    }
-
-
     private RuntimeTypeAdapterFactory<Card> getCardAdapter() {
         return RuntimeTypeAdapterFactory
                 .of(Card.class, "card_type")

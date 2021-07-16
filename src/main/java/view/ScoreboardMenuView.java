@@ -1,7 +1,11 @@
 package view;
 
-import control.DataManager;
 import control.controller.MainMenuController;
+import control.controller.ScoreboardMenuController;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,20 +15,21 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 import model.ScoreboardItem;
-import model.User;
+import utils.ViewUtility;
 
 import java.io.IOException;
 
-
 public class ScoreboardMenuView {
 
-    private final User user;
+    private final ScoreboardMenuController controller;
     private Scene scene;
+    private Timeline refreshTimeline;
 
 
-    public ScoreboardMenuView(User user) {
-        this.user = user;
+    public ScoreboardMenuView(ScoreboardMenuController controller) {
+        this.controller = controller;
     }
 
 
@@ -37,26 +42,43 @@ public class ScoreboardMenuView {
             MainView.stage.setScene(scene);
             initializeScoreboardSceneButtons();
             updateScoreboardScene();
+
+            KeyFrame refreshKeyFrame = new KeyFrame(Duration.seconds(5), e -> updateScoreboardScene());
+            refreshTimeline = new Timeline(refreshKeyFrame);
+            refreshTimeline.setCycleCount(Animation.INDEFINITE);
+            refreshTimeline.play();
         } catch (IOException e) {
             System.out.println("Failed to load main menu scene");
         }
     }
 
     private void initializeScoreboardSceneButtons() {
-        Button logoutButton = (Button) scene.lookup("#back-btn");
-        logoutButton.setOnMouseClicked(e -> {
-            MainMenuController mainMenuController = new MainMenuController(user);
+        Button backButton = (Button) scene.lookup("#back-btn");
+        backButton.setOnMouseClicked(e -> {
+            refreshTimeline.stop();
+            MainMenuController mainMenuController = new MainMenuController();
             MainMenuView mainMenuView = new MainMenuView(mainMenuController);
             mainMenuView.setMainMenuScene();
         });
-        logoutButton.setOnAction(e -> {
-            MainMenuController mainMenuController = new MainMenuController(user);
+        backButton.setOnAction(e -> {
+            refreshTimeline.stop();
+            MainMenuController mainMenuController = new MainMenuController();
             MainMenuView mainMenuView = new MainMenuView(mainMenuController);
             mainMenuView.setMainMenuScene();
         });
+
+        Button refreshButton = (Button) scene.lookup("#refresh-btn");
+        refreshButton.setOnMouseClicked(e -> updateScoreboardScene());
+        refreshButton.setOnAction(e -> updateScoreboardScene());
     }
 
     public void updateScoreboardScene() {
+        ObservableList<ScoreboardItem> scoreboardItems = controller.getScoreboardItems();
+        if (scoreboardItems == null) {
+            ViewUtility.showInformationAlert("Scoreboard", "Error", "Failed to get data from server");
+            return;
+        }
+
         TableColumn<ScoreboardItem, String> rankColumn = new TableColumn<>("Rank");
         rankColumn.setCellValueFactory(new PropertyValueFactory<>("rank"));
         rankColumn.setId("rank-column");
@@ -80,15 +102,19 @@ public class ScoreboardMenuView {
 
         TableView<ScoreboardItem> tableView = new TableView<>();
         tableView.setId("scoreboard-table");
-        tableView.getColumns().addAll(rankColumn, nicknameColumn, scoreColumn);
-        tableView.setItems(DataManager.getInstance().getScoreboardItems());
+        tableView.getColumns().add(rankColumn);
+        tableView.getColumns().add(nicknameColumn);
+        tableView.getColumns().add(scoreColumn);
+        tableView.setItems(scoreboardItems);
         tableView.setEditable(true);
         tableView.setRowFactory(tv -> new TableRow<ScoreboardItem>() {
             @Override
             public void updateItem(ScoreboardItem item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null) return;
-                if (user.getNickname().equals(item.getNickname())) setId("current-user-row");
+
+                if (item.isCurrentUser()) setId("current-user-row");
+                else if (item.isOnline()) setId("online-user-row");
                 else setId(null);
             }
         });

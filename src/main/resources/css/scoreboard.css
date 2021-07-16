@@ -39,6 +39,22 @@
     -fx-padding: 0;
 }
 
+.table-row-cell:odd {
+    -fx-background-color: #a82f4e;
+}
+
+.table-row-cell:even {
+    -fx-background-color: #8248a1;
+}
+
+#online-user-row:odd {
+    -fx-background-color: #0d9241;
+}
+
+#online-user-row:even {
+    -fx-background-color: #0d9241;
+}
+
 #current-user-row {
     -fx-background-color: #c1b031;
 }
@@ -46,15 +62,8 @@
 .table-row-cell:hover,
 .table-row-cell:odd:hover,
 .table-row-cell:even:hover,
-#current-user-row:hover {
+#current-user-row:hover,
+#online-user-row:hover {
     -fx-background-color: #E7D551;
-}
-
-.table-row-cell:odd {
-    -fx-background-color: #8248a1;
-}
-
-.table-row-cell:even {
-    -fx-background-color: #a82f4e;
 }
 

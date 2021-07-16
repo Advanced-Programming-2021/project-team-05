@@ -34,8 +34,16 @@
             </children>
         </HBox>
       <HBox id="scoreboard-container" alignment="CENTER" prefHeight="100.0" prefWidth="500.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.rowSpan="3" />
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6" />
-      <Button mnemonicParsing="false" id="back-btn" text="Back" GridPane.columnIndex="3" GridPane.rowIndex="6">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6">
+         <children>
+            <Button id="refresh-btn" mnemonicParsing="false" text="Refresh">
+               <styleClass>
+                  <String fx:value="default-button" />
+                  <String fx:value="button-small" />
+               </styleClass>
+            </Button>
+         </children></HBox>
+      <Button id="back-btn" mnemonicParsing="false" text="Back" GridPane.columnIndex="3" GridPane.rowIndex="6">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
