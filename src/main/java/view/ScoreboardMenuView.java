@@ -1,5 +1,6 @@
 package view;
 
+import control.controller.MainController;
 import control.controller.MainMenuController;
 import control.controller.ScoreboardMenuController;
 import javafx.animation.Animation;
@@ -21,15 +22,14 @@ import utils.ViewUtility;
 
 import java.io.IOException;
 
-public class ScoreboardMenuView {
+public class ScoreboardMenuView extends View {
 
     private final ScoreboardMenuController controller;
-    private Scene scene;
-    private Timeline refreshTimeline;
 
 
     public ScoreboardMenuView(ScoreboardMenuController controller) {
         this.controller = controller;
+        controller.setView(this);
     }
 
 
@@ -42,11 +42,6 @@ public class ScoreboardMenuView {
             MainView.stage.setScene(scene);
             initializeScoreboardSceneButtons();
             updateScoreboardScene();
-
-            KeyFrame refreshKeyFrame = new KeyFrame(Duration.seconds(5), e -> updateScoreboardScene());
-            refreshTimeline = new Timeline(refreshKeyFrame);
-            refreshTimeline.setCycleCount(Animation.INDEFINITE);
-            refreshTimeline.play();
         } catch (IOException e) {
             System.out.println("Failed to load main menu scene");
         }
@@ -54,14 +49,7 @@ public class ScoreboardMenuView {
 
     private void initializeScoreboardSceneButtons() {
         Button backButton = (Button) scene.lookup("#back-btn");
-        backButton.setOnMouseClicked(e -> {
-            refreshTimeline.stop();
-            MainMenuController mainMenuController = new MainMenuController();
-            MainMenuView mainMenuView = new MainMenuView(mainMenuController);
-            mainMenuView.setMainMenuScene();
-        });
         backButton.setOnAction(e -> {
-            refreshTimeline.stop();
             MainMenuController mainMenuController = new MainMenuController();
             MainMenuView mainMenuView = new MainMenuView(mainMenuController);
             mainMenuView.setMainMenuScene();
@@ -73,7 +61,7 @@ public class ScoreboardMenuView {
     }
 
     public void updateScoreboardScene() {
-        ObservableList<ScoreboardItem> scoreboardItems = controller.getScoreboardItems();
+        ObservableList<ScoreboardItem> scoreboardItems = MainController.getScoreboardItems();
         if (scoreboardItems == null) {
             ViewUtility.showInformationAlert("Scoreboard", "Error", "Failed to get data from server");
             return;

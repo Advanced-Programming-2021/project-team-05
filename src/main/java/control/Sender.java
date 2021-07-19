@@ -1,31 +1,26 @@
 package control;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
 public class Sender {
 
-    private static Socket socket;
-    private static DataInputStream dataInputStream;
-    private static DataOutputStream dataOutputStream;
+    private final Socket socket;
+    private final DataOutputStream dataOutputStream;
 
 
-    public static boolean initialize() {
-        try {
-            socket = new Socket("localhost", 7355);
-            dataInputStream = new DataInputStream(socket.getInputStream());
-            dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            return true;
-        } catch (IOException e) {
-            System.out.println("Failed to connect to server");
-            return false;
-        }
+    public Sender(Socket socket, DataOutputStream dataOutputStream) {
+        this.socket = socket;
+        this.dataOutputStream = dataOutputStream;
+    }
+
+    public static String sendAndGetResponse(String toString) {
+        return null;
     }
 
 
-    public static void send(String message) {
+    public void send(String message) {
         try {
             dataOutputStream.writeUTF(message);
             dataOutputStream.flush();
@@ -34,13 +29,12 @@ public class Sender {
         }
     }
 
-    public static String sendAndGetResponse(String message) {
+    public void finish() {
         try {
-            send(message);
-            return dataInputStream.readUTF();
+            dataOutputStream.close();
+            socket.close();
         } catch (IOException e) {
-            System.out.println("Failed to get response from server");
-            return null;
+            System.out.println("Failed to close socket");
         }
     }
 }

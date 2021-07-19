@@ -2,10 +2,10 @@ package control.controller;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import control.Sender;
 import control.message.DeckMenuMessage;
+import javafx.application.Platform;
 import model.Deck;
 import model.DeckInfo;
 import model.card.Card;
@@ -18,17 +18,17 @@ import model.template.TrapTemplate;
 import view.DeckMenuView;
 import view.MainView;
 
-import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class DeckMenuController {
+public class DeckMenuController extends Controller {
 
     private DeckMenuView view;
 
 
     public void setView(DeckMenuView view) {
         this.view = view;
+        super.view = view;
     }
 
 
@@ -41,14 +41,18 @@ public class DeckMenuController {
             commandObject.addProperty("command_type", "deck");
             commandObject.addProperty("command_name", "create_deck");
             commandObject.add("info", infoObject);
+            MainController.sendMessage(commandObject.toString());
+            startWaiting();
+        } catch (Exception e) {
+            view.showCreateDeckMessage(DeckMenuMessage.ERROR);
+        }
+    }
 
-            String response = Sender.sendAndGetResponse(commandObject.toString());
-            if (response == null) {
-                MainView.showNetworkError();
-                return;
-            }
-            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
-            DeckMenuMessage message = DeckMenuMessage.valueOf(responseObject.get("message").getAsString());
+    private void checkCreateDeckResponse(JsonObject infoObject) {
+        try {
+            if (waitTimeline == null) return;
+            else stopWaiting();
+            DeckMenuMessage message = DeckMenuMessage.valueOf(infoObject.get("message").getAsString());
             view.showCreateDeckMessage(message);
         } catch (Exception e) {
             view.showCreateDeckMessage(DeckMenuMessage.ERROR);
@@ -65,17 +69,21 @@ public class DeckMenuController {
             commandObject.addProperty("command_type", "deck");
             commandObject.addProperty("command_name", "delete_deck");
             commandObject.add("info", infoObject);
-
-            String response = Sender.sendAndGetResponse(commandObject.toString());
-            if (response == null) {
-                MainView.showNetworkError();
-                return;
-            }
-            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
-            DeckMenuMessage message = DeckMenuMessage.valueOf(responseObject.get("message").getAsString());
-            view.showDeleteDeckMessage(message, deckName);
+            MainController.sendMessage(commandObject.toString());
+            startWaiting();
         } catch (Exception e) {
-            view.showDeleteDeckMessage(DeckMenuMessage.ERROR, deckName);
+            view.showDeleteDeckMessage(DeckMenuMessage.ERROR);
+        }
+    }
+
+    private void checkDeleteDeckResponse(JsonObject infoObject) {
+        try {
+            if (waitTimeline == null) return;
+            else stopWaiting();
+            DeckMenuMessage message = DeckMenuMessage.valueOf(infoObject.get("message").getAsString());
+            view.showDeleteDeckMessage(message);
+        } catch (Exception e) {
+            view.showDeleteDeckMessage(DeckMenuMessage.ERROR);
         }
     }
 
@@ -89,17 +97,21 @@ public class DeckMenuController {
             commandObject.addProperty("command_type", "deck");
             commandObject.addProperty("command_name", "activate_deck");
             commandObject.add("info", infoObject);
-
-            String response = Sender.sendAndGetResponse(commandObject.toString());
-            if (response == null) {
-                MainView.showNetworkError();
-                return;
-            }
-            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
-            DeckMenuMessage message = DeckMenuMessage.valueOf(responseObject.get("message").getAsString());
-            view.showActivateDeckMessage(message, deckName);
+            MainController.sendMessage(commandObject.toString());
+            startWaiting();
         } catch (Exception e) {
-            view.showActivateDeckMessage(DeckMenuMessage.ERROR, deckName);
+            view.showActivateDeckMessage(DeckMenuMessage.ERROR);
+        }
+    }
+
+    private void checkActivateDeckResponse(JsonObject infoObject) {
+        try {
+            if (waitTimeline == null) return;
+            else stopWaiting();
+            DeckMenuMessage message = DeckMenuMessage.valueOf(infoObject.get("message").getAsString());
+            view.showActivateDeckMessage(message);
+        } catch (Exception e) {
+            view.showActivateDeckMessage(DeckMenuMessage.ERROR);
         }
     }
 
@@ -115,17 +127,21 @@ public class DeckMenuController {
             commandObject.addProperty("command_type", "deck");
             commandObject.addProperty("command_name", "add_card");
             commandObject.add("info", infoObject);
-
-            String response = Sender.sendAndGetResponse(commandObject.toString());
-            if (response == null) {
-                MainView.showNetworkError();
-                return;
-            }
-            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
-            DeckMenuMessage message = DeckMenuMessage.valueOf(responseObject.get("message").getAsString());
-            view.showAddCardMessage(message, deckName, cardName);
+            MainController.sendMessage(commandObject.toString());
+            startWaiting();
         } catch (Exception e) {
-            view.showAddCardMessage(DeckMenuMessage.ERROR, deckName, cardName);
+            view.showAddCardMessage(DeckMenuMessage.ERROR);
+        }
+    }
+
+    private void checkAddCardResponse(JsonObject infoObject) {
+        try {
+            if (waitTimeline == null) return;
+            else stopWaiting();
+            DeckMenuMessage message = DeckMenuMessage.valueOf(infoObject.get("message").getAsString());
+            view.showAddCardMessage(message);
+        } catch (Exception e) {
+            view.showAddCardMessage(DeckMenuMessage.ERROR);
         }
     }
 
@@ -141,117 +157,45 @@ public class DeckMenuController {
             commandObject.addProperty("command_type", "deck");
             commandObject.addProperty("command_name", "remove_card");
             commandObject.add("info", infoObject);
-
-            String response = Sender.sendAndGetResponse(commandObject.toString());
-            if (response == null) {
-                MainView.showNetworkError();
-                return;
-            }
-            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
-            DeckMenuMessage message = DeckMenuMessage.valueOf(responseObject.get("message").getAsString());
-            view.showRemoveCardMessage(message, deckName, cardName);
+            MainController.sendMessage(commandObject.toString());
+            startWaiting();
         } catch (Exception e) {
-            view.showRemoveCardMessage(DeckMenuMessage.ERROR, deckName, cardName);
+            view.showRemoveCardMessage(DeckMenuMessage.ERROR);
         }
     }
 
-
-    public final ArrayList<Deck> getDecks() {
+    private void checkRemoveCardResponse(JsonObject infoObject) {
         try {
-            JsonObject infoObject = new JsonObject();
-            infoObject.addProperty("token", MainController.getToken());
-            JsonObject commandObject = new JsonObject();
-            commandObject.addProperty("command_type", "data");
-            commandObject.addProperty("command_name", "get_decks");
-            commandObject.add("info", infoObject);
-
-            String response = Sender.sendAndGetResponse(commandObject.toString());
-            if (response == null) {
-                MainView.showNetworkError();
-                return null;
-            }
-            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
-            JsonArray decksArray = responseObject.get("data").getAsJsonArray();
-
-            Gson gson = new Gson();
-            Type deckType = new TypeToken<ArrayList<Deck>>() {
-            }.getType();
-            return gson.fromJson(decksArray, deckType);
+            if (waitTimeline == null) return;
+            else stopWaiting();
+            DeckMenuMessage message = DeckMenuMessage.valueOf(infoObject.get("message").getAsString());
+            view.showRemoveCardMessage(message);
         } catch (Exception e) {
-            return null;
+            view.showRemoveCardMessage(DeckMenuMessage.ERROR);
         }
     }
 
 
-    public final DeckInfo getDeckInfo(String deckName) {
-        try {
-            JsonObject infoObject = new JsonObject();
-            infoObject.addProperty("token", MainController.getToken());
-            infoObject.addProperty("deck_name", deckName);
-            JsonObject commandObject = new JsonObject();
-            commandObject.addProperty("command_type", "data");
-            commandObject.addProperty("command_name", "get_deck_info");
-            commandObject.add("info", infoObject);
-
-            String response = Sender.sendAndGetResponse(commandObject.toString());
-            if (response == null) {
-                MainView.showNetworkError();
-                return null;
-            }
-            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
-            JsonObject deckInfo = responseObject.get("data").getAsJsonObject();
-            JsonObject deckObject = deckInfo.get("deck").getAsJsonObject();
-            JsonArray mainDeckArray = deckInfo.get("main_deck").getAsJsonArray();
-            JsonArray sideDeckArray = deckInfo.get("side_deck").getAsJsonArray();
-
-            Deck deck = new Gson().fromJson(deckObject, Deck.class);
-            ArrayList<Card> mainDeck = parseToArrayList(mainDeckArray);
-            ArrayList<Card> sideDeck = parseToArrayList(sideDeckArray);
-            return new DeckInfo(deck, mainDeck, sideDeck);
-        } catch (Exception e) {
-            return null;
+    @Override
+    public void parseCommand(JsonObject command) {
+        String commandName = command.get("command_name").getAsString();
+        JsonObject infoObject = command.get("info").getAsJsonObject();
+        switch (commandName) {
+            case "create_deck_response":
+                Platform.runLater(() -> checkCreateDeckResponse(infoObject));
+                break;
+            case "delete_deck_response":
+                Platform.runLater(() -> checkDeleteDeckResponse(infoObject));
+                break;
+            case "activate_deck_response":
+                Platform.runLater(() -> checkActivateDeckResponse(infoObject));
+                break;
+            case "add_card_response":
+                Platform.runLater(() -> checkAddCardResponse(infoObject));
+                break;
+            case "remove_card_response":
+                Platform.runLater(() -> checkRemoveCardResponse(infoObject));
+                break;
         }
-    }
-
-
-    public final ArrayList<Card> getAddableCards(String deckName) {
-        try {
-            JsonObject infoObject = new JsonObject();
-            infoObject.addProperty("token", MainController.getToken());
-            infoObject.addProperty("deck_name", deckName);
-            JsonObject commandObject = new JsonObject();
-            commandObject.addProperty("command_type", "data");
-            commandObject.addProperty("command_name", "get_addable_cards");
-            commandObject.add("info", infoObject);
-
-            String response = Sender.sendAndGetResponse(commandObject.toString());
-            if (response == null) {
-                MainView.showNetworkError();
-                return null;
-            }
-            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
-            JsonArray addableCardsArray = responseObject.get("data").getAsJsonArray();
-            return parseToArrayList(addableCardsArray);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-
-
-    private RuntimeTypeAdapterFactory<Card> getCardAdapter() {
-        return RuntimeTypeAdapterFactory
-                .of(Card.class, "card_type")
-                .registerSubtype(Monster.class, MonsterTemplate.class.getName())
-                .registerSubtype(Spell.class, SpellTemplate.class.getName())
-                .registerSubtype(Trap.class, TrapTemplate.class.getName());
-    }
-
-    private ArrayList<Card> parseToArrayList(JsonArray cardsArray) {
-        RuntimeTypeAdapterFactory<Card> cardAdapter = getCardAdapter();
-        Gson cardGson = new GsonBuilder().registerTypeAdapterFactory(cardAdapter).create();
-        Type cardType = new TypeToken<ArrayList<Card>>() {
-        }.getType();
-        return cardGson.fromJson(cardsArray, cardType);
     }
 }

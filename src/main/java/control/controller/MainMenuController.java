@@ -2,14 +2,13 @@ package control.controller;
 
 import com.google.gson.JsonObject;
 import control.DataManager;
-import control.Sender;
 import control.message.MainMenuMessage;
 import model.Deck;
 import model.User;
 import view.DuelMenuView;
 import view.MainMenuView;
 
-public class MainMenuController {
+public class MainMenuController extends Controller {
 
     private MainMenuView view;
     private User user;
@@ -84,5 +83,10 @@ public class MainMenuController {
         new DuelMenuView(duelMenuController);
         duelMenuController.startDuel();
         return true;
+    }
+
+
+    @Override
+    public void parseCommand(JsonObject command) {
     }
 }

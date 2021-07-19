@@ -13,10 +13,9 @@ import utils.ViewUtility;
 
 import java.io.IOException;
 
-public class LoginMenuView {
+public class LoginMenuView extends View {
 
     private final LoginMenuController controller;
-    private Scene scene;
 
 
     public LoginMenuView(LoginMenuController controller) {
@@ -40,15 +39,12 @@ public class LoginMenuView {
 
     private void initializeWelcomeSceneButtons() {
         Button loginButton = (Button) scene.lookup("#login-btn");
-        loginButton.setOnMouseClicked(e -> setLoginScene());
         loginButton.setOnAction(e -> setLoginScene());
 
         Button registerButton = (Button) scene.lookup("#register-btn");
-        registerButton.setOnMouseClicked(e -> setRegisterScene());
         registerButton.setOnAction(e -> setRegisterScene());
 
         Button exitButton = (Button) scene.lookup("#exit-btn");
-        exitButton.setOnMouseClicked(e -> exit());
         exitButton.setOnAction(e -> exit());
     }
 
@@ -69,12 +65,18 @@ public class LoginMenuView {
 
     private void initializeLoginSceneButtons() {
         Button loginButton = (Button) scene.lookup("#login-btn");
-        loginButton.setOnMouseClicked(e -> logIn());
-        loginButton.setOnAction(e -> logIn());
+        loginButton.setOnAction(e -> {
+            if (controller.isWaiting())
+                ViewUtility.showInformationAlert("", "Error", "You can't do this now");
+            else logIn();
+        });
 
         Button backButton = (Button) scene.lookup("#back-btn");
-        backButton.setOnMouseClicked(e -> setWelcomeScene());
-        backButton.setOnAction(e -> setWelcomeScene());
+        backButton.setOnAction(e -> {
+            if (controller.isWaiting())
+                ViewUtility.showInformationAlert("", "Error", "You can't do this now");
+            else setWelcomeScene();
+        });
     }
 
 
@@ -93,13 +95,19 @@ public class LoginMenuView {
     }
 
     private void initializeRegisterSceneButtons() {
-        Button loginButton = (Button) scene.lookup("#register-btn");
-        loginButton.setOnMouseClicked(e -> register());
-        loginButton.setOnAction(e -> register());
+        Button registerButton = (Button) scene.lookup("#register-btn");
+        registerButton.setOnAction(e -> {
+            if (controller.isWaiting())
+                ViewUtility.showInformationAlert("", "Error", "You can't do this now");
+            else register();
+        });
 
         Button backButton = (Button) scene.lookup("#back-btn");
-        backButton.setOnMouseClicked(e -> setWelcomeScene());
-        backButton.setOnAction(e -> setWelcomeScene());
+        backButton.setOnAction(e -> {
+            if (controller.isWaiting())
+                ViewUtility.showInformationAlert("", "Error", "You can't do this now");
+            else setWelcomeScene();
+        });
     }
 
 
@@ -154,13 +162,13 @@ public class LoginMenuView {
         controller.createUser(username, password, nickname);
     }
 
-    public void showRegisterMessage(LoginMenuMessage message, String username, String nickname) {
+    public void showRegisterMessage(LoginMenuMessage message) {
         switch (message) {
             case USERNAME_EXISTS:
-                ViewUtility.showInformationAlert("Register", "Username Exist", "User with username " + username + " already exists");
+                ViewUtility.showInformationAlert("Register", "Username Exist", "User with entered username already exists");
                 break;
             case NICKNAME_EXISTS:
-                ViewUtility.showInformationAlert("Register", "Nickname Exist", "User with nickname " + nickname + " already exists");
+                ViewUtility.showInformationAlert("Register", "Nickname Exist", "User with entered nickname already exists");
                 break;
             case USERNAME_CONTAIN_SPACE:
                 ViewUtility.showInformationAlert("Register", "Error", "Username should not contain space!");

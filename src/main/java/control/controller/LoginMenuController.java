@@ -1,20 +1,19 @@
 package control.controller;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import control.Sender;
 import control.message.LoginMenuMessage;
+import javafx.application.Platform;
 import view.LoginMenuView;
-import view.MainView;
 
-public class LoginMenuController {
+    public class LoginMenuController extends Controller {
 
-    private LoginMenuView view;
+        private LoginMenuView view;
 
 
-    public void setView(LoginMenuView view) {
-        this.view = view;
-    }
+        public void setView(LoginMenuView view) {
+            this.view = view;
+            super.view = view;
+        }
 
 
     public final void createUser(String username, String password, String nickname) {
@@ -27,17 +26,21 @@ public class LoginMenuController {
             commandObject.addProperty("command_type", "login");
             commandObject.addProperty("command_name", "create_user");
             commandObject.add("info", infoObject);
-
-            String response = Sender.sendAndGetResponse(commandObject.toString());
-            if (response == null) {
-                MainView.showNetworkError();
-                return;
-            }
-            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
-            LoginMenuMessage message = LoginMenuMessage.valueOf(responseObject.get("message").getAsString());
-            view.showRegisterMessage(message, username, nickname);
+            MainController.sendMessage(commandObject.toString());
+            startWaiting();
         } catch (Exception e) {
-            view.showRegisterMessage(LoginMenuMessage.ERROR, username, nickname);
+            view.showRegisterMessage(LoginMenuMessage.ERROR);
+        }
+    }
+
+    private void checkCreateUserResponse(JsonObject infoObject) {
+        try {
+            if (waitTimeline == null) return;
+            else stopWaiting();
+            LoginMenuMessage message = LoginMenuMessage.valueOf(infoObject.get("message").getAsString());
+            view.showRegisterMessage(message);
+        } catch (Exception e) {
+            view.showRegisterMessage(LoginMenuMessage.ERROR);
         }
     }
 
@@ -51,22 +54,40 @@ public class LoginMenuController {
             commandObject.addProperty("command_type", "login");
             commandObject.addProperty("command_name", "login_user");
             commandObject.add("info", infoObject);
-
-            String response = Sender.sendAndGetResponse(commandObject.toString());
-            if (response == null) {
-                MainView.showNetworkError();
-                return;
-            }
-            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
-            LoginMenuMessage message = LoginMenuMessage.valueOf(responseObject.get("message").getAsString());
-            view.showLoginMessage(message);
-            if (message == LoginMenuMessage.LOGGED_IN) {
-                JsonObject responseInfoObject = responseObject.get("info").getAsJsonObject();
-                String token = responseInfoObject.get("token").getAsString();
-                MainController.setToken(token);
-            }
+            MainController.sendMessage(commandObject.toString());
+            startWaiting();
         } catch (Exception e) {
             view.showLoginMessage(LoginMenuMessage.ERROR);
+        }
+    }
+
+    private void checkLoginUserResponse(JsonObject infoObject) {
+        try {
+            if (waitTimeline == null) return;
+            else stopWaiting();
+            LoginMenuMessage message = LoginMenuMessage.valueOf(infoObject.get("message").getAsString());
+            if (message == LoginMenuMessage.LOGGED_IN) {
+                String token = infoObject.get("token").getAsString();
+                MainController.setToken(token);
+            }
+            view.showLoginMessage(message);
+        } catch (Exception e) {
+            view.showLoginMessage(LoginMenuMessage.ERROR);
+        }
+    }
+
+
+    @Override
+    public void parseCommand(JsonObject command) {
+        String commandName = command.get("command_name").getAsString();
+        JsonObject infoObject = command.get("info").getAsJsonObject();
+        switch (commandName) {
+            case "create_user_response":
+                Platform.runLater(() -> checkCreateUserResponse(infoObject));
+                break;
+            case "login_user_response":
+                Platform.runLater(() -> checkLoginUserResponse(infoObject));
+                break;
         }
     }
 }

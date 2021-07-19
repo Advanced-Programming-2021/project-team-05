@@ -30,7 +30,7 @@ public class MainView extends Application {
         initializeFonts();
         // TODO: 2021-07-13 uncomment
 //        playMusic();
-        if (!Sender.initialize()) {
+        if (!MainController.initializeNetwork()) {
             stop();
             return;
         }
@@ -52,7 +52,7 @@ public class MainView extends Application {
     @Override
     public void stop() {
         DataManager.getInstance().saveData();
-        MainController.logOut();
+        MainController.finish();
         System.exit(0);
     }
 

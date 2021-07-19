@@ -19,10 +19,9 @@ import utils.ViewUtility;
 import java.io.IOException;
 
 
-public class ProfileMenuView {
+public class ProfileMenuView extends View {
 
     private final ProfileMenuController controller;
-    private Scene scene;
 
 
     public ProfileMenuView(ProfileMenuController controller) {
@@ -30,21 +29,6 @@ public class ProfileMenuView {
         controller.setView(this);
     }
 
-    public static void updateProfileScene(Scene profileScene, User user) {
-        Label usernameLabel = (Label) profileScene.lookup("#username-label");
-        usernameLabel.setText("Username: " + ((user == null) ? "?" : user.getUsername()));
-
-        Label nicknameLabel = (Label) profileScene.lookup("#nickname-label");
-        nicknameLabel.setText("Nickname: " + ((user == null) ? "?" : user.getNickname()));
-
-        if (user != null) {
-            String imagePath = "/images/profile-pics/" + user.getProfilePictureName();
-            ImageView imageView = new ImageView(new Image(ViewUtility.class.getResource(imagePath).toExternalForm()));
-            imageView.setId("profile-pic");
-            HBox profilePicContainer = (HBox) profileScene.lookup("#profile-pic-container");
-            profilePicContainer.getChildren().add(imageView);
-        }
-    }
 
     public void setProfileScene() {
         try {
@@ -60,19 +44,33 @@ public class ProfileMenuView {
         }
     }
 
+    public void updateProfileScene(Scene profileScene, User user) {
+        Label usernameLabel = (Label) profileScene.lookup("#username-label");
+        usernameLabel.setText("Username: " + ((user == null) ? "?" : user.getUsername()));
+
+        Label nicknameLabel = (Label) profileScene.lookup("#nickname-label");
+        nicknameLabel.setText("Nickname: " + ((user == null) ? "?" : user.getNickname()));
+
+        if (user != null) {
+            String imagePath = "/images/profile-pics/" + user.getProfilePictureName();
+            ImageView imageView = new ImageView(new Image(ViewUtility.class.getResource(imagePath).toExternalForm()));
+            imageView.setId("profile-pic");
+            HBox profilePicContainer = (HBox) profileScene.lookup("#profile-pic-container");
+            profilePicContainer.getChildren().add(imageView);
+        }
+    }
+
     private void initializeProfileSceneButtons() {
         Button changeNicknameButton = (Button) scene.lookup("#change-nickname-btn");
-        changeNicknameButton.setOnMouseClicked(e -> setChangeNicknameScene());
         changeNicknameButton.setOnAction(e -> setChangeNicknameScene());
 
         Button changePasswordButton = (Button) scene.lookup("#change-password-btn");
-        changePasswordButton.setOnMouseClicked(e -> setChangePasswordScene());
         changePasswordButton.setOnAction(e -> setChangePasswordScene());
 
         Button backButton = (Button) scene.lookup("#back-btn");
-        backButton.setOnMouseClicked(e -> backToMainMenu());
         backButton.setOnAction(e -> backToMainMenu());
     }
+
 
     public void setChangeNicknameScene() {
         try {
@@ -90,12 +88,16 @@ public class ProfileMenuView {
 
     private void initializeChangeNicknameSceneButtons() {
         Button changeButton = (Button) scene.lookup("#change-btn");
-        changeButton.setOnMouseClicked(e -> changeNickname());
-        changeButton.setOnAction(e -> changeNickname());
+        changeButton.setOnAction(e -> {
+            if (controller.isWaiting()) ViewUtility.showInformationAlert("", "Error", "You can't do this now");
+            else changeNickname();
+        });
 
         Button backButton = (Button) scene.lookup("#back-btn");
-        backButton.setOnMouseClicked(e -> setProfileScene());
-        backButton.setOnAction(e -> setProfileScene());
+        backButton.setOnAction(e -> {
+            if (controller.isWaiting()) ViewUtility.showInformationAlert("", "Error", "You can't do this now");
+            else setProfileScene();
+        });
     }
 
     public void updateChangeNicknameScene() {
@@ -121,12 +123,16 @@ public class ProfileMenuView {
 
     private void initializeChangePasswordSceneButtons() {
         Button changeButton = (Button) scene.lookup("#change-btn");
-        changeButton.setOnMouseClicked(e -> changePassword());
-        changeButton.setOnAction(e -> changePassword());
+        changeButton.setOnAction(e -> {
+            if (controller.isWaiting()) ViewUtility.showInformationAlert("", "Error", "You can't do this now");
+            else changePassword();
+        });
 
         Button backButton = (Button) scene.lookup("#back-btn");
-        backButton.setOnMouseClicked(e -> setProfileScene());
-        backButton.setOnAction(e -> setProfileScene());
+        backButton.setOnAction(e -> {
+            if (controller.isWaiting()) ViewUtility.showInformationAlert("", "Error", "You can't do this now");
+            else setProfileScene();
+        });
     }
 
 
@@ -146,16 +152,15 @@ public class ProfileMenuView {
             return;
         }
         controller.changeNickname(nicknameText);
-        setProfileScene();
     }
 
-    public void showChangeNicknameMessage(ProfileMenuMessage message, String nickname) {
+    public void showChangeNicknameMessage(ProfileMenuMessage message) {
         switch (message) {
             case NICKNAME_CONTAIN_WHITESPACE:
                 ViewUtility.showInformationAlert("Change Nickname", "Error", "Nickname contain space");
                 break;
             case NICKNAME_EXISTS:
-                ViewUtility.showInformationAlert("Change Nickname", "Error", "User with nickname " + nickname + " already exists");
+                ViewUtility.showInformationAlert("Change Nickname", "Error", "User with entered nickname already exists");
                 break;
             case NICKNAME_CHANGED:
                 updateChangeNicknameScene();

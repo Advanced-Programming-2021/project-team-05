@@ -43,15 +43,9 @@ public class MainMenuView {
 
     private void initializeMainMenuSceneButtons() {
         Button startDuelButton = (Button) scene.lookup("#start-duel-btn");
-        startDuelButton.setOnMouseClicked(e -> showDuelSettingsStage());
         startDuelButton.setOnAction(e -> showDuelSettingsStage());
 
         Button profileButton = (Button) scene.lookup("#profile-btn");
-        profileButton.setOnMouseClicked(e -> {
-            ProfileMenuController profileMenuController = new ProfileMenuController();
-            ProfileMenuView profileMenuView = new ProfileMenuView(profileMenuController);
-            profileMenuView.setProfileScene();
-        });
         profileButton.setOnAction(e -> {
             ProfileMenuController profileMenuController = new ProfileMenuController();
             ProfileMenuView profileMenuView = new ProfileMenuView(profileMenuController);
@@ -59,11 +53,6 @@ public class MainMenuView {
         });
 
         Button shopButton = (Button) scene.lookup("#shop-btn");
-        shopButton.setOnMouseClicked(e -> {
-            ShopMenuController shopMenuController = new ShopMenuController();
-            ShopMenuView shopMenuView = new ShopMenuView(shopMenuController);
-            shopMenuView.setShopScene();
-        });
         shopButton.setOnAction(e -> {
             ShopMenuController shopMenuController = new ShopMenuController();
             ShopMenuView shopMenuView = new ShopMenuView(shopMenuController);
@@ -71,11 +60,6 @@ public class MainMenuView {
         });
 
         Button deckButton = (Button) scene.lookup("#deck-btn");
-        deckButton.setOnMouseClicked(e -> {
-            DeckMenuController deckMenuController = new DeckMenuController();
-            DeckMenuView deckMenuView = new DeckMenuView(deckMenuController);
-            deckMenuView.setDeckScene();
-        });
         deckButton.setOnAction(e -> {
             DeckMenuController deckMenuController = new DeckMenuController();
             DeckMenuView deckMenuView = new DeckMenuView(deckMenuController);
@@ -83,11 +67,6 @@ public class MainMenuView {
         });
 
         Button createCardButton = (Button) scene.lookup("#create-card-btn");
-        createCardButton.setOnMouseClicked(e -> {
-            CreateCardController createCardController = new CreateCardController(controller.getUser());
-            CreateCardView createCardView = new CreateCardView(createCardController);
-            createCardView.setCreateCardScene();
-        });
         createCardButton.setOnAction(e -> {
             CreateCardController createCardController = new CreateCardController(controller.getUser());
             CreateCardView createCardView = new CreateCardView(createCardController);
@@ -95,11 +74,6 @@ public class MainMenuView {
         });
 
         Button scoreboardButton = (Button) scene.lookup("#scoreboard-btn");
-        scoreboardButton.setOnMouseClicked(e -> {
-            ScoreboardMenuController scoreboardMenuController = new ScoreboardMenuController();
-            ScoreboardMenuView scoreboardMenuView = new ScoreboardMenuView(scoreboardMenuController);
-            scoreboardMenuView.setScoreboardScene();
-        });
         scoreboardButton.setOnAction(e -> {
             ScoreboardMenuController scoreboardMenuController = new ScoreboardMenuController();
             ScoreboardMenuView scoreboardMenuView = new ScoreboardMenuView(scoreboardMenuController);
@@ -107,11 +81,6 @@ public class MainMenuView {
         });
 
         Button importExportButton = (Button) scene.lookup("#import-export-btn");
-        importExportButton.setOnMouseClicked(e -> {
-            ImportExportMenuController importExportMenuController = new ImportExportMenuController(controller.getUser());
-            ImportExportMenuView importExportMenuView = new ImportExportMenuView(importExportMenuController);
-            importExportMenuView.setImportExportScene();
-        });
         importExportButton.setOnAction(e -> {
             ImportExportMenuController importExportMenuController = new ImportExportMenuController(controller.getUser());
             ImportExportMenuView importExportMenuView = new ImportExportMenuView(importExportMenuController);
@@ -119,7 +88,6 @@ public class MainMenuView {
         });
 
         Button logoutButton = (Button) scene.lookup("#logout-btn");
-        logoutButton.setOnMouseClicked(e -> logOut());
         logoutButton.setOnAction(e -> logOut());
     }
 
@@ -145,21 +113,15 @@ public class MainMenuView {
             choiceBoxContainer.getChildren().add(roundsChoiceBox);
 
             CheckBox aiCheckBox = (CheckBox) duelSettingScene.lookup("#ai-check-box");
-            aiCheckBox.setOnMouseClicked(e -> {
-                TextField oppUsernameField = (TextField) duelSettingScene.lookup("#opp-username-input");
-                oppUsernameField.setDisable(aiCheckBox.isSelected());
-            });
             aiCheckBox.setOnAction(e -> {
                 TextField oppUsernameField = (TextField) duelSettingScene.lookup("#opp-username-input");
                 oppUsernameField.setDisable(aiCheckBox.isSelected());
             });
 
             Button backButton = (Button) duelSettingScene.lookup("#back-btn");
-            backButton.setOnMouseClicked(e -> stage.close());
             backButton.setOnAction(e -> stage.close());
 
             Button startDuelButton = (Button) duelSettingScene.lookup("#start-duel-btn");
-            startDuelButton.setOnMouseClicked(e -> startDuel(stage, duelSettingScene));
             startDuelButton.setOnAction(e -> startDuel(stage, duelSettingScene));
         } catch (IOException e) {
             System.out.println("Failed to load duel settings scene");

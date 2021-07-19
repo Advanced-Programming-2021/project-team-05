@@ -3,7 +3,7 @@ package view;
 import control.DataManager;
 import control.controller.DuelMenuController;
 import control.controller.MainMenuController;
-import control.controller.Phase;
+import control.Phase;
 import control.message.DuelMenuMessage;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

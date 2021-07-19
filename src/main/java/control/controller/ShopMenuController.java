@@ -4,6 +4,7 @@ import com.google.gson.*;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import control.Sender;
 import control.message.ShopMenuMessage;
+import javafx.application.Platform;
 import model.ShopItem;
 import model.template.CardTemplate;
 import model.template.MonsterTemplate;
@@ -15,58 +16,14 @@ import view.ShopMenuView;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class ShopMenuController {
+public class ShopMenuController extends Controller {
 
     private ShopMenuView view;
 
 
     public void setView(ShopMenuView view) {
         this.view = view;
-    }
-
-
-    private RuntimeTypeAdapterFactory<CardTemplate> getCardTemplateAdapter() {
-        return RuntimeTypeAdapterFactory
-                .of(CardTemplate.class, "card_template_type")
-                .registerSubtype(MonsterTemplate.class, MonsterTemplate.class.getName())
-                .registerSubtype(SpellTemplate.class, SpellTemplate.class.getName())
-                .registerSubtype(TrapTemplate.class, TrapTemplate.class.getName());
-    }
-
-
-    public ArrayList<ShopItem> getShopItems() {
-        try {
-            JsonObject infoObject = new JsonObject();
-            infoObject.addProperty("token", MainController.getToken());
-            JsonObject commandObject = new JsonObject();
-            commandObject.addProperty("command_type", "data");
-            commandObject.addProperty("command_name", "get_shop_items");
-            commandObject.add("info", infoObject);
-
-            String response = Sender.sendAndGetResponse(commandObject.toString());
-            if (response == null) {
-                MainView.showNetworkError();
-                return null;
-            }
-            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
-            JsonObject data = responseObject.get("data").getAsJsonObject();
-            JsonArray templatesArray = data.get("templates").getAsJsonArray();
-            JsonArray purchasedCounts = data.get("purchased_counts").getAsJsonArray();
-
-            RuntimeTypeAdapterFactory<CardTemplate> cardTemplateAdapter = getCardTemplateAdapter();
-            Gson gson = new GsonBuilder().registerTypeAdapterFactory(cardTemplateAdapter).create();
-            Type templateType = CardTemplate.class;
-            ArrayList<ShopItem> shopItems = new ArrayList<>();
-            for (int i = 0; i < templatesArray.size(); i++) {
-                JsonObject templateObject = templatesArray.get(i).getAsJsonObject();
-                CardTemplate template = gson.fromJson(templateObject, templateType);
-                int count = purchasedCounts.get(i).getAsInt();
-                shopItems.add(new ShopItem(template, count));
-            }
-            return shopItems;
-        } catch (Exception e) {
-            return null;
-        }
+        super.view = view;
     }
 
 
@@ -79,16 +36,22 @@ public class ShopMenuController {
             commandObject.addProperty("command_type", "shop");
             commandObject.addProperty("command_name", "buy_card");
             commandObject.add("info", infoObject);
+            MainController.sendMessage(commandObject.toString());
+            startWaiting();
+        } catch (Exception e) {
+            e.printStackTrace();
+            view.showBuyCardMessage(ShopMenuMessage.ERROR);
+        }
+    }
 
-            String response = Sender.sendAndGetResponse(commandObject.toString());
-            if (response == null) {
-                MainView.showNetworkError();
-                return;
-            }
-            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
-            ShopMenuMessage message = ShopMenuMessage.valueOf(responseObject.get("message").getAsString());
+    private void checkBuyCardResponse(JsonObject infoObject) {
+        try {
+            if (waitTimeline == null) return;
+            else stopWaiting();
+            ShopMenuMessage message = ShopMenuMessage.valueOf(infoObject.get("message").getAsString());
             view.showBuyCardMessage(message);
         } catch (Exception e) {
+            e.printStackTrace();
             view.showBuyCardMessage(ShopMenuMessage.ERROR);
         }
     }
@@ -103,17 +66,21 @@ public class ShopMenuController {
             commandObject.addProperty("command_type", "shop");
             commandObject.addProperty("command_name", "increase_money");
             commandObject.add("info", infoObject);
-
-            String response = Sender.sendAndGetResponse(commandObject.toString());
-            if (response == null) {
-                MainView.showNetworkError();
-                return;
-            }
-            JsonObject responseObject = new JsonParser().parse(response).getAsJsonObject();
-            ShopMenuMessage message = ShopMenuMessage.valueOf(responseObject.get("message").getAsString());
-            view.showBuyCardMessage(message);
+            MainController.sendMessage(commandObject.toString());
         } catch (Exception ignored) {
         }
         view.updateShopScene(MainController.getUser());
+    }
+
+
+    @Override
+    public void parseCommand(JsonObject command) {
+        String commandName = command.get("command_name").getAsString();
+        JsonObject infoObject = command.get("info").getAsJsonObject();
+        switch (commandName) {
+            case "buy_card_response":
+                Platform.runLater(() -> checkBuyCardResponse(infoObject));
+                break;
+        }
     }
 }

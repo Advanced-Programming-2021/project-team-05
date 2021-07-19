@@ -1,7 +1,7 @@
 package model.effect.action;
 
 import control.controller.DuelMenuController;
-import control.controller.Phase;
+import control.Phase;
 
 public class EndBattlePhaseAction implements Action {
 

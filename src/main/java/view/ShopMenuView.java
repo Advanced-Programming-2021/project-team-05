@@ -20,10 +20,9 @@ import utils.ViewUtility;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ShopMenuView implements CheatRunner {
+public class ShopMenuView extends View implements CheatRunner {
 
     private final ShopMenuController controller;
-    private Scene scene;
 
 
     public ShopMenuView(ShopMenuController controller) {
@@ -49,15 +48,14 @@ public class ShopMenuView implements CheatRunner {
 
     private void initializeShopSceneButtons() {
         Button backButton = (Button) scene.lookup("#back-btn");
-        backButton.setOnMouseClicked(e -> {
-            MainMenuController mainMenuController = new MainMenuController(MainController.getUser());
-            MainMenuView mainMenuView = new MainMenuView(mainMenuController);
-            mainMenuView.setMainMenuScene();
-        });
         backButton.setOnAction(e -> {
-            MainMenuController mainMenuController = new MainMenuController(MainController.getUser());
-            MainMenuView mainMenuView = new MainMenuView(mainMenuController);
-            mainMenuView.setMainMenuScene();
+            if (controller.isWaiting())
+                ViewUtility.showInformationAlert("", "Error", "You can't do this now");
+            else {
+                MainMenuController mainMenuController = new MainMenuController(MainController.getUser());
+                MainMenuView mainMenuView = new MainMenuView(mainMenuController);
+                mainMenuView.setMainMenuScene();
+            }
         });
     }
 
@@ -71,7 +69,7 @@ public class ShopMenuView implements CheatRunner {
 
         FlowPane cardsContainer = (FlowPane) scene.lookup("#cards-container");
         cardsContainer.getChildren().clear();
-        ArrayList<ShopItem> shopItems = controller.getShopItems();
+        ArrayList<ShopItem> shopItems = MainController.getShopItems();
         if (shopItems == null) {
             ViewUtility.showInformationAlert("Shop", "Error", "Failed to load shop");
             return;
@@ -91,9 +89,13 @@ public class ShopMenuView implements CheatRunner {
             buyButton.getStyleClass().addAll("default-button", "buy-button");
             if (user.getMoney() < template.getPrice()) buyButton.setDisable(true);
 
-            buyButton.setOnMouseClicked(event -> {
-                controller.buyCard(template.getName());
-                updateShopScene(MainController.getUser());
+            buyButton.setOnAction(event -> {
+                if (controller.isWaiting())
+                    ViewUtility.showInformationAlert("", "Error", "You can't do this now");
+                else {
+                    controller.buyCard(template.getName());
+                    updateShopScene(MainController.getUser());
+                }
             });
 
             VBox container = new VBox(2, cardImage, countLabel, buyButton);
