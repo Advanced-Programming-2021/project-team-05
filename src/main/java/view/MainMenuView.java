@@ -87,6 +87,13 @@ public class MainMenuView {
             importExportMenuView.setImportExportScene();
         });
 
+        Button chatButton = (Button) scene.lookup("#chat-btn");
+        chatButton.setOnAction(e -> {
+            ChatRoomController chatRoomController = new ChatRoomController();
+            ChatRoomView chatRoomView = new ChatRoomView(chatRoomController);
+            chatRoomView.setChatScene();
+        });
+
         Button logoutButton = (Button) scene.lookup("#logout-btn");
         logoutButton.setOnAction(e -> logOut());
     }

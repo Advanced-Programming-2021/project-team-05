@@ -18,7 +18,7 @@
       <ColumnConstraints />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="100.0" valignment="CENTER" vgrow="NEVER" />
+        <RowConstraints minHeight="10.0" prefHeight="70.0" valignment="CENTER" vgrow="NEVER" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -36,7 +36,7 @@
         </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <children>
-            <Button id="start-duel-btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Start Duel" />
+            <Button id="start-duel-btn" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" styleClass="default-button" text="Start Duel" />
          </children>
       </HBox>
         <Button id="profile-btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Profile" GridPane.columnIndex="1" GridPane.rowIndex="4">
@@ -54,7 +54,7 @@
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-      <Button id="create-card-btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Create Card" GridPane.columnIndex="2" GridPane.rowIndex="5">
+      <Button id="create-card-btn" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" text="Create Card" GridPane.columnIndex="2" GridPane.rowIndex="5">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
@@ -64,16 +64,23 @@
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-      <Button id="import-export-btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Import/Export" GridPane.columnIndex="2" GridPane.rowIndex="6">
+      <Button id="import-export-btn" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" text="Import/Export" GridPane.columnIndex="2" GridPane.rowIndex="6">
          <styleClass>
             <String fx:value="default-button" />
             <String fx:value="button-small" />
          </styleClass></Button>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7">
-         <children>
-            <Button id="logout-btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="default-button" text="Logout" />
-         </children>
-      </HBox>
+      <Button id="chat-btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Chat Room" GridPane.columnIndex="1" GridPane.rowIndex="7">
+         <styleClass>
+            <String fx:value="default-button" />
+            <String fx:value="button-small" />
+         </styleClass>
+      </Button>
+      <Button id="logout-btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Logout" GridPane.columnIndex="2" GridPane.rowIndex="7">
+         <styleClass>
+            <String fx:value="default-button" />
+            <String fx:value="button-small" />
+         </styleClass>
+      </Button>
     </children>
     <stylesheets>
         <URL value="@../css/main-menu.css" />

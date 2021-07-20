@@ -39,7 +39,6 @@ public class ShopMenuController extends Controller {
             MainController.sendMessage(commandObject.toString());
             startWaiting();
         } catch (Exception e) {
-            e.printStackTrace();
             view.showBuyCardMessage(ShopMenuMessage.ERROR);
         }
     }
@@ -51,7 +50,6 @@ public class ShopMenuController extends Controller {
             ShopMenuMessage message = ShopMenuMessage.valueOf(infoObject.get("message").getAsString());
             view.showBuyCardMessage(message);
         } catch (Exception e) {
-            e.printStackTrace();
             view.showBuyCardMessage(ShopMenuMessage.ERROR);
         }
     }

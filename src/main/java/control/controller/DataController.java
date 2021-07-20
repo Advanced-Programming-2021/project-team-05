@@ -31,6 +31,7 @@ public class DataController {
     private DeckInfo deckInfo;
     private ArrayList<Card> addableCards;
     private ObservableList<ScoreboardItem> scoreboardItems;
+    private ArrayList<Message> messages;
 
     {
         user = null;
@@ -39,6 +40,7 @@ public class DataController {
         deckInfo = null;
         addableCards = null;
         scoreboardItems = null;
+        messages = null;
     }
 
 
@@ -74,6 +76,10 @@ public class DataController {
 
     public ObservableList<ScoreboardItem> getScoreboardItems() {
         return this.scoreboardItems;
+    }
+
+    public ArrayList<Message> getMessages() {
+        return this.messages;
     }
 
 
@@ -225,6 +231,29 @@ public class DataController {
     }
 
 
+    public void updateMessages() {
+        try {
+            messages = null;
+            JsonObject infoObject = new JsonObject();
+            infoObject.addProperty("token", MainController.getToken());
+            JsonObject commandObject = new JsonObject();
+            commandObject.addProperty("command_type", "data");
+            commandObject.addProperty("command_name", "get_messages");
+            commandObject.add("info", infoObject);
+            MainController.sendMessage(commandObject.toString());
+        } catch (Exception ignored) {
+        }
+    }
+
+    private void updateMessages(JsonObject infoObject) {
+        JsonArray decksArray = infoObject.get("messages").getAsJsonArray();
+        Gson gson = new Gson();
+        Type messagesType = new TypeToken<ArrayList<Message>>() {
+        }.getType();
+        messages = gson.fromJson(decksArray, messagesType);
+    }
+
+
     public void parseCommand(JsonObject command) {
         try {
             String commandName = command.get("command_name").getAsString();
@@ -247,6 +276,9 @@ public class DataController {
                     break;
                 case "get_scoreboard_items_response":
                     updateScoreboardItems(infoObject);
+                    break;
+                case "get_messages_response":
+                    updateMessages(infoObject);
                     break;
             }
         } catch (Exception ignored) {

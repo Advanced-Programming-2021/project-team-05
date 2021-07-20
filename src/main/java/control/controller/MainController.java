@@ -133,6 +133,21 @@ public class MainController {
         return dataController.getScoreboardItems();
     }
 
+    public static ArrayList<Message> getMessages() {
+        DataController dataController = DataController.getInstance();
+        dataController.updateMessages();
+        long currentTimeMillis = System.currentTimeMillis();
+        long end = currentTimeMillis + 5000;
+        while (System.currentTimeMillis() < end) {
+            if (dataController.getMessages() != null) break;
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ignored) {
+            }
+        }
+        return dataController.getMessages();
+    }
+
 
     public static boolean initializeNetwork() {
         try {
