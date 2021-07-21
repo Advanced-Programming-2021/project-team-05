@@ -91,7 +91,7 @@ public class CreateCardView {
 
         moneyLabel = (Label) scene.lookup("#money-label");
         nameField = (TextField) scene.lookup("#name-field");
-        descriptionArea = (TextArea) scene.lookup("#decription-area");
+        descriptionArea = (TextArea) scene.lookup("#description-area");
         priceLabel = (Label) scene.lookup("#price-label");
         levelLabel = (Label) scene.lookup("#level-label");
         updateMoney();
@@ -106,7 +106,7 @@ public class CreateCardView {
                 levelLabel.setText("Level: ?");
             } else {
                 priceLabel.setText("Price: " + controller.getMonsterPrice(attack, defense));
-                levelLabel.setText("Label:" + controller.getMonsterLevel(attack, defense));
+                levelLabel.setText("Level:" + controller.getMonsterLevel(attack, defense));
             }
         } catch (NumberFormatException e) {
             priceLabel.setText("Price: ?");

@@ -1,25 +1,9 @@
 package control.controller;
 
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
-import control.Sender;
+import com.google.gson.JsonObject;
 import control.message.DeckMenuMessage;
 import javafx.application.Platform;
-import model.Deck;
-import model.DeckInfo;
-import model.card.Card;
-import model.card.Monster;
-import model.card.Spell;
-import model.card.Trap;
-import model.template.MonsterTemplate;
-import model.template.SpellTemplate;
-import model.template.TrapTemplate;
 import view.DeckMenuView;
-import view.MainView;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class DeckMenuController extends Controller {
 

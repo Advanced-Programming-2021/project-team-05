@@ -1,300 +1,274 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import java.net.URL?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Circle?>
-
-<GridPane id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<?import java.lang.*?>
+<?import java.net.URL?>
+<GridPane id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+          minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171"
+          xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
-        <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="340.0" />
-        <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="760.0" />
+        <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="340.0"/>
+        <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="760.0"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES"/>
     </rowConstraints>
     <stylesheets>
-        <URL value="@../css/main.css" />
-        <URL value="@../css/duel.css" />
+        <URL value="@../css/main.css"/>
+        <URL value="@../css/duel.css"/>
     </stylesheets>
-   <children>
-      <VBox prefHeight="200.0" prefWidth="100.0">
-         <children>
-            <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="136.0" prefWidth="340.0" styleClass="lp-box">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="340.0" style="-fx-spacing: 6px;">
-                     <children>
-                        <ImageView id="opp-profile-pic" fitHeight="100.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/profile-pics/profile-pic1.png" />
-                           </image>
-                        </ImageView>
-                        <VBox alignment="CENTER" prefHeight="100.0" prefWidth="196.0" spacing="10.0">
-                           <children>
-                              <VBox alignment="CENTER" prefHeight="0.0" prefWidth="196.0">
-                                 <children>
-                                    <Label text="Nickname:">
-                                       <styleClass>
-                                          <String fx:value="name-label" />
-                                          <String fx:value="name-label-small" />
-                                       </styleClass>
-                                    </Label>
-                                    <Label id="opp-nickname-label" styleClass="name-label" text="nickname" />
-                                 </children>
-                              </VBox>
-                              <Label id="opp-score-label" alignment="CENTER" prefWidth="100.0" styleClass="name-label" text="Score: 0" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="340.0" spacing="5.0">
-                     <children>
-                        <Label prefHeight="30.0" prefWidth="34.0" styleClass="lp-label" text="LP:" />
-                        <StackPane prefHeight="30.0" prefWidth="250.0">
-                           <children>
-                              <ProgressBar id="opp-lp-bar" prefWidth="200.0" progress="1.0" styleClass="lp-bar" />
-                              <Label id="opp-lp-label" styleClass="lp-label" text="8000" />
-                           </children>
-                        </StackPane>
-                        <Circle id="opp-turn-circle" fill="DODGERBLUE" radius="12.0" stroke="BLACK" strokeType="INSIDE" styleClass="turn-none" />
-                     </children>
-                  </HBox>
-               </children>
-            </FlowPane>
-            <VBox id="card-details-box" alignment="CENTER" prefHeight="529.0" prefWidth="340.0" />
-            <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="136.0" prefWidth="340.0" styleClass="lp-box">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="340.0" style="-fx-spacing: 6px;">
-                     <children>
-                        <ImageView id="profile-pic" fitHeight="100.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/profile-pics/profile-pic1.png" />
-                           </image>
-                        </ImageView>
-                        <VBox alignment="CENTER" prefHeight="84.0" prefWidth="196.0" spacing="10.0">
-                           <children>
-                              <VBox alignment="CENTER" prefHeight="0.0" prefWidth="196.0">
-                                 <children>
-                                    <Label text="Nickname:">
-                                       <styleClass>
-                                          <String fx:value="name-label" />
-                                          <String fx:value="name-label-small" />
-                                       </styleClass>
-                                    </Label>
-                                    <Label id="nickname-label" styleClass="name-label" text="nickname" />
-                                 </children>
-                              </VBox>
-                              <Label id="score-label" alignment="CENTER" prefWidth="100.0" styleClass="name-label" text="Score: 0" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" maxWidth="340.0" prefHeight="30.0" prefWidth="340.0" spacing="5.0">
-                     <children>
-                        <Label prefHeight="30.0" prefWidth="34.0" styleClass="lp-label" text="LP:" />
-                        <StackPane prefHeight="30.0" prefWidth="250.0">
-                           <children>
-                              <ProgressBar id="lp-bar" prefWidth="200.0" progress="1.0" styleClass="lp-bar" />
-                              <Label id="lp-label" styleClass="lp-label" text="8000" />
-                           </children>
-                        </StackPane>
-                        <Circle id="turn-circle" fill="DODGERBLUE" radius="12.0" stroke="BLACK" strokeType="INSIDE" styleClass="turn-none" />
-                     </children>
-                  </HBox>
-               </children>
-            </FlowPane>
-         </children>
-      </VBox>
-      <AnchorPane id="board" prefHeight="200.0" prefWidth="200.0" styleClass="default-board" GridPane.columnIndex="1">
-         <children>
-            <HBox id="message-label-container" alignment="CENTER" layoutX="31.0" layoutY="350.0" prefHeight="100.0" prefWidth="722.0" />
-            <VBox id="draw-phase-label" layoutY="114.0" prefHeight="70.0" prefWidth="25.0" styleClass="phase-label">
-               <children>
-                  <Label prefHeight="35.0" prefWidth="25.0" text="D" />
-                  <Label prefHeight="35.0" prefWidth="28.0" text="P" />
-               </children>
-            </VBox>
-            <VBox id="standby-phase-label" layoutY="214.0" prefHeight="70.0" prefWidth="25.0" styleClass="phase-label">
-               <children>
-                  <Label prefHeight="35.0" prefWidth="25.0" text="S" />
-                  <Label prefHeight="35.0" prefWidth="28.0" text="P" />
-               </children>
-            </VBox>
-            <VBox id="main-1-phase-label" layoutY="314.0" prefHeight="70.0" prefWidth="25.0" styleClass="phase-label">
-               <children>
-                  <Label prefHeight="35.0" prefWidth="25.0" text="M" />
-                  <Label prefHeight="35.0" prefWidth="28.0" text="1" />
-               </children>
-            </VBox>
-            <VBox id="battle-phase-label" layoutY="414.0" prefHeight="70.0" prefWidth="25.0" styleClass="phase-label">
-               <children>
-                  <Label prefHeight="35.0" prefWidth="25.0" text="B" />
-                  <Label prefHeight="35.0" prefWidth="28.0" text="P" />
-               </children>
-            </VBox>
-            <VBox id="main-2-phase-label" layoutY="514.0" prefHeight="70.0" prefWidth="25.0" styleClass="phase-label">
-               <children>
-                  <Label prefHeight="35.0" prefWidth="25.0" text="M" />
-                  <Label prefHeight="35.0" prefWidth="28.0" text="2" />
-               </children>
-            </VBox>
-            <VBox id="end-phase-label" layoutY="614.0" prefHeight="70.0" prefWidth="25.0" styleClass="phase-label">
-               <children>
-                  <Label prefHeight="35.0" prefWidth="25.0" text="E" />
-                  <Label prefHeight="35.0" prefWidth="28.0" text="P" />
-               </children>
-            </VBox>
-            <HBox id="monster-1" alignment="CENTER" layoutX="346.0" layoutY="423.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="monster-2" alignment="CENTER" layoutX="450.0" layoutY="423.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="monster-3" alignment="CENTER" layoutX="241.0" layoutY="423.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="monster-4" alignment="CENTER" layoutX="554.0" layoutY="423.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="monster-5" alignment="CENTER" layoutX="139.0" layoutY="423.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="spell-1" alignment="CENTER" layoutX="346.0" layoutY="568.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="spell-2" alignment="CENTER" layoutX="450.0" layoutY="568.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="spell-3" alignment="CENTER" layoutX="241.0" layoutY="568.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="spell-4" alignment="CENTER" layoutX="554.0" layoutY="568.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="spell-5" alignment="CENTER" layoutX="139.0" layoutY="568.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="opp-monster-1" alignment="CENTER" layoutX="346.0" layoutY="280.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="opp-monster-2" alignment="CENTER" layoutX="241.0" layoutY="280.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="opp-monster-3" alignment="CENTER" layoutX="450.0" layoutY="280.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="opp-monster-4" alignment="CENTER" layoutX="139.0" layoutY="280.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="opp-monster-5" alignment="CENTER" layoutX="554.0" layoutY="280.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="opp-spell-1" alignment="CENTER" layoutX="346.0" layoutY="140.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="opp-spell-2" alignment="CENTER" layoutX="241.0" layoutY="140.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="opp-spell-3" alignment="CENTER" layoutX="450.0" layoutY="140.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="opp-spell-4" alignment="CENTER" layoutX="139.0" layoutY="140.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="opp-spell-5" alignment="CENTER" layoutX="554.0" layoutY="140.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="field-spell" alignment="CENTER" layoutX="31.0" layoutY="423.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="opp-field-spell" alignment="CENTER" layoutX="665.0" layoutY="270.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="graveyard" alignment="CENTER" layoutX="658.0" layoutY="444.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="opp-graveyard" alignment="CENTER" layoutX="31.0" layoutY="259.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="deck" alignment="CENTER" layoutX="658.0" layoutY="568.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="opp-deck" alignment="CENTER" layoutX="31.0" layoutY="140.0" prefHeight="95.0" prefWidth="95.0" styleClass="card-image" />
-            <HBox id="monster-1-label" layoutX="346.0" layoutY="518.0" prefHeight="20.0" prefWidth="95.0">
-               <children>
-                  <Label prefWidth="42.0" />
-                  <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER" />
-                  <Label prefWidth="42.0" />
-               </children>
+    <VBox prefHeight="200.0" prefWidth="100.0">
+        <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="136.0"
+                  prefWidth="340.0" styleClass="lp-box">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="340.0" style="-fx-spacing: 6px;">
+                <ImageView id="opp-profile-pic" fitHeight="100.0" fitWidth="85.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <Image url="@../images/profile-pics/profile-pic1.png"/>
+                </ImageView>
+                <VBox alignment="CENTER" prefHeight="100.0" prefWidth="196.0" spacing="10.0">
+                    <VBox alignment="CENTER" prefHeight="0.0" prefWidth="196.0">
+                        <Label text="Nickname:">
+                            <styleClass>
+                                <String fx:value="name-label"/>
+                                <String fx:value="name-label-small"/>
+                            </styleClass>
+                        </Label>
+                        <Label id="opp-nickname-label" styleClass="name-label" text="nickname"/>
+                    </VBox>
+                    <Label id="opp-score-label" alignment="CENTER" prefWidth="100.0" styleClass="name-label"
+                           text="Score: 0"/>
+                </VBox>
             </HBox>
-            <HBox id="monster-2-label" layoutX="450.0" layoutY="518.0" prefHeight="20.0" prefWidth="95.0">
-               <children>
-                  <Label prefWidth="42.0" />
-                  <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER" />
-                  <Label prefWidth="42.0" />
-               </children>
+            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="340.0" spacing="5.0">
+                <Label prefHeight="30.0" prefWidth="34.0" styleClass="lp-label" text="LP:"/>
+                <StackPane prefHeight="30.0" prefWidth="250.0">
+                    <ProgressBar id="opp-lp-bar" prefWidth="200.0" progress="1.0" styleClass="lp-bar"/>
+                    <Label id="opp-lp-label" styleClass="lp-label" text="8000"/>
+                </StackPane>
+                <Circle id="opp-turn-circle" fill="DODGERBLUE" radius="12.0" stroke="BLACK" strokeType="INSIDE"
+                        styleClass="turn-none"/>
             </HBox>
-            <HBox id="monster-3-label" layoutX="241.0" layoutY="518.0" prefHeight="20.0" prefWidth="95.0">
-               <children>
-                  <Label prefWidth="42.0" />
-                  <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER" />
-                  <Label prefWidth="42.0" />
-               </children>
+        </FlowPane>
+        <VBox id="card-details-box" alignment="CENTER" prefHeight="529.0" prefWidth="340.0"/>
+        <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="136.0"
+                  prefWidth="340.0" styleClass="lp-box">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="340.0" style="-fx-spacing: 6px;">
+                <ImageView id="profile-pic" fitHeight="100.0" fitWidth="85.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <Image url="@../images/profile-pics/profile-pic1.png"/>
+                </ImageView>
+                <VBox alignment="CENTER" prefHeight="84.0" prefWidth="196.0" spacing="10.0">
+                    <VBox alignment="CENTER" prefHeight="0.0" prefWidth="196.0">
+                        <Label text="Nickname:">
+                            <styleClass>
+                                <String fx:value="name-label"/>
+                                <String fx:value="name-label-small"/>
+                            </styleClass>
+                        </Label>
+                        <Label id="nickname-label" styleClass="name-label" text="nickname"/>
+                    </VBox>
+                    <Label id="score-label" alignment="CENTER" prefWidth="100.0" styleClass="name-label"
+                           text="Score: 0"/>
+                </VBox>
             </HBox>
-            <HBox id="monster-4-label" layoutX="554.0" layoutY="518.0" prefHeight="20.0" prefWidth="95.0">
-               <children>
-                  <Label prefWidth="42.0" />
-                  <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER" />
-                  <Label prefWidth="42.0" />
-               </children>
+            <HBox alignment="CENTER" maxWidth="340.0" prefHeight="30.0" prefWidth="340.0" spacing="5.0">
+                <Label prefHeight="30.0" prefWidth="34.0" styleClass="lp-label" text="LP:"/>
+                <StackPane prefHeight="30.0" prefWidth="250.0">
+                    <ProgressBar id="lp-bar" prefWidth="200.0" progress="1.0" styleClass="lp-bar"/>
+                    <Label id="lp-label" styleClass="lp-label" text="8000"/>
+                </StackPane>
+                <Circle id="turn-circle" fill="DODGERBLUE" radius="12.0" stroke="BLACK" strokeType="INSIDE"
+                        styleClass="turn-none"/>
             </HBox>
-            <HBox id="monster-5-label" layoutX="139.0" layoutY="518.0" prefHeight="20.0" prefWidth="95.0">
-               <children>
-                  <Label prefWidth="42.0" />
-                  <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER" />
-                  <Label prefWidth="42.0" />
-               </children>
-            </HBox>
-            <HBox id="opp-monster-1-label" layoutX="346.0" layoutY="259.0" prefHeight="20.0" prefWidth="95.0">
-               <children>
-                  <Label prefWidth="42.0" />
-                  <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER" />
-                  <Label prefWidth="42.0" />
-               </children>
-            </HBox>
-            <HBox id="opp-monster-2-label" layoutX="241.0" layoutY="259.0" prefHeight="20.0" prefWidth="95.0">
-               <children>
-                  <Label prefWidth="42.0" />
-                  <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER" />
-                  <Label prefWidth="42.0" />
-               </children>
-            </HBox>
-            <HBox id="opp-monster-3-label" layoutX="450.0" layoutY="259.0" prefHeight="20.0" prefWidth="95.0">
-               <children>
-                  <Label prefWidth="42.0" />
-                  <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER" />
-                  <Label prefWidth="42.0" />
-               </children>
-            </HBox>
-            <HBox id="opp-monster-4-label" layoutX="139.0" layoutY="259.0" prefHeight="20.0" prefWidth="95.0">
-               <children>
-                  <Label prefWidth="42.0" />
-                  <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER" />
-                  <Label prefWidth="42.0" />
-               </children>
-            </HBox>
-            <HBox id="opp-monster-5-label" layoutX="554.0" layoutY="259.0" prefHeight="20.0" prefWidth="95.0">
-               <children>
-                  <Label prefWidth="42.0" />
-                  <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER" />
-                  <Label prefWidth="42.0" />
-               </children>
-            </HBox>
-            <Label id="graveyard-label" layoutX="658.0" layoutY="539.0" prefHeight="20.0" prefWidth="95.0">
-               <styleClass>
-                  <String fx:value="number-label" />
-                  <String fx:value="graveyard-label" />
-               </styleClass>
-            </Label>
-            <Label id="opp-graveyard-label" layoutX="31.0" layoutY="355.0" prefHeight="20.0" prefWidth="95.0">
-               <styleClass>
-                  <String fx:value="number-label" />
-                  <String fx:value="graveyard-label" />
-               </styleClass>
-            </Label>
-            <Label id="deck-label" layoutX="658.0" layoutY="663.0" prefWidth="95.0">
-               <styleClass>
-                  <String fx:value="number-label" />
-                  <String fx:value="graveyard-label" />
-               </styleClass>
-            </Label>
-            <Label id="opp-deck-label" layoutX="31.0" layoutY="235.0" prefWidth="95.0">
-               <styleClass>
-                  <String fx:value="number-label" />
-                  <String fx:value="graveyard-label" />
-               </styleClass>
-            </Label>
-            <FlowPane id="hand" alignment="BOTTOM_CENTER" columnHalignment="CENTER" layoutX="26.0" layoutY="705.0" maxHeight="95.0" prefHeight="95.0" prefWidth="734.0">
-               <styleClass>
-                  <String fx:value="hand" />
-                  <String fx:value="selectable-card-image" />
-               </styleClass>
-            </FlowPane>
-            <FlowPane id="opp-hand" alignment="BOTTOM_CENTER" columnHalignment="CENTER" layoutX="25.0" maxHeight="95.0" prefHeight="95.0" prefWidth="734.0" styleClass="hand" />
-            <Button id="next-phase-btn" layoutX="39.0" layoutY="544.0" mnemonicParsing="false" text="Next&#10;Phase" textAlignment="CENTER" />
-            <Button id="cancel-attack-btn" disable="true" layoutX="675.0" layoutY="170.0" mnemonicParsing="false" opacity="0.0" prefHeight="136.0" text="Cancel&#10;Attack" />
-            <Button id="pause-btn" layoutX="39.0" layoutY="644.0" mnemonicParsing="false" text="Pause" textAlignment="CENTER" />
-            <Button id="summon-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="action-btn" />
-            <Button id="set-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="action-btn" />
-            <Button id="activate-effect-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="action-btn" />
-            <Button id="flip-summon-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="action-btn" />
-            <Button id="change-to-attack-position-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="action-btn" />
-            <Button id="change-to-defense-position-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="action-btn" />
-            <Button id="direct-attack-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="action-btn" />
-            <Button id="attack-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="action-btn" />
-            </children>
-      </AnchorPane>
-   </children>
+        </FlowPane>
+    </VBox>
+    <AnchorPane id="board" prefHeight="200.0" prefWidth="200.0" styleClass="default-board" GridPane.columnIndex="1">
+        <HBox id="message-label-container" alignment="CENTER" layoutX="31.0" layoutY="350.0" prefHeight="100.0"
+              prefWidth="722.0"/>
+        <VBox id="draw-phase-label" layoutY="114.0" prefHeight="70.0" prefWidth="25.0" styleClass="phase-label">
+            <Label prefHeight="35.0" prefWidth="25.0" text="D"/>
+            <Label prefHeight="35.0" prefWidth="28.0" text="P"/>
+        </VBox>
+        <VBox id="standby-phase-label" layoutY="214.0" prefHeight="70.0" prefWidth="25.0" styleClass="phase-label">
+            <Label prefHeight="35.0" prefWidth="25.0" text="S"/>
+            <Label prefHeight="35.0" prefWidth="28.0" text="P"/>
+        </VBox>
+        <VBox id="main-1-phase-label" layoutY="314.0" prefHeight="70.0" prefWidth="25.0" styleClass="phase-label">
+            <Label prefHeight="35.0" prefWidth="25.0" text="M"/>
+            <Label prefHeight="35.0" prefWidth="28.0" text="1"/>
+        </VBox>
+        <VBox id="battle-phase-label" layoutY="414.0" prefHeight="70.0" prefWidth="25.0" styleClass="phase-label">
+            <Label prefHeight="35.0" prefWidth="25.0" text="B"/>
+            <Label prefHeight="35.0" prefWidth="28.0" text="P"/>
+        </VBox>
+        <VBox id="main-2-phase-label" layoutY="514.0" prefHeight="70.0" prefWidth="25.0" styleClass="phase-label">
+            <Label prefHeight="35.0" prefWidth="25.0" text="M"/>
+            <Label prefHeight="35.0" prefWidth="28.0" text="2"/>
+        </VBox>
+        <VBox id="end-phase-label" layoutY="614.0" prefHeight="70.0" prefWidth="25.0" styleClass="phase-label">
+            <Label prefHeight="35.0" prefWidth="25.0" text="E"/>
+            <Label prefHeight="35.0" prefWidth="28.0" text="P"/>
+        </VBox>
+        <HBox id="monster-1" alignment="CENTER" layoutX="346.0" layoutY="423.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="monster-2" alignment="CENTER" layoutX="450.0" layoutY="423.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="monster-3" alignment="CENTER" layoutX="241.0" layoutY="423.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="monster-4" alignment="CENTER" layoutX="554.0" layoutY="423.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="monster-5" alignment="CENTER" layoutX="139.0" layoutY="423.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="spell-1" alignment="CENTER" layoutX="346.0" layoutY="568.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="spell-2" alignment="CENTER" layoutX="450.0" layoutY="568.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="spell-3" alignment="CENTER" layoutX="241.0" layoutY="568.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="spell-4" alignment="CENTER" layoutX="554.0" layoutY="568.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="spell-5" alignment="CENTER" layoutX="139.0" layoutY="568.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="opp-monster-1" alignment="CENTER" layoutX="346.0" layoutY="280.0" prefHeight="95.0"
+              prefWidth="95.0" styleClass="card-image"/>
+        <HBox id="opp-monster-2" alignment="CENTER" layoutX="241.0" layoutY="280.0" prefHeight="95.0"
+              prefWidth="95.0" styleClass="card-image"/>
+        <HBox id="opp-monster-3" alignment="CENTER" layoutX="450.0" layoutY="280.0" prefHeight="95.0"
+              prefWidth="95.0" styleClass="card-image"/>
+        <HBox id="opp-monster-4" alignment="CENTER" layoutX="139.0" layoutY="280.0" prefHeight="95.0"
+              prefWidth="95.0" styleClass="card-image"/>
+        <HBox id="opp-monster-5" alignment="CENTER" layoutX="554.0" layoutY="280.0" prefHeight="95.0"
+              prefWidth="95.0" styleClass="card-image"/>
+        <HBox id="opp-spell-1" alignment="CENTER" layoutX="346.0" layoutY="140.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="opp-spell-2" alignment="CENTER" layoutX="241.0" layoutY="140.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="opp-spell-3" alignment="CENTER" layoutX="450.0" layoutY="140.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="opp-spell-4" alignment="CENTER" layoutX="139.0" layoutY="140.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="opp-spell-5" alignment="CENTER" layoutX="554.0" layoutY="140.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="field-spell" alignment="CENTER" layoutX="31.0" layoutY="423.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="opp-field-spell" alignment="CENTER" layoutX="665.0" layoutY="270.0" prefHeight="95.0"
+              prefWidth="95.0" styleClass="card-image"/>
+        <HBox id="graveyard" alignment="CENTER" layoutX="658.0" layoutY="444.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="opp-graveyard" alignment="CENTER" layoutX="31.0" layoutY="259.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="deck" alignment="CENTER" layoutX="658.0" layoutY="568.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="opp-deck" alignment="CENTER" layoutX="31.0" layoutY="140.0" prefHeight="95.0" prefWidth="95.0"
+              styleClass="card-image"/>
+        <HBox id="monster-1-label" layoutX="346.0" layoutY="518.0" prefHeight="20.0" prefWidth="95.0">
+            <Label prefWidth="42.0"/>
+            <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER"/>
+            <Label prefWidth="42.0"/>
+        </HBox>
+        <HBox id="monster-2-label" layoutX="450.0" layoutY="518.0" prefHeight="20.0" prefWidth="95.0">
+            <Label prefWidth="42.0"/>
+            <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER"/>
+            <Label prefWidth="42.0"/>
+        </HBox>
+        <HBox id="monster-3-label" layoutX="241.0" layoutY="518.0" prefHeight="20.0" prefWidth="95.0">
+            <Label prefWidth="42.0"/>
+            <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER"/>
+            <Label prefWidth="42.0"/>
+        </HBox>
+        <HBox id="monster-4-label" layoutX="554.0" layoutY="518.0" prefHeight="20.0" prefWidth="95.0">
+            <Label prefWidth="42.0"/>
+            <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER"/>
+            <Label prefWidth="42.0"/>
+        </HBox>
+        <HBox id="monster-5-label" layoutX="139.0" layoutY="518.0" prefHeight="20.0" prefWidth="95.0">
+            <Label prefWidth="42.0"/>
+            <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER"/>
+            <Label prefWidth="42.0"/>
+        </HBox>
+        <HBox id="opp-monster-1-label" layoutX="346.0" layoutY="259.0" prefHeight="20.0" prefWidth="95.0">
+            <Label prefWidth="42.0"/>
+            <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER"/>
+            <Label prefWidth="42.0"/>
+        </HBox>
+        <HBox id="opp-monster-2-label" layoutX="241.0" layoutY="259.0" prefHeight="20.0" prefWidth="95.0">
+            <Label prefWidth="42.0"/>
+            <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER"/>
+            <Label prefWidth="42.0"/>
+        </HBox>
+        <HBox id="opp-monster-3-label" layoutX="450.0" layoutY="259.0" prefHeight="20.0" prefWidth="95.0">
+            <Label prefWidth="42.0"/>
+            <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER"/>
+            <Label prefWidth="42.0"/>
+        </HBox>
+        <HBox id="opp-monster-4-label" layoutX="139.0" layoutY="259.0" prefHeight="20.0" prefWidth="95.0">
+            <Label prefWidth="42.0"/>
+            <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER"/>
+            <Label prefWidth="42.0"/>
+        </HBox>
+        <HBox id="opp-monster-5-label" layoutX="554.0" layoutY="259.0" prefHeight="20.0" prefWidth="95.0">
+            <Label prefWidth="42.0"/>
+            <Label prefWidth="11.0" styleClass="number-label, monster-label-inactive" textAlignment="CENTER"/>
+            <Label prefWidth="42.0"/>
+        </HBox>
+        <Label id="graveyard-label" layoutX="658.0" layoutY="539.0" prefHeight="20.0" prefWidth="95.0">
+            <styleClass>
+                <String fx:value="number-label"/>
+                <String fx:value="graveyard-label"/>
+            </styleClass>
+        </Label>
+        <Label id="opp-graveyard-label" layoutX="31.0" layoutY="355.0" prefHeight="20.0" prefWidth="95.0">
+            <styleClass>
+                <String fx:value="number-label"/>
+                <String fx:value="graveyard-label"/>
+            </styleClass>
+        </Label>
+        <Label id="deck-label" layoutX="658.0" layoutY="663.0" prefWidth="95.0">
+            <styleClass>
+                <String fx:value="number-label"/>
+                <String fx:value="graveyard-label"/>
+            </styleClass>
+        </Label>
+        <Label id="opp-deck-label" layoutX="31.0" layoutY="235.0" prefWidth="95.0">
+            <styleClass>
+                <String fx:value="number-label"/>
+                <String fx:value="graveyard-label"/>
+            </styleClass>
+        </Label>
+        <FlowPane id="hand" alignment="BOTTOM_CENTER" columnHalignment="CENTER" layoutX="26.0" layoutY="705.0"
+                  maxHeight="95.0" prefHeight="95.0" prefWidth="734.0">
+            <styleClass>
+                <String fx:value="hand"/>
+                <String fx:value="selectable-card-image"/>
+            </styleClass>
+        </FlowPane>
+        <FlowPane id="opp-hand" alignment="BOTTOM_CENTER" columnHalignment="CENTER" layoutX="25.0" maxHeight="95.0"
+                  prefHeight="95.0" prefWidth="734.0" styleClass="hand"/>
+        <Button id="next-phase-btn" layoutX="39.0" layoutY="544.0" mnemonicParsing="false" text="Next&#10;Phase"
+                textAlignment="CENTER"/>
+        <Button id="cancel-attack-btn" disable="true" layoutX="675.0" layoutY="170.0" mnemonicParsing="false"
+                opacity="0.0" prefHeight="136.0" text="Cancel&#10;Attack"/>
+        <Button id="pause-btn" layoutX="39.0" layoutY="644.0" mnemonicParsing="false" text="Pause"
+                textAlignment="CENTER"/>
+        <Button id="summon-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0"
+                prefWidth="70.0" styleClass="action-btn"/>
+        <Button id="set-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0"
+                prefWidth="70.0" styleClass="action-btn"/>
+        <Button id="activate-effect-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0"
+                prefWidth="70.0" styleClass="action-btn"/>
+        <Button id="flip-summon-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0"
+                prefWidth="70.0" styleClass="action-btn"/>
+        <Button id="change-to-attack-position-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false"
+                prefHeight="70.0" prefWidth="70.0" styleClass="action-btn"/>
+        <Button id="change-to-defense-position-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false"
+                prefHeight="70.0" prefWidth="70.0" styleClass="action-btn"/>
+        <Button id="direct-attack-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0"
+                prefWidth="70.0" styleClass="action-btn"/>
+        <Button id="attack-btn" layoutX="680.0" layoutY="100.0" mnemonicParsing="false" prefHeight="70.0"
+                prefWidth="70.0" styleClass="action-btn"/>
+    </AnchorPane>
 </GridPane>

@@ -15,10 +15,6 @@ public class Sender {
         this.dataOutputStream = dataOutputStream;
     }
 
-    public static String sendAndGetResponse(String toString) {
-        return null;
-    }
-
 
     public void send(String message) {
         try {

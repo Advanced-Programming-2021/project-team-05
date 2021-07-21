@@ -12,7 +12,7 @@ public class ForestCheckAction implements Action {
         Table playerTable = controller.getBoard().getPlayerTable();
         Table opponentTable = controller.getBoard().getOpponentTable();
         board.getSpelledMonsters().removeIf(monster -> {
-            if (!playerTable.hasMonster(monster) && !opponentTable.hasMonster(monster)) {
+            if (playerTable.hasNotMonster(monster) && opponentTable.hasNotMonster(monster)) {
                 monster.decreaseAttack(200);
                 monster.decreaseDefense(200);
                 return true;

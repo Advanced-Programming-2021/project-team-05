@@ -29,7 +29,6 @@ public class SpellTrapCell extends Cell {
         this.setEffectActivated(false);
     }
 
-    @Override
     public void reset() {
         this.setNewlyAdded(false);
     }

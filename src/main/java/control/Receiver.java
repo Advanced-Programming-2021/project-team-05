@@ -27,7 +27,6 @@ public class Receiver extends Thread {
         while (!end) {
             try {
                 String input = dataInputStream.readUTF();
-                System.out.println(input);
                 JsonObject command = new JsonParser().parse(input).getAsJsonObject();
                 if ("data".equals(command.get("command_type").getAsString()))
                     DataController.getInstance().parseCommand(command);

@@ -3,7 +3,6 @@ package model.effect.action;
 import control.controller.DuelMenuController;
 import model.board.Table;
 import model.board.cell.Cell;
-import model.board.cell.MonsterCell;
 import model.card.Card;
 import view.DuelMenuView;
 

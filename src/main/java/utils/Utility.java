@@ -1,7 +1,6 @@
 package utils;
 
 import java.util.Random;
-import java.util.Scanner;
 
 public class Utility {
 
@@ -25,12 +24,6 @@ public class Utility {
         tableString.delete(tableString.length() - 1, tableString.length());
 
         return tableString.toString();
-    }
-
-
-    public static int rollDice() {
-        Random rand = new Random();
-        return rand.nextInt(6) + 1;
     }
 
 

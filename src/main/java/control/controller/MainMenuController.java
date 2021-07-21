@@ -68,6 +68,7 @@ public class MainMenuController extends Controller {
         return true;
     }
 
+    @SuppressWarnings("SameReturnValue")
     public final boolean startDuelWithAi(int rounds) {
         Deck userDeck = user.getActiveDeck();
         if (userDeck == null) {

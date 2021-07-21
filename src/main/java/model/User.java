@@ -1,11 +1,11 @@
 package model;
 
 import control.DataManager;
-import model.card.Card;
 
 import java.util.ArrayList;
 import java.util.Random;
 
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class User {
 
     private final ArrayList<String> purchasedCardIds;
@@ -42,10 +42,6 @@ public class User {
         this.username = username;
     }
 
-
-    public String getPassword() {
-        return this.password;
-    }
 
     public void setPassword(String password) {
         this.password = password;
@@ -91,67 +87,8 @@ public class User {
     }
 
 
-    public ArrayList<Card> getPurchasedCards() {
-        DataManager dataManager = DataManager.getInstance();
-        ArrayList<Card> cards = new ArrayList<>();
-        for (String cardId : purchasedCardIds) {
-            cards.add(dataManager.getCardById(cardId));
-        }
-        return cards;
-    }
-
-    public void purchaseCard(Card card) {
-        this.purchasedCardIds.add(card.getId());
-    }
-
-    public ArrayList<Card> getPurchasedCardsByName(String name) {
-        DataManager dataManager = DataManager.getInstance();
-        ArrayList<Card> cards = new ArrayList<>();
-        for (String cardId : this.purchasedCardIds) {
-            Card card = dataManager.getCardById(cardId);
-            if (name.equals(card.getName())) {
-                cards.add(card);
-            }
-        }
-        return cards;
-    }
-
-
-    public ArrayList<Deck> getDecks() {
-        DataManager dataManager = DataManager.getInstance();
-        ArrayList<Deck> decks = new ArrayList<>();
-        for (String deckId : this.deckIds) {
-            decks.add(dataManager.getDeckById(deckId));
-        }
-        return decks;
-    }
-
-    public void addDeck(Deck deck) {
-        this.deckIds.add(deck.getId());
-    }
-
-    public void removeDeck(Deck deck) {
-        this.deckIds.remove(deck.getId());
-    }
-
-    public Deck getDeckByName(String name) {
-        DataManager dataManager = DataManager.getInstance();
-        for (String deckId : this.deckIds) {
-            Deck deck = dataManager.getDeckById(deckId);
-            if (name.equals(deck.getName())) {
-                return deck;
-            }
-        }
-        return null;
-    }
-
-
     public Deck getActiveDeck() {
         return DataManager.getInstance().getDeckById(this.activeDeckId);
-    }
-
-    public void setActiveDeck(Deck activeDeck) {
-        this.activeDeckId = activeDeck.getId();
     }
 
     public boolean isActiveDeck(Deck deck) {

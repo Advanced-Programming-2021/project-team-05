@@ -1,25 +1,15 @@
 package control;
 
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
-import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 import com.opencsv.ICSVWriter;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import model.Deck;
-import model.ScoreboardItem;
 import model.User;
 import model.card.Card;
-import model.card.Monster;
-import model.card.Spell;
-import model.card.Trap;
-import model.effect.Effect;
-import model.effect.Event;
-import model.effect.action.ActionEnum;
 import model.template.CardTemplate;
 import model.template.MonsterTemplate;
 import model.template.SpellTemplate;
@@ -28,7 +18,6 @@ import model.template.property.CardType;
 import model.template.property.MonsterAttribute;
 import model.template.property.MonsterType;
 import model.template.property.SpellTrapStatus;
-import utils.ViewUtility;
 
 import java.io.File;
 import java.io.FileReader;
@@ -37,15 +26,9 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Random;
 
 public class DataManager {
 
-    private static final String AI_JSON_PATH = "data" + File.separator + "ai.json";
-    private static final String USERS_JSON_PATH = "data" + File.separator + "users.json";
-    private static final String CARDS_JSON_PATH = "data" + File.separator + "cards.json";
-    private static final String DECKS_JSON_PATH = "data" + File.separator + "decks.json";
-    private static final String EFFECTS_JSON_PATH = "data" + File.separator + "effects.json";
     private static final String MONSTER_CSV_PATH = "data" + File.separator + "Monster.csv";
     private static final String SPELL_TRAP_CSV_PATH = "data" + File.separator + "SpellTrap.csv";
     private static final String IMPORT_EXPORT_DIR = "import_export";
@@ -174,201 +157,6 @@ public class DataManager {
     }
 
 
-    private RuntimeTypeAdapterFactory<Card> getCardAdapter() {
-        return RuntimeTypeAdapterFactory
-                .of(Card.class, "card_type")
-                .registerSubtype(Monster.class, MonsterTemplate.class.getName())
-                .registerSubtype(Spell.class, SpellTemplate.class.getName())
-                .registerSubtype(Trap.class, TrapTemplate.class.getName());
-    }
-
-
-    private void loadAi() {
-        try {
-            Gson gson = new Gson();
-            JsonReader aiReader = new JsonReader(new FileReader(AI_JSON_PATH));
-            this.ai = gson.fromJson(aiReader, User.class);
-            aiReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadUsers() {
-        try {
-            Gson gson = new Gson();
-            JsonReader userReader = new JsonReader(new FileReader(USERS_JSON_PATH));
-            Type userType = new TypeToken<ArrayList<User>>() {
-            }.getType();
-            this.users = gson.fromJson(userReader, userType);
-            userReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void loadMonsterTemplatesFromCSV() {
-        try {
-            CSVReader csvReader = new CSVReaderBuilder(new FileReader(MONSTER_CSV_PATH)).withSkipLines(1).build();
-            String[] nextLine;
-            while ((nextLine = csvReader.readNext()) != null) {
-                String name = nextLine[0];
-                int level = Integer.parseInt(nextLine[1]);
-                MonsterAttribute attribute = MonsterAttribute.getMonsterAttributeByName(nextLine[2]);
-                MonsterType monsterType = MonsterType.getMonsterTypeByName(nextLine[3]);
-                CardType type = CardType.getTypeByName(nextLine[4]);
-                int attack = Integer.parseInt(nextLine[5]);
-                int defense = Integer.parseInt(nextLine[6]);
-                String description = nextLine[7];
-                int price = Integer.parseInt(nextLine[8]);
-
-                if (attribute == null || monsterType == null || type == null) {
-                    throw new Exception("error at " + nextLine[2] + "|" + nextLine[3] + "|" + nextLine[4]);
-                }
-
-                this.templates.add(new MonsterTemplate(name, type, description, price, monsterType, attribute, level, attack, defense));
-            }
-            csvReader.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void loadSpellTrapTemplatesFromCSV() {
-        try {
-            CSVReader csvReader = new CSVReaderBuilder(new FileReader(SPELL_TRAP_CSV_PATH)).withSkipLines(1).build();
-            String[] nextLine;
-            while ((nextLine = csvReader.readNext()) != null) {
-                String name = nextLine[0];
-                String cardType = nextLine[1];
-                CardType type = CardType.getTypeByName(nextLine[2]);
-                String description = nextLine[3];
-                SpellTrapStatus status = SpellTrapStatus.getStatusByName(nextLine[4]);
-                int price = Integer.parseInt(nextLine[5]);
-
-                if (type == null) {
-                    throw new Exception("error at " + nextLine[2]);
-                }
-
-                if ("Spell".equals(cardType)) {
-                    this.templates.add(new SpellTemplate(name, type, description, price, status));
-                } else if ("Trap".equals(cardType)) {
-                    this.templates.add(new TrapTemplate(name, type, description, price, status));
-                } else {
-                    throw new Exception("card type wasn't Spell or Trap");
-                }
-            }
-            csvReader.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadCards() {
-        try {
-            RuntimeTypeAdapterFactory<Card> cardAdapter = getCardAdapter();
-            Gson cardGson = new GsonBuilder().registerTypeAdapterFactory(cardAdapter).create();
-            JsonReader cardReader = new JsonReader(new FileReader(CARDS_JSON_PATH));
-            Type cardType = new TypeToken<ArrayList<Card>>() {
-            }.getType();
-            this.cards = cardGson.fromJson(cardReader, cardType);
-            cardReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadDecks() {
-        try {
-            Gson gson = new Gson();
-            JsonReader deckReader = new JsonReader(new FileReader(DECKS_JSON_PATH));
-            Type deckType = new TypeToken<ArrayList<Deck>>() {
-            }.getType();
-            this.decks = gson.fromJson(deckReader, deckType);
-            deckReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadEffects() {
-        try {
-            JsonParser parser = new JsonParser();
-            JsonReader effectReader = new JsonReader(new FileReader(EFFECTS_JSON_PATH));
-            JsonArray effectsArray = parser.parse(effectReader).getAsJsonArray();
-            for (JsonElement effectElement : effectsArray) {
-                JsonObject effectObject = effectElement.getAsJsonObject();
-                String cardName = effectObject.get("cardName").getAsString();
-                Event event = Event.valueOf(effectObject.get("event").getAsString());
-                ActionEnum action = ActionEnum.valueOf(effectObject.get("action").getAsString());
-
-                Effect effect = new Effect(event, action);
-                this.getCardTemplateByName(cardName).addEffect(effect);
-            }
-            effectReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void loadData() {
-        templates.clear();
-        loadAi();
-        loadUsers();
-        loadMonsterTemplatesFromCSV();
-        loadSpellTrapTemplatesFromCSV();
-        loadCards();
-        loadDecks();
-        loadEffects();
-    }
-
-
-    private void saveUsers() {
-        try {
-            Gson gson = new GsonBuilder().serializeNulls().create();
-            FileWriter userWriter = new FileWriter(USERS_JSON_PATH);
-            gson.toJson(this.users, userWriter);
-            userWriter.flush();
-            userWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void saveCards() {
-        try {
-            RuntimeTypeAdapterFactory<Card> cardAdapter = getCardAdapter();
-            Gson cardGson = new GsonBuilder().serializeNulls().registerTypeAdapterFactory(cardAdapter).create();
-            FileWriter cardsWriter = new FileWriter(CARDS_JSON_PATH);
-            Type type = new TypeToken<ArrayList<Card>>() {
-            }.getType();
-            cardGson.toJson(this.cards, type, cardsWriter);
-            cardsWriter.flush();
-            cardsWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void saveDecks() {
-        try {
-            Gson gson = new GsonBuilder().serializeNulls().create();
-            FileWriter decksWriter = new FileWriter(DECKS_JSON_PATH);
-            gson.toJson(this.decks, decksWriter);
-            decksWriter.flush();
-            decksWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void saveData() {
-        saveUsers();
-        saveCards();
-        saveDecks();
-    }
-
-
     public void checkTemplate(CardTemplate template, boolean add) throws Exception {
         String[] line;
         String path;
@@ -465,5 +253,69 @@ public class DataManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public void loadMonsterTemplatesFromCSV() {
+        try {
+            CSVReader csvReader = new CSVReaderBuilder(new FileReader(MONSTER_CSV_PATH)).withSkipLines(1).build();
+            String[] nextLine;
+            while ((nextLine = csvReader.readNext()) != null) {
+                String name = nextLine[0];
+                int level = Integer.parseInt(nextLine[1]);
+                MonsterAttribute attribute = MonsterAttribute.getMonsterAttributeByName(nextLine[2]);
+                MonsterType monsterType = MonsterType.getMonsterTypeByName(nextLine[3]);
+                CardType type = CardType.getTypeByName(nextLine[4]);
+                int attack = Integer.parseInt(nextLine[5]);
+                int defense = Integer.parseInt(nextLine[6]);
+                String description = nextLine[7];
+                int price = Integer.parseInt(nextLine[8]);
+
+                if (attribute == null || monsterType == null || type == null) {
+                    throw new Exception("error at " + nextLine[2] + "|" + nextLine[3] + "|" + nextLine[4]);
+                }
+
+                this.templates.add(new MonsterTemplate(name, type, description, price, monsterType, attribute, level, attack, defense));
+            }
+            csvReader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadSpellTrapTemplatesFromCSV() {
+        try {
+            CSVReader csvReader = new CSVReaderBuilder(new FileReader(SPELL_TRAP_CSV_PATH)).withSkipLines(1).build();
+            String[] nextLine;
+            while ((nextLine = csvReader.readNext()) != null) {
+                String name = nextLine[0];
+                String cardType = nextLine[1];
+                CardType type = CardType.getTypeByName(nextLine[2]);
+                String description = nextLine[3];
+                SpellTrapStatus status = SpellTrapStatus.getStatusByName(nextLine[4]);
+                int price = Integer.parseInt(nextLine[5]);
+
+                if (type == null) {
+                    throw new Exception("error at " + nextLine[2]);
+                }
+
+                if ("Spell".equals(cardType)) {
+                    this.templates.add(new SpellTemplate(name, type, description, price, status));
+                } else if ("Trap".equals(cardType)) {
+                    this.templates.add(new TrapTemplate(name, type, description, price, status));
+                } else {
+                    throw new Exception("card type wasn't Spell or Trap");
+                }
+            }
+            csvReader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadData() {
+        templates.clear();
+        loadMonsterTemplatesFromCSV();
+        loadSpellTrapTemplatesFromCSV();
     }
 }

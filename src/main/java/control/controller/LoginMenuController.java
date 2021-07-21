@@ -5,15 +5,15 @@ import control.message.LoginMenuMessage;
 import javafx.application.Platform;
 import view.LoginMenuView;
 
-    public class LoginMenuController extends Controller {
+public class LoginMenuController extends Controller {
 
-        private LoginMenuView view;
+    private LoginMenuView view;
 
 
-        public void setView(LoginMenuView view) {
-            this.view = view;
-            super.view = view;
-        }
+    public void setView(LoginMenuView view) {
+        this.view = view;
+        super.view = view;
+    }
 
 
     public final void createUser(String username, String password, String nickname) {

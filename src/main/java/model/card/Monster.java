@@ -84,13 +84,4 @@ public class Monster extends Card {
     }
 
 
-    @Override
-    public String detailedToString() {
-        return "Name: " + this.getName() + "\n" +
-                "Level: " + this.getLevel() + "\n" +
-                "Type: " + this.getType().getName() + "\n" +
-                "Attack: " + this.getAttack() + "\n" +
-                "Defense: " + this.getDefence() + "\n" +
-                "Description: " + this.getDescription();
-    }
 }

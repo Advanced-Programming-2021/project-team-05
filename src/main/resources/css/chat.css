@@ -45,6 +45,7 @@
     -fx-background-radius: 4px;
     -fx-font-size: 17px;
     -fx-text-fill: #2d030e;
+    -fx-alignment: top-left;
     -fx-effect: dropshadow(two-pass-box, black, 4, 0, 0, 0);
 }
 
@@ -52,6 +53,26 @@
     -fx-background-color: linear-gradient(to right, #866912, #ddb41e);
 }
 
+
+.delete-button {
+    -fx-pref-height: 80px;
+    -fx-font-size: 17px;
+    -fx-text-fill: #2d030e;
+    -fx-background-color: linear-gradient(to right, #963220, #a8472f);
+    -fx-effect: dropshadow(two-pass-box, black, 4, 0, 0, 0);
+}
+
+.delete-button:hover {
+    -fx-scale-x: 1.01;
+    -fx-scale-y: 1.01;
+    -fx-background-color: linear-gradient(to right, #962020, #a82f2f);
+}
+
+.delete-button:focused {
+    -fx-scale-x: 1.01;
+    -fx-scale-y: 1.01;
+    -fx-background-color: linear-gradient(to right, #6e1d33, #a82f4e);
+}
 
 
 #input-box {

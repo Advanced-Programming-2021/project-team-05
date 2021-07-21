@@ -18,6 +18,7 @@ public abstract class Controller {
     }
 
 
+    @SuppressWarnings("unused")
     public void setView(View view) {
         this.view = view;
     }

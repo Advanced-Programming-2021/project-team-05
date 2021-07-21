@@ -19,8 +19,6 @@ public abstract class Cell {
 
     public abstract void clear();
 
-    public abstract void reset();
-
 
     public Card getCard() {
         return this.card;

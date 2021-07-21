@@ -1,20 +1,9 @@
 package control.controller;
 
-import com.google.gson.*;
-import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
-import control.Sender;
+import com.google.gson.JsonObject;
 import control.message.ShopMenuMessage;
 import javafx.application.Platform;
-import model.ShopItem;
-import model.template.CardTemplate;
-import model.template.MonsterTemplate;
-import model.template.SpellTemplate;
-import model.template.TrapTemplate;
-import view.MainView;
 import view.ShopMenuView;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class ShopMenuController extends Controller {
 
@@ -75,10 +64,7 @@ public class ShopMenuController extends Controller {
     public void parseCommand(JsonObject command) {
         String commandName = command.get("command_name").getAsString();
         JsonObject infoObject = command.get("info").getAsJsonObject();
-        switch (commandName) {
-            case "buy_card_response":
-                Platform.runLater(() -> checkBuyCardResponse(infoObject));
-                break;
-        }
+        if ("buy_card_response".equals(commandName))
+            Platform.runLater(() -> checkBuyCardResponse(infoObject));
     }
 }

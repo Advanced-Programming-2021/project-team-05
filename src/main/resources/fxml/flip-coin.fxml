@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-
-
-<AnchorPane id="root" prefHeight="800.0" prefWidth="1100.0" stylesheets="@../css/flip-coin.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <Label id="result-label" alignment="CENTER" layoutY="236.0" prefHeight="150.0" prefWidth="1100.0" />
-      <HBox alignment="CENTER" layoutX="425.0" layoutY="400.0" prefHeight="250.0" prefWidth="250.0">
-         <children>
-            <ImageView id="coin-image" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/coins/heads_0.png" />
-               </image>
-            </ImageView>
-         </children>
-      </HBox>
-   </children>
+<AnchorPane id="root" prefHeight="800.0" prefWidth="1100.0" stylesheets="@../css/flip-coin.css"
+            xmlns="http://javafx.com/javafx/8.0.171">
+    <Label id="result-label" alignment="CENTER" layoutY="236.0" prefHeight="150.0" prefWidth="1100.0"/>
+    <HBox alignment="CENTER" layoutX="425.0" layoutY="400.0" prefHeight="250.0" prefWidth="250.0">
+        <ImageView id="coin-image" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../images/coins/heads_0.png"/>
+        </ImageView>
+    </HBox>
 </AnchorPane>

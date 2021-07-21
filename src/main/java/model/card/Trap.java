@@ -23,11 +23,4 @@ public class Trap extends Card {
     }
 
 
-    @Override
-    public String detailedToString() {
-        return "Name: " + this.getName() + "\n" +
-                "Trap\n" +
-                "Type: " + this.getType().getName() + "\n" +
-                "Description: " + this.getDescription();
-    }
 }

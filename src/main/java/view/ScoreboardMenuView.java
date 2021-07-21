@@ -3,9 +3,6 @@ package view;
 import control.controller.MainController;
 import control.controller.MainMenuController;
 import control.controller.ScoreboardMenuController;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,7 +13,6 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import javafx.util.Duration;
 import model.ScoreboardItem;
 import utils.ViewUtility;
 
@@ -24,6 +20,7 @@ import java.io.IOException;
 
 public class ScoreboardMenuView extends View {
 
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final ScoreboardMenuController controller;
 
 
@@ -54,10 +51,6 @@ public class ScoreboardMenuView extends View {
             MainMenuView mainMenuView = new MainMenuView(mainMenuController);
             mainMenuView.setMainMenuScene();
         });
-
-        Button refreshButton = (Button) scene.lookup("#refresh-btn");
-        refreshButton.setOnMouseClicked(e -> updateScoreboardScene());
-        refreshButton.setOnAction(e -> updateScoreboardScene());
     }
 
     public void updateScoreboardScene() {

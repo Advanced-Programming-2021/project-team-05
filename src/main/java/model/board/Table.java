@@ -232,13 +232,13 @@ public class Table {
         return -1;
     }
 
-    public final boolean hasMonster(Monster monster) {
+    public final boolean hasNotMonster(Monster monster) {
         for (int i = 1; i <= 5; i++) {
             if (monster.equals(this.getMonster(i))) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
 

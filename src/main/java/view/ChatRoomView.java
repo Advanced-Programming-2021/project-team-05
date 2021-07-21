@@ -18,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.Message;
 import model.User;
+import utils.Listener;
 import utils.ViewUtility;
 
 import java.io.IOException;
@@ -91,15 +92,21 @@ public class ChatRoomView extends View {
         for (Message message : messages) {
             HBox messageContainer = new HBox();
             messageContainer.getStyleClass().add("message-container");
-
-            Label messageLabel = new Label(message.getNickname() + " says:\n" + message.getContent());
-            messageLabel.getStyleClass().add("message-label");
             if (user.getNickname().equals(message.getNickname())) {
                 messageContainer.getStyleClass().add("self-message-container");
-                messageLabel.getStyleClass().add("self-message-label");
 
-                messageContainer.getChildren().add(messageLabel);
+                Label messageLabel = new Label(message.getContent());
+                messageLabel.getStyleClass().addAll("message-label", "self-message-label");
+
+                Button deleteButton = new Button("Delete");
+                deleteButton.getStyleClass().add("delete-button");
+                deleteButton.setOnAction(e -> deleteMessage(message.getId()));
+
+                messageContainer.getChildren().addAll(deleteButton, messageLabel);
             } else {
+                Label messageLabel = new Label(message.getNickname() + " says:\n" + message.getContent());
+                messageLabel.getStyleClass().add("message-label");
+
                 URL imagePath = getClass().getResource("/images/profile-pics/" + message.getProfilePicName());
                 ImageView messageImage = new ImageView(new Image(imagePath.toExternalForm()));
                 messageImage.getStyleClass().add("message-image");
@@ -120,7 +127,27 @@ public class ChatRoomView extends View {
         controller.sendMessage(message);
     }
 
-    public void showSendMessage(ChatRoomMessage message) {
+    private void deleteMessage(String messageId) {
+        ViewUtility.showConfirmationAlert(
+                "Chat Room",
+                "Delete Message",
+                "Do you want to delete this message?",
+                "Cancel",
+                "Delete",
+                new Listener() {
+                    @Override
+                    public void onConfirm() {
+                        controller.deleteMessage(messageId);
+                    }
+
+                    @Override
+                    public void onCancel() {
+                    }
+                }
+        );
+    }
+
+    public void showChatMessage(ChatRoomMessage message) {
         switch (message) {
             case SUCCESS:
                 break;

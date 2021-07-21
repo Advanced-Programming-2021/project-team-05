@@ -90,13 +90,6 @@ public abstract class Card {
     }
 
 
-    public String detailedToString() {
-        DataManager dataManager = DataManager.getInstance();
-        CardTemplate template = dataManager.getCardTemplateByName(this.getName());
-        return template.detailedToString();
-    }
-
-
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;

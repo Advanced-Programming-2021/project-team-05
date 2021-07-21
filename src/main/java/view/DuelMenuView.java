@@ -1,9 +1,9 @@
 package view;
 
 import control.DataManager;
+import control.Phase;
 import control.controller.DuelMenuController;
 import control.controller.MainMenuController;
-import control.Phase;
 import control.message.DuelMenuMessage;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -446,7 +446,6 @@ public class DuelMenuView implements CheatRunner {
 
 
     public void showPhase(Phase phase) {
-//        boolean isOpp = false;
         VBox[] phases = new VBox[6];
         phases[0] = (VBox) scene.lookup("#draw-phase-label");
         phases[1] = (VBox) scene.lookup("#standby-phase-label");
@@ -455,23 +454,10 @@ public class DuelMenuView implements CheatRunner {
         phases[4] = (VBox) scene.lookup("#main-2-phase-label");
         phases[5] = (VBox) scene.lookup("#end-phase-label");
 
-        // In graphic phase current player is never opponent
-        /*if (isOpp) {
-            for (VBox phaseBox : phases) {
-                if (!phaseBox.getStyleClass().contains("phase-label-opp")) {
-                    phaseBox.getStyleClass().add("phase-label-opp");
-                }
-            }
-            Button nextPhaseButton = (Button) scene.lookup("#next-phase-btn");
-            nextPhaseButton.setDisable(true);
-        } else for (VBox phaseBox : phases) phaseBox.getStyleClass().remove("phase-label-opp");*/
-
         for (VBox phaseBox : phases) {
             phaseBox.getStyleClass().remove("phase-label-active");
-//            phaseBox.getStyleClass().remove("phase-label-active-opp");
         }
         phases[phase.getNumber()].getStyleClass().add("phase-label-active");
-//        phases[phase.getNumber()].getStyleClass().add("phase-label-active" + (isOpp ? "-opp" : ""));
     }
 
 

@@ -2,7 +2,6 @@ package control.controller;
 
 import com.google.gson.JsonObject;
 import control.message.ChatRoomMessage;
-import control.message.ShopMenuMessage;
 import javafx.application.Platform;
 import view.ChatRoomView;
 
@@ -29,7 +28,7 @@ public class ChatRoomController extends Controller {
             MainController.sendMessage(commandObject.toString());
             startWaiting();
         } catch (Exception e) {
-            view.showSendMessage(ChatRoomMessage.ERROR);
+            view.showChatMessage(ChatRoomMessage.ERROR);
         }
     }
 
@@ -38,9 +37,37 @@ public class ChatRoomController extends Controller {
             if (waitTimeline == null) return;
             else stopWaiting();
             ChatRoomMessage message = ChatRoomMessage.valueOf(infoObject.get("message").getAsString());
-            view.showSendMessage(message);
+            view.showChatMessage(message);
         } catch (Exception e) {
-            view.showSendMessage(ChatRoomMessage.ERROR);
+            view.showChatMessage(ChatRoomMessage.ERROR);
+        }
+    }
+
+
+    public void deleteMessage(String messageId) {
+        try {
+            JsonObject infoObject = new JsonObject();
+            infoObject.addProperty("token", MainController.getToken());
+            infoObject.addProperty("message_id", messageId);
+            JsonObject commandObject = new JsonObject();
+            commandObject.addProperty("command_type", "chat");
+            commandObject.addProperty("command_name", "delete_message");
+            commandObject.add("info", infoObject);
+            MainController.sendMessage(commandObject.toString());
+            startWaiting();
+        } catch (Exception e) {
+            view.showChatMessage(ChatRoomMessage.ERROR);
+        }
+    }
+
+    private void checkDeleteMessageResponse(JsonObject infoObject) {
+        try {
+            if (waitTimeline == null) return;
+            else stopWaiting();
+            ChatRoomMessage message = ChatRoomMessage.valueOf(infoObject.get("message").getAsString());
+            view.showChatMessage(message);
+        } catch (Exception e) {
+            view.showChatMessage(ChatRoomMessage.ERROR);
         }
     }
 
@@ -52,6 +79,9 @@ public class ChatRoomController extends Controller {
         switch (commandName) {
             case "send_message_response":
                 Platform.runLater(() -> checkSendMessageResponse(infoObject));
+                break;
+            case "delete_message_response":
+                Platform.runLater(() -> checkDeleteMessageResponse(infoObject));
                 break;
             case "update_messages":
                 Platform.runLater(() -> view.updateChatScene());

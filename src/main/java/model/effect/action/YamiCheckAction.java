@@ -13,7 +13,7 @@ public class YamiCheckAction implements Action {
         Table playerTable = controller.getBoard().getPlayerTable();
         Table opponentTable = controller.getBoard().getOpponentTable();
         board.getSpelledMonsters().removeIf(monster -> {
-            if (!playerTable.hasMonster(monster) && !opponentTable.hasMonster(monster)) {
+            if (playerTable.hasNotMonster(monster) && opponentTable.hasNotMonster(monster)) {
                 MonsterType type = monster.getMonsterType();
                 if (type == MonsterType.FIEND || type == MonsterType.SPELL_CASTER) {
                     monster.decreaseAttack(200);
