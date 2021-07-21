@@ -26,8 +26,7 @@ public class MainView extends Application {
     @Override
     public void start(Stage stage) {
         initializeFonts();
-        // TODO: 2021-07-13 uncomment
-//        playMusic();
+        playMusic();
         if (!MainController.initializeNetwork()) {
             stop();
             return;
