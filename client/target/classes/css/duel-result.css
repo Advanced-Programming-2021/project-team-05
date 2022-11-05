@@ -1,0 +1,29 @@
+.nickname-label {
+    -fx-padding: 10px;
+    -fx-pref-width: 200px;
+    -fx-font-size: 25px;
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 7px;
+}
+
+.nickname-label .text {
+    -fx-fill: #e7d551;
+    -fx-stroke: #40390a;
+}
+
+
+#result-label {
+    -fx-font-size: 90px;
+    -fx-font-weight: bold;
+}
+
+#result-label .text {
+    -fx-fill: #e7d551;
+    -fx-stroke: #40390a;
+}
+
+
+#back-btn {
+    -fx-pref-width: 300px;
+}

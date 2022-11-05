@@ -1,0 +1,1109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_TEST_SOURCES" value="false" />
+  </component>
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="YuGiOh" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f89359af-6dc0-4302-b935-6ef0185bd7f0" name="Default Changelist" comment="final changes">
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data/Monster.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data/SpellTrap.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../import_export/Invalid_Monster.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../import_export/Test_Monster.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../import_export/Test_Spell.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../import_export/Test_Trap.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../import_export/help.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/DataManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/Phase.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/Receiver.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/Sender.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/controller/ChatRoomController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/controller/Controller.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/controller/CreateCardController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/controller/DataController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/controller/DeckMenuController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/controller/DuelMenuController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/controller/ImportExportMenuController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/controller/LoginMenuController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/controller/MainController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/controller/MainMenuController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/controller/ProfileMenuController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/controller/ScoreboardMenuController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/controller/ShopMenuController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/message/ChatRoomMessage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/message/CreateCardMessage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/message/DeckMenuMessage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/message/DuelMenuMessage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/message/ImportExportMessage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/message/LoginMenuMessage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/message/MainMenuMessage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/message/ProfileMenuMessage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/control/message/ShopMenuMessage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/Deck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/DeckInfo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/Message.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/ScoreboardItem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/ShopItem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/board/Board.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/board/CardAddress.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/board/CardAddressZone.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/board/CardState.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/board/Table.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/board/cell/Cell.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/board/cell/MonsterCell.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/board/cell/SpellTrapCell.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/card/Card.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/card/Monster.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/card/Spell.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/card/Trap.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/Effect.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/Event.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/Action.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/ActionEnum.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/AddFieldSpellFromDeckToHandAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/DestroyAllOpponentAttackingMonstersAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/DestroyAllOpponentMonstersAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/DestroyAllOpponentsSpellAndTrapsAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/DestroyAllPlayerMonstersAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/DestroyAttackedCardAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/DestroyAttackerInOpponentTableAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/DestroyAttackerInPlayerTableAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/DestroyOpponentOneMonsterAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/DestroyOpponentOneSpellOrTrapAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/DestroyPlayerOneMonsterAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/DestroySummonedMonsterAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/DrawTwoCards.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/EndBattlePhaseAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/ForestCheckAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/ForestDisableAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/ForestEnableAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/NoDamageAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/NullAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/PreventAttackAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/ReduceLPByAttackerAttackAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/ReturnOneMonsterFromGraveyardAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/RitualSummonAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/UmiirukaCheckAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/UmiirukaDisableAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/UmiirukaEnableAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/YamiCheckAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/YamiDisableAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/effect/action/YamiEnableAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/template/CardTemplate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/template/MonsterTemplate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/template/SpellTemplate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/template/TrapTemplate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/template/property/CardType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/template/property/MonsterAttribute.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/template/property/MonsterType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/model/template/property/SpellTrapStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/utils/CoinSide.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/utils/DuelBackgroundType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/utils/Listener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/utils/PromptListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/utils/RockPaperScissors.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/utils/Utility.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/utils/ViewUtility.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/view/ChatRoomView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/view/CheatRunner.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/view/CreateCardView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/view/DeckMenuView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/view/DuelMenuView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/view/ImportExportMenuView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/view/LoginMenuView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/view/MainMenuView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/view/MainView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/view/ProfileMenuView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/view/ScoreboardMenuView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/view/ShopMenuView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/view/View.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/view/animation/FlipCoinAnimation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/view/animation/ThrowCoinAnimation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/alert.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/card.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/change-nickname.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/change-password.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/chat.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/cheat.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/create-card.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/deck.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/duel-result.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/duel-settings.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/duel.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/edit-deck.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/flip-coin.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/import-export.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/login.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/main-menu.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/main.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/profile.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/register.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/scoreboard.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/select-cards.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/shop.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/show-cards.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/css/welcome.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/font/Merienda-Bold.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/font/Merienda-Regular.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/card.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/change-nickname.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/change-password.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/chat.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/cheat.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/create-card.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/deck.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/duel-result.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/duel-settings.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/duel.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/edit-deck.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/flip-coin.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/import-export.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/login.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/main-menu.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/pause.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/profile.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/register.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/scoreboard.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/shop.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/show-cards.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/fxml/welcome.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/background.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Advanced_Ritual_Art.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Alexandrite_Dragon.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Axe_Raider.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Baby_Dragon.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Battle_Ox.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Battle_Warrior.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Bitron.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Blue-Eyes_White_Dragon.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Crab_Turtle.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Crawling_Dragon.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Curtain_of_The_Dark_Ones.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Dark_Blade.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Dark_Hole.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Dark_Magician.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Exploder_Dragon.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Feral_Imp.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Fireyarou.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Flame_Manipulator.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Forest.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Gate_Guardian.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Haniwa.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Harpie's_Feather_Duster.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Hero_of_The_East.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Horn_Imp.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Leotron.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Magic_Cylinder.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Man-Eater_Bug.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Mirror_Force.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Monster_Reborn.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Mystical_Space_Typhoon.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Negate_Attack.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/New_Card.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Pot_of_Greed.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Raigeki.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Silver_Fang.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Skull_Guardian.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Slot_Machine.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Spiral_Serpent.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Terraforming.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/The_Tricky.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Torrential_Tribute.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Trap_Hole.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Umiiruka.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Unknown.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Warrior_Dai_Grepher.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Wattaildragon.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Wattkid.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Yami.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/cards/Yomi_Ship.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/heads_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/heads_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/heads_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/heads_3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/heads_4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/heads_5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/heads_6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/heads_7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/heads_8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/heads_9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/tails_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/tails_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/tails_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/tails_3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/tails_4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/tails_5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/tails_6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/tails_7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/tails_8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/coins/tails_9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/duel-backgrounds/field_forest.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/duel-backgrounds/field_normal.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/duel-backgrounds/field_umi.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/duel-backgrounds/field_yami.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/duel-icons/activate-effect.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/duel-icons/attack.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/duel-icons/change-to-attack-position.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/duel-icons/change-to-defense-position.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/duel-icons/direct-attack.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/duel-icons/filp-summon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/duel-icons/normal-summon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/duel-icons/set.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/duel-icons/special-summon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/flip-coin-background.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/lp_background.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic10.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic12.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic14.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic15.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic17.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic18.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic19.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic20.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic21.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic22.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic23.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic24.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic25.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic26.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic27.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic28.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic30.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic31.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic33.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic34.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic35.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic36.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic37.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/images/profile-pics/profile-pic9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/music/main-music.mp3" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExportToHTMLSettings">
+    <option name="OUTPUT_DIRECTORY" value="C:\Users\moh02\Desktop" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JUnit5 Test Class" />
+        <option value="Interface" />
+        <option value="FxmlFile" />
+        <option value="CSS File" />
+        <option value="Class" />
+        <option value="Enum" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="phase-2" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="1rHl7sOJtNVBTDWGMn24lM538xV" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_MARK_IGNORED_FILES_AS_EXCLUDED" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.intellij.openapi.externalSystem.service.settings.ExternalSystemGroupConfigurable" value="ALL" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
+    <property name="extract.method.default.visibility" value="private" />
+    <property name="last.edited.regexp" value="test.txt" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/model" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="control.controller" />
+      <recent name="control.message" />
+      <recent name="view" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="P:\University\Lessons\Advanced Programming\Project\project-team-05\src\main\java\model" />
+      <recent name="P:\University\Lessons\Advanced Programming\Project\project-team-05\src\main\resources\images" />
+      <recent name="P:\University\Lessons\Advanced Programming\Project\project-team-05\src\main\resources\images\cards" />
+      <recent name="P:\University\Lessons\Advanced Programming\Project\project-team-05\src\main\resources\fxml" />
+      <recent name="P:\University\Lessons\Advanced Programming\Project\project-team-05\data" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="P:\University\Lessons\Advanced Programming\Project\project-team-05\src\main\resources\images\duel-backgrounds" />
+      <recent name="P:\University\Lessons\Advanced Programming\Project\project-team-05\src\main\resources\images" />
+      <recent name="P:\University\Lessons\Advanced Programming\Project\project-team-05" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="view.animation" />
+      <recent name="utils" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="model.effect.action" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="model" />
+      <recent name="utils" />
+      <recent name="model.effect.action" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.MainView">
+    <configuration name="DataManager" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="control.DataManager" />
+      <module name="project-team-05" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="control.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LoginMenuView" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="view.LoginMenuView" />
+      <module name="project-team-05" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="view.animation.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainView" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="view.MainView" />
+      <module name="client" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="view.animation.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RunTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="RunTest" />
+      <module name="project-team-05" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ImportExportTest.ImportTrapTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="project-team-05" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="import_export.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="import_export" />
+      <option name="MAIN_CLASS_NAME" value="import_export.ImportExportTest" />
+      <option name="METHOD_NAME" value="ImportTrapTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.DataManager" />
+      <item itemvalue="Application.LoginMenuView" />
+      <item itemvalue="Application.MainView" />
+      <item itemvalue="Application.RunTest" />
+      <item itemvalue="JUnit.ImportExportTest.ImportTrapTest" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.MainView" />
+        <item itemvalue="JUnit.ImportExportTest.ImportTrapTest" />
+        <item itemvalue="Application.RunTest" />
+        <item itemvalue="Application.LoginMenuView" />
+        <item itemvalue="Application.DataManager" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f89359af-6dc0-4302-b935-6ef0185bd7f0" name="Default Changelist" comment="" />
+      <created>1618640731885</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1618640731885</updated>
+      <workItem from="1618640733106" duration="2084000" />
+      <workItem from="1618664833250" duration="9363000" />
+      <workItem from="1618725456094" duration="76000" />
+      <workItem from="1618750582353" duration="3552000" />
+      <workItem from="1618768428192" duration="7599000" />
+      <workItem from="1618819303735" duration="1262000" />
+      <workItem from="1618820807695" duration="10382000" />
+      <workItem from="1618848146737" duration="1614000" />
+      <workItem from="1618906715965" duration="16047000" />
+      <workItem from="1619029613823" duration="4224000" />
+      <workItem from="1619072734307" duration="1897000" />
+      <workItem from="1619109059651" duration="7221000" />
+      <workItem from="1619276092835" duration="17000" />
+      <workItem from="1619282351799" duration="28000" />
+      <workItem from="1619284207307" duration="4476000" />
+      <workItem from="1619290725454" duration="681000" />
+      <workItem from="1619343952856" duration="13602000" />
+      <workItem from="1619702834494" duration="10000" />
+      <workItem from="1619702858590" duration="8000" />
+      <workItem from="1619942124753" duration="7000" />
+      <workItem from="1619943490591" duration="4000" />
+      <workItem from="1619971583364" duration="6373000" />
+      <workItem from="1620053109496" duration="10499000" />
+      <workItem from="1620120372812" duration="10333000" />
+      <workItem from="1620136769198" duration="7106000" />
+      <workItem from="1620211246348" duration="10394000" />
+      <workItem from="1620296173112" duration="1592000" />
+      <workItem from="1620304558557" duration="1506000" />
+      <workItem from="1620312409769" duration="39000" />
+      <workItem from="1620372081169" duration="1734000" />
+      <workItem from="1620376535973" duration="17028000" />
+      <workItem from="1620405104478" duration="11048000" />
+      <workItem from="1620455785749" duration="10359000" />
+      <workItem from="1620479244413" duration="20246000" />
+      <workItem from="1620634919972" duration="14278000" />
+      <workItem from="1620651520426" duration="1000" />
+      <workItem from="1620662076731" duration="11289000" />
+      <workItem from="1620758355509" duration="2359000" />
+      <workItem from="1620815248233" duration="3507000" />
+      <workItem from="1620820669588" duration="216000" />
+      <workItem from="1620893959170" duration="1291000" />
+      <workItem from="1620895924525" duration="5230000" />
+      <workItem from="1620974682637" duration="143000" />
+      <workItem from="1620992977003" duration="282000" />
+      <workItem from="1620993412057" duration="2389000" />
+      <workItem from="1620996825303" duration="5403000" />
+      <workItem from="1621002549604" duration="2176000" />
+      <workItem from="1621069471649" duration="8054000" />
+      <workItem from="1621150270194" duration="6605000" />
+      <workItem from="1621173332570" duration="18365000" />
+      <workItem from="1621229797221" duration="20112000" />
+      <workItem from="1621267992128" duration="12754000" />
+      <workItem from="1621323865467" duration="9241000" />
+      <workItem from="1621348946006" duration="11759000" />
+      <workItem from="1621417836085" duration="34000" />
+      <workItem from="1621425721332" duration="962000" />
+      <workItem from="1621489184894" duration="88000" />
+      <workItem from="1621489282234" duration="265000" />
+      <workItem from="1621509252747" duration="726000" />
+      <workItem from="1621543122802" duration="53000" />
+      <workItem from="1621584702173" duration="9393000" />
+      <workItem from="1621606962591" duration="8207000" />
+      <workItem from="1621666072339" duration="11660000" />
+      <workItem from="1621692535860" duration="8000" />
+      <workItem from="1621692558431" duration="14006000" />
+      <workItem from="1621777242785" duration="4480000" />
+      <workItem from="1621781837482" duration="4874000" />
+      <workItem from="1621786773580" duration="711000" />
+      <workItem from="1621787540146" duration="14000" />
+      <workItem from="1621787578939" duration="268000" />
+      <workItem from="1621788865109" duration="100000" />
+      <workItem from="1621834796913" duration="7197000" />
+      <workItem from="1621866343940" duration="1195000" />
+      <workItem from="1621970763043" duration="208000" />
+      <workItem from="1622031755863" duration="8000" />
+      <workItem from="1622792083795" duration="404000" />
+      <workItem from="1622876416118" duration="15000" />
+      <workItem from="1623250056899" duration="109000" />
+      <workItem from="1623250214981" duration="472000" />
+      <workItem from="1623250753507" duration="33000" />
+      <workItem from="1623253247540" duration="25000" />
+      <workItem from="1623340140785" duration="3638000" />
+      <workItem from="1623397832560" duration="7532000" />
+      <workItem from="1623498952908" duration="17599000" />
+      <workItem from="1623682324260" duration="54000" />
+      <workItem from="1623683611894" duration="23000" />
+      <workItem from="1623737460691" duration="12819000" />
+      <workItem from="1623771217705" duration="921000" />
+      <workItem from="1623824151240" duration="312000" />
+      <workItem from="1623837735848" duration="7404000" />
+      <workItem from="1623853124864" duration="10618000" />
+      <workItem from="1623917331007" duration="16352000" />
+      <workItem from="1623936938902" duration="67000" />
+      <workItem from="1623946012642" duration="7645000" />
+      <workItem from="1624008193755" duration="10081000" />
+      <workItem from="1624026234118" duration="87000" />
+      <workItem from="1624031897764" duration="5337000" />
+      <workItem from="1624038094567" duration="5264000" />
+      <workItem from="1624101066334" duration="13127000" />
+      <workItem from="1624183808388" duration="3198000" />
+      <workItem from="1624209684865" duration="394000" />
+      <workItem from="1624354913283" duration="4463000" />
+      <workItem from="1624376688259" duration="2880000" />
+      <workItem from="1624387363389" duration="2952000" />
+      <workItem from="1624432237513" duration="22470000" />
+      <workItem from="1624466603501" duration="14464000" />
+      <workItem from="1624516009566" duration="4869000" />
+      <workItem from="1624546741853" duration="83000" />
+      <workItem from="1624547752932" duration="15000" />
+      <workItem from="1624554645031" duration="51000" />
+      <workItem from="1624556300725" duration="140000" />
+      <workItem from="1624605693468" duration="605000" />
+      <workItem from="1624635312415" duration="15086000" />
+      <workItem from="1624719102727" duration="11801000" />
+      <workItem from="1624812517454" duration="8102000" />
+      <workItem from="1625059490137" duration="7582000" />
+      <workItem from="1625152494159" duration="128000" />
+      <workItem from="1625152639142" duration="9099000" />
+      <workItem from="1625207713733" duration="26599000" />
+      <workItem from="1625299683091" duration="14751000" />
+      <workItem from="1625385230234" duration="13013000" />
+      <workItem from="1625411443873" duration="10945000" />
+      <workItem from="1625479563169" duration="4469000" />
+      <workItem from="1625485651497" duration="3360000" />
+      <workItem from="1625509727198" duration="7521000" />
+      <workItem from="1625560070109" duration="24305000" />
+      <workItem from="1625645098653" duration="26151000" />
+      <workItem from="1625725746241" duration="19022000" />
+      <workItem from="1625752229119" duration="17054000" />
+      <workItem from="1625809544754" duration="42922000" />
+      <workItem from="1625861180545" duration="118000" />
+      <workItem from="1625896469088" duration="26791000" />
+      <workItem from="1625935617160" duration="9067000" />
+      <workItem from="1625986664964" duration="3732000" />
+      <workItem from="1625998486165" duration="3532000" />
+      <workItem from="1626084393035" duration="2311000" />
+      <workItem from="1626119309190" duration="7000" />
+      <workItem from="1626165820244" duration="20948000" />
+      <workItem from="1626258353185" duration="8312000" />
+      <workItem from="1626330877980" duration="10385000" />
+      <workItem from="1626419846069" duration="7701000" />
+      <workItem from="1626517321637" duration="6669000" />
+      <workItem from="1626602992747" duration="400000" />
+      <workItem from="1626608155385" duration="6304000" />
+      <workItem from="1626679199560" duration="15067000" />
+      <workItem from="1626770994997" duration="13344000" />
+      <workItem from="1626785107625" duration="1000" />
+      <workItem from="1626850604679" duration="5344000" />
+      <workItem from="1626865506967" duration="3000" />
+      <workItem from="1627135465450" duration="2635000" />
+      <workItem from="1651224581991" duration="442000" />
+      <workItem from="1667647348677" duration="37000" />
+      <workItem from="1667647406774" duration="851000" />
+    </task>
+    <task id="LOCAL-00083" summary="bug fixes">
+      <created>1624043335414</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1624043335414</updated>
+    </task>
+    <task id="LOCAL-00084" summary="bug fixes">
+      <created>1624109195691</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1624109195692</updated>
+    </task>
+    <task id="LOCAL-00085" summary="bug fixes">
+      <created>1624117340389</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1624117340389</updated>
+    </task>
+    <task id="LOCAL-00086" summary="bug fixes">
+      <created>1624186275487</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1624186275487</updated>
+    </task>
+    <task id="LOCAL-00087" summary="bug fixes">
+      <created>1624358593976</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1624358593977</updated>
+    </task>
+    <task id="LOCAL-00088" summary="add tests for Import/Export Menu and bug fixes">
+      <created>1624438363936</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1624438363937</updated>
+    </task>
+    <task id="LOCAL-00089" summary="add tests">
+      <created>1624442946691</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1624442946691</updated>
+    </task>
+    <task id="LOCAL-00090" summary="bug fixes">
+      <created>1624444502580</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1624444502580</updated>
+    </task>
+    <task id="LOCAL-00091" summary="add tests for DuelMenuView">
+      <created>1624454444338</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1624454444338</updated>
+    </task>
+    <task id="LOCAL-00092" summary="bug fixes">
+      <created>1624455934777</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1624455934777</updated>
+    </task>
+    <task id="LOCAL-00093" summary="bug fixes">
+      <created>1624456733324</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1624456733324</updated>
+    </task>
+    <task id="LOCAL-00094" summary="buf fixes">
+      <created>1624457718994</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1624457718994</updated>
+    </task>
+    <task id="LOCAL-00095" summary="add tests for board">
+      <created>1624481214899</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1624481214899</updated>
+    </task>
+    <task id="LOCAL-00096" summary="add tests for DuelMenuView">
+      <created>1624534496101</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1624534496102</updated>
+    </task>
+    <task id="LOCAL-00097" summary="complete login fxmls">
+      <created>1624650282184</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1624650282185</updated>
+    </task>
+    <task id="LOCAL-00098" summary="add scoreboard fxml">
+      <created>1624735436968</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1624735436969</updated>
+    </task>
+    <task id="LOCAL-00099" summary="complete profile view">
+      <created>1625061082816</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1625061082816</updated>
+    </task>
+    <task id="LOCAL-00100" summary="complete shop view">
+      <created>1625220653146</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1625220653147</updated>
+    </task>
+    <task id="LOCAL-00101" summary="complete deck view">
+      <created>1625231556514</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1625231556514</updated>
+    </task>
+    <task id="LOCAL-00102" summary="add showPromptAlert">
+      <created>1625249458579</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1625249458579</updated>
+    </task>
+    <task id="LOCAL-00103" summary="bug fix">
+      <created>1625301974621</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1625301974621</updated>
+    </task>
+    <task id="LOCAL-00104" summary="add edit-deck view">
+      <created>1625317977090</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1625317977090</updated>
+    </task>
+    <task id="LOCAL-00105" summary="complete edit deck view">
+      <created>1625389224316</created>
+      <option name="number" value="00105" />
+      <option name="presentableId" value="LOCAL-00105" />
+      <option name="project" value="LOCAL" />
+      <updated>1625389224316</updated>
+    </task>
+    <task id="LOCAL-00106" summary="refactoring">
+      <created>1625393987355</created>
+      <option name="number" value="00106" />
+      <option name="presentableId" value="LOCAL-00106" />
+      <option name="project" value="LOCAL" />
+      <updated>1625393987355</updated>
+    </task>
+    <task id="LOCAL-00107" summary="refactoring">
+      <created>1625399117667</created>
+      <option name="number" value="00107" />
+      <option name="presentableId" value="LOCAL-00107" />
+      <option name="project" value="LOCAL" />
+      <updated>1625399117667</updated>
+    </task>
+    <task id="LOCAL-00108" summary="complete import-export view">
+      <created>1625422407780</created>
+      <option name="number" value="00108" />
+      <option name="presentableId" value="LOCAL-00108" />
+      <option name="project" value="LOCAL" />
+      <updated>1625422407781</updated>
+    </task>
+    <task id="LOCAL-00109" summary="add duel view, change stage size">
+      <created>1625647976729</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1625647976729</updated>
+    </task>
+    <task id="LOCAL-00110" summary="bug fix">
+      <created>1625648860875</created>
+      <option name="number" value="00110" />
+      <option name="presentableId" value="LOCAL-00110" />
+      <option name="project" value="LOCAL" />
+      <updated>1625648860875</updated>
+    </task>
+    <task id="LOCAL-00111" summary="change views structure">
+      <created>1625663479520</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1625663479520</updated>
+    </task>
+    <task id="LOCAL-00112" summary="complete profile and scoreboard view">
+      <created>1625665374985</created>
+      <option name="number" value="00112" />
+      <option name="presentableId" value="LOCAL-00112" />
+      <option name="project" value="LOCAL" />
+      <updated>1625665374986</updated>
+    </task>
+    <task id="LOCAL-00113" summary="buttons work with space, progress duel">
+      <created>1625743878376</created>
+      <option name="number" value="00113" />
+      <option name="presentableId" value="LOCAL-00113" />
+      <option name="project" value="LOCAL" />
+      <updated>1625743878377</updated>
+    </task>
+    <task id="LOCAL-00114" summary="progress duel">
+      <created>1625743953557</created>
+      <option name="number" value="00114" />
+      <option name="presentableId" value="LOCAL-00114" />
+      <option name="project" value="LOCAL" />
+      <updated>1625743953557</updated>
+    </task>
+    <task id="LOCAL-00115" summary="add cheats">
+      <created>1625758491923</created>
+      <option name="number" value="00115" />
+      <option name="presentableId" value="LOCAL-00115" />
+      <option name="project" value="LOCAL" />
+      <updated>1625758491923</updated>
+    </task>
+    <task id="LOCAL-00116" summary="progress duel">
+      <created>1625860959643</created>
+      <option name="number" value="00116" />
+      <option name="presentableId" value="LOCAL-00116" />
+      <option name="project" value="LOCAL" />
+      <updated>1625860959643</updated>
+    </task>
+    <task id="LOCAL-00117" summary="complete duel">
+      <created>1625914491193</created>
+      <option name="number" value="00117" />
+      <option name="presentableId" value="LOCAL-00117" />
+      <option name="project" value="LOCAL" />
+      <updated>1625914491194</updated>
+    </task>
+    <task id="LOCAL-00118" summary="complete create card">
+      <created>1625924300292</created>
+      <option name="number" value="00118" />
+      <option name="presentableId" value="LOCAL-00118" />
+      <option name="project" value="LOCAL" />
+      <updated>1625924300292</updated>
+    </task>
+    <task id="LOCAL-00119" summary="complete import/export">
+      <created>1625940441500</created>
+      <option name="number" value="00119" />
+      <option name="presentableId" value="LOCAL-00119" />
+      <option name="project" value="LOCAL" />
+      <updated>1625940441500</updated>
+    </task>
+    <task id="LOCAL-00120" summary="final changes">
+      <created>1625941786616</created>
+      <option name="number" value="00120" />
+      <option name="presentableId" value="LOCAL-00120" />
+      <option name="project" value="LOCAL" />
+      <updated>1625941786617</updated>
+    </task>
+    <task id="LOCAL-00121" summary="final changes">
+      <created>1625951705816</created>
+      <option name="number" value="00121" />
+      <option name="presentableId" value="LOCAL-00121" />
+      <option name="project" value="LOCAL" />
+      <updated>1625951705816</updated>
+    </task>
+    <task id="LOCAL-00122" summary="final changes">
+      <created>1626000139698</created>
+      <option name="number" value="00122" />
+      <option name="presentableId" value="LOCAL-00122" />
+      <option name="project" value="LOCAL" />
+      <updated>1626000139699</updated>
+    </task>
+    <task id="LOCAL-00123" summary="connect login and profile menu to server">
+      <created>1626189917915</created>
+      <option name="number" value="00123" />
+      <option name="presentableId" value="LOCAL-00123" />
+      <option name="project" value="LOCAL" />
+      <updated>1626189917916</updated>
+    </task>
+    <task id="LOCAL-00124" summary="connect shop to server">
+      <created>1626272229663</created>
+      <option name="number" value="00124" />
+      <option name="presentableId" value="LOCAL-00124" />
+      <option name="project" value="LOCAL" />
+      <updated>1626272229663</updated>
+    </task>
+    <task id="LOCAL-00125" summary="add icon">
+      <created>1626272476978</created>
+      <option name="number" value="00125" />
+      <option name="presentableId" value="LOCAL-00125" />
+      <option name="project" value="LOCAL" />
+      <updated>1626272476978</updated>
+    </task>
+    <task id="LOCAL-00126" summary="connect deck to server">
+      <created>1626340822894</created>
+      <option name="number" value="00126" />
+      <option name="presentableId" value="LOCAL-00126" />
+      <option name="project" value="LOCAL" />
+      <updated>1626340822894</updated>
+    </task>
+    <task id="LOCAL-00127" summary="connect scoreboard to server">
+      <created>1626424267636</created>
+      <option name="number" value="00127" />
+      <option name="presentableId" value="LOCAL-00127" />
+      <option name="project" value="LOCAL" />
+      <updated>1626424267636</updated>
+    </task>
+    <task id="LOCAL-00128" summary="client can listen to server">
+      <created>1626695199217</created>
+      <option name="number" value="00128" />
+      <option name="presentableId" value="LOCAL-00128" />
+      <option name="project" value="LOCAL" />
+      <updated>1626695199218</updated>
+    </task>
+    <task id="LOCAL-00129">
+      <created>1626784786993</created>
+      <option name="number" value="00129" />
+      <option name="presentableId" value="LOCAL-00129" />
+      <option name="project" value="LOCAL" />
+      <updated>1626784786994</updated>
+    </task>
+    <task id="LOCAL-00130" summary="final changes">
+      <created>1626857977309</created>
+      <option name="number" value="00130" />
+      <option name="presentableId" value="LOCAL-00130" />
+      <option name="project" value="LOCAL" />
+      <updated>1626857977309</updated>
+    </task>
+    <task id="LOCAL-00131" summary="final changes">
+      <created>1626858001865</created>
+      <option name="number" value="00131" />
+      <option name="presentableId" value="LOCAL-00131" />
+      <option name="project" value="LOCAL" />
+      <updated>1626858001865</updated>
+    </task>
+    <option name="localTasksCounter" value="132" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="complete deck view" />
+    <MESSAGE value="add showPromptAlert" />
+    <MESSAGE value="add edit-deck view" />
+    <MESSAGE value="complete edit deck view" />
+    <MESSAGE value="refactoring" />
+    <MESSAGE value="complete import-export view" />
+    <MESSAGE value="add duel view, change stage size" />
+    <MESSAGE value="bug fix" />
+    <MESSAGE value="change views structure" />
+    <MESSAGE value="complete profile and scoreboard view" />
+    <MESSAGE value="buttons work with space, progress duel" />
+    <MESSAGE value="add cheats" />
+    <MESSAGE value="progress duel" />
+    <MESSAGE value="complete duel" />
+    <MESSAGE value="complete create card" />
+    <MESSAGE value="complete import/export" />
+    <MESSAGE value="connect login and profile menu to server" />
+    <MESSAGE value="connect shop to server" />
+    <MESSAGE value="add icon" />
+    <MESSAGE value="connect deck to server" />
+    <MESSAGE value="connect scoreboard to server" />
+    <MESSAGE value="client can listen to server" />
+    <MESSAGE value="add c" />
+    <MESSAGE value="add chat" />
+    <MESSAGE value="final changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="final changes" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/project_team_05$LoginMenuTest_createUserInvalidInputTest.ic" NAME="LoginMenuTest.createUserInvalidInputTest Coverage Results" MODIFIED="1620408642510" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/User_java$All_in_project_team_05.ic" NAME="All in project-team-05 Coverage Results" MODIFIED="1621360510138" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/MainMenuTest_java$DuelMenuTest_runTest.ic" NAME="DuelMenuTest.runTest Coverage Results" MODIFIED="1624388882133" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>duel.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/project_team_05$LoginUserTest.ic" NAME="LoginUserTest Coverage Results" MODIFIED="1620415902637" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/project_team_05$LoginMenuTest.ic" NAME="LoginMenuTest Coverage Results" MODIFIED="1620415908930" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/MainMenuTest_java$ImportExportTest_importTest.ic" NAME="ImportExportTest.importTest Coverage Results" MODIFIED="1624436472159" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>import_export.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/project_team_05$LoginMenuTest_showCurrentMenuTest.ic" NAME="LoginMenuTest.showCurrentMenuTest Coverage Results" MODIFIED="1620415820474" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/project_team_05$All_in_project_team_05.ic" NAME="All in project-team-05 Coverage Results" MODIFIED="1623926679340" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/User_java$login_in_project_team_05.ic" NAME="login in project-team-05 Coverage Results" MODIFIED="1621327713678" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>login.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/User_java$Main.ic" NAME="Main Coverage Results" MODIFIED="1621354155888" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/project_team_05$LoginMenuTest_createUserSuccessfulTest.ic" NAME="LoginMenuTest.createUserSuccessfulTest Coverage Results" MODIFIED="1620412701299" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/project_team_05$ChangeNicknameTest_changeNicknameInvalidInputTest.ic" NAME="ChangeNicknameTest.changeNicknameInvalidInputTest Coverage Results" MODIFIED="1620462124880" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>profile.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/project_team_05$ChangeNicknameTest.ic" NAME="ChangeNicknameTest Coverage Results" MODIFIED="1620461819992" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>profile.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/MainMenuTest_java$DuelViewPrintTest.ic" NAME="DuelViewPrintTest Coverage Results" MODIFIED="1624449903291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>duel.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/project_team_05$LoginMenuTest_createUserNotInvalidInputTest.ic" NAME="LoginMenuTest.createUserNotInvalidInputTest Coverage Results" MODIFIED="1620409477891" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/MainMenuTest_java$DuelMenuTest_commandsTest.ic" NAME="DuelMenuTest.commandsTest Coverage Results" MODIFIED="1624534143476" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>duel.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/MainMenuTest_java$ImportExportTest.ic" NAME="ImportExportTest Coverage Results" MODIFIED="1624436612370" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>import_export.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/MainMenuTest_java$Main.ic" NAME="Main Coverage Results" MODIFIED="1624456797587" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/MainMenuTest_java$All_in_project_team_05.ic" NAME="All in project-team-05 Coverage Results" MODIFIED="1624534547063" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+</project>

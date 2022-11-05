@@ -1,0 +1,5 @@
+#logo-pane {
+    -fx-background-image: url("../images/logo.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+}

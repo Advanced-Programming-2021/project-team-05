@@ -1,0 +1,18 @@
+package control.message;
+
+public enum DeckMenuMessage {
+    DECK_CREATED,
+    DECK_NAME_EXISTS,
+    DECK_DELETED,
+    NO_DECK_EXISTS,
+    DECK_ACTIVATED,
+    CARD_ADDED,
+    NO_CARD_EXISTS,
+    DECK_IS_FULL,
+    MAIN_DECK_IS_FULL,
+    SIDE_DECK_IS_FULL,
+    NO_CARD_EXISTS_IN_MAIN_DECK,
+    NO_CARD_EXISTS_IN_SIDE_DECK,
+    CARD_REMOVED,
+    ERROR
+}

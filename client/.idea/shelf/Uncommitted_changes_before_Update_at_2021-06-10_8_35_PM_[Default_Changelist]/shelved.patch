@@ -1,0 +1,226 @@
+Index: src/main/java/model/effect/action/AddOneFiledSpellFromDeckToHandAction.java
+===================================================================
+diff --git a/src/main/java/model/effect/action/AddOneFiledSpellFromDeckToHandAction.java b/src/main/java/model/effect/action/AddFieldSpellFromDeckToHandAction.java
+rename from src/main/java/model/effect/action/AddOneFiledSpellFromDeckToHandAction.java
+rename to src/main/java/model/effect/action/AddFieldSpellFromDeckToHandAction.java
+--- a/src/main/java/model/effect/action/AddOneFiledSpellFromDeckToHandAction.java	
++++ b/src/main/java/model/effect/action/AddFieldSpellFromDeckToHandAction.java	
+@@ -10,29 +10,22 @@
+ 
+ import java.util.ArrayList;
+ 
+-public class AddOneFiledSpellFromDeckToHandAction implements Action {
++public class AddFieldSpellFromDeckToHandAction implements Action {
++
+     @Override
+     public void run(DuelMenuController controller) {
++        if (!canBeRun(controller)) {
++            return;
++        }
++
++        DataManager dataManager = DataManager.getInstance();
+         DuelMenuView view = controller.getView();
+         Table ownTable = controller.getBoard().getPlayerTable();
+         Deck deck = ownTable.getDeck();
+ 
+-        DataManager dataManager = DataManager.getInstance();
+-
+-        String message = "enter a card number to add to your hand:";
+-
+         int count = 0;
+-        int position;
+-
+-
+         ArrayList<Card> fieldSpellCards = new ArrayList<>();
+-
+-        if (!canBeRun(controller)) {
+-            return;
+-        }
+-
+-        for (String id :
+-                deck.getMainDeckCardIds()) {
++        for (String id : deck.getMainDeckCardIds()) {
+             Card card = dataManager.getCardById(id);
+             if (card.getType().equals(CardType.FIELD)) {
+                 fieldSpellCards.add(card);
+@@ -40,8 +33,9 @@
+             }
+         }
+ 
+-        view.showCards(fieldSpellCards);
+-
++        view.showCards(fieldSpellCards, "Field Spells in Deck:");
++        String message = "enter a card number to add to your hand:";
++        int position;
+         while (true) {
+             ArrayList<Integer> numbers = view.getNumbers(1, message);
+             if (numbers == null) {
+@@ -51,18 +45,26 @@
+             position = numbers.get(0);
+             if (position > count || position < 1) {
+                 message = "position should be between 1 and " + count;
+-            } else
++            } else {
+                 break;
++            }
+         }
+ 
+-        ownTable.getHand().add(fieldSpellCards.get(position));
+-
++        ownTable.addCardToHand(fieldSpellCards.get(position));
+         deck.shuffleMainDeck();
+-
+     }
+ 
+     @Override
+     public boolean canBeRun(DuelMenuController controller) {
+-        return false;
++        DataManager dataManager = DataManager.getInstance();
++        Table table = controller.getBoard().getPlayerTable();
++        int fieldSpellsCount = 0;
++        for (String id : table.getDeck().getMainDeckCardIds()) {
++            Card card = dataManager.getCardById(id);
++            if (card.getType().equals(CardType.FIELD)) {
++                fieldSpellsCount++;
++            }
++        }
++        return fieldSpellsCount > 0 && !table.isHandFull();
+     }
+ }
+Index: src/main/java/model/effect/action/ActionEnum.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package model.effect.action;\r\n\r\npublic enum ActionEnum {\r\n    DESTROY_OPPONENT_ONE_MONSTER,\r\n    DESTROY_PLAYER_ONE_MONSTER,\r\n    DESTROY_OPPONENT_ONE_SPELL_OR_TRAP,\r\n    DESTROY_OPPONENT_ALL_MONSTERS,\r\n    DESTROY_PLAYER_ALL_MONSTERS,\r\n    DESTROY_OPPONENT_ALL_SPELL_AND_TRAPS,\r\n    ADD_ONE_FIELD_CARD_FROM_DECK_TO_HAND,\r\n    DESTROY_ATTACKER,\r\n    NO_DAMAGE,\r\n    DRAW_TWO_CARDS,\r\n    RETURN_ONE_MONSTER_FROM_GRAVEYARD,\r\n    RITUAL_SUMMON;\r\n\r\n\r\n    public Action getAction() {\r\n        switch (this) {\r\n            case DESTROY_OPPONENT_ONE_MONSTER:\r\n                return new DestroyOpponentOneMonsterAction();\r\n            case DESTROY_PLAYER_ONE_MONSTER:\r\n                return new DestroyPlayerOneMonsterAction();\r\n            case RITUAL_SUMMON:\r\n                return new RitualSummonAction();\r\n            case DESTROY_ATTACKER:\r\n                return new DestroyAttackerAction();\r\n            case NO_DAMAGE:\r\n                return new NoDamageAction();\r\n            case DRAW_TWO_CARDS:\r\n                return new DrawTwoCards();\r\n            case RETURN_ONE_MONSTER_FROM_GRAVEYARD:\r\n                return new ReturnOneMonsterFromGraveyardAction();\r\n            case DESTROY_OPPONENT_ALL_MONSTERS:\r\n                return new DestroyAllOpponentMonstersAction();\r\n            case DESTROY_OPPONENT_ALL_SPELL_AND_TRAPS:\r\n                return new DestroyAllOpponentsSpellAndTrapsAction();\r\n            case DESTROY_PLAYER_ALL_MONSTERS:\r\n                return new DestroyAllPlayerMonstersAction();\r\n            case DESTROY_OPPONENT_ONE_SPELL_OR_TRAP:\r\n                return new DestroyOpponentOneSpellOrTrapAction();\r\n            case ADD_ONE_FIELD_CARD_FROM_DECK_TO_HAND:\r\n                return new AddOneFiledSpellFromDeckToHandAction();\r\n            default:\r\n                return new NullAction();\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/model/effect/action/ActionEnum.java b/src/main/java/model/effect/action/ActionEnum.java
+--- a/src/main/java/model/effect/action/ActionEnum.java	
++++ b/src/main/java/model/effect/action/ActionEnum.java	
+@@ -7,7 +7,7 @@
+     DESTROY_OPPONENT_ALL_MONSTERS,
+     DESTROY_PLAYER_ALL_MONSTERS,
+     DESTROY_OPPONENT_ALL_SPELL_AND_TRAPS,
+-    ADD_ONE_FIELD_CARD_FROM_DECK_TO_HAND,
++    ADD_FIELD_CARD_FROM_DECK_TO_HAND,
+     DESTROY_ATTACKER,
+     NO_DAMAGE,
+     DRAW_TWO_CARDS,
+@@ -39,8 +39,8 @@
+                 return new DestroyAllPlayerMonstersAction();
+             case DESTROY_OPPONENT_ONE_SPELL_OR_TRAP:
+                 return new DestroyOpponentOneSpellOrTrapAction();
+-            case ADD_ONE_FIELD_CARD_FROM_DECK_TO_HAND:
+-                return new AddOneFiledSpellFromDeckToHandAction();
++            case ADD_FIELD_CARD_FROM_DECK_TO_HAND:
++                return new AddFieldSpellFromDeckToHandAction();
+             default:
+                 return new NullAction();
+         }
+Index: src/main/java/model/board/Table.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package model.board;\r\n\r\nimport model.Deck;\r\nimport model.User;\r\nimport model.board.cell.Cell;\r\nimport model.board.cell.MonsterCell;\r\nimport model.board.cell.SpellTrapCell;\r\nimport model.card.Card;\r\nimport model.card.Monster;\r\nimport model.card.Spell;\r\nimport utils.Utility;\r\n\r\nimport java.util.ArrayList;\r\n\r\n\r\npublic class Table {\r\n    private final ArrayList<Card> hand;\r\n    private final ArrayList<Card> graveyard;\r\n    private final MonsterCell[] monsterCells;\r\n    private final SpellTrapCell[] spellAndTrapCells;\r\n    private final SpellTrapCell fieldZoneCell;\r\n    private User owner;\r\n    private int lifePoint;\r\n    private Deck deck;\r\n    private boolean canSummonOrSet;\r\n\r\n\r\n    {\r\n        hand = new ArrayList<>();\r\n        graveyard = new ArrayList<>();\r\n\r\n        monsterCells = new MonsterCell[5];\r\n        for (int i = 0; i < monsterCells.length; i++) {\r\n            monsterCells[i] = new MonsterCell(null, null);\r\n        }\r\n\r\n        spellAndTrapCells = new SpellTrapCell[5];\r\n        for (int i = 0; i < spellAndTrapCells.length; i++) {\r\n            spellAndTrapCells[i] = new SpellTrapCell(null, null);\r\n        }\r\n\r\n        fieldZoneCell = new SpellTrapCell(null, null);\r\n    }\r\n\r\n\r\n    public Table(User owner) {\r\n        this.setOwner(owner);\r\n        try {\r\n            this.setDeck(owner.getActiveDeck().clone());\r\n        } catch (CloneNotSupportedException e) {\r\n            e.printStackTrace();\r\n        }\r\n        this.setCanSummonOrSet(true);\r\n        this.setLifePoint(8000);\r\n    }\r\n\r\n\r\n    public final User getOwner() {\r\n        return this.owner;\r\n    }\r\n\r\n    public final void setOwner(User owner) {\r\n        this.owner = owner;\r\n    }\r\n\r\n\r\n    public final int getLifePoint() {\r\n        return this.lifePoint;\r\n    }\r\n\r\n    public final void setLifePoint(int lifePoint) {\r\n        this.lifePoint = lifePoint;\r\n    }\r\n\r\n    public final void increaseLifePoint(int amount) {\r\n        this.lifePoint += amount;\r\n    }\r\n\r\n    public final void decreaseLifePoint(int amount) {\r\n        this.lifePoint -= amount;\r\n    }\r\n\r\n\r\n    public final Deck getDeck() {\r\n        return this.deck;\r\n    }\r\n\r\n    public final void setDeck(Deck deck) {\r\n        this.deck = deck;\r\n    }\r\n\r\n    public final void removeCardFromDeck(Card card) {\r\n        this.deck.removeCardFromMainDeck(card);\r\n    }\r\n\r\n\r\n    public final Cell getCellByAddress(CardAddress cardAddress) {\r\n        if (cardAddress.isForOpponent()) {\r\n            return null;\r\n        }\r\n        switch (cardAddress.getZone()) {\r\n            case FIELD:\r\n                return this.fieldZoneCell;\r\n            case MONSTER:\r\n                return this.monsterCells[cardAddress.getPosition() - 1];\r\n            case SPELL:\r\n                return this.spellAndTrapCells[cardAddress.getPosition() - 1];\r\n            default:\r\n                return null;\r\n        }\r\n    }\r\n\r\n    public final MonsterCell getMonsterCell(int position) {\r\n        return this.monsterCells[position - 1];\r\n    }\r\n\r\n    public final SpellTrapCell getSpellOrTrapCell(int position) {\r\n        return this.spellAndTrapCells[position - 1];\r\n    }\r\n\r\n    public final SpellTrapCell getFieldSpellCell() {\r\n        return this.fieldZoneCell;\r\n    }\r\n\r\n\r\n    public ArrayList<Card> getHand() {\r\n        return this.hand;\r\n    }\r\n\r\n    public Card getCardFromHand(int position) {\r\n        return this.hand.get(position - 1);\r\n    }\r\n\r\n    public final void addCardToHand(Card card) {\r\n        this.hand.add(card);\r\n    }\r\n\r\n    public final void removeCardFromHand(Card card) {\r\n        this.hand.remove(card);\r\n    }\r\n\r\n    public final void removeCardFromHand(int position) {\r\n        this.hand.remove(position - 1);\r\n    }\r\n\r\n    public final void initializeHand() {\r\n        this.getDeck().shuffleMainDeck();\r\n        for (int i = 0; i < 5; i++) {\r\n            this.drawCard();\r\n        }\r\n    }\r\n\r\n\r\n    public final void drawCard() {\r\n        Card card = deck.drawCard();\r\n        this.addCardToHand(card);\r\n    }\r\n\r\n\r\n    public final ArrayList<Card> getGraveyard() {\r\n        return this.graveyard;\r\n    }\r\n\r\n    public final void addCardToGraveyard(Card card) {\r\n        this.graveyard.add(card);\r\n    }\r\n\r\n    public final void moveMonsterToGraveyard(int position) {\r\n        this.addCardToGraveyard(this.getMonster(position));\r\n        this.removeMonster(position);\r\n    }\r\n\r\n    public final void moveSpellOrTrapToGraveyard(int position) {\r\n        this.addCardToGraveyard(this.getSpellOrTrap(position));\r\n        this.removeSpellOrTrap(position);\r\n    }\r\n\r\n\r\n    public final Monster getMonster(int position) {\r\n        return (Monster) this.monsterCells[position - 1].getCard();\r\n    }\r\n\r\n    public final CardState getMonsterState(int position) {\r\n        return this.monsterCells[position - 1].getState();\r\n    }\r\n\r\n    public final void addMonster(Monster monster, CardState state) {\r\n        for (int i = 0; i < 5; i++) {\r\n            Cell cell = this.monsterCells[i];\r\n            if (cell.getCard() == null) {\r\n                cell.reset();\r\n                cell.setCard(monster);\r\n                cell.setState(state);\r\n                cell.setNewlyAdded(true);\r\n                return;\r\n            }\r\n        }\r\n    }\r\n\r\n    public final void removeMonster(int position) {\r\n        this.monsterCells[position - 1].reset();\r\n    }\r\n\r\n    public final int getMonsterCardsCount() {\r\n        int count = 0;\r\n        for (Cell cell : this.monsterCells) {\r\n            if (cell.getCard() != null) {\r\n                count++;\r\n            }\r\n        }\r\n        return count;\r\n    }\r\n\r\n    public final boolean isMonsterZoneFull() {\r\n        for (Cell cell : this.monsterCells) {\r\n            if (cell.getCard() == null) {\r\n                return false;\r\n            }\r\n        }\r\n        return true;\r\n    }\r\n\r\n\r\n    public final Card getSpellOrTrap(int position) {\r\n        return this.spellAndTrapCells[position - 1].getCard();\r\n    }\r\n\r\n    public final CardState getSpellOrTrapState(int position) {\r\n        return this.spellAndTrapCells[position - 1].getState();\r\n    }\r\n\r\n    public final void addSpellOrTrap(Card card, CardState state) {\r\n        for (int i = 0; i < 5; i++) {\r\n            Cell cell = this.spellAndTrapCells[i];\r\n            if (cell.getCard() == null) {\r\n                cell.reset();\r\n                cell.setCard(card);\r\n                cell.setState(state);\r\n                cell.setNewlyAdded(true);\r\n                return;\r\n            }\r\n        }\r\n    }\r\n\r\n    public final void removeSpellOrTrap(int position) {\r\n        this.spellAndTrapCells[position - 1].reset();\r\n    }\r\n\r\n    public final int getSpellOrTrapPosition(Card card) {\r\n        for (int i = 1; i < 5; i++) {\r\n            SpellTrapCell spellAndTrapCell = this.getSpellOrTrapCell(i);\r\n            Card spellTrapCard = spellAndTrapCell.getCard();\r\n            if (card.equals(spellTrapCard)) {\r\n                return i;\r\n            }\r\n        }\r\n        return -1;\r\n    }\r\n\r\n    public final int getSpellTrapCardsCount() {\r\n        int count = 0;\r\n        for (Cell cell : this.spellAndTrapCells) {\r\n            if (cell.getCard() != null) {\r\n                count++;\r\n            }\r\n        }\r\n        return count;\r\n    }\r\n\r\n    public final boolean isSpellTrapZoneFull() {\r\n        for (Cell cell : this.spellAndTrapCells) {\r\n            if (cell.getCard() == null) {\r\n                return false;\r\n            }\r\n        }\r\n        return true;\r\n    }\r\n\r\n\r\n    public final Spell getFieldSpell() {\r\n        return (Spell) this.fieldZoneCell.getCard();\r\n    }\r\n\r\n    public final void setFieldSpell(Spell spell, CardState state) {\r\n        this.fieldZoneCell.setCard(spell);\r\n        this.fieldZoneCell.setState(state);\r\n    }\r\n\r\n    public final void removeFieldSpell() {\r\n        this.fieldZoneCell.reset();\r\n    }\r\n\r\n\r\n    public boolean canSummonOrSet() {\r\n        return this.canSummonOrSet;\r\n    }\r\n\r\n    public void setCanSummonOrSet(boolean canSummonOrSet) {\r\n        this.canSummonOrSet = canSummonOrSet;\r\n    }\r\n\r\n\r\n    private String[] monsterStatesToString() {\r\n        String[] monsterZone = new String[5];\r\n        for (int i = 0; i < 5; i++) {\r\n            CardState cardState = this.getMonsterState(i + 1);\r\n            if (cardState == null) {\r\n                monsterZone[i] = \"E\";\r\n            } else {\r\n                switch (cardState) {\r\n                    case VERTICAL_UP:\r\n                        monsterZone[i] = \"OO\";\r\n                        break;\r\n                    case HORIZONTAL_UP:\r\n                        monsterZone[i] = \"DO\";\r\n                        break;\r\n                    case HORIZONTAL_DOWN:\r\n                        monsterZone[i] = \"DH\";\r\n                        break;\r\n                }\r\n            }\r\n        }\r\n\r\n        return monsterZone;\r\n    }\r\n\r\n    private String[] spellAndTrapStatesToString() {\r\n        String[] spellZone = new String[5];\r\n        for (int i = 0; i < 5; i++) {\r\n            CardState cardState = this.getSpellOrTrapState(i + 1);\r\n            if (cardState == null) {\r\n                spellZone[i] = \"E\";\r\n            } else {\r\n                switch (cardState) {\r\n                    case VERTICAL_UP:\r\n                        spellZone[i] = \"O\";\r\n                        break;\r\n                    case VERTICAL_DOWN:\r\n                        spellZone[i] = \"H\";\r\n                        break;\r\n                }\r\n            }\r\n        }\r\n\r\n        return spellZone;\r\n    }\r\n\r\n    private String[] handToString() {\r\n        String[] handString = new String[6];\r\n        for (int i = 0; i < 6; i++) {\r\n            if (i < this.getHand().size()) {\r\n                handString[i] = \"c\";\r\n            } else {\r\n                handString[i] = \"\";\r\n            }\r\n        }\r\n\r\n        return handString;\r\n    }\r\n\r\n    public String graveyardToString() {\r\n        if (this.graveyard.size() == 0) {\r\n            return \"graveyard empty\";\r\n        }\r\n        StringBuilder graveyardString = new StringBuilder();\r\n        for (int i = 0, cardsSize = this.graveyard.size(); i < cardsSize; i++) {\r\n            Card card = this.graveyard.get(i);\r\n            graveyardString.append(i + 1).append(\". \").append(card.toString());\r\n            if (i < cardsSize - 1) {\r\n                graveyardString.append(\"\\r\\n\");\r\n            }\r\n        }\r\n        return graveyardString.toString();\r\n    }\r\n\r\n\r\n    public String toString(boolean isReversed) {\r\n        StringBuilder tableString = new StringBuilder();\r\n        String fieldZone = this.getFieldSpell() == null ? \"E\" : \"O\";\r\n        int graveyardSize = this.getGraveyard().size();\r\n        int deckSize = this.getDeck().getMainDeckSize();\r\n        String[] monsterZone = this.monsterStatesToString();\r\n        String[] spellZone = this.spellAndTrapStatesToString();\r\n        String[] handString = this.handToString();\r\n\r\n        if (isReversed) {\r\n            Utility.swapElements(monsterZone, 1, 2);\r\n            Utility.swapElements(monsterZone, 3, 4);\r\n            Utility.swapElements(spellZone, 1, 2);\r\n            Utility.swapElements(spellZone, 3, 4);\r\n        }\r\n\r\n        if (isReversed) {\r\n            tableString.append(graveyardSize).append(\"\\t\\t\\t\\t\\t\\t\").append(fieldZone).append(\"\\n\");\r\n        } else {\r\n            tableString.append(fieldZone).append(\"\\t\\t\\t\\t\\t\\t\").append(graveyardSize).append(\"\\n\");\r\n        }\r\n        tableString.append(\"\\t\")\r\n                .append(monsterZone[4]).append(\"\\t\")\r\n                .append(monsterZone[2]).append(\"\\t\")\r\n                .append(monsterZone[0]).append(\"\\t\")\r\n                .append(monsterZone[1]).append(\"\\t\")\r\n                .append(monsterZone[3]).append(\"\\t\")\r\n                .append(\"\\n\");\r\n        tableString.append(\"\\t\")\r\n                .append(spellZone[4]).append(\"\\t\")\r\n                .append(spellZone[2]).append(\"\\t\")\r\n                .append(spellZone[0]).append(\"\\t\")\r\n                .append(spellZone[1]).append(\"\\t\")\r\n                .append(spellZone[3]).append(\"\\t\")\r\n                .append(\"\\n\");\r\n        if (!isReversed) {\r\n            tableString.append(\"\\t\\t\\t\\t\\t\\t\");\r\n        }\r\n        tableString.append(deckSize).append(\"\\n\");\r\n        if (isReversed) {\r\n            for (int i = 0; i < 7 - this.hand.size(); i++) {\r\n                tableString.append(\"\\t\");\r\n            }\r\n        }\r\n        for (int i = 0; i < 6; i++) {\r\n            tableString.append(handString[i]).append(\"\\t\");\r\n        }\r\n        tableString.append(\"\\n\");\r\n        tableString.append(this.getOwner().getUsername()).append(\":\").append(this.getLifePoint());\r\n\r\n        if (isReversed) {\r\n            String[] splitTable = tableString.toString().split(\"\\n\");\r\n            Utility.reverseArray(splitTable);\r\n            return Utility.joinArray(splitTable, '\\n');\r\n        } else {\r\n            return tableString.toString();\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/model/board/Table.java b/src/main/java/model/board/Table.java
+--- a/src/main/java/model/board/Table.java	
++++ b/src/main/java/model/board/Table.java	
+@@ -14,6 +14,7 @@
+ 
+ 
+ public class Table {
++
+     private final ArrayList<Card> hand;
+     private final ArrayList<Card> graveyard;
+     private final MonsterCell[] monsterCells;
+@@ -24,7 +25,6 @@
+     private Deck deck;
+     private boolean canSummonOrSet;
+ 
+-
+     {
+         hand = new ArrayList<>();
+         graveyard = new ArrayList<>();
+@@ -123,11 +123,11 @@
+     }
+ 
+ 
+-    public ArrayList<Card> getHand() {
++    public final ArrayList<Card> getHand() {
+         return this.hand;
+     }
+ 
+-    public Card getCardFromHand(int position) {
++    public final Card getCardFromHand(int position) {
+         return this.hand.get(position - 1);
+     }
+ 
+@@ -143,6 +143,10 @@
+         this.hand.remove(position - 1);
+     }
+ 
++    public final boolean isHandFull() {
++        return hand.size() >= 6;
++    }
++
+     public final void initializeHand() {
+         this.getDeck().shuffleMainDeck();
+         for (int i = 0; i < 5; i++) {
+@@ -291,16 +295,16 @@
+     }
+ 
+ 
+-    public boolean canSummonOrSet() {
++    public final boolean canSummonOrSet() {
+         return this.canSummonOrSet;
+     }
+ 
+-    public void setCanSummonOrSet(boolean canSummonOrSet) {
++    public final void setCanSummonOrSet(boolean canSummonOrSet) {
+         this.canSummonOrSet = canSummonOrSet;
+     }
+ 
+ 
+-    private String[] monsterStatesToString() {
++    private final String[] monsterStatesToString() {
+         String[] monsterZone = new String[5];
+         for (int i = 0; i < 5; i++) {
+             CardState cardState = this.getMonsterState(i + 1);
+@@ -324,7 +328,7 @@
+         return monsterZone;
+     }
+ 
+-    private String[] spellAndTrapStatesToString() {
++    private final String[] spellAndTrapStatesToString() {
+         String[] spellZone = new String[5];
+         for (int i = 0; i < 5; i++) {
+             CardState cardState = this.getSpellOrTrapState(i + 1);
+@@ -345,7 +349,7 @@
+         return spellZone;
+     }
+ 
+-    private String[] handToString() {
++    private final String[] handToString() {
+         String[] handString = new String[6];
+         for (int i = 0; i < 6; i++) {
+             if (i < this.getHand().size()) {
+@@ -358,7 +362,7 @@
+         return handString;
+     }
+ 
+-    public String graveyardToString() {
++    public final String graveyardToString() {
+         if (this.graveyard.size() == 0) {
+             return "graveyard empty";
+         }
+@@ -374,7 +378,7 @@
+     }
+ 
+ 
+-    public String toString(boolean isReversed) {
++    public final String toString(boolean isReversed) {
+         StringBuilder tableString = new StringBuilder();
+         String fieldZone = this.getFieldSpell() == null ? "E" : "O";
+         int graveyardSize = this.getGraveyard().size();
